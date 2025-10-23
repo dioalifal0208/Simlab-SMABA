@@ -1,0 +1,44 @@
+/*
+ * 1. Impor "mesin" utama dari Tailwind CSS.
+ * Ketiga baris ini akan secara otomatis menghasilkan semua class utility
+ * yang kita gunakan di seluruh aplikasi (seperti bg-blue-600, p-6, text-white, dll).
+ */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import 'aos/dist/aos.css';
+
+/*
+ * 2. Aturan CSS Kustom.
+ * Kita menambahkan ini untuk memberi warna latar pada akhir pekan di FullCalendar.
+ */
+.fc .weekend-background {
+    background-color: #c12c2c; /* Warna merah muda yang sangat lembut */
+}
+/*
+|--------------------------------------------------------------------------
+| Animasi Teks Berjalan "Admin Announcement" (Marquee Effect)
+|--------------------------------------------------------------------------
+*/
+.marquee-container {
+    overflow: hidden;      /* Sembunyikan teks yang di luar kotak */
+    white-space: nowrap;   /* Paksa teks tetap dalam satu baris */
+    width: 100%;           /* Ambil lebar penuh yang tersedia */
+    position: relative;
+}
+
+.marquee-text {
+    display: inline-block;
+    position: relative;
+    animation: marquee 30s linear infinite; /* Terapkan animasi 'marquee' */
+}
+
+/* * Animasi 'marquee'
+ * Mulai dari luar layar kanan (100vw)
+ * Selesai di luar layar kiri (-100% dari lebarnya sendiri)
+ * Durasi 20s bisa Anda ubah (misal: '10s' untuk lebih cepat)
+*/
+@keyframes marquee {
+    0%   { transform: translateX(125vw); }
+    100% { transform: translateX(-125vw); }
+}

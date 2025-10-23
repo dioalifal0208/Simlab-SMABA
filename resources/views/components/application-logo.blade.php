@@ -1,0 +1,1 @@
+<img {{ $attributes }} src="{{ asset('images/logo-smaba.webp') }}" alt="Logo Sekolah">
