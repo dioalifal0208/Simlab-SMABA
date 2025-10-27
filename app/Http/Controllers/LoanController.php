@@ -21,7 +21,7 @@ class LoanController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Loan::with('user')->latest();
+        $query = Loan::with(['user', 'items'])->latest();
 
         if (Auth::user()->role !== 'admin') {
             $query->where('user_id', Auth::id());

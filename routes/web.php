@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 // Halaman Landing Page
 Route::get('/', function () {
     return view('welcome');
-})->name('welcome');
+})->middleware('no.cache')->name('welcome');
 
 // Grup Rute yang hanya bisa diakses setelah login
 Route::middleware('auth')->group(function () {
@@ -65,10 +65,16 @@ Route::middleware('auth')->group(function () {
     });
 
     // ===================================
-    // =====    RUTE KHUSUS ADMIN    =====
+    // =====     RUTE KHUSUS ADMIN     =====
     // ===================================
     Route::middleware('can:is-admin')->group(function () {
         
+        // ==============================================
+        // ## TAMBAHAN BARU ##
+        // Route untuk menangani hapus massal (bulk delete)
+        Route::post('/items/delete-multiple', [ItemController::class, 'deleteMultiple'])->name('items.deleteMultiple');
+        // ==============================================
+
         // Manajemen User
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');

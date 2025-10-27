@@ -11,7 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
 ->withMiddleware(function (Middleware $middleware) {
-    //
+    $middleware->alias([
+        'no.cache' => \App\Http\Middleware\PreventCaching::class,
+    ]);
 })
 ->withExceptions(function (Exceptions $exceptions) {
     $exceptions->render(function (\Illuminate\Auth\AuthenticationException $exception, $request) {

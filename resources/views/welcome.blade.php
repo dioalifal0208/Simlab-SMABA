@@ -4,10 +4,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        {{-- INI ADALAH BAGIAN PENTING 1 --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        {{-- Saya perbarui title agar mengambil dari .env --}}
+        <title>{{ config('app.name', 'LAB-SMABA') }}</title>
         <link rel="icon" href="{{ asset('images/logo-smaba.webp') }}" type="image/png">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -25,8 +25,6 @@
           x-data="{ isModalOpen: false, activeTab: 'login' }"
           @keydown.escape.window="isModalOpen = false">
 
-        {{-- ... (Seluruh konten HTML Anda dari <body> sampai <footer> tetap sama) ... --}}
-        
         <div class="bg-gray-100">
             <header class="absolute inset-x-0 top-0 z-50">
                 <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -117,24 +115,46 @@
             </div>
         </footer>
 
+
+        {{-- =============================================== --}}
+        {{-- ##       MODAL LOGIN/REGISTER/FORGOT         ## --}}
+        {{-- =============================================== --}}
         <div x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" style="display: none;">
             <div @click.outside="isModalOpen = false" x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90" class="w-full max-w-md bg-white p-8 rounded-xl shadow-lg relative">
                 <button @click="isModalOpen = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
-                <h2 class="text-2xl font-bold text-smaba-text text-center">Selamat Datang</h2>
-                <div class="mt-6 mb-6 flex rounded-lg bg-gray-100 p-1">
+                
+                {{-- Judul (berubah jika 'forgot') --}}
+                <h2 class="text-2xl font-bold text-smaba-text text-center" x-show="activeTab !== 'forgot'">Selamat Datang</h2>
+                <h2 class="text-2xl font-bold text-smaba-text text-center" x-show="activeTab === 'forgot'">Lupa Password</h2>
+                
+                {{-- Tab Switcher (disembunyikan jika 'forgot') --}}
+                <div x-show="activeTab !== 'forgot'" class="mt-6 mb-6 flex rounded-lg bg-gray-100 p-1">
                     <button @click="activeTab = 'login'" :class="{ 'bg-white shadow-md text-smaba-dark-blue': activeTab === 'login', 'text-gray-500 hover:bg-gray-200': activeTab !== 'login' }" class="w-1/2 py-2 px-4 rounded-md text-sm font-semibold text-center transition-colors duration-300 focus:outline-none">Login</button>
                     <button @click="activeTab = 'signup'" :class="{ 'bg-white shadow-md text-smaba-dark-blue': activeTab === 'signup', 'text-gray-500 hover:bg-gray-200': activeTab !== 'signup' }" class="w-1/2 py-2 px-4 rounded-md text-sm font-semibold text-center transition-colors duration-300 focus:outline-none">Register</button>
                 </div>
+                
+                {{-- Area Notifikasi Error --}}
                 <div id="auth-error-message" class="hidden mb-4 bg-red-50 border-l-4 border-red-400 text-red-700 p-3 text-sm" role="alert"></div>
+                {{-- Area Notifikasi Sukses (untuk Lupa Password) --}}
+                <div id="auth-success-message" class="hidden mb-4 bg-green-50 border-l-4 border-green-400 text-green-700 p-3 text-sm" role="alert"></div>
+
+                {{-- Form Login --}}
                 <div x-show="activeTab === 'login'" x-transition>
                     <form id="login-form" method="POST" action="{{ route('login') }}" class="space-y-4">
                         @csrf
                         <div><label for="email" class="block text-sm font-medium text-gray-700">Alamat Email</label><input id="email" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" type="email" name="email" required autofocus /></div>
                         <div><label for="password" class="block text-sm font-medium text-gray-700">Password</label><input id="password" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" type="password" name="password" required /></div>
-                        <div class="flex items-center justify-between"><label for="remember_me" class="flex items-center"><input id="remember_me" type="checkbox" class="rounded border-gray-300 text-smaba-dark-blue shadow-sm focus:ring-smaba-light-blue" name="remember"><span class="ml-2 text-sm text-gray-600">Ingat saya</span></label><a href="{{ route('password.request') }}" class="text-sm text-smaba-light-blue hover:text-smaba-dark-blue hover:underline">Lupa password?</a></div>
+                        <div class="flex items-center justify-between">
+                            <label for="remember_me" class="flex items-center"><input id="remember_me" type="checkbox" class="rounded border-gray-300 text-smaba-dark-blue shadow-sm focus:ring-smaba-light-blue" name="remember"><span class="ml-2 text-sm text-gray-600">Ingat saya</span></label>
+                            
+                            {{-- PERUBAHAN: Link Lupa Password diubah menjadi tombol --}}
+                            <button type="button" @click.prevent="activeTab = 'forgot'" class="text-sm text-smaba-light-blue hover:text-smaba-dark-blue hover:underline focus:outline-none">Lupa password?</button>
+                        </div>
                         <div class="pt-2"><button type="submit" class="w-full justify-center py-3 px-4 bg-smaba-dark-blue text-white font-semibold rounded-lg shadow-md hover:bg-smaba-light-blue transition-colors duration-300">Log In</button></div>
                     </form>
                 </div>
+
+                {{-- Form Register --}}
                 <div x-show="activeTab === 'signup'" x-transition style="display: none;">
                     <form id="register-form" method="POST" action="{{ route('register') }}" class="space-y-4">
                         @csrf
@@ -145,6 +165,29 @@
                         <div class="pt-2"><button type="submit" class="w-full justify-center py-3 px-4 bg-smaba-dark-blue text-white font-semibold rounded-lg shadow-md hover:bg-smaba-light-blue transition-colors duration-300">Register</button></div>
                     </form>
                 </div>
+                
+                {{-- PENAMBAHAN: Form Lupa Password --}}
+                <div x-show="activeTab === 'forgot'" x-transition style="display: none;">
+                    <p class="text-sm text-center text-gray-600 mb-4">Lupa password? Masukkan email Anda dan kami akan mengirimkan link untuk mengatur ulang password.</p>
+                    <form id="forgot-password-form" method="POST" action="{{ route('password.email') }}" class="space-y-4">
+                        @csrf
+                        <div>
+                            <label for="forgot_email" class="block text-sm font-medium text-gray-700">Alamat Email</label>
+                            <input id="forgot_email" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" type="email" name="email" required autofocus />
+                        </div>
+                        <div class="pt-2">
+                            <button type="submit" class="w-full justify-center py-3 px-4 bg-smaba-dark-blue text-white font-semibold rounded-lg shadow-md hover:bg-smaba-light-blue transition-colors duration-300">
+                                Kirim Link Reset Password
+                            </button>
+                        </div>
+                        <div class="text-center pt-2">
+                            <button type="button" @click.prevent="activeTab = 'login'" class="text-sm text-gray-600 hover:text-smaba-dark-blue hover:underline focus:outline-none">
+                                &larr; Kembali ke Login
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
 
@@ -161,30 +204,38 @@
                     }
                 }));
 
-                // --- Helper untuk mengambil CSRF token ---
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const errorMessageDiv = document.getElementById('auth-error-message');
+                const successMessageDiv = document.getElementById('auth-success-message'); // <-- Variabel baru
+
+                function showError(message) {
+                    successMessageDiv.classList.add('hidden'); // Sembunyikan sukses
+                    errorMessageDiv.classList.remove('hidden');
+                    errorMessageDiv.innerHTML = message;
+                }
+                
+                function showSuccess(message) {
+                    errorMessageDiv.classList.add('hidden'); // Sembunyikan error
+                    successMessageDiv.classList.remove('hidden');
+                    successMessageDiv.innerHTML = message;
+                }
 
                 // --- Menangani Form Login ---
                 const loginForm = document.getElementById('login-form');
                 if (loginForm) {
                     loginForm.addEventListener('submit', async function (event) {
                         event.preventDefault();
-                        const errorMessageDiv = document.getElementById('auth-error-message');
                         const submitButton = this.querySelector('button[type="submit"]');
                         const originalButtonText = submitButton.innerHTML;
                         submitButton.innerHTML = 'Memproses...';
                         submitButton.disabled = true;
                         errorMessageDiv.classList.add('hidden');
-                        errorMessageDiv.innerHTML = '';
+                        successMessageDiv.classList.add('hidden');
                         try {
                             const formData = new FormData(this);
                             const response = await fetch('{{ route('login') }}', {
                                 method: 'POST', body: formData,
-                                headers: { 
-                                    'Accept': 'application/json', 
-                                    'X-Requested-With': 'XMLHttpRequest', 
-                                    'X-CSRF-TOKEN': csrfToken // <-- Menggunakan token dari meta tag
-                                }
+                                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': csrfToken }
                             });
                             const data = await response.json();
                             if (!response.ok) {
@@ -193,9 +244,9 @@
                                     errorText = Object.values(data.errors).map(e => `<li>${e[0]}</li>`).join('');
                                     errorText = `<ul>${errorText}</ul>`;
                                 } else if (data.message) { errorText = data.message; }
-                                showError(errorMessageDiv, errorText);
+                                showError(errorText);
                             } else { window.location.href = '{{ route('dashboard') }}'; }
-                        } catch (error) { showError(errorMessageDiv, 'Tidak dapat terhubung ke server.');
+                        } catch (error) { showError('Tidak dapat terhubung ke server.');
                         } finally { submitButton.innerHTML = originalButtonText; submitButton.disabled = false; }
                     });
                 }
@@ -205,22 +256,17 @@
                 if (registerForm) {
                     registerForm.addEventListener('submit', async function (event) {
                         event.preventDefault();
-                        const errorMessageDiv = document.getElementById('auth-error-message');
                         const submitButton = this.querySelector('button[type="submit"]');
                         const originalButtonText = submitButton.innerHTML;
                         submitButton.innerHTML = 'Memproses...';
                         submitButton.disabled = true;
                         errorMessageDiv.classList.add('hidden');
-                        errorMessageDiv.innerHTML = '';
+                        successMessageDiv.classList.add('hidden');
                         const formData = new FormData(this);
                         try {
                             const response = await fetch('{{ route('register') }}', {
                                 method: 'POST', body: formData,
-                                headers: { 
-                                    'Accept': 'application/json', 
-                                    'X-Requested-With': 'XMLHttpRequest', 
-                                    'X-CSRF-TOKEN': csrfToken // <-- Menggunakan token dari meta tag
-                                }
+                                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': csrfToken }
                             });
                             const data = await response.json();
                             if (!response.ok) {
@@ -229,17 +275,61 @@
                                     errorText = Object.values(data.errors).map(e => `<li>${e[0]}</li>`).join('');
                                     errorText = `<ul>${errorText}</ul>`;
                                 } else if (data.message) { errorText = data.message; }
-                                showError(errorMessageDiv, errorText);
+                                showError(errorText);
                             } else { window.location.href = '{{ route('dashboard') }}'; }
-                        } catch (error) { showError(errorMessageDiv, 'Tidak dapat terhubung ke server.');
+                        } catch (error) { showError('Tidak dapat terhubung ke server.');
                         } finally { submitButton.innerHTML = originalButtonText; submitButton.disabled = false; }
                     });
                 }
-                
-                function showError(errorBox, message) {
-                    errorBox.classList.remove('hidden');
-                    errorBox.innerHTML = message;
+
+                // --- PENAMBAHAN: Menangani Form Lupa Password ---
+                const forgotForm = document.getElementById('forgot-password-form');
+                if (forgotForm) {
+                    forgotForm.addEventListener('submit', async function (event) {
+                        event.preventDefault();
+                        const submitButton = this.querySelector('button[type="submit"]');
+                        const originalButtonText = submitButton.innerHTML;
+                        submitButton.innerHTML = 'Memproses...';
+                        submitButton.disabled = true;
+                        errorMessageDiv.classList.add('hidden');
+                        successMessageDiv.classList.add('hidden');
+                        
+                        const formData = new FormData(this);
+                        
+                        try {
+                            const response = await fetch('{{ route('password.email') }}', { // Mengarah ke route password.email
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'X-CSRF-TOKEN': csrfToken
+                                }
+                            });
+
+                            const data = await response.json();
+
+                            if (!response.ok) {
+                                // Jika Gagal (misal: email tidak ditemukan)
+                                let errorText = data.message || 'Gagal mengirim email.';
+                                if(response.status === 422 && data.errors && data.errors.email) {
+                                    errorText = data.errors.email[0];
+                                }
+                                showError(errorText);
+                            } else {
+                                // Jika BERHASIL
+                                showSuccess(data.message); // Tampilkan pesan "Link telah dikirim"
+                                this.reset(); // Kosongkan form email
+                            }
+                        } catch (error) {
+                            showError('Tidak dapat terhubung ke server.');
+                        } finally {
+                            submitButton.innerHTML = originalButtonText;
+                            submitButton.disabled = false;
+                        }
+                    });
                 }
+
             });
         </script>
     </body>
