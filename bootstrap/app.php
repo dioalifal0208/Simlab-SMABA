@@ -10,9 +10,15 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware) {
-        // (Biarkan bagian ini kosong, atau isi dengan middleware Anda yang lain jika ada)
-    })
-    ->withExceptions(function (Exceptions $exceptions) {
-        //
-    })->create();
+->withMiddleware(function (Middleware $middleware) {
+    //
+})
+->withExceptions(function (Exceptions $exceptions) {
+    $exceptions->render(function (\Illuminate\Auth\AuthenticationException $exception, $request) {
+        if ($request->expectsJson()) {
+            return response()->json(['message' => $exception->getMessage()], 401);
+        }
+
+        return redirect()->guest(route('welcome')); // <-- Arahkan ke 'welcome'
+    });
+})->create();

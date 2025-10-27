@@ -74,6 +74,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
 
+        // PENAMBAHAN: Route untuk Impor User
+        Route::post('/users/import', [UserController::class, 'handleImport'])->name('users.import.store');
+
         // Manajemen Laporan Kerusakan
         Route::get('/damage-reports', [DamageReportController::class, 'index'])->name('damage-reports.index');
         Route::get('/damage-reports/{report}', [DamageReportController::class, 'show'])->name('damage-reports.show');
