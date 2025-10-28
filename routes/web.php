@@ -102,7 +102,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/announcements/{announcement}', [AnnouncementController::class, 'destroy'])->name('announcements.destroy');
 
         // Impor Item
-        Route::post('/items/import', [ItemController::class, 'handleImport'])->name('items.import.store');
+        Route::post('/items/import', [ItemController::class, 'handleImport'])->name('items.import');
     });
 });
 

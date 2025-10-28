@@ -93,8 +93,8 @@
 
                             {{-- Deskripsi (Keterangan) --}}
                             <div class="md:col-span-2">
-                                <label for="keterangan" class="block text-sm font-medium text-gray-700">Deskripsi / Keterangan (Opsional)</label>
-                                <textarea name="keterangan" id="keterangan" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">{{ old('keterangan', $item->keterangan) }}</textarea>
+                                <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi / Keterangan (Opsional)</label>
+                                <textarea name="deskripsi" id="deskripsi" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">{{ old('deskripsi', $item->deskripsi) }}</textarea>
                             </div>
                         </div>
 

@@ -13,7 +13,7 @@
                 <div class="flex items-center space-x-3 mt-3 sm:mt-0">
                     {{-- PENAMBAHAN: Tombol Impor User (membuka modal) --}}
                     <button @click="showImportModal = true" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-semibold text-sm shadow-sm transition-colors">
-                        <i class="fas fa-upload mr-2"></i> Impor User
+                        <i class="fas fa-upload mr-2"></i> Import User
                     </button>
 
                     {{-- Tombol Tambah Pengguna Baru (placeholder) --}}

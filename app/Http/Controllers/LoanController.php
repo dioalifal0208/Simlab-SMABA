@@ -192,6 +192,10 @@ public function show(Loan $loan)
     public function destroy(Loan $loan)
     {
         Gate::authorize('is-admin');
+
+        // Hapus notifikasi yang terkait dengan loan ini sebelum menghapus loan itu sendiri
+        $loan->notifications()->delete();
+
         $loan->items()->detach();
         $loan->delete();
         return redirect()->route('loans.index')->with('success', 'Data peminjaman berhasil dihapus.');

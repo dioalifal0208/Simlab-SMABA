@@ -132,6 +132,13 @@ class ItemController extends Controller
     {
         // ... (Tidak ada perubahan)
         $this->authorize('is-admin');
+
+        // REKOMENDASI: Tambahkan pengecekan sebelum menghapus
+        if ($item->loans()->whereIn('status', ['approved', 'Terlambat'])->exists()) {
+            return redirect()->route('items.index')
+                ->with('error', 'Item "' . $item->nama_alat . '" tidak dapat dihapus karena sedang dalam proses peminjaman aktif.');
+        }
+
         if ($item->photo) {
             Storage::disk('public')->delete($item->photo);
         }

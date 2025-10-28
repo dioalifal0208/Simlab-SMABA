@@ -162,6 +162,9 @@ public function show(Booking $booking)
     //     return back()->withErrors(['message' => 'Hanya booking yang pending atau ditolak yang bisa dihapus.']);
     // }
 
+    // Hapus notifikasi yang terkait dengan booking ini sebelum menghapus booking itu sendiri
+    $booking->notifications()->delete();
+
     // Hapus data booking
     $booking->delete();
 
