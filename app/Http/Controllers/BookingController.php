@@ -140,9 +140,14 @@ public function show(Booking $booking)
 
     // --- PENAMBAHAN: KIRIM NOTIFIKASI KE PENGGUNA ---
     if ($request->status == 'approved' || $request->status == 'rejected') {
-        // Kita perlu memuat relasi 'user' untuk mengirim notifikasi
-        $booking->load('user'); 
-        Notification::send($booking->user, new BookingStatusUpdated($booking));
+        try {
+            // Kita perlu memuat relasi 'user' untuk mengirim notifikasi
+            $booking->load('user'); 
+            Notification::send($booking->user, new BookingStatusUpdated($booking));
+        } catch (\Exception $e) {
+            // Opsional: Log error untuk debugging di masa depan
+            // \Log::error('Gagal mengirim notifikasi update status booking: ' . $e->getMessage());
+        }
     }
     // ----------------------------------------------
 

@@ -6,10 +6,8 @@ import Chart from 'chart.js/auto';
 window.Chart = Chart;
 // Import CSS AOS
 import 'aos/dist/aos.css';
-
-// Import JavaScript AOS dan inisialisasi
+// PENAMBAHAN: Impor JavaScript AOS
 import AOS from 'aos';
-AOS.init();
 
 // 2. Impor SweetAlert2 untuk popup konfirmasi modern.
 //    Kita juga mendaftarkannya ke objek `window` agar bisa diakses dari mana saja.
@@ -26,6 +24,13 @@ import googleCalendarPlugin from '@fullcalendar/google-calendar'; // Plugin untu
 
 // 4. Jalankan skrip ini hanya setelah seluruh halaman HTML selesai dimuat.
 document.addEventListener('DOMContentLoaded', function() {
+    // PENAMBAHAN: Inisialisasi AOS (Animate On Scroll) di sini.
+    // Cukup panggil sekali di dalam listener utama.
+    AOS.init({
+        duration: 800, // Durasi animasi dalam milidetik
+        once: true,    // Apakah animasi hanya berjalan sekali
+    });
+
     // Cari elemen div dengan id 'calendar' di halaman.
     var calendarEl = document.getElementById('calendar');
 
@@ -88,12 +93,4 @@ document.addEventListener('DOMContentLoaded', function() {
         // "Gambar" atau render kalender di dalam div 'calendar'.
         calendar.render();
     }
-    // Inisialisasi AOS (Animate On Scroll) untuk animasi saat scroll halaman
-        document.addEventListener('DOMContentLoaded', function() {
-        AOS.init({
-            duration: 800, // Durasi animasi dalam milidetik
-            once: true,    // Apakah animasi hanya berjalan sekali
-        });
-    });
-    
 });

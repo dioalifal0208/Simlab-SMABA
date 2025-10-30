@@ -59,11 +59,21 @@
                 </div>
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input id="password" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" type="password" name="password" required />
+                    <div x-data="{ showPassword: false }" class="relative">
+                        <input id="password" :type="showPassword ? 'text' : 'password'" name="password" required
+                               class="block mt-1 w-full pr-10 rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" />
+                        <button type="button" @click="showPassword = !showPassword"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
+                            <i class="fas" :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="flex items-center justify-between">
                     <label for="remember_me" class="flex items-center">
-                        <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-smaba-dark-blue shadow-sm focus:ring-smaba-light-blue" name="remember">
+                        <input id="remember_me" type="checkbox" name="remember"
+                               class="rounded border-gray-300 text-smaba-dark-blue shadow-sm focus:ring-smaba-light-blue"
+                               {{ old('remember') ? 'checked' : '' }}
+                        >
                         <span class="ml-2 text-sm text-gray-600">{{ __('Ingat saya') }}</span>
                     </label>
                     @if (Route::has('password.request'))
@@ -86,17 +96,31 @@
                     <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
                     <input id="name" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" type="text" name="name" :value="old('name')" required autofocus />
                 </div>
-                <div>
+                <div class="mt-4">
                     <label for="register_email" class="block text-sm font-medium text-gray-700">Alamat Email</label>
                     <input id="register_email" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" type="email" name="email" :value="old('email')" required />
                 </div>
-                <div>
+                <div class="mt-4">
                     <label for="register_password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input id="register_password" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" type="password" name="password" required />
+                    <div x-data="{ showPassword: false }" class="relative">
+                        <input id="register_password" :type="showPassword ? 'text' : 'password'" name="password" required
+                               class="block mt-1 w-full pr-10 rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" />
+                        <button type="button" @click="showPassword = !showPassword"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
+                            <i class="fas" :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                        </button>
+                    </div>
                 </div>
-                <div>
+                <div class="mt-4">
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
-                    <input id="password_confirmation" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" type="password" name="password_confirmation" required />
+                    <div x-data="{ showPassword: false }" class="relative">
+                        <input id="password_confirmation" :type="showPassword ? 'text' : 'password'" name="password_confirmation" required
+                               class="block mt-1 w-full pr-10 rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" />
+                        <button type="button" @click="showPassword = !showPassword"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
+                            <i class="fas" :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="pt-2">
                     <button type="submit" class="w-full justify-center py-3 px-4 bg-smaba-dark-blue text-white font-semibold rounded-lg shadow-md hover:bg-smaba-light-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-smaba-dark-blue transition-colors duration-300">

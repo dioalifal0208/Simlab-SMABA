@@ -34,8 +34,13 @@ class StockRequestController extends Controller
         ]);
 
         // Kirim notifikasi ke semua admin
-        $admins = User::where('role', 'admin')->get();
-        Notification::send($admins, new StockRequested($stockRequest));
+        try {
+            $admins = User::where('role', 'admin')->get();
+            Notification::send($admins, new StockRequested($stockRequest));
+        } catch (\Exception $e) {
+            // Opsional: Log error untuk debugging di masa depan
+            // \Log::error('Gagal mengirim notifikasi permintaan stok: ' . $e->getMessage());
+        }
 
         return back()->with('success', 'Permintaan restock telah dikirim ke Admin.');
     }

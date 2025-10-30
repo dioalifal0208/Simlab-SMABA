@@ -177,9 +177,14 @@ public function show(Loan $loan)
 
     // --- PENAMBAHAN: KIRIM NOTIFIKASI KE PENGGUNA ---
     if ($request->status == 'approved' || $request->status == 'rejected') {
-        // Kita perlu memuat relasi 'user' untuk mengirim notifikasi
-        $loan->load('user'); 
-        Notification::send($loan->user, new LoanStatusUpdated($loan));
+        try {
+            // Kita perlu memuat relasi 'user' untuk mengirim notifikasi
+            $loan->load('user'); 
+            Notification::send($loan->user, new LoanStatusUpdated($loan));
+        } catch (\Exception $e) {
+            // Opsional: Log error untuk debugging di masa depan
+            // \Log::error('Gagal mengirim notifikasi update status pinjaman: ' . $e->getMessage());
+        }
     }
     // ----------------------------------------------
 
