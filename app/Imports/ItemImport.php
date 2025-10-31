@@ -21,32 +21,46 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
     */
     public function model(array $row)
     {
-        // Mencocokkan header CSV (kiri) dengan kolom database (kanan)
-        return new Item([
-            'nama_alat'          => $row['nama_alat'],
-            'tipe'               => $row['tipe'],
-            'jumlah'             => $row['jumlah'],
-            'satuan'             => $row['satuan'],
-            'kondisi'            => $row['kondisi'],
-            'lokasi_penyimpanan' => $row['lokasi_penyimpanan'],
-            'stok_minimum'       => $row['stok_minimum'] ?? null,
-            'deskripsi'          => $row['deskripsi'] ?? null,
-            'user_id'            => Auth::id(), // Otomatis isi dengan ID admin yang mengimpor
-        ]);
+        // PERBAIKAN: Logika yang lebih aman untuk membuat atau memperbarui.
+        // 1. Cari item berdasarkan nama_alat.
+        $item = Item::where('nama_alat', $row['nama_alat'])->first();
+
+        // 2. Siapkan data dari file Excel.
+        $data = [
+            'tipe' => $row['tipe'] ?? 'Alat', // Default ke 'Alat' jika kosong
+            'jumlah' => $row['jumlah'] ?? 0,
+            'satuan' => $row['satuan'] ?? 'unit',
+            'kondisi' => $row['kondisi'] ?? 'Baik',
+            'lokasi_penyimpanan' => $row['lokasi_penyimpanan'] ?? 'Gudang',
+            'stok_minimum' => $row['stok_minimum'] ?? 0,
+            'deskripsi' => $row['deskripsi'] ?? null,
+            'user_id' => Auth::id(),
+        ];
+
+        // 3. Jika item sudah ada, update. Jika tidak, buat baru.
+        if ($item) {
+            $item->update($data);
+            return $item;
+        }
+
+        // Saat membuat baru, kita gabungkan 'nama_alat' dengan data lainnya.
+        return new Item(array_merge(['nama_alat' => $row['nama_alat']], $data));
     }
 
     /**
-     * Tentukan aturan validasi untuk setiap baris.
+     * Aturan validasi untuk setiap baris.
+     *
+     * @return array
      */
     public function rules(): array
     {
         return [
             'nama_alat' => 'required|string|max:255',
-            'tipe' => 'required|in:Alat,Bahan Habis Pakai',
+            'tipe' => 'required|in:Alat,Bahan Habis Pakai', // PERBAIKAN: Validasi lebih ketat
             'jumlah' => 'required|integer|min:0',
-            'satuan' => 'required|string|max:50',
+            'satuan' => 'nullable|string|max:50',
             'kondisi' => 'required|in:Baik,Kurang Baik,Rusak',
-            'lokasi_penyimpanan' => 'required|string|max:255',
+            'lokasi_penyimpanan' => 'nullable|string|max:255',
             'stok_minimum' => 'nullable|integer|min:0',
         ];
     }

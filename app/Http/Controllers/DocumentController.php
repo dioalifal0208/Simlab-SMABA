@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage; // <-- PENTING
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -32,26 +33,44 @@ class DocumentController extends Controller
      * Menyimpan dokumen yang baru diunggah.
      */
     public function store(Request $request)
-    {
-        $this->authorize('manage-documents');
+{
+    // 1. Validasi request
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string|max:1000', // Pastikan validasi ini ada
+        'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:20480', // 20MB
+    ]);
 
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'file'  => 'required|file|mimes:pdf,doc,docx,ppt,pptx|max:10240', // max 10MB
-        ]);
+    try {
+        // 2. Simpan file dan dapatkan data
+        $file = $request->file('file');
+        $path = $file->store('documents', 'public');
+        $originalName = $file->getClientOriginalName();
+        $fileType = $file->getClientOriginalExtension();
+        $fileSize = $file->getSize(); // <-- Ambil file_size
 
-        // Simpan file ke disk 'public' di dalam folder 'documents'
-        $path = $request->file('file')->store('documents', 'public');
-
+        // 3. Buat record di database
         Document::create([
-            'title'     => $request->title,
+            'title' => $request->input('title'),
+            'description' => $request->input('description'), // <-- Ambil description
             'file_path' => $path,
-            'user_id'   => $request->user()->id,
+            'file_name' => $originalName,
+            'file_type' => $fileType,
+            'file_size' => $fileSize, // <-- Simpan file_size
+            'user_id' => Auth::id(),
         ]);
 
-        return redirect()->route('documents.index')
-            ->with('success', 'Dokumen berhasil diunggah.');
+    } catch (\Exception $e) {
+        // 4. Tangkap error dan kirim sebagai 'session(error)'
+        // (Ini akan ditampilkan oleh kode Blade yang baru Anda tambahkan)
+        return redirect()->back()
+            ->with('error', 'Gagal mengupload: ' . $e->getMessage())
+            ->withInput(); // Bawa kembali input lama (title, desc) ke form
     }
+    
+    // 5. Redirect sukses
+    return redirect()->route('documents.index')->with('success', 'Dokumen berhasil diupload.');
+}
 
     /**
      * Menampilkan pratinjau file (untuk tombol "Lihat").

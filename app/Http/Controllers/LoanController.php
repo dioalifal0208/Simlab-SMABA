@@ -21,7 +21,7 @@ class LoanController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Loan::with('user')->latest();
+        $query = Loan::with(['user', 'items'])->latest();
 
         if (Auth::user()->role !== 'admin') {
             $query->where('user_id', Auth::id());
@@ -177,9 +177,14 @@ public function show(Loan $loan)
 
     // --- PENAMBAHAN: KIRIM NOTIFIKASI KE PENGGUNA ---
     if ($request->status == 'approved' || $request->status == 'rejected') {
-        // Kita perlu memuat relasi 'user' untuk mengirim notifikasi
-        $loan->load('user'); 
-        Notification::send($loan->user, new LoanStatusUpdated($loan));
+        try {
+            // Kita perlu memuat relasi 'user' untuk mengirim notifikasi
+            $loan->load('user'); 
+            Notification::send($loan->user, new LoanStatusUpdated($loan));
+        } catch (\Exception $e) {
+            // Opsional: Log error untuk debugging di masa depan
+            // \Log::error('Gagal mengirim notifikasi update status pinjaman: ' . $e->getMessage());
+        }
     }
     // ----------------------------------------------
 
@@ -192,6 +197,10 @@ public function show(Loan $loan)
     public function destroy(Loan $loan)
     {
         Gate::authorize('is-admin');
+
+        // Hapus notifikasi yang terkait dengan loan ini sebelum menghapus loan itu sendiri
+        $loan->notifications()->delete();
+
         $loan->items()->detach();
         $loan->delete();
         return redirect()->route('loans.index')->with('success', 'Data peminjaman berhasil dihapus.');
