@@ -119,6 +119,7 @@
                                             </a>
                                         </th>
                                         <th class="py-3 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Kondisi</th>
+                                        <th class="py-3 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Ketersediaan</th>
                                         <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Lokasi</th>
                                         @can('is-admin')
                                             <th class="py-3 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
@@ -159,10 +160,24 @@
                                                     <span class="px-3 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded-full">Rusak</span>
                                                 @endif
                                             </td>
+                                            <td class="py-4 px-6 text-center">
+                                                {{-- Cek apakah item memiliki peminjaman aktif atau kondisinya tidak 'Baik' --}}
+                                                @if($item->activeLoans->isNotEmpty() || $item->kondisi !== 'Baik')
+                                                    <span class="px-3 py-1 text-xs font-semibold text-gray-800 bg-gray-200 rounded-full">Dipinjam</span>
+                                                @else
+                                                    <span class="px-3 py-1 text-xs font-semibold text-blue-800 bg-blue-100 rounded-full">Tersedia</span>
+                                                @endif
+                                            </td>
                                             <td class="py-4 px-6 text-sm hidden md:table-cell">{{ $item->lokasi_penyimpanan }}</td>
                                             @can('is-admin')
                                                 <td class="py-4 px-6">
                                                     <div class="flex items-center justify-center space-x-2">
+                                                        <a href="{{ route('items.show', $item->id) }}" class="flex items-center justify-center bg-smaba-dark-blue hover:bg-smaba-light-blue text-white font-bold p-2 rounded-lg shadow-md transition-colors duration-300" title="Lihat Detail">
+                                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                            </svg>
+                                                        </a>
                                                         <a href="{{ route('items.edit', $item->id) }}" class="flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white font-bold p-2 rounded-lg shadow-md transition-colors duration-300" title="Edit">
                                                             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" /></svg>
                                                         </a>
@@ -176,9 +191,22 @@
                                                     </div>
                                                 </td>
                                             @endcan
+                                            {{-- PERUBAHAN: Kolom Aksi untuk Guru dan Siswa --}}
+                                            @cannot('is-admin')
+                                                <td class="py-4 px-6">
+                                                    <div class="flex items-center justify-center space-x-2">
+                                                        <a href="{{ route('items.show', $item->id) }}" class="flex items-center justify-center bg-smaba-dark-blue hover:bg-smaba-light-blue text-white font-bold p-2 rounded-lg shadow-md transition-colors duration-300" title="Lihat Detail">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                        <a href="{{ route('damage-reports.create', ['item' => $item->id]) }}" class="flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white font-bold p-2 rounded-lg shadow-md transition-colors duration-300" title="Laporkan Kerusakan">
+                                                            <i class="fas fa-exclamation-triangle"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            @endcannot
                                         </tr>
                                     @empty
-                                        <tr><td colspan="{{ auth()->user()->role == 'admin' ? '9' : '6' }}" class="py-8 text-center text-gray-500">
+                                        <tr><td colspan="{{ auth()->user()->role == 'admin' ? '10' : '8' }}" class="py-8 text-center text-gray-500">
                                             <p class="font-semibold">Tidak Ada Data</p>
                                             <p class="text-sm mt-1">Data inventaris tidak ditemukan. Coba ubah filter pencarian Anda.</p>
                                         </td></tr>
@@ -186,7 +214,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                         {{-- PERBAIKAN: Menambahkan 'pagination-wrapper' dan 'flex justify-center' --}}
                         <div class="p-4 border-t border-gray-200 flex justify-center pagination-wrapper">
                             {{ $items->withQueryString()->links() }}

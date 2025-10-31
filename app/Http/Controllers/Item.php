@@ -8,11 +8,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
 class Item extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'nama_alat',
         'tipe',
@@ -21,16 +25,24 @@ class Item extends Model
         'satuan',
         'kondisi',
         'lokasi_penyimpanan',
+        'deskripsi',
+        'photo',
+        'user_id',
         'kode_inventaris',
         'tahun_pengadaan',
-        'keterangan',
-        'user_id',
-        'photo',
     ];
+
+    /**
+     * Relasi ke user yang menambahkan item.
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Relasi ke semua peminjaman yang terkait dengan item ini.
+     */
     public function loans(): BelongsToMany
     {
         return $this->belongsToMany(Loan::class, 'loan_item')->withPivot('jumlah')->withTimestamps();
@@ -38,30 +50,21 @@ class Item extends Model
 
     /**
      * PENAMBAHAN: Relasi ke peminjaman yang sedang aktif (status 'approved').
-     * Ini akan memperbaiki error 'undefined relationship'.
+     * Inilah yang akan memperbaiki error.
      */
     public function activeLoans(): BelongsToMany
     {
         return $this->belongsToMany(Loan::class, 'loan_item')
                     ->where('status', 'approved');
     }
-    // (Di dalam kelas Item)
-    public function maintenanceLogs()
-    {
-        return $this->hasMany(MaintenanceLog::class)->latest(); // Otomatis urutkan dari terbaru
-    }
-    public function damageReports()
-    {
-        return $this->hasMany(DamageReport::class);
-    }
+
     public function practicumModules(): BelongsToMany
     {
-        return $this->belongsToMany(PracticumModule::class, 'item_practicum_module')
-                    ->withTimestamps(); // Jika Anda menggunakan timestamps di pivot table
-                    // ->withPivot('quantity_needed'); // Jika Anda menambahkan kolom lain di pivot
+        return $this->belongsToMany(PracticumModule::class, 'item_practicum_module');
     }
-    public function stockRequests()
-{
-    return $this->hasMany(StockRequest::class);
-}
+
+    public function maintenanceLogs(): HasMany
+    {
+        return $this->hasMany(MaintenanceLog::class);
+    }
 }

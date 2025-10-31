@@ -24,7 +24,9 @@ class ItemController extends Controller
         // ... (Tidak ada perubahan di method index)
         $sort = $request->input('sort', 'created_at');
         $direction = $request->input('direction', 'desc');
-        $query = Item::with('user');
+        // PERBAIKAN: Tambahkan with('activeLoans') untuk memuat relasi
+        // peminjaman yang aktif. Ini akan memperbaiki error 'isNotEmpty() on null'.
+        $query = Item::with(['user', 'activeLoans']);
 
         if ($request->filled('search')) {
             $query->where('nama_alat', 'like', '%' . $request->input('search') . '%');
@@ -35,7 +37,9 @@ class ItemController extends Controller
         if ($request->filled('tipe')) {
             $query->where('tipe', $request->input('tipe'));
         }
-        $items = $query->orderBy($sort, $direction)->paginate(12);
+        // PERBAIKAN: Tambahkan withQueryString() agar filter tetap aktif saat berpindah halaman paginasi.
+        $items = $query->orderBy($sort, $direction)->paginate(12)->withQueryString();
+        
         return view('items.index', compact('items', 'sort', 'direction'));
     }
 
