@@ -1,5 +1,6 @@
 {{-- Menambahkan 'use' statement untuk QrCode di paling atas file --}}
 @php
+    // Pastikan Anda sudah menjalankan `composer require simplesoftwareio/simple-qrcode`
     use SimpleSoftwareIO\QrCode\Facades\QrCode;
 @endphp
 
@@ -48,6 +49,14 @@
                             <div class="flex justify-between items-center"><span class="text-gray-500">Kondisi</span> <span class="font-semibold">@if($item->kondisi == 'Baik')<span class="text-green-600">Baik</span>@elseif($item->kondisi == 'Kurang Baik')<span class="text-yellow-600">Kurang Baik</span>@else<span class="text-red-600">Rusak</span>@endif</span></div>
                             <div class="flex justify-between items-center"><span class="text-gray-500">Lokasi</span> <span class="font-semibold">{{ $item->lokasi_penyimpanan }}</span></div>
                             <div class="flex justify-between items-center"><span class="text-gray-500">Stok Tersedia</span> <span class="font-semibold">{{ $item->jumlah }} {{ $item->satuan }}</span></div>
+                        </div>
+
+                        {{-- PENAMBAHAN: QR Code --}}
+                        <div class="mt-6 border-t pt-4 flex flex-col items-center">
+                            <div class="p-2 border rounded-lg">
+                                {!! QrCode::size(120)->generate(route('items.show', $item->id)) !!}
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2 text-center">Scan untuk melihat detail item</p>
                         </div>
                     </div>
 
