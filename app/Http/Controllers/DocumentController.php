@@ -76,8 +76,10 @@ class DocumentController extends Controller
      * Menampilkan pratinjau file (untuk tombol "Lihat").
      * Hanya berfungsi untuk PDF, selain itu akan langsung diunduh.
      */
-    public function preview(Document $document)
+    public function preview($id)
     {
+        $document = Document::findOrFail($id);
+
         // Pastikan file ada di disk 'public'
         if (!Storage::disk('public')->exists($document->file_path)) {
             abort(404, 'File tidak ditemukan.');
@@ -103,8 +105,10 @@ class DocumentController extends Controller
     /**
      * Mengunduh file (untuk tombol "Unduh").
      */
-    public function download(Document $document)
+    public function download($id)
     {
+        $document = Document::findOrFail($id);
+
         // Pastikan file ada di disk 'public'
         if (!Storage::disk('public')->exists($document->file_path)) {
             abort(404, 'File tidak ditemukan.');
@@ -121,9 +125,11 @@ class DocumentController extends Controller
     /**
      * Menghapus dokumen (untuk tombol "Hapus").
      */
-    public function destroy(Document $document)
+    public function destroy($id)
     {
         $this->authorize('manage-documents');
+
+        $document = Document::findOrFail($id);
 
         // 1. Hapus file dari storage
         if (Storage::disk('public')->exists($document->file_path)) {

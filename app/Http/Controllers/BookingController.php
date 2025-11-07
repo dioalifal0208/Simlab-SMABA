@@ -88,13 +88,14 @@ class BookingController extends Controller
      */
     // app/Http/Controllers/BookingController.php
 
-public function show(Booking $booking)
+public function show($id)
 {
+    $booking = Booking::findOrFail($id);
+
     // PERBAIKAN: Ubah kedua ID menjadi (int) sebelum membandingkan
     if (Auth::user()->role !== 'admin' && (int) $booking->user_id !== (int) Auth::id()) {
         abort(403);
     }
-
     $booking->load('user');
     return view('bookings.show', compact('booking'));
 }

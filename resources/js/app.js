@@ -24,13 +24,6 @@ import googleCalendarPlugin from '@fullcalendar/google-calendar'; // Plugin untu
 
 // 4. Jalankan skrip ini hanya setelah seluruh halaman HTML selesai dimuat.
 document.addEventListener('DOMContentLoaded', function() {
-    // PENAMBAHAN: Inisialisasi AOS (Animate On Scroll) di sini.
-    // Cukup panggil sekali di dalam listener utama.
-    AOS.init({
-        duration: 800, // Durasi animasi dalam milidetik
-        once: true,    // Apakah animasi hanya berjalan sekali
-    });
-
     // Cari elemen div dengan id 'calendar' di halaman.
     var calendarEl = document.getElementById('calendar');
 
@@ -154,5 +147,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
+    });
+});
+
+// ========================================================================
+// ## PERBAIKAN UNTUK ANIMASI AOS PATAH-PATAH ##
+// Inisialisasi AOS dipindahkan ke event 'window.load'.
+// Event ini berjalan SETELAH semua aset (gambar, script, css) selesai dimuat,
+// sehingga tidak akan mengganggu render animasi.
+// ========================================================================
+window.addEventListener('load', () => {
+    AOS.init({
+        duration: 800, // Durasi animasi dalam milidetik
+        once: true,    // Apakah animasi hanya berjalan sekali
     });
 });

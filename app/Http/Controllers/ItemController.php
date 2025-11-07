@@ -21,26 +21,9 @@ class ItemController extends Controller
      */
     public function index(Request $request)
     {
-        // ... (Tidak ada perubahan di method index)
-        $sort = $request->input('sort', 'created_at');
-        $direction = $request->input('direction', 'desc');
-        // PERBAIKAN: Tambahkan with('activeLoans') untuk memuat relasi
-        // peminjaman yang aktif. Ini akan memperbaiki error 'isNotEmpty() on null'.
-        $query = Item::with(['user', 'activeLoans']);
-
-        if ($request->filled('search')) {
-            $query->where('nama_alat', 'like', '%' . $request->input('search') . '%');
-        }
-        if ($request->filled('kondisi')) {
-            $query->where('kondisi', $request->input('kondisi'));
-        }
-        if ($request->filled('tipe')) {
-            $query->where('tipe', $request->input('tipe'));
-        }
-        // PERBAIKAN: Tambahkan withQueryString() agar filter tetap aktif saat berpindah halaman paginasi.
-        $items = $query->orderBy($sort, $direction)->paginate(12)->withQueryString();
-        
-        return view('items.index', compact('items', 'sort', 'direction'));
+        // Semua logika sekarang ada di App\Http\Livewire\ItemIndex.php
+        // Method ini hanya perlu me-return view yang memuat komponen Livewire.
+        return view('items.index');
     }
 
     /**
@@ -83,10 +66,11 @@ class ItemController extends Controller
     /**
      * Menampilkan detail satu item.
      */
-    public function show(Item $item)
+    public function show($id)
     {
-        // ... (Tidak ada perubahan)
-        $item->load(['user', 'practicumModules.user', 'maintenanceLogs.user']);
+        // Gunakan findOrFail untuk otomatis menampilkan 404 jika item tidak ditemukan.
+        $item = Item::with(['user', 'practicumModules.user', 'maintenanceLogs.user'])->findOrFail($id);
+
         return view('items.show', compact('item'));
     }
 

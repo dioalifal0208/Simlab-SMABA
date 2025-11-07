@@ -71,12 +71,11 @@ class PracticumModuleController extends Controller
     /**
      * Menampilkan detail satu modul praktikum.
      */
-    public function show(PracticumModule $practicumModule) // Laravel otomatis mencari modul berdasarkan ID
+    public function show($id)
     {
-        // Eager load relasi 'user' (pembuat) dan 'items' (alat/bahan)
-        $practicumModule->load(['user', 'items']); 
-        
-        return view('practicum-modules.show', ['module' => $practicumModule]);
+        // Gunakan findOrFail dan eager load relasi 'user' (pembuat) dan 'items' (alat/bahan)
+        $module = PracticumModule::with(['user', 'items'])->findOrFail($id);
+        return view('practicum-modules.show', compact('module'));
     }
 
     /**

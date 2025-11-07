@@ -107,3 +107,9 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+// Rute penangkap semua (Catch-all Route) untuk 404
+// Letakkan ini di bagian PALING BAWAH dari file web.php
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});
