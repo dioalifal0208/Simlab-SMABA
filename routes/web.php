@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
         // ==============================================
         // ## TAMBAHAN BARU ##
         // Route untuk menangani hapus massal (bulk delete)
-        Route::post('/items/delete-multiple', [ItemController::class, 'deleteMultiple'])->name('items.deleteMultiple');
+        Route::delete('/items/delete-multiple', [ItemController::class, 'deleteMultiple'])->name('items.delete-multiple');
         // ==============================================
 
         // Manajemen User
@@ -102,7 +102,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/announcements/{announcement}', [AnnouncementController::class, 'destroy'])->name('announcements.destroy');
 
         // Impor Item
-        Route::post('/items/import', [ItemController::class, 'handleImport'])->name('items.import');
+        Route::post('/items/import', [ItemController::class, 'handleImport'])->name('items.import.handle');
+        // PERBAIKAN: Route untuk mengunduh template kosong
+        Route::get('/items/import-template', [ItemController::class, 'exportTemplate'])->name('items.template.export');
+        Route::get('/items/export-all', [ItemController::class, 'handleExport'])->name('items.export.all'); // Route untuk ekspor semua data
     });
 });
 

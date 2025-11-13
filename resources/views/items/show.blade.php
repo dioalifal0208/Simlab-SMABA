@@ -1,9 +1,3 @@
-{{-- Menambahkan 'use' statement untuk QrCode di paling atas file --}}
-@php
-    // Pastikan Anda sudah menjalankan `composer require simplesoftwareio/simple-qrcode`
-    use SimpleSoftwareIO\QrCode\Facades\QrCode;
-@endphp
-
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
@@ -20,7 +14,12 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        {{-- 
+            PENAMBAHAN: 
+            Inisialisasi Alpine.js untuk mengelola modal foto.
+            `showPhotoModal` akan mengontrol visibilitas modal.
+        --}}
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" x-data="{ showPhotoModal: false }">
             {{-- Pesan Sukses/Error --}}
             @if (session('success'))
                 <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg" role="alert">
@@ -34,14 +33,17 @@
                 <!-- Kolom Kiri: Sidebar Informasi & Aksi -->
                 <aside class="lg:col-span-1 space-y-6">
                     <!-- Kartu Identitas Item -->
-                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl p-6" data-aos="fade-up" data-aos-once="true">
-                        @if ($item->photo)
-                            <img src="{{ Storage::url($item->photo) }}" alt="{{ $item->nama_alat }}" class="w-full h-48 object-cover rounded-lg border mb-4">
-                        @else
-                            <div class="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 border mb-4">
-                                <svg class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
-                            </div>
-                        @endif
+                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl p-6" data-aos="fade-up" data-aos-once="true" x-data="{ showPhotoModal: false }">
+                        {{-- PERUBAHAN: Foto Item dibungkus agar bisa diklik untuk memunculkan modal --}}
+                        <a href="#" @click.prevent="showPhotoModal = true" title="Klik untuk memperbesar gambar">
+                            @if ($item->photo)
+                                <img src="{{ Storage::url($item->photo) }}" alt="{{ $item->nama_alat }}" class="w-full h-48 object-cover rounded-lg border mb-4 cursor-pointer transition-transform duration-300 hover:scale-105">
+                            @else
+                                <div class="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 border mb-4 cursor-pointer transition-transform duration-300 hover:scale-105">
+                                    <svg class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+                                </div>
+                            @endif
+                        </a>
                         <span class="px-3 py-1 text-xs font-semibold text-indigo-800 bg-indigo-100 rounded-full">{{ $item->tipe }}</span>
                         <h1 class="text-2xl font-bold text-smaba-text mt-2">{{ $item->nama_alat }}</h1>
                         
@@ -51,12 +53,29 @@
                             <div class="flex justify-between items-center"><span class="text-gray-500">Stok Tersedia</span> <span class="font-semibold">{{ $item->jumlah }} {{ $item->satuan }}</span></div>
                         </div>
 
-                        {{-- PENAMBAHAN: QR Code --}}
-                        <div class="mt-6 border-t pt-4 flex flex-col items-center">
-                            <div class="p-2 border rounded-lg">
-                                {!! QrCode::size(120)->generate(route('items.show', $item->id)) !!}
+                        {{-- PERUBAHAN: Barcode sekarang bisa diklik untuk menampilkan foto dan berisi URL --}}
+                        <div class="mt-6 border-t pt-4 flex flex-col items-center" title="Klik untuk melihat foto">
+                            <a href="#" @click.prevent="showPhotoModal = true" class="block cursor-pointer group">
+                                <div class="p-2 border rounded-lg transition-transform duration-300 group-hover:scale-110">
+                                    {{-- PERBAIKAN: Barcode sekarang meng-encode URL lengkap ke halaman ini --}}
+                                    {!! DNS1D::getBarcodeHTML(route('items.show', $item->id), 'C128', 2, 60) !!}
+                                </div>
+                            </a>
+                            <p class="text-xs text-gray-500 mt-2 text-center">Scan untuk membuka detail item.</p>
+                        </div>
+
+                        {{-- PENAMBAHAN: Modal untuk menampilkan foto --}}
+                        <div x-show="showPhotoModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" style="display: none;">
+                            <div @click.outside="showPhotoModal = false" class="relative max-w-3xl max-h-full">
+                                @if ($item->photo)
+                                    <img src="{{ Storage::url($item->photo) }}" alt="Detail foto {{ $item->nama_alat }}" class="w-full h-auto object-contain rounded-lg shadow-2xl">
+                                @else
+                                    <div class="w-96 h-96 bg-white rounded-lg flex items-center justify-center text-gray-500"><p>Tidak ada foto untuk item ini.</p></div>
+                                @endif
+                                <button @click="showPhotoModal = false" class="absolute -top-4 -right-4 h-10 w-10 flex items-center justify-center bg-white rounded-full text-gray-700 hover:bg-gray-200 transition-colors" title="Tutup">
+                                    <i class="fas fa-times text-xl"></i>
+                                </button>
                             </div>
-                            <p class="text-xs text-gray-500 mt-2 text-center">Scan untuk melihat detail item</p>
                         </div>
                     </div>
 

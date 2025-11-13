@@ -51,6 +51,8 @@
                                 <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
                                 <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
                             </select>
+                            {{-- Indikator Loading --}}
+                            <i id="loading-spinner" class="fas fa-spinner fa-spin text-gray-500 hidden"></i>
                         </div>
                     </form>
                 </div>
@@ -133,8 +135,10 @@
                 const statusSelect = document.getElementById('status');
 
                 if (statusSelect) { // Pastikan elemen ada
+                    // PERBAIKAN: Menambahkan spinner saat form disubmit
                     statusSelect.addEventListener('change', () => {
                         filterForm.submit();
+                        document.getElementById('loading-spinner').classList.remove('hidden');
                     });
                 }
             });

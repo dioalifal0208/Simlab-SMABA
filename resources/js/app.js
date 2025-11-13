@@ -162,3 +162,10 @@ window.addEventListener('load', () => {
         once: true,    // Apakah animasi hanya berjalan sekali
     });
 });
+
+// Menambahkan listener untuk event Livewire
+document.addEventListener('livewire:load', function () {
+    Livewire.on('itemImported', () => {
+        // Optional: Tampilkan notifikasi sukses global jika diinginkan
+    });
+});

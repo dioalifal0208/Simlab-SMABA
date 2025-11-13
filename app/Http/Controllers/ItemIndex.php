@@ -81,7 +81,6 @@ class ItemIndex extends Component
         }
 
         $items = Item::whereIn('id', $this->selectedItems)->get();
-        $items = Item::whereIn('id', $this->selectedItems)->get();
         $photoPaths = $items->pluck('photo')->filter()->all();
 
         if (!empty($photoPaths)) {
