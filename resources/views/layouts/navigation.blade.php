@@ -146,11 +146,6 @@
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
-                            @can('is-admin')
-                                <x-dropdown-link :href="route('users.index')">
-                                    {{ __('Manajemen User') }}
-                                </x-dropdown-link>
-                            @endcan
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <x-dropdown-link :href="route('logout')"
@@ -202,11 +197,6 @@
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
-                @can('is-admin')
-                    <x-responsive-nav-link :href="route('users.index')">
-                        {{ __('Manajemen User') }}
-                    </x-responsive-nav-link>
-                @endcan
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <x-responsive-nav-link :href="route('logout')"

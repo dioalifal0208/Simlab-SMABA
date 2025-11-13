@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 // Halaman Landing Page
 Route::get('/', function () {
     return view('welcome');
-})->name('welcome');
+})->middleware('no.cache')->name('welcome');
 
 // Grup Rute yang hanya bisa diakses setelah login
 Route::middleware('auth')->group(function () {
@@ -65,14 +65,23 @@ Route::middleware('auth')->group(function () {
     });
 
     // ===================================
-    // =====    RUTE KHUSUS ADMIN    =====
+    // =====     RUTE KHUSUS ADMIN     =====
     // ===================================
     Route::middleware('can:is-admin')->group(function () {
         
+        // ==============================================
+        // ## TAMBAHAN BARU ##
+        // Route untuk menangani hapus massal (bulk delete)
+        Route::delete('/items/delete-multiple', [ItemController::class, 'deleteMultiple'])->name('items.delete-multiple');
+        // ==============================================
+
         // Manajemen User
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
+
+        // PENAMBAHAN: Route untuk Impor User
+        Route::post('/users/import', [UserController::class, 'handleImport'])->name('users.import.store');
 
         // Manajemen Laporan Kerusakan
         Route::get('/damage-reports', [DamageReportController::class, 'index'])->name('damage-reports.index');
@@ -93,8 +102,17 @@ Route::middleware('auth')->group(function () {
         Route::delete('/announcements/{announcement}', [AnnouncementController::class, 'destroy'])->name('announcements.destroy');
 
         // Impor Item
-        Route::post('/items/import', [ItemController::class, 'handleImport'])->name('items.import.store');
+        Route::post('/items/import', [ItemController::class, 'handleImport'])->name('items.import.handle');
+        // PERBAIKAN: Route untuk mengunduh template kosong
+        Route::get('/items/import-template', [ItemController::class, 'exportTemplate'])->name('items.template.export');
+        Route::get('/items/export-all', [ItemController::class, 'handleExport'])->name('items.export.all'); // Route untuk ekspor semua data
     });
 });
 
 require __DIR__ . '/auth.php';
+
+// Rute penangkap semua (Catch-all Route) untuk 404
+// Letakkan ini di bagian PALING BAWAH dari file web.php
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});

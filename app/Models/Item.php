@@ -35,6 +35,16 @@ class Item extends Model
     {
         return $this->belongsToMany(Loan::class, 'loan_item')->withPivot('jumlah')->withTimestamps();
     }
+
+    /**
+     * PENAMBAHAN: Relasi ke peminjaman yang sedang aktif (status 'approved').
+     * Ini akan memperbaiki error 'undefined relationship'.
+     */
+    public function activeLoans(): BelongsToMany
+    {
+        return $this->belongsToMany(Loan::class, 'loan_item')
+                    ->where('status', 'approved');
+    }
     // (Di dalam kelas Item)
     public function maintenanceLogs()
     {

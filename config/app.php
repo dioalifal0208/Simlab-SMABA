@@ -101,6 +101,7 @@ return [
          * Package Service Providers...
          */
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class, // <-- PENAMBAHAN UNTUK QR CODE
+        Milon\Barcode\BarcodeServiceProvider::class, // <-- PENAMBAHAN UNTUK BARCODE
 
         /*
          * Application Service Providers...
@@ -126,6 +127,8 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class, // <-- PENAMBAHAN UNTUK QR CODE
+        'DNS1D'  => Milon\Barcode\Facades\DNS1DFacade::class, // <-- PENAMBAHAN UNTUK BARCODE 1D
+        'DNS2D'  => Milon\Barcode\Facades\DNS2DFacade::class, // <-- PENAMBAHAN UNTUK BARCODE 2D
     ])->toArray(),
 
 ];

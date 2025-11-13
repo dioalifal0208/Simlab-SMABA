@@ -16,6 +16,9 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         
+        {{-- TAMBAHAN 1: Memuat style yang dibutuhkan oleh Livewire --}}
+        @livewireStyles
+
         {{-- PERBAIKAN 1: Menambahkan script Alpine.js di <head> --}}
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
@@ -89,5 +92,8 @@
         
         {{-- @stack('scripts') dipindahkan ke akhir <body> agar dimuat setelah Alpine --}}
         @stack('scripts')
+
+        {{-- TAMBAHAN 2: Memuat script yang dibutuhkan oleh Livewire --}}
+        @livewireScripts
     </body>
 </html>

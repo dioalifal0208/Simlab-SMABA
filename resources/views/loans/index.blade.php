@@ -53,6 +53,8 @@
                                 <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
                                 <option value="Terlambat" @selected(request('status') == 'Terlambat')>Terlambat</option>
                             </select>
+                            {{-- Indikator Loading --}}
+                            <i id="loading-spinner" class="fas fa-spinner fa-spin text-gray-500 hidden"></i>
                         </div>
                     </form>
                 </div>
@@ -126,8 +128,10 @@
                 const filterForm = document.getElementById('filter-form');
                 const statusSelect = document.getElementById('status');
 
+                // PERBAIKAN: Menambahkan spinner saat form disubmit
                 statusSelect.addEventListener('change', () => {
                     filterForm.submit();
+                    document.getElementById('loading-spinner').classList.remove('hidden');
                 });
             });
         </script>

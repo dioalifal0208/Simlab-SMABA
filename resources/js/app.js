@@ -6,10 +6,8 @@ import Chart from 'chart.js/auto';
 window.Chart = Chart;
 // Import CSS AOS
 import 'aos/dist/aos.css';
-
-// Import JavaScript AOS dan inisialisasi
+// PENAMBAHAN: Impor JavaScript AOS
 import AOS from 'aos';
-AOS.init();
 
 // 2. Impor SweetAlert2 untuk popup konfirmasi modern.
 //    Kita juga mendaftarkannya ke objek `window` agar bisa diakses dari mana saja.
@@ -57,16 +55,19 @@ document.addEventListener('DOMContentLoaded', function() {
             eventSources: [
                 // Sumber event #1: Data dari aplikasi kita sendiri (peminjaman dan booking).
                 {
+                    id: 'lab-schedules', // <-- Beri ID
                     url: '/calendar/events',
                 },
                 // Sumber event #2: Data hari libur nasional Indonesia dari Google Calendar publik.
                 {
+                    id: 'holidays', // <-- Beri ID
                     googleCalendarId: 'en.indonesian#holiday@group.v.calendar.google.com',
                     color: '#D32F2F', // Memberi warna merah untuk hari libur.
                     className: 'gcal-event' 
                 },
                 // Sumber event #3: Untuk menandai Sabtu & Minggu
                 {
+                    id: 'weekends', // <-- Beri ID
                     daysOfWeek: [ 0, 6 ], // 0 untuk Minggu, 6 untuk Sabtu
                     display: 'background',
                     color: '#FFEBEE' 
@@ -87,13 +88,84 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // "Gambar" atau render kalender di dalam div 'calendar'.
         calendar.render();
+
+        // --- PENYEMPURNAAN: Logika untuk Filter ---
+        const filterLab = document.getElementById('filter-lab');
+        const filterHolidays = document.getElementById('filter-holidays');
+
+        // Fungsi generik untuk menangani toggle event source
+        const toggleEventSource = (checkbox, sourceId, sourceConfig) => {
+            if (!checkbox) return; // Keluar jika elemen checkbox tidak ditemukan
+
+            checkbox.addEventListener('change', function() {
+                const source = calendar.getEventSourceById(sourceId);
+                if (this.checked && !source) {
+                    // Jika dicentang dan source belum ada, tambahkan.
+                    calendar.addEventSource(sourceConfig);
+                } else if (!this.checked && source) {
+                    // Jika tidak dicentang dan source ada, hapus.
+                    source.remove();
+                }
+            });
+        };
+
+        // Terapkan fungsi toggle ke filter Jadwal Lab
+        toggleEventSource(filterLab, 'lab-schedules', { 
+            id: 'lab-schedules', 
+            url: '/calendar/events' 
+        });
+
+        // Terapkan fungsi toggle ke filter Hari Libur
+        toggleEventSource(filterHolidays, 'holidays', { 
+            id: 'holidays', 
+            googleCalendarId: 'en.indonesian#holiday@group.v.calendar.google.com', 
+            color: '#D32F2F', 
+            className: 'gcal-event' 
+        });
     }
-    // Inisialisasi AOS (Animate On Scroll) untuk animasi saat scroll halaman
-        document.addEventListener('DOMContentLoaded', function() {
-        AOS.init({
-            duration: 800, // Durasi animasi dalam milidetik
-            once: true,    // Apakah animasi hanya berjalan sekali
+
+    // PENAMBAHAN: Logika untuk konfirmasi hapus menggunakan SweetAlert2
+    // Cari semua form dengan class 'delete-form'
+    const deleteForms = document.querySelectorAll('.delete-form');
+
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Mencegah form dikirim secara langsung
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Tindakan ini tidak dapat dibatalkan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Jika dikonfirmasi, kirim form
+                }
+            });
         });
     });
-    
+});
+
+// ========================================================================
+// ## PERBAIKAN UNTUK ANIMASI AOS PATAH-PATAH ##
+// Inisialisasi AOS dipindahkan ke event 'window.load'.
+// Event ini berjalan SETELAH semua aset (gambar, script, css) selesai dimuat,
+// sehingga tidak akan mengganggu render animasi.
+// ========================================================================
+window.addEventListener('load', () => {
+    AOS.init({
+        duration: 800, // Durasi animasi dalam milidetik
+        once: true,    // Apakah animasi hanya berjalan sekali
+    });
+});
+
+// Menambahkan listener untuk event Livewire
+document.addEventListener('livewire:load', function () {
+    Livewire.on('itemImported', () => {
+        // Optional: Tampilkan notifikasi sukses global jika diinginkan
+    });
 });

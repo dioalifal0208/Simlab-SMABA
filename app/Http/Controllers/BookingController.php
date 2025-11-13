@@ -88,13 +88,14 @@ class BookingController extends Controller
      */
     // app/Http/Controllers/BookingController.php
 
-public function show(Booking $booking)
+public function show($id)
 {
+    $booking = Booking::findOrFail($id);
+
     // PERBAIKAN: Ubah kedua ID menjadi (int) sebelum membandingkan
     if (Auth::user()->role !== 'admin' && (int) $booking->user_id !== (int) Auth::id()) {
         abort(403);
     }
-
     $booking->load('user');
     return view('bookings.show', compact('booking'));
 }
@@ -140,9 +141,14 @@ public function show(Booking $booking)
 
     // --- PENAMBAHAN: KIRIM NOTIFIKASI KE PENGGUNA ---
     if ($request->status == 'approved' || $request->status == 'rejected') {
-        // Kita perlu memuat relasi 'user' untuk mengirim notifikasi
-        $booking->load('user'); 
-        Notification::send($booking->user, new BookingStatusUpdated($booking));
+        try {
+            // Kita perlu memuat relasi 'user' untuk mengirim notifikasi
+            $booking->load('user'); 
+            Notification::send($booking->user, new BookingStatusUpdated($booking));
+        } catch (\Exception $e) {
+            // Opsional: Log error untuk debugging di masa depan
+            // \Log::error('Gagal mengirim notifikasi update status booking: ' . $e->getMessage());
+        }
     }
     // ----------------------------------------------
 
@@ -161,6 +167,9 @@ public function show(Booking $booking)
     // if (!in_array($booking->status, ['pending', 'rejected'])) {
     //     return back()->withErrors(['message' => 'Hanya booking yang pending atau ditolak yang bisa dihapus.']);
     // }
+
+    // Hapus notifikasi yang terkait dengan booking ini sebelum menghapus booking itu sendiri
+    $booking->notifications()->delete();
 
     // Hapus data booking
     $booking->delete();
