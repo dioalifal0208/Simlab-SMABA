@@ -81,12 +81,13 @@
                             
                             {{-- Foto Item --}}
                             <div class="md:col-span-2">
-                                <label for="photo" class="block text-sm font-medium text-gray-700">Ganti Foto Item (Opsional)</label>
-                                <input id="photo" class="block mt-1 w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200" type="file" name="photo">
-                                @if ($item->photo)
+                                <label for="photos" class="block text-sm font-medium text-gray-700">Tambah Foto Baru (Opsional)</label>
+                                <input id="photos" class="block mt-1 w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200" type="file" name="photos[]" multiple>
+                                {{-- Menampilkan gambar yang sudah ada --}}
+                                @if ($item->images->isNotEmpty())
                                     <div class="mt-4">
-                                        <p class="text-sm text-gray-600 mb-2">Foto Saat Ini:</p>
-                                        <img src="{{ Storage::url($item->photo) }}" alt="{{ $item->nama_alat }}" class="h-24 w-24 object-cover rounded-md shadow-md">
+                                        <p class="text-sm text-gray-600 mb-2">Galeri Saat Ini:</p>
+                                        <div class="flex flex-wrap gap-2">@foreach($item->images as $image)<img src="{{ Storage::url($image->path) }}" alt="{{ $item->nama_alat }}" class="h-20 w-20 object-cover rounded-md shadow-md">@endforeach</div>
                                     </div>
                                 @endif
                             </div>

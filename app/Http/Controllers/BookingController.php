@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Booking;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate; // <-- Direkomendasikan untuk otorisasi
 use App\Notifications\BookingStatusUpdated; // <-- TAMBAHKAN INI
+use App\Notifications\NewBookingRequest;
 use Illuminate\Support\Facades\Notification; // <-- TAMBAHKAN INI
 
 class BookingController extends Controller
@@ -48,7 +50,6 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        // Kode Anda di sini sudah sangat baik. Tidak ada perubahan.
         $validated = $request->validate([
             'guru_pengampu' => 'required|string|max:255',
             'tujuan_kegiatan' => 'required|string',
@@ -70,7 +71,7 @@ class BookingController extends Controller
             ])->withInput();
         }
 
-        Booking::create([
+        $booking = Booking::create([
             'user_id' => $request->user()->id,
             'guru_pengampu' => $validated['guru_pengampu'],
             'tujuan_kegiatan' => $validated['tujuan_kegiatan'],
@@ -79,6 +80,17 @@ class BookingController extends Controller
             'waktu_selesai' => $validated['waktu_selesai'],
             'jumlah_peserta' => $validated['jumlah_peserta'],
         ]);
+
+        // Kirim notifikasi ke semua admin bahwa ada booking lab baru
+        try {
+            $admins = User::where('role', 'admin')->get();
+            if ($admins->isNotEmpty()) {
+                Notification::send($admins, new NewBookingRequest($booking));
+            }
+        } catch (\Exception $e) {
+            // Optional: log error jika diperlukan
+            // \Log::error('Gagal mengirim notifikasi booking baru: ' . $e->getMessage());
+        }
 
         return redirect()->route('dashboard')->with('success', 'Pengajuan booking lab berhasil dikirim dan sedang menunggu persetujuan.');
     }

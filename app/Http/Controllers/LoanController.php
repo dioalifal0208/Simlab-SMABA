@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Loan;
 use App\Models\User;
+use App\Services\FonnteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -106,15 +107,51 @@ class LoanController extends Controller
 
     $loan->items()->attach($itemsToAttach);
 
-    // --- PENAMBAHAN: KIRIM NOTIFIKASI KE SEMUA ADMIN ---
+    // --- PENAMBAHAN: KIRIM NOTIFIKASI APLIKASI & WHATSAPP KE ADMIN ---
     try {
-        $admins = User::where('role', 'admin')->get(); // 1. Cari semua admin
-        Notification::send($admins, new NewLoanRequest($loan)); // 2. Kirim notifikasi
+        // Notifikasi dalam aplikasi (ikon lonceng)
+        $admins = User::where('role', 'admin')->get();
+        Notification::send($admins, new NewLoanRequest($loan));
+
+        // Notifikasi WhatsApp via Fonnte (contoh 1 event)
+        $adminNumbersEnv = (string) config('services.fonnte.admin_numbers', '');
+        if ($adminNumbersEnv !== '') {
+            $targets = collect(explode(',', $adminNumbersEnv))
+                ->map(function ($number) {
+                    return trim((string) $number);
+                })
+                ->filter()
+                ->values()
+                ->all();
+
+            if (! empty($targets)) {
+                $loan->loadMissing(['user', 'items']);
+
+                $borrowerName = $loan->user->name ?? 'Seorang pengguna';
+                $tanggalPinjam = $loan->tanggal_pinjam
+                    ? $loan->tanggal_pinjam->format('d-m-Y')
+                    : '-';
+
+                $itemNames = $loan->items->pluck('nama_alat')->filter()->implode(', ');
+
+                $message = "Pengajuan peminjaman baru.\n"
+                    . "Peminjam : {$borrowerName}\n"
+                    . "Tanggal : {$tanggalPinjam}\n"
+                    . "Item    : " . ($itemNames !== '' ? $itemNames : '-')."\n"
+                    . "Silakan cek aplikasi LAB-SMABA untuk detail lebih lanjut.";
+
+                $fonnte = app(FonnteService::class);
+                foreach ($targets as $target) {
+                    $fonnte->sendMessage($target, $message);
+                }
+            }
+        }
     } catch (\Exception $e) {
-        // Tangani jika pengiriman notifikasi gagal (misal: error setup)
-        // Log::error('Gagal mengirim notifikasi: ' . $e->getMessage());
+        // Jika pengiriman notifikasi gagal, jangan ganggu alur utama
+        // Anda bisa menambahkan log jika ingin men-debug di kemudian hari.
+        // \Log::error('Gagal mengirim notifikasi peminjaman baru: ' . $e->getMessage());
     }
-    // ----------------------------------------------------
+    // -----------------------------------------------------------------
 
     return redirect()->route('dashboard')->with('success', 'Pengajuan peminjaman berhasil dikirim.');
 }

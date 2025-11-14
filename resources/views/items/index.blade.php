@@ -129,7 +129,17 @@
                                     <td class="py-4 px-6">
                                         <div class="flex items-center space-x-4">
                                             <div class="flex-shrink-0 h-12 w-12">
-                                                <img class="h-12 w-12 rounded-md object-cover" src="{{ $item->photo ? asset('storage/' . $item->photo) : asset('images/default-item.png') }}" alt="{{ $item->nama_alat }}">
+                                                @if($item->photo)
+                                                    <img
+                                                        class="h-12 w-12 rounded-md object-cover"
+                                                        src="{{ asset('storage/' . $item->photo) }}"
+                                                        alt="{{ $item->nama_alat }}"
+                                                    >
+                                                @else
+                                                    <div class="h-12 w-12 rounded-md bg-gray-100 flex items-center justify-center text-gray-400">
+                                                        <i class="fas fa-image"></i>
+                                                    </div>
+                                                @endif
                                             </div>
                                             <div>
                                                 <div class="text-sm font-semibold text-gray-900">{{ $item->nama_alat }}</div>

@@ -18,8 +18,15 @@
             PENAMBAHAN: 
             Inisialisasi Alpine.js untuk mengelola modal foto.
             `showPhotoModal` akan mengontrol visibilitas modal.
+            `activeImage` akan menyimpan URL gambar yang sedang aktif di galeri.
         --}}
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" x-data="{ showPhotoModal: false }">
+        <div 
+            class="max-w-7xl mx-auto sm:px-6 lg:px-8" 
+            x-data="{ 
+                showPhotoModal: false, 
+                activeImage: '{{ $item->images->first() ? Storage::url($item->images->first()->path) : '' }}' 
+            }"
+        >
             {{-- Pesan Sukses/Error --}}
             @if (session('success'))
                 <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg" role="alert">
@@ -33,17 +40,31 @@
                 <!-- Kolom Kiri: Sidebar Informasi & Aksi -->
                 <aside class="lg:col-span-1 space-y-6">
                     <!-- Kartu Identitas Item -->
-                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl p-6" data-aos="fade-up" data-aos-once="true" x-data="{ showPhotoModal: false }">
-                        {{-- PERUBAHAN: Foto Item dibungkus agar bisa diklik untuk memunculkan modal --}}
-                        <a href="#" @click.prevent="showPhotoModal = true" title="Klik untuk memperbesar gambar">
-                            @if ($item->photo)
-                                <img src="{{ Storage::url($item->photo) }}" alt="{{ $item->nama_alat }}" class="w-full h-48 object-cover rounded-lg border mb-4 cursor-pointer transition-transform duration-300 hover:scale-105">
+                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl p-6" data-aos="fade-up" data-aos-once="true">
+                        {{-- PERUBAHAN: Menampilkan galeri gambar --}}
+                        <div class="mb-4">
+                            <!-- Gambar Utama -->
+                            <a href="#" @click.prevent="showPhotoModal = true" title="Klik untuk memperbesar gambar" class="block">
+                                @if($item->images->isNotEmpty())
+                                    <img :src="activeImage" alt="{{ $item->nama_alat }}" class="w-full h-56 object-cover rounded-lg border cursor-pointer transition-all duration-300">
+                                @else
+                                    <div class="w-full h-56 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 border cursor-pointer">
+                                        <svg class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+                                    </div>
+                                @endif
+                            </a>
+                            <!-- Thumbnail -->
+                            @if($item->images->count() > 1)
+                            <div class="grid grid-cols-5 gap-2 mt-2">
+                                @foreach($item->images as $image)
+                                <img @click="activeImage = '{{ Storage::url($image->path) }}'" src="{{ Storage::url($image->path) }}" alt="Thumbnail" class="w-full h-12 object-cover rounded-md cursor-pointer border-2 transition-all" :class="{ 'border-smaba-light-blue': activeImage === '{{ Storage::url($image->path) }}', 'border-transparent': activeImage !== '{{ Storage::url($image->path) }}' }">
+                                @endforeach
+                            </div>
                             @else
-                                <div class="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 border mb-4 cursor-pointer transition-transform duration-300 hover:scale-105">
-                                    <svg class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
-                                </div>
+                                <p class="text-xs text-center text-gray-400 mt-2">Hanya ada satu gambar untuk item ini.</p>
                             @endif
-                        </a>
+                        </div>
+
                         <span class="px-3 py-1 text-xs font-semibold text-indigo-800 bg-indigo-100 rounded-full">{{ $item->tipe }}</span>
                         <h1 class="text-2xl font-bold text-smaba-text mt-2">{{ $item->nama_alat }}</h1>
                         
@@ -67,12 +88,12 @@
                         {{-- PENAMBAHAN: Modal untuk menampilkan foto --}}
                         <div x-show="showPhotoModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" style="display: none;">
                             <div @click.outside="showPhotoModal = false" class="relative max-w-3xl max-h-full">
-                                @if ($item->photo)
-                                    <img src="{{ Storage::url($item->photo) }}" alt="Detail foto {{ $item->nama_alat }}" class="w-full h-auto object-contain rounded-lg shadow-2xl">
+                                @if ($item->images->isNotEmpty())
+                                    <img :src="activeImage" alt="Detail foto {{ $item->nama_alat }}" class="w-full h-auto object-contain rounded-lg shadow-2xl" style="max-height: 90vh;">
                                 @else
                                     <div class="w-96 h-96 bg-white rounded-lg flex items-center justify-center text-gray-500"><p>Tidak ada foto untuk item ini.</p></div>
                                 @endif
-                                <button @click="showPhotoModal = false" class="absolute -top-4 -right-4 h-10 w-10 flex items-center justify-center bg-white rounded-full text-gray-700 hover:bg-gray-200 transition-colors" title="Tutup">
+                                <button @click="showPhotoModal = false" class="absolute -top-3 -right-3 h-8 w-8 flex items-center justify-center bg-white rounded-full text-gray-700 hover:bg-gray-200 transition-colors shadow-lg" title="Tutup">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
                             </div>

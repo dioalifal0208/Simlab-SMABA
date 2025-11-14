@@ -148,6 +148,98 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    // PENAMBAHAN: Polling sederhana untuk update ikon notifikasi (mendekati real-time)
+    const bellButton = document.getElementById('notification-bell');
+
+    if (bellButton && window.axios) {
+        const listContainer = document.getElementById('notification-list');
+
+        const updateBell = (count) => {
+            let dot = bellButton.querySelector('[data-role="notification-dot"]');
+
+            if (count > 0) {
+                if (!dot) {
+                    dot = document.createElement('span');
+                    dot.dataset.role = 'notification-dot';
+                    dot.className = 'absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-600 ring-2 ring-white';
+                    bellButton.appendChild(dot);
+                }
+            } else if (dot) {
+                dot.remove();
+            }
+
+            bellButton.dataset.unread = count;
+        };
+
+        const renderNotificationList = (items) => {
+            if (!listContainer) {
+                return;
+            }
+
+            // Bersihkan isi lama
+            while (listContainer.firstChild) {
+                listContainer.removeChild(listContainer.firstChild);
+            }
+
+            if (!items || !items.length) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'px-4 py-3 text-sm text-gray-500 text-center';
+                emptyDiv.textContent = 'Tidak ada notifikasi baru.';
+                listContainer.appendChild(emptyDiv);
+                return;
+            }
+
+            items.forEach((item) => {
+                const link = document.createElement('a');
+                link.href = item.url;
+                link.className = 'block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-100';
+
+                const message = document.createElement('p');
+                message.className = 'font-medium text-gray-800';
+                message.textContent = item.message || '';
+
+                const time = document.createElement('span');
+                time.className = 'text-xs text-gray-500';
+                time.textContent = item.created_at_human || '';
+
+                link.appendChild(message);
+                link.appendChild(time);
+                listContainer.appendChild(link);
+            });
+        };
+
+        // Inisialisasi dari atribut data-unread
+        const initial = parseInt(bellButton.dataset.unread || '0', 10);
+        if (!Number.isNaN(initial)) {
+            updateBell(initial);
+        }
+
+        const fetchSummary = () => {
+            window.axios
+                .get('/notifications/summary')
+                .then((response) => {
+                    if (response.data) {
+                        if (typeof response.data.unread_count !== 'undefined') {
+                            const count = parseInt(response.data.unread_count, 10);
+                            if (!Number.isNaN(count)) {
+                                updateBell(count);
+                            }
+                        }
+
+                        if (Array.isArray(response.data.notifications)) {
+                            renderNotificationList(response.data.notifications);
+                        }
+                    }
+                })
+                .catch(() => {
+                    // Diamkan saja jika error (misal: belum login)
+                });
+        };
+
+        // Polling setiap 10 detik
+        setInterval(fetchSummary, 10000);
+    }
 });
 
 // ========================================================================

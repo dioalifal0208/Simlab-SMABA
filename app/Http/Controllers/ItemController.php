@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ItemImage;
 use App\Models\Item;
 use App\Exports\ItemsExport;
 use App\Exports\ItemsTemplateExport; // <-- Pastikan ini ada
@@ -77,14 +78,23 @@ class ItemController extends Controller
             'kondisi' => 'required|in:Baik,Kurang Baik,Rusak',
             'lokasi_penyimpanan' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'photos' => 'nullable|array', // Validasi untuk array foto
+            'photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048', // Validasi untuk setiap file
         ]);
-        if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('item_photos', 'public');
-            $validated['photo'] = $path;
-        }
+
         $validated['user_id'] = $request->user()->id;
-        Item::create($validated);
+
+        // Buat item tanpa foto terlebih dahulu
+        $item = Item::create($validated);
+
+        // Jika ada file foto yang diunggah, simpan satu per satu
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                $path = $photo->store('item-photos', 'public');
+                $item->images()->create(['path' => $path]);
+            }
+        }
+
         return redirect()->route('items.index')->with('success', 'Item berhasil ditambahkan.');
     }
 
@@ -94,7 +104,7 @@ class ItemController extends Controller
     public function show($id)
     {
         // Gunakan findOrFail untuk otomatis menampilkan 404 jika item tidak ditemukan.
-        $item = Item::with(['user', 'practicumModules.user', 'maintenanceLogs.user'])->findOrFail($id);
+        $item = Item::with(['user', 'images', 'practicumModules.user', 'maintenanceLogs.user'])->findOrFail($id);
 
         return view('items.show', compact('item'));
     }
@@ -125,16 +135,21 @@ class ItemController extends Controller
             'kondisi' => 'required|in:Baik,Kurang Baik,Rusak',
             'lokasi_penyimpanan' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'photos' => 'nullable|array',
+            'photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
-        if ($request->hasFile('photo')) {
-            if ($item->photo) {
-                Storage::disk('public')->delete($item->photo);
-            }
-            $path = $request->file('photo')->store('item_photos', 'public');
-            $validated['photo'] = $path;
-        }
+
+        // Update data item
         $item->update($validated);
+
+        // Jika ada file foto baru yang diunggah, tambahkan ke galeri
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                $path = $photo->store('item-photos', 'public');
+                $item->images()->create(['path' => $path]);
+            }
+        }
+
         return redirect()->route('items.show', $item->id)->with('success', 'Item berhasil diperbarui.');
     }
 
@@ -152,9 +167,13 @@ class ItemController extends Controller
                 ->with('error', 'Item "' . $item->nama_alat . '" tidak dapat dihapus karena sedang dalam proses peminjaman aktif.');
         }
 
-        if ($item->photo) {
-            Storage::disk('public')->delete($item->photo);
+        // Hapus semua gambar terkait dari storage
+        foreach ($item->images as $image) {
+            Storage::disk('public')->delete($image->path);
         }
+        // Relasi diatur dengan onDelete('cascade'), jadi record di item_images akan terhapus otomatis
+        // saat item dihapus.
+
         $item->delete();
         return redirect()->route('items.index')->with('success', 'Item berhasil dihapus.');
     }

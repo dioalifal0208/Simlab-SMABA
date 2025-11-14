@@ -98,10 +98,14 @@
                 <div class="ms-3 relative"> {{-- Menggunakan ms-3 untuk jarak antar dropdown --}}
                     <x-dropdown align="right" width="64">
                         <x-slot name="trigger">
-                            <button class="relative inline-flex items-center p-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            <button
+                                id="notification-bell"
+                                data-unread="{{ $unreadCount ?? 0 }}"
+                                class="relative inline-flex items-center p-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                            >
                                 <i class="fas fa-bell"></i>
-                                @if($unreadCount > 0)
-                                    <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-600 ring-2 ring-white"></span>
+                                @if(($unreadCount ?? 0) > 0)
+                                    <span data-role="notification-dot" class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-600 ring-2 ring-white"></span>
                                 @endif
                             </button>
                         </x-slot>
@@ -110,7 +114,7 @@
                             <div class="p-4 border-b">
                                 <span class="font-semibold text-sm text-gray-700">Notifikasi</span>
                             </div>
-                            <div class="max-h-64 overflow-y-auto">
+                            <div id="notification-list" class="max-h-64 overflow-y-auto">
                                 @forelse($notifications as $notification)
                                     <a href="{{ route('notifications.read', $notification->id) }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-100">
                                         <p class="font-medium text-gray-800">{{ $notification->data['message'] }}</p>

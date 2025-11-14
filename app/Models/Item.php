@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\ItemImage;
 
 
 class Item extends Model
@@ -23,9 +25,8 @@ class Item extends Model
         'lokasi_penyimpanan',
         'kode_inventaris',
         'tahun_pengadaan',
-        'keterangan',
-        'user_id',
-        'photo',
+        'deskripsi', // Mengganti 'keterangan' menjadi 'deskripsi' agar konsisten
+        'user_id'
     ];
     public function user(): BelongsTo
     {
@@ -64,4 +65,17 @@ class Item extends Model
 {
     return $this->hasMany(StockRequest::class);
 }
+
+    // ==============================================
+    // ## RELASI BARU UNTUK GALERI GAMBAR ##
+    // ==============================================
+    public function images(): HasMany
+    {
+        return $this->hasMany(ItemImage::class);
+    }
+
+    public function mainImage(): HasOne
+    {
+        return $this->hasOne(ItemImage::class)->oldestOfMany();
+    }
 }

@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
 
     // Notifikasi
     Route::get('/notifications/read/{id}', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::get('/notifications/summary', [NotificationController::class, 'summary'])->name('notifications.summary');
 
     // ===== Fitur Interaktif Pengguna =====
     Route::get('/items/{item}/report-damage', [DamageReportController::class, 'create'])->name('damage-reports.create');

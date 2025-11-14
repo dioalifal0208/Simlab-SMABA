@@ -80,8 +80,8 @@
                             
                             {{-- Foto Item --}}
                             <div class="md:col-span-2">
-                                <label for="photo" class="block text-sm font-medium text-gray-700">Foto Item (Opsional)</label>
-                                <input id="photo" class="block mt-1 w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200" type="file" name="photo">
+                                <label for="photos" class="block text-sm font-medium text-gray-700">Foto Item (Bisa lebih dari satu)</label>
+                                <input id="photos" class="block mt-1 w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200" type="file" name="photos[]" multiple>
                             </div>
 
                             {{-- Deskripsi (Keterangan) --}}
