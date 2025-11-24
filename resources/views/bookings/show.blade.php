@@ -37,12 +37,13 @@
 
                 {{-- Kolom Kiri: Detail Booking --}}
                 <div class="lg:col-span-3 space-y-6">
-                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl">
+                    <div class="bg-white overflow-hidden shadow-sm border border-gray-100 sm:rounded-xl transition-all duration-200 hover:shadow-md">
                         <div class="p-6">
                             <h3 class="text-xl font-bold text-smaba-text mb-4">Informasi Booking</h3>
                             <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
                                 <div><dt class="font-medium text-gray-500">Pemohon</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->user->name }}</dd></div>
                                 <div><dt class="font-medium text-gray-500">Tanggal Pengajuan</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->created_at->format('d F Y, H:i') }}</dd></div>
+                                <div><dt class="font-medium text-gray-500">Laboratorium</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->laboratorium }}</dd></div>
                                 <div><dt class="font-medium text-gray-500">Guru Pengampu</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->guru_pengampu }}</dd></div>
                                 <div><dt class="font-medium text-gray-500">Jumlah Peserta</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->jumlah_peserta ?? '-' }} orang</dd></div>
                                 <div class="sm:col-span-2"><dt class="font-medium text-gray-500">Waktu Pelaksanaan</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->waktu_mulai->format('d M Y') }}, Pukul {{ $booking->waktu_mulai->format('H:i') }} - {{ $booking->waktu_selesai->format('H:i') }}</dd></div>
@@ -57,7 +58,7 @@
 
                 {{-- Kolom Kanan: Status & Aksi Admin --}}
                 <div class="lg:col-span-2 space-y-6">
-                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
+                    <div class="bg-white overflow-hidden shadow-sm border border-gray-100 sm:rounded-xl transition-all duration-200 hover:shadow-md" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
                         <div class="p-6">
                             <h3 class="text-lg font-bold text-smaba-text mb-4">Status Booking</h3>
                              <div class="text-center">

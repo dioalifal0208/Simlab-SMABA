@@ -30,6 +30,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // HANYA jalankan kode kalender jika elemen 'calendar' ditemukan di halaman saat ini.
     // Ini sangat penting untuk mencegah error di halaman lain (seperti Dashboard, Inventaris, dll.).
     if (calendarEl) {
+        const labFilterSelect = document.getElementById('lab-selector');
+        const labEventSourceConfig = {
+            id: 'lab-schedules',
+            url: '/calendar/events',
+            extraParams: () => ({
+                laboratorium: labFilterSelect?.value || ''
+            }),
+        };
+
         // Buat instance kalender baru.
         var calendar = new Calendar(calendarEl, {
             // Muat semua plugin yang sudah kita impor.
@@ -54,10 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Menggabungkan beberapa sumber event.
             eventSources: [
                 // Sumber event #1: Data dari aplikasi kita sendiri (peminjaman dan booking).
-                {
-                    id: 'lab-schedules', // <-- Beri ID
-                    url: '/calendar/events',
-                },
+                labEventSourceConfig,
                 // Sumber event #2: Data hari libur nasional Indonesia dari Google Calendar publik.
                 {
                     id: 'holidays', // <-- Beri ID
@@ -110,10 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         // Terapkan fungsi toggle ke filter Jadwal Lab
-        toggleEventSource(filterLab, 'lab-schedules', { 
-            id: 'lab-schedules', 
-            url: '/calendar/events' 
-        });
+        toggleEventSource(filterLab, 'lab-schedules', labEventSourceConfig);
 
         // Terapkan fungsi toggle ke filter Hari Libur
         toggleEventSource(filterHolidays, 'holidays', { 
@@ -122,6 +125,15 @@ document.addEventListener('DOMContentLoaded', function() {
             color: '#D32F2F', 
             className: 'gcal-event' 
         });
+
+        if (labFilterSelect) {
+            labFilterSelect.addEventListener('change', () => {
+                const source = calendar.getEventSourceById('lab-schedules');
+                if (source) {
+                    source.refetch();
+                }
+            });
+        }
     }
 
     // PENAMBAHAN: Logika untuk konfirmasi hapus menggunakan SweetAlert2

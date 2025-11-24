@@ -49,76 +49,36 @@
                     {{-- ============================================== --}}
                     {{-- ## PERUBAHAN: KARTU STATISTIK DIKONSOLIDASI ## --}}
                     {{-- ============================================== --}}
-                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
+                    <div class="bg-white border border-gray-100 overflow-hidden shadow-sm sm:rounded-xl" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-smaba-text mb-4">Ringkasan Status Laboratorium</h3>
-                            {{-- Menggunakan grid untuk menampilkan daftar statistik --}}
-                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                                
-                                {{-- 1. Peminjaman Pending --}}
-                                <a href="{{ route('loans.index', ['status' => 'pending']) }}" class="block p-4 bg-blue-50 rounded-lg hover:shadow-md transition-shadow">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-blue-100"><i class="fas fa-clock text-blue-600"></i></div>
-                                        <div>
-                                            <p class="text-3xl font-bold text-smaba-text">{{ $pendingLoansCount ?? 0 }}</p>
-                                            <h4 class="font-semibold text-gray-500 text-sm">Peminjaman Pending</h4>
-                                        </div>
-                                    </div>
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xl font-bold text-gray-900">Ringkasan Status Laboratorium</h3>
+                                <span class="text-xs text-gray-500">Hari ini</span>
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+                                <a href="{{ route('loans.index', ['status' => 'pending']) }}" class="block p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-smaba-dark-blue/30 hover:bg-smaba-light-blue/5">
+                                    <p class="text-xs uppercase tracking-wide text-gray-500">Peminjaman pending</p>
+                                    <p class="text-3xl font-bold text-gray-900">{{ $pendingLoansCount ?? 0 }}</p>
                                 </a>
-                                
-                                {{-- 2. Booking Pending --}}
-                                <a href="{{ route('bookings.index', ['status' => 'pending']) }}" class="block p-4 bg-blue-50 rounded-lg hover:shadow-md transition-shadow">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-blue-100"><i class="fas fa-calendar-check text-blue-600"></i></div>
-                                        <div>
-                                            <p class="text-3xl font-bold text-smaba-text">{{ $pendingBookingsCount ?? 0 }}</p>
-                                            <h4 class="font-semibold text-gray-500 text-sm">Booking Pending</h4>
-                                        </div>
-                                    </div>
+                                <a href="{{ route('bookings.index', ['status' => 'pending']) }}" class="block p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-smaba-dark-blue/30 hover:bg-smaba-light-blue/5">
+                                    <p class="text-xs uppercase tracking-wide text-gray-500">Booking pending</p>
+                                    <p class="text-3xl font-bold text-gray-900">{{ $pendingBookingsCount ?? 0 }}</p>
                                 </a>
-                                
-                                {{-- 3. Item Rusak --}}
-                                <a href="{{ route('items.index', ['kondisi' => 'Rusak']) }}" class="block p-4 bg-red-50 rounded-lg hover:shadow-md transition-shadow">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-red-100"><i class="fas fa-tools text-red-600"></i></div>
-                                        <div>
-                                            <p class="text-3xl font-bold text-smaba-text">{{ $brokenItemsCount ?? 0 }}</p>
-                                            <h4 class="font-semibold text-gray-500 text-sm">Item Kondisi Rusak</h4>
-                                        </div>
-                                    </div>
+                                <a href="{{ route('items.index', ['kondisi' => 'Rusak']) }}" class="block p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-smaba-dark-blue/30 hover:bg-smaba-light-blue/5">
+                                    <p class="text-xs uppercase tracking-wide text-gray-500">Item rusak</p>
+                                    <p class="text-3xl font-bold text-gray-900">{{ $brokenItemsCount ?? 0 }}</p>
                                 </a>
-
-                                {{-- 4. Laporan Kerusakan --}}
-                                <a href="{{ route('damage-reports.index', ['status' => 'Dilaporkan']) }}" class="block p-4 bg-yellow-50 rounded-lg hover:shadow-md transition-shadow">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-yellow-100"><i class="fas fa-exclamation-triangle text-yellow-600"></i></div>
-                                        <div>
-                                            <p class="text-3xl font-bold text-smaba-text">{{ $newDamageReportsCount ?? 0 }}</p>
-                                            <h4 class="font-semibold text-gray-500 text-sm">Laporan Kerusakan</h4>
-                                        </div>
-                                    </div>
+                                <a href="{{ route('damage-reports.index', ['status' => 'Dilaporkan']) }}" class="block p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-smaba-dark-blue/30 hover:bg-smaba-light-blue/5">
+                                    <p class="text-xs uppercase tracking-wide text-gray-500">Laporan kerusakan</p>
+                                    <p class="text-3xl font-bold text-gray-900">{{ $newDamageReportsCount ?? 0 }}</p>
                                 </a>
-
-                                {{-- 5. Peminjaman Terlambat --}}
-                                <a href="{{ route('loans.index', ['status' => 'Terlambat']) }}" class="block p-4 bg-red-50 rounded-lg hover:shadow-md transition-shadow">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-red-100"><i class="fas fa-hourglass-end text-red-600"></i></div>
-                                        <div>
-                                            <p class="text-3xl font-bold text-smaba-text">{{ $overdueLoansCount ?? 0 }}</p>
-                                            <h4 class="font-semibold text-gray-500 text-sm">Peminjaman Terlambat</h4>
-                                        </div>
-                                    </div>
+                                <a href="{{ route('loans.index', ['status' => 'Terlambat']) }}" class="block p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-smaba-dark-blue/30 hover:bg-smaba-light-blue/5">
+                                    <p class="text-xs uppercase tracking-wide text-gray-500">Peminjaman terlambat</p>
+                                    <p class="text-3xl font-bold text-gray-900">{{ $overdueLoansCount ?? 0 }}</p>
                                 </a>
-
-                                {{-- 6. Jadwal Terdekat --}}
-                                <a href="{{ route('calendar.index') }}" class="block p-4 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-gray-200"><i class="fas fa-calendar-day text-gray-600"></i></div>
-                                        <div>
-                                            <p class="text-3xl font-bold text-smaba-text">{{ $upcomingBookingsCount ?? 0 }}</p>
-                                            <h4 class="font-semibold text-gray-500 text-sm">Jadwal Lab Terdekat</h4>
-                                        </div>
-                                    </div>
+                                <a href="{{ route('calendar.index') }}" class="block p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-smaba-dark-blue/30 hover:bg-smaba-light-blue/5">
+                                    <p class="text-xs uppercase tracking-wide text-gray-500">Jadwal terdekat</p>
+                                    <p class="text-3xl font-bold text-gray-900">{{ $upcomingBookingsCount ?? 0 }}</p>
                                 </a>
                             </div>
                         </div>
@@ -130,7 +90,7 @@
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 min-h-0">
                         {{-- Tab Aktivitas & Dokumen (Tetap Sama) --}}
-                        <div x-data="{ activeTab: 'aktivitas' }" class="lg:col-span-2 bg-white shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
+                        <div x-data="{ activeTab: 'aktivitas' }" class="lg:col-span-2 bg-white border border-gray-100 shadow-sm sm:rounded-xl transition-all duration-200 hover:shadow-md" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
                             <div class="border-b border-gray-200"><nav class="flex -mb-px"><button @click="activeTab = 'aktivitas'" :class="{ 'border-smaba-dark-blue text-smaba-dark-blue': activeTab === 'aktivitas', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'aktivitas' }" class="w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm transition-colors">Aktivitas Terbaru</button><button @click="activeTab = 'dokumen'" :class="{ 'border-smaba-dark-blue text-smaba-dark-blue': activeTab === 'dokumen', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'dokumen' }" class="w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm transition-colors">Dokumen Terbaru</button></nav></div>
                             <div class="p-6">
                                 <div x-show="activeTab === 'aktivitas'" x-transition><div class="space-y-4 overflow-auto max-h-96">@forelse ($recentActivities ?? []->take(5) as $activity)<div class="flex items-start space-x-3"><div class="flex-shrink-0">@if ($activity instanceof \App\Models\Loan) <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-green-100"><svg class="h-5 w-5 text-green-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/></svg></span> @else <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-blue-100"><svg class="h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg></span> @endif</div><div class="text-sm flex-grow"><p class="text-gray-800"><span class="font-semibold">{{ $activity->user->name }}</span> @if ($activity instanceof \App\Models\Loan) mengajukan peminjaman alat. @else mengajukan booking lab untuk "{{ Str::limit($activity->tujuan_kegiatan, 30) }}". @endif</p><p class="text-xs text-gray-500 mt-1">{{ $activity->created_at->diffForHumans() }}</p></div><div class="text-sm text-right">@if ($activity instanceof \App\Models\Loan) <a href="{{ route('loans.show', $activity->id) }}" class="text-indigo-600 hover:text-indigo-900">Lihat</a> @else <a href="{{ route('bookings.show', $activity->id) }}" class="text-indigo-600 hover:text-indigo-900">Lihat</a> @endif</div></div>@empty<p class="text-center text-gray-500">Tidak ada aktivitas terbaru.</p>@endforelse</div></div>
@@ -139,7 +99,7 @@
                         </div>
                         
                         {{-- Kartu Chart (Tetap Sama) --}}
-                        <div class="bg-white p-6 rounded-xl shadow-lg min-h-0" data-aos="fade-up" data-aos-delay="600" data-aos-once="true" id="chart-container"><h3 class="font-semibold text-gray-700 mb-4">Proporsi Kondisi Item</h3><div class="h-64 w-full"><canvas id="itemConditionsChart"></canvas></div></div>
+                        <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-1 min-h-0" data-aos="fade-up" data-aos-delay="600" data-aos-once="true" id="chart-container"><h3 class="font-semibold text-gray-700 mb-4">Proporsi Kondisi Item</h3><div class="h-64 w-full"><canvas id="itemConditionsChart"></canvas></div></div>
                     </div>
                 </div>
             
@@ -157,10 +117,10 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <a href="{{ route('loans.create') }}" class="group block p-6 bg-white border-2 border-transparent rounded-xl shadow-lg hover:border-smaba-dark-blue hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
+                        <a href="{{ route('loans.create') }}" class="group block p-6 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-smaba-dark-blue/40 hover:shadow-md transition-all duration-200 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
                             <div class="flex items-center space-x-4"><div class="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-lg bg-green-100"><i class="fas fa-flask text-xl text-green-600"></i></div><div><h3 class="font-bold text-lg text-smaba-text group-hover:text-smaba-light-blue">Ajukan Peminjaman Alat</h3><p class="text-sm text-gray-600 mt-1">Pinjam alat dan bahan praktikum.</p></div></div>
                         </a>
-                        <a href="{{ route('bookings.create') }}" class="group block p-6 bg-white border-2 border-transparent rounded-xl shadow-lg hover:border-smaba-dark-blue hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
+                        <a href="{{ route('bookings.create') }}" class="group block p-6 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-smaba-dark-blue/40 hover:shadow-md transition-all duration-200 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
                              <div class="flex items-center space-x-4"><div class="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-lg bg-blue-100"><i class="fas fa-calendar-alt text-xl text-blue-600"></i></div><div><h3 class="font-bold text-lg text-smaba-text group-hover:text-smaba-light-blue">Ajukan Booking Lab</h3><p class="text-sm text-gray-600 mt-1">Reservasi jadwal dan ruangan.</p></div></div>
                         </a>
                     </div>
@@ -171,7 +131,7 @@
                                 <h3 class="text-lg font-bold text-smaba-text mb-4">Item yang Sedang Anda Pinjam</h3>
                                 <div class="space-y-4">
                                     @foreach($activeLoans as $loan)
-                                        <div class="p-4 border rounded-lg bg-gray-50">
+                                        <div class="p-4 border rounded-lg bg-gray-50 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm hover:border-smaba-dark-blue/30">
                                             <div class="flex justify-between items-center mb-2"><span class="font-semibold text-smaba-dark-blue">Pengajuan: {{ $loan->created_at->format('d M Y') }}</span><span class="text-xs text-gray-500">Estimasi Kembali: {{ $loan->tanggal_estimasi_kembali->format('d M Y') }}</span></div>
                                             <ul class="list-disc list-inside text-sm text-gray-700">
                                                 @foreach($loan->items as $item)
@@ -191,7 +151,7 @@
                                 <h3 class="text-lg font-bold text-red-700 mb-4">Peminjaman Terlambat!</h3>
                                 <div class="space-y-4">
                                     @foreach($overdueLoans as $loan)
-                                        <div class="p-4 border rounded-lg bg-white shadow-sm">
+                                        <div class="p-4 border rounded-lg bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
                                             <div class="flex justify-between items-center mb-2"><span class="font-semibold text-red-600">Pengajuan: {{ $loan->created_at->format('d M Y') }}</span><span class="text-xs text-red-500 font-semibold">Seharusnya Kembali: {{ $loan->tanggal_estimasi_kembali->format('d M Y') }}</span></div>
                                             <ul class="list-disc list-inside text-sm text-gray-700">
                                                 @foreach($loan->items as $item)

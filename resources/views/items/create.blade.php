@@ -12,7 +12,7 @@
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             {{-- Desain Kartu Disesuaikan --}}
-            <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
+            <div class="bg-white overflow-hidden border border-gray-100 shadow-sm sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
                 <div class="p-6 md:p-8 text-gray-900">
                     
                     {{-- Pesan Error Validasi (jika ada) --}}

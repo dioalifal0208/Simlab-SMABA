@@ -16,20 +16,47 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StockRequestController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\Auth\TwoFactorSettingsController;
+use App\Http\Controllers\TestimonialController;
+use App\Models\Testimonial;
+use App\Models\Booking;
+use Carbon\Carbon;
+use App\Http\Controllers\ContactAdminController;
+use App\Http\Controllers\ContactConversationController;
+use App\Http\Controllers\AdminContactConversationController;
 
 use Illuminate\Support\Facades\Route;
 
 
 // Halaman Landing Page
 Route::get('/', function () {
-    return view('welcome');
+    $testimonials = Testimonial::where('status', 'approved')
+        ->latest()
+        ->take(4)
+        ->get();
+
+    $today = Carbon::today();
+    $todayBookings = Booking::where('status', 'approved')
+        ->whereDate('waktu_mulai', $today)
+        ->orderBy('waktu_mulai')
+        ->take(5)
+        ->get();
+
+    return view('welcome', compact('testimonials', 'todayBookings'));
 })->middleware('no.cache')->name('welcome');
+
+Route::post('/testimonials', [TestimonialController::class, 'store'])->name('testimonials.store');
+Route::post('/contact-admin', [ContactAdminController::class, 'store'])->name('contact.admin.store');
 
 // Grup Rute yang hanya bisa diakses setelah login
 Route::middleware('auth')->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Percakapan dengan Admin
+    Route::get('/contact-conversations', [ContactConversationController::class, 'index'])->name('contact.conversations.index');
+    Route::post('/contact-conversations', [ContactConversationController::class, 'store'])->name('contact.conversations.store');
+    Route::get('/contact-conversations/messages', [ContactConversationController::class, 'messages'])->name('contact.conversations.messages');
 
     // Profil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -115,6 +142,17 @@ Route::middleware('auth')->group(function () {
         // PERBAIKAN: Route untuk mengunduh template kosong
         Route::get('/items/import-template', [ItemController::class, 'exportTemplate'])->name('items.template.export');
         Route::get('/items/export-all', [ItemController::class, 'handleExport'])->name('items.export.all'); // Route untuk ekspor semua data
+
+        // Percakapan kontak admin (dari landing page)
+        Route::get('/admin/contact-conversations', [AdminContactConversationController::class, 'index'])->name('admin.contact-conversations.index');
+        Route::get('/admin/contact-conversations/{conversation}', [AdminContactConversationController::class, 'show'])->name('admin.contact-conversations.show');
+        Route::post('/admin/contact-conversations/{conversation}/reply', [AdminContactConversationController::class, 'reply'])->name('admin.contact-conversations.reply');
+        Route::get('/admin/contact-conversations-json', [AdminContactConversationController::class, 'listJson'])->name('admin.contact-conversations.json');
+        Route::get('/admin/contact-conversations/{conversation}/messages-json', [AdminContactConversationController::class, 'messagesJson'])->name('admin.contact-conversations.messages');
+
+        // Moderasi Testimoni
+        Route::get('/admin/testimonials', [TestimonialController::class, 'index'])->name('admin.testimonials.index');
+        Route::post('/admin/testimonials/{testimonial}/status', [TestimonialController::class, 'updateStatus'])->name('admin.testimonials.update-status');
     });
 });
 

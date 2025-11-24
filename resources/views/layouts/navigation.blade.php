@@ -36,6 +36,14 @@
                                 <x-dropdown-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')">
                                     {{ __('Kalender') }}
                                 </x-dropdown-link>
+                                <x-dropdown-link :href="route('contact.conversations.index')" :active="request()->routeIs('contact.conversations.*')">
+                                    {{ __('Pesan Admin') }}
+                                </x-dropdown-link>
+                                @can('is-admin')
+                                    <x-dropdown-link :href="route('admin.testimonials.index')" :active="request()->routeIs('admin.testimonials.index')">
+                                        {{ __('Testimoni') }}
+                                    </x-dropdown-link>
+                                @endcan
                             </x-slot>
                         </x-dropdown>
                     </div>
@@ -181,6 +189,10 @@
             <x-responsive-nav-link :href="route('items.index')" :active="request()->routeIs('items.*')"> {{ __('Inventaris') }} </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.*')"> {{ __('Peminjaman') }} </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')"> {{ __('Booking Lab') }} </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('contact.conversations.index')" :active="request()->routeIs('contact.conversations.*')"> {{ __('Pesan Admin') }} </x-responsive-nav-link>
+            @can('is-admin')
+                <x-responsive-nav-link :href="route('admin.testimonials.index')" :active="request()->routeIs('admin.testimonials.index')"> {{ __('Testimoni') }} </x-responsive-nav-link>
+            @endcan
             @can('is-admin')
                 <x-responsive-nav-link :href="route('damage-reports.index')" :active="request()->routeIs('damage-reports.*')"> {{ __('Laporan Kerusakan') }} </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')"> {{ __('Manajemen User') }} </x-responsive-nav-link>

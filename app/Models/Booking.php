@@ -15,6 +15,7 @@ class Booking extends Model
         'guru_pengampu',
         'tujuan_kegiatan',
         'status',
+        'laboratorium',
         'waktu_mulai',
         'waktu_selesai',
         'jumlah_peserta',

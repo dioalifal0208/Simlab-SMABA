@@ -30,6 +30,9 @@ class BookingController extends Controller
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
+        if ($request->filled('laboratorium')) {
+            $query->where('laboratorium', $request->laboratorium);
+        }
 
         // Eksekusi query dengan paginasi.
         $bookings = $query->paginate(15);
@@ -53,12 +56,14 @@ class BookingController extends Controller
         $validated = $request->validate([
             'guru_pengampu' => 'required|string|max:255',
             'tujuan_kegiatan' => 'required|string',
+            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
             'waktu_mulai' => 'required|date',
             'waktu_selesai' => 'required|date|after:waktu_mulai',
             'jumlah_peserta' => 'nullable|integer|min:1',
         ]);
 
         $isConflict = Booking::where('status', 'approved')
+            ->where('laboratorium', $validated['laboratorium'])
             ->where(function ($query) use ($validated) {
                 $query->where('waktu_mulai', '<', $validated['waktu_selesai'])
                       ->where('waktu_selesai', '>', $validated['waktu_mulai']);
@@ -76,6 +81,7 @@ class BookingController extends Controller
             'guru_pengampu' => $validated['guru_pengampu'],
             'tujuan_kegiatan' => $validated['tujuan_kegiatan'],
             'status' => 'pending',
+            'laboratorium' => $validated['laboratorium'],
             'waktu_mulai' => $validated['waktu_mulai'],
             'waktu_selesai' => $validated['waktu_selesai'],
             'jumlah_peserta' => $validated['jumlah_peserta'],
@@ -135,6 +141,7 @@ public function show($id)
     if ($request->status == 'approved') {
         $isConflict = Booking::where('status', 'approved')
             ->where('id', '!=', $booking->id)
+            ->where('laboratorium', $booking->laboratorium)
             ->where(function ($query) use ($booking) {
                 $query->where('waktu_mulai', '<', $booking->waktu_selesai)
                       ->where('waktu_selesai', '>', $booking->waktu_mulai);

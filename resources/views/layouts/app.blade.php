@@ -25,6 +25,7 @@
     
     {{-- PERBAIKAN 2: Menambahkan 'x-data' global di <body> --}}
     <body class="font-sans antialiased" 
+          data-user-role="{{ Auth::user()->role ?? 'guest' }}"
           x-data="{ 
               showAnnouncement: true, 
               showImportModal: false 
@@ -93,6 +94,11 @@
                 </footer>
             @endunless
         </div>
+
+        {{-- Floating chat widget --}}
+        @auth
+            @include('components.chat-widget')
+        @endauth
         
         {{-- @stack('scripts') dipindahkan ke akhir <body> agar dimuat setelah Alpine --}}
         @stack('scripts')

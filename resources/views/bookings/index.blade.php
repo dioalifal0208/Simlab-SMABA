@@ -40,17 +40,28 @@
             {{-- Wrapper Konten Utama dengan Animasi --}}
             <div data-aos="fade-up" data-aos-duration="500" data-aos-once="true">
                 {{-- Form Filter Status Otomatis --}}
-                <div class="mb-6 bg-white overflow-hidden shadow-lg sm:rounded-xl">
-                    <form action="{{ route('bookings.index') }}" method="GET" class="p-4 sm:p-6" id="filter-form">
-                        <div class="flex items-center space-x-4">
-                            <label for="status" class="text-sm font-medium text-gray-700">Filter Status:</label>
-                            <select name="status" id="status" class="w-full sm:w-auto rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
-                                <option value="">Semua Status</option>
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu Persetujuan</option>
-                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
-                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
-                                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
-                            </select>
+                <div class="mb-6 bg-white overflow-hidden border border-gray-100 shadow-sm sm:rounded-xl">
+                    <form action="{{ route('bookings.index') }}" method="GET" class="p-4 sm:p-6 space-y-4" id="filter-form">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-6 space-y-4 sm:space-y-0">
+                            <div class="flex items-center space-x-3">
+                                <label for="status" class="text-sm font-medium text-gray-700">Status:</label>
+                                <select name="status" id="status" class="w-full sm:w-48 rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                                    <option value="">Semua</option>
+                                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu</option>
+                                    <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
+                                    <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
+                                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <label for="laboratorium" class="text-sm font-medium text-gray-700">Laboratorium:</label>
+                                <select name="laboratorium" id="laboratorium" class="w-full sm:w-48 rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                                    <option value="">Semua Lab</option>
+                                    <option value="Biologi" {{ request('laboratorium') == 'Biologi' ? 'selected' : '' }}>Biologi</option>
+                                    <option value="Fisika" {{ request('laboratorium') == 'Fisika' ? 'selected' : '' }}>Fisika</option>
+                                    <option value="Bahasa" {{ request('laboratorium') == 'Bahasa' ? 'selected' : '' }}>Bahasa</option>
+                                </select>
+                            </div>
                             {{-- Indikator Loading --}}
                             <i id="loading-spinner" class="fas fa-spinner fa-spin text-gray-500 hidden"></i>
                         </div>
@@ -60,13 +71,13 @@
                 {{-- Daftar Booking (REDESIGNED with Cards) --}}
                 <div class="space-y-4">
                     @forelse ($bookings as $booking)
-                        <div class="bg-white overflow-hidden shadow-md sm:rounded-lg border-l-4 
+                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border-l-4 border-gray-200 transition-all duration-200 hover:-translate-y-1 hover:shadow-md 
                             @if($booking->status == 'approved') border-green-500 @elseif($booking->status == 'pending') border-yellow-500 @elseif($booking->status == 'rejected') border-red-500 @else border-gray-400 @endif">
                             <div class="p-4 sm:p-6">
                                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                                     {{-- Kolom Kiri: Info Utama --}}
                                     <div class="flex-grow">
-                                        <div class="flex items-center space-x-3">
+                                        <div class="flex items-center space-x-3 flex-wrap gap-2">
                                             {{-- Status Badge --}}
                                             <span class="px-3 py-1 text-xs font-bold leading-none rounded-full
                                                 @if($booking->status == 'pending') text-yellow-800 bg-yellow-100
@@ -83,6 +94,9 @@
                                                 } }}
                                             </span>
                                             <p class="text-sm font-semibold text-smaba-dark-blue">{{ $booking->tujuan_kegiatan }}</p>
+                                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-blue-50 text-blue-700">
+                                                {{ $booking->laboratorium }}
+                                            </span>
                                         </div>
                                         @if (auth()->user()->role == 'admin')
                                             <p class="mt-2 text-sm text-gray-600">
@@ -133,13 +147,21 @@
             document.addEventListener('DOMContentLoaded', function () {
                 const filterForm = document.getElementById('filter-form');
                 const statusSelect = document.getElementById('status');
+                const labSelect = document.getElementById('laboratorium');
+
+                const submitFilters = () => {
+                    filterForm.submit();
+                    const spinner = document.getElementById('loading-spinner');
+                    if (spinner) spinner.classList.remove('hidden');
+                };
 
                 if (statusSelect) { // Pastikan elemen ada
                     // PERBAIKAN: Menambahkan spinner saat form disubmit
-                    statusSelect.addEventListener('change', () => {
-                        filterForm.submit();
-                        document.getElementById('loading-spinner').classList.remove('hidden');
-                    });
+                    statusSelect.addEventListener('change', submitFilters);
+                }
+
+                if (labSelect) {
+                    labSelect.addEventListener('change', submitFilters);
                 }
             });
         </script>

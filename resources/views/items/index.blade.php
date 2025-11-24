@@ -96,7 +96,7 @@
             </div>
 
             {{-- Tabel Daftar Item --}}
-            <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="100">
+            <div class="bg-white border border-gray-100 overflow-hidden shadow-sm sm:rounded-xl" data-aos="fade-up" data-aos-delay="100">
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white">
                         <thead class="bg-gray-50">
