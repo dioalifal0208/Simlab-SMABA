@@ -15,6 +15,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StockRequestController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\Auth\TwoFactorSettingsController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Two Factor (Google Authenticator)
+    Route::post('/two-factor/start', [TwoFactorSettingsController::class, 'start'])->name('two-factor.start');
+    Route::post('/two-factor/confirm', [TwoFactorSettingsController::class, 'confirm'])->name('two-factor.confirm');
+    Route::post('/two-factor/recovery-codes', [TwoFactorSettingsController::class, 'regenerateRecoveryCodes'])->name('two-factor.recovery');
+    Route::delete('/two-factor', [TwoFactorSettingsController::class, 'disable'])->name('two-factor.disable');
 
     // Fitur Utama (Resource Routes)
     Route::resource('items', ItemController::class);
@@ -73,7 +80,8 @@ Route::middleware('auth')->group(function () {
         // ==============================================
         // ## TAMBAHAN BARU ##
         // Route untuk menangani hapus massal (bulk delete)
-        Route::delete('/items/delete-multiple', [ItemController::class, 'deleteMultiple'])->name('items.delete-multiple');
+        // Menggunakan POST agar selaras dengan form HTML (tanpa spoofing method DELETE)
+        Route::post('/items/delete-multiple', [ItemController::class, 'deleteMultiple'])->name('items.delete-multiple');
         // ==============================================
 
         // Manajemen User

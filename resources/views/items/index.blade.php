@@ -84,12 +84,11 @@
                     </span>
                     <form id="bulk-delete-form" action="{{ route('items.delete-multiple') }}" method="POST">
                         @csrf
-                        @method('DELETE')
                         {{-- Input tersembunyi untuk menampung ID item --}}
                         <template x-for="id in selectedItems" :key="id">
                             <input type="hidden" name="item_ids[]" :value="id">
                         </template>
-                        <button type="button" @click="confirmBulkDelete" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-semibold text-sm shadow-md transition-colors">
+                        <button type="button" @click="confirmBulkDelete(selectedItems)" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-semibold text-sm shadow-md transition-colors">
                             <i class="fas fa-trash-alt mr-2"></i> Hapus Terpilih
                         </button>
                     </form>
@@ -228,15 +227,15 @@
 
             // --- Logika untuk Konfirmasi Hapus Massal dengan Alpine & SweetAlert ---
 
-            function confirmBulkDelete() {
-                // `selectedItems` adalah properti dari x-data Alpine.js
-                if (this.selectedItems.length === 0) {
+            function confirmBulkDelete(selectedItems) {
+                // Validasi: pastikan ada item yang dipilih
+                if (!selectedItems || selectedItems.length === 0) {
                     Swal.fire('Tidak Ada Item', 'Silakan pilih item yang ingin dihapus.', 'info');
                     return;
                 }
 
                 Swal.fire({
-                    title: `Hapus ${this.selectedItems.length} item?`,
+                    title: `Hapus ${selectedItems.length} item?`,
                     text: "Tindakan ini tidak dapat dibatalkan!",
                     icon: 'warning',
                     showCancelButton: true,

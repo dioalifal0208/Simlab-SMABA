@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\TwoFactorLoginController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,12 @@ Route::middleware('guest')->group(function () {
     // PERBAIKAN: Mengganti nama 'password.store' menjadi 'password.update' agar konsisten
     Route::post('reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.update');
+
+    // Tantangan OTP login
+    Route::get('two-factor-challenge', [TwoFactorLoginController::class, 'show'])
+                ->name('two-factor.index');
+    Route::post('two-factor-challenge', [TwoFactorLoginController::class, 'store'])
+                ->name('two-factor.store');
 });
 
 Route::middleware('auth')->group(function () {

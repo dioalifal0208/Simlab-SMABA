@@ -9,6 +9,9 @@ use Illuminate\Http\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
+use App\Models\User;
 use Illuminate\View\View;
 
 
@@ -29,32 +32,65 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): Response|RedirectResponse|JsonResponse // <-- Tambahkan JsonResponse
-{
-    try {
-        $request->authenticate();
+    {
+        try {
+            // Validasi rate limit
+            $request->ensureIsNotRateLimited();
 
-        $request->session()->regenerate();
+            $credentials = $request->only('email', 'password');
+            $remember = $request->boolean('remember');
 
-        // JIKA PERMINTAAN DATANG DARI AJAX
-        if ($request->expectsJson()) {
-            return response()->json(['status' => 'success'], 200);
+            // Cek kredensial tanpa login penuh (untuk alur 2FA)
+            if (!Auth::validate($credentials)) {
+                RateLimiter::hit($request->throttleKey());
+
+                throw ValidationException::withMessages([
+                    'email' => trans('auth.failed'),
+                ]);
+            }
+
+            RateLimiter::clear($request->throttleKey());
+
+            $user = User::where('email', $request->email)->firstOrFail();
+
+            if ($this->shouldUseTwoFactor($user)) {
+                session([
+                    '2fa:user:id' => $user->id,
+                    '2fa:remember' => $remember,
+                ]);
+
+                // Respon untuk AJAX
+                if ($request->expectsJson()) {
+                    return response()->json(['status' => 'otp_required'], 202);
+                }
+
+                return redirect()->route('two-factor.index');
+            }
+
+            // Jika 2FA tidak diwajibkan, login biasa
+            Auth::attempt($credentials, $remember);
+
+            $request->session()->regenerate();
+
+            // JIKA PERMINTAAN DATANG DARI AJAX
+            if ($request->expectsJson()) {
+                return response()->json(['status' => 'success'], 200);
+            }
+
+            // Jika dari browser biasa
+            return redirect()->intended(route('dashboard'));
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // JIKA PERMINTAAN DATANG DARI AJAX DAN VALIDASI GAGAL (Email/Password salah)
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => $e->validator->errors()->first(),
+                ], 422); // 422 Unprocessable Entity
+            }
+            
+            // Jika dari browser biasa
+            throw $e;
         }
-
-        // Jika dari browser biasa
-        return redirect()->intended(route('dashboard'));
-
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        // JIKA PERMINTAAN DATANG DARI AJAX DAN VALIDASI GAGAL (Email/Password salah)
-        if ($request->expectsJson()) {
-            return response()->json([
-                'message' => $e->validator->errors()->first(),
-            ], 422); // 422 Unprocessable Entity
-        }
-        
-        // Jika dari browser biasa
-        throw $e;
     }
-}
 
     /**
      * Destroy an authenticated session.
@@ -70,4 +106,14 @@ class AuthenticatedSessionController extends Controller
     // PASTIKAN BARIS INI MENGARAH KE '/'
     return redirect('/'); 
 }
+
+    /**
+     * Tentukan apakah user wajib 2FA (berdasarkan role).
+     */
+    protected function shouldUseTwoFactor(User $user): bool
+    {
+        return in_array($user->role, ['admin', 'guru', 'siswa'], true)
+            && $user->two_factor_enabled
+            && $user->two_factor_secret;
+    }
 }

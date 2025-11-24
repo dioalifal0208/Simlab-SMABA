@@ -76,10 +76,8 @@ class DocumentController extends Controller
      * Menampilkan pratinjau file (untuk tombol "Lihat").
      * Hanya berfungsi untuk PDF, selain itu akan langsung diunduh.
      */
-    public function preview($id)
+    public function preview(Document $document)
     {
-        $document = Document::findOrFail($id);
-
         // Pastikan file ada di disk 'public'
         if (!Storage::disk('public')->exists($document->file_path)) {
             abort(404, 'File tidak ditemukan.');
@@ -92,7 +90,7 @@ class DocumentController extends Controller
         
         // Jika bukan PDF, langsung panggil fungsi download
         if (strtolower($extension) !== 'pdf') {
-            return $this->download($document);
+            return $this->download($document); // Download hanya dipanggil saat pratinjau gagal karena non-PDF
         }
 
         // Jika PDF, tampilkan inline di browser
@@ -105,19 +103,15 @@ class DocumentController extends Controller
     /**
      * Mengunduh file (untuk tombol "Unduh").
      */
-    public function download($id)
+    public function download(Document $document)
     {
-        $document = Document::findOrFail($id);
-
         // Pastikan file ada di disk 'public'
         if (!Storage::disk('public')->exists($document->file_path)) {
             abort(404, 'File tidak ditemukan.');
         }
         
-        // Ambil nama asli file atau buat nama aman dari judul
-        $originalName = pathinfo($document->file_path, PATHINFO_FILENAME);
-        $extension = pathinfo($document->file_path, PATHINFO_EXTENSION);
-        $downloadName = $originalName . '.' . $extension;
+        // Pakai nama asli jika ada, fallback ke nama file di storage
+        $downloadName = $document->file_name ?? basename($document->file_path);
 
         return response()->download(Storage::disk('public')->path($document->file_path), $downloadName);
     }
