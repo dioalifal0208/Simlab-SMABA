@@ -6,7 +6,10 @@
 >
     <button
         @click="toggle()"
+        x-show="!open"
+        x-transition
         class="flex items-center gap-2 px-4 py-3 rounded-full shadow-lg bg-smaba-dark-blue text-white hover:bg-smaba-light-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-smaba-light-blue transition"
+        style="display: none;"
     >
         <i class="fas fa-comments"></i>
         <span class="text-sm font-semibold">Pesan Admin</span>
@@ -68,8 +71,8 @@
             </template>
 
             <template x-for="msg in messages" :key="msg.id">
-                <div :class="msg.sender_type === 'admin' ? 'flex justify-end' : 'flex justify-start'">
-                    <div :class="msg.sender_type === 'admin'
+                <div :class="isOwnMessage(msg) ? 'flex justify-end' : 'flex justify-start'">
+                    <div :class="isOwnMessage(msg)
                         ? 'max-w-[75%] px-3 py-2 rounded-lg bg-smaba-light-blue/10 border border-smaba-dark-blue/30'
                         : 'max-w-[75%] px-3 py-2 rounded-lg bg-gray-50 border border-gray-100'">
                         <p class="text-sm text-gray-900" x-text="msg.body"></p>
@@ -121,6 +124,9 @@
             isAdmin: document.body.dataset.userRole === 'admin',
             conversations: [],
             activeConversationId: null,
+            userId: document.body ? (document.body.dataset.userId || 'guest') : 'guest',
+            badgeStorageKey: '',
+            hasShownBadge: false,
             routes: {
                 listUser: '{{ route('contact.conversations.messages') }}',
                 sendUser: '{{ route('contact.conversations.store') }}',
@@ -129,6 +135,8 @@
                 sendAdmin: (id) => '{{ url('/admin/contact-conversations') }}/' + id + '/reply',
             },
             init() {
+                this.badgeStorageKey = `chatBadgeShown:${this.userId}`;
+                this.hasShownBadge = sessionStorage.getItem(this.badgeStorageKey) === '1';
                 if (this.isAdmin) {
                     this.fetchConversations().then(() => {
                         if (this.activeConversationId) {
@@ -159,6 +167,7 @@
                 }
                 this.loading = this.messages.length === 0;
                 this.error = '';
+                const firstBadgeCheck = !this.hasShownBadge;
                 try {
                     const url = this.isAdmin ? this.routes.messagesAdmin(this.activeConversationId) : this.routes.listUser;
                     const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
@@ -170,8 +179,13 @@
                     this.messages = newMessages;
                     if (this.open) {
                         this.unreadCount = 0;
-                    } else if (newCount > previousCount) {
-                        this.unreadCount += (newCount - previousCount);
+                    } else if (firstBadgeCheck && newCount > 0) {
+                        this.unreadCount = newCount;
+                    } else {
+                        this.unreadCount = 0;
+                    }
+                    if (firstBadgeCheck) {
+                        this.markBadgeShown();
                     }
                     this.lastCount = newCount;
                     this.$nextTick(() => this.scrollToBottom());
@@ -238,6 +252,14 @@
                 } finally {
                     this.sending = false;
                 }
+            },
+            markBadgeShown() {
+                this.hasShownBadge = true;
+                sessionStorage.setItem(this.badgeStorageKey, '1');
+            },
+            isOwnMessage(msg) {
+                const ownType = this.isAdmin ? 'admin' : 'user';
+                return msg && msg.sender_type === ownType;
             },
             formatTime(ts) {
                 try {

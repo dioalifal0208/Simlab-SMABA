@@ -26,6 +26,7 @@
     {{-- PERBAIKAN 2: Menambahkan 'x-data' global di <body> --}}
     <body class="font-sans antialiased" 
           data-user-role="{{ Auth::user()->role ?? 'guest' }}"
+          data-user-id="{{ Auth::id() ?? '' }}"
           x-data="{ 
               showAnnouncement: true, 
               showImportModal: false 

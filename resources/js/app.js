@@ -161,23 +161,41 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    const currentUserId = document.body ? (document.body.dataset.userId || 'guest') : 'guest';
+    const notificationDotKey = `notifDotShown:${currentUserId}`;
+    const chatBadgeKey = `chatBadgeShown:${currentUserId}`;
+    const logoutForm = document.getElementById('logout-form');
+    if (logoutForm) {
+        logoutForm.addEventListener('submit', () => {
+            sessionStorage.removeItem(notificationDotKey);
+            sessionStorage.removeItem(chatBadgeKey);
+        });
+    }
+
     // PENAMBAHAN: Polling sederhana untuk update ikon notifikasi (mendekati real-time)
     const bellButton = document.getElementById('notification-bell');
 
     if (bellButton && window.axios) {
         const listContainer = document.getElementById('notification-list');
+        let hasShownNotificationDot = sessionStorage.getItem(notificationDotKey) === '1';
+
+        const markDotShown = () => {
+            hasShownNotificationDot = true;
+            sessionStorage.setItem(notificationDotKey, '1');
+        };
 
         const updateBell = (count) => {
             let dot = bellButton.querySelector('[data-role="notification-dot"]');
 
-            if (count > 0) {
+            if (count > 0 && !hasShownNotificationDot) {
                 if (!dot) {
                     dot = document.createElement('span');
                     dot.dataset.role = 'notification-dot';
                     dot.className = 'absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-600 ring-2 ring-white';
                     bellButton.appendChild(dot);
                 }
-            } else if (dot) {
+                markDotShown();
+            } else if (count <= 0 && dot) {
                 dot.remove();
             }
 
