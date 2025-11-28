@@ -116,12 +116,15 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <a href="{{ route('loans.create') }}" class="group block p-6 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-smaba-dark-blue/40 hover:shadow-md transition-all duration-200 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
                             <div class="flex items-center space-x-4"><div class="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-lg bg-green-100"><i class="fas fa-flask text-xl text-green-600"></i></div><div><h3 class="font-bold text-lg text-smaba-text group-hover:text-smaba-light-blue">Ajukan Peminjaman Alat</h3><p class="text-sm text-gray-600 mt-1">Pinjam alat dan bahan praktikum.</p></div></div>
                         </a>
                         <a href="{{ route('bookings.create') }}" class="group block p-6 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-smaba-dark-blue/40 hover:shadow-md transition-all duration-200 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
                              <div class="flex items-center space-x-4"><div class="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-lg bg-blue-100"><i class="fas fa-calendar-alt text-xl text-blue-600"></i></div><div><h3 class="font-bold text-lg text-smaba-text group-hover:text-smaba-light-blue">Ajukan Booking Lab</h3><p class="text-sm text-gray-600 mt-1">Reservasi jadwal dan ruangan.</p></div></div>
+                        </a>
+                        <a href="{{ route('item-requests.create') }}" class="group block p-6 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-smaba-dark-blue/40 hover:shadow-md transition-all duration-200 transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="250" data-aos-once="true">
+                             <div class="flex items-center space-x-4"><div class="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-lg bg-amber-100"><i class="fas fa-plus text-xl text-amber-600"></i></div><div><h3 class="font-bold text-lg text-smaba-text group-hover:text-smaba-light-blue">Ajukan Tambah Item</h3><p class="text-sm text-gray-600 mt-1">Kirim permintaan penambahan alat/bahan baru.</p></div></div>
                         </a>
                     </div>
                     

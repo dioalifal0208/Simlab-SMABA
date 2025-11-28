@@ -77,6 +77,16 @@
                                 <label for="lokasi_penyimpanan" class="block text-sm font-medium text-gray-700">Lokasi Penyimpanan</label>
                                 <input id="lokasi_penyimpanan" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" type="text" name="lokasi_penyimpanan" value="{{ old('lokasi_penyimpanan') }}" required />
                             </div>
+
+                            {{-- Laboratorium --}}
+                            <div>
+                                <label for="laboratorium" class="block text-sm font-medium text-gray-700">Laboratorium</label>
+                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>
+                                    <option value="Biologi" @selected(old('laboratorium', 'Biologi') === 'Biologi')>Lab Biologi</option>
+                                    <option value="Fisika" @selected(old('laboratorium') === 'Fisika')>Lab Fisika</option>
+                                    <option value="Bahasa" @selected(old('laboratorium') === 'Bahasa')>Lab Bahasa</option>
+                                </select>
+                            </div>
                             
                             {{-- Foto Item --}}
                             <div class="md:col-span-2">

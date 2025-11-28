@@ -19,6 +19,7 @@ class Loan extends Model
         'catatan',
         'tanggal_estimasi_kembali',
         'admin_notes', // <-- Saya juga tambahkan admin_notes yang sudah kita buat
+        'laboratorium',
     ];
 
     /**

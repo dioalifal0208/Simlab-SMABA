@@ -16,8 +16,8 @@
 
     <body class="antialiased font-sans bg-gray-50 text-gray-900 overflow-x-hidden"
           data-authenticated="{{ auth()->check() ? '1' : '0' }}"
-          x-data="{ isModalOpen: false, activeTab: 'login', showTestimonialModal: false, showContactModal: false }"
-          @keydown.escape.window="isModalOpen = false; showTestimonialModal = false; showContactModal = false">
+          x-data="{ isModalOpen: false, activeTab: 'login', showTestimonialModal: false }"
+          @keydown.escape.window="isModalOpen = false; showTestimonialModal = false">
         {{-- HERO --}}
         <div class="relative min-h-screen bg-white">
             <div class="absolute inset-0 bg-white"></div>
@@ -25,7 +25,7 @@
             <div class="absolute right-10 top-20 w-72 h-72 rounded-full bg-smaba-dark-blue/5 blur-3xl"></div>
 
             <header class="relative z-10">
-                <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-10 py-6 rounded-2xl mt-4 bg-white/60 backdrop-blur shadow-sm border border-white/60" data-aos="fade-down">
+                <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-10 py-6 rounded-2xl bg-white/60 backdrop-blur shadow-sm border border-white/60" data-aos="fade-down">
                     <div class="flex items-center gap-3">
                         <a href="/" class="flex items-center gap-3">
                             <img class="h-12 w-auto" src="{{ asset('images/logo-smaba.webp') }}" alt="Logo SMABA">
@@ -108,18 +108,11 @@
                                 <div class="flex items-start justify-between gap-3">
                                     <div>
                                         <p class="font-semibold text-gray-900">Kontak petugas</p>
-                                        <p class="text-sm text-gray-700">Kirim pesan singkat ke admin lab, balasan akan dikirim ke email Anda.</p>
-                                        <p class="text-xs text-gray-500">Admin Lab: lab@smaba.sch.id</p>
+                                        <p class="text-sm text-gray-700">Gunakan widget chat setelah login untuk ngobrol langsung dengan petugas.</p>
+                                        <p class="text-xs text-gray-500">Admin Lab: lab@smaba.sch.id &mdash; Balasan muncul di widget chat kanan bawah.</p>
+                                        <p class="text-xs text-emerald-700 mt-1">Tip: klik “Masuk ke Aplikasi”, lalu buka widget chat di pojok kanan bawah.</p>
                                     </div>
-                                    <button @click="showContactModal = true" class="px-3 py-2 text-xs font-semibold text-white bg-smaba-dark-blue rounded-lg shadow-sm hover:bg-smaba-light-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-smaba-light-blue transition">
-                                        Kirim pesan
-                                    </button>
                                 </div>
-                                @if (session('contact_submitted'))
-                                    <div class="mt-3 text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-lg">
-                                        {{ session('contact_submitted') }}
-                                    </div>
-                                @endif
                             </div>
                         </div>
                     </div>
@@ -175,7 +168,7 @@
                             <span class="h-10 w-10 rounded-full bg-smaba-dark-blue text-white flex items-center justify-center font-bold">1</span>
                             <h3 class="text-lg font-semibold text-gray-900">Ajukan</h3>
                         </div>
-                        <p class="mt-3 text-sm text-gray-600">Siswa/guru pilih alat atau booking slot. Modul praktikum bisa auto-memasukkan daftar alat.</p>
+                        <p class="mt-3 text-sm text-gray-600">Guru memilih alat atau booking slot. Modul praktikum bisa auto-memasukkan daftar alat.</p>
                     </div>
                     <div class="p-6 rounded-2xl border border-gray-100 bg-gray-50 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-smaba-dark-blue/30 hover:bg-smaba-light-blue/5">
                         <div class="flex items-center gap-3">
@@ -206,7 +199,7 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
                         <p class="text-sm font-semibold text-smaba-light-blue uppercase tracking-wide">Apa kata pengguna</p>
-                        <h2 class="text-3xl font-bold text-gray-900 mt-2">Dipakai guru dan siswa untuk praktikum harian</h2>
+                        <h2 class="text-3xl font-bold text-gray-900 mt-2">Dipakai guru untuk praktikum harian</h2>
                     </div>
                     <div class="flex items-center gap-3">
                         @if (session('testimonial_submitted'))
@@ -392,7 +385,6 @@
                             <select id="peran" name="peran" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
                                 <option value="">Pilih peran</option>
                                 <option value="Guru">Guru</option>
-                                <option value="Siswa">Siswa</option>
                                 <option value="Staf">Staf</option>
                                 <option value="Lainnya">Lainnya</option>
                             </select>
@@ -420,39 +412,12 @@
             </div>
         </div>
 
-        {{-- MODAL KONTAK ADMIN --}}
-        <div x-show="showContactModal" x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" style="display: none;">
-            <div @click.outside="showContactModal = false" x-show="showContactModal" x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="w-full max-w-md bg-white p-6 rounded-xl shadow-2xl relative">
-                <button @click="showContactModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Hubungi Admin Lab</h3>
-                <div id="contact-error" class="hidden mb-3 bg-red-50 border border-red-200 text-red-700 text-sm p-3 rounded-lg"></div>
-                <div id="contact-success" class="hidden mb-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm p-3 rounded-lg"></div>
-                <form id="contact-form" action="{{ route('contact.conversations.store') }}" method="POST" class="space-y-4">
-                    @csrf
-                    <p class="text-sm text-gray-600">Tulis pesan singkat. Identitas akan otomatis mengikuti akun setelah Anda login.</p>
-                    <div>
-                        <label for="contact_pesan" class="block text-sm font-medium text-gray-700">Pesan</label>
-                        <textarea id="contact_pesan" name="pesan" rows="4" required maxlength="500" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">{{ old('pesan') }}</textarea>
-                        <p class="text-xs text-gray-500 mt-1">Pesan akan diteruskan ke admin lab bersamaan dengan notifikasi.</p>
-                    </div>
-                    <div class="flex justify-end gap-3 pt-2">
-                        <button type="button" @click="showContactModal = false" class="px-4 py-2 text-sm font-semibold text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Batal</button>
-                        <button type="submit" class="px-5 py-2 text-sm font-semibold text-white bg-smaba-dark-blue rounded-lg shadow hover:bg-smaba-light-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-smaba-light-blue">Kirim</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
         <script>
             document.addEventListener('alpine:init', () => {
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 const errorMessageDiv = document.getElementById('auth-error-message');
                 const successMessageDiv = document.getElementById('auth-success-message');
                 const isAuthenticated = document.body.dataset.authenticated === '1';
-                const contactError = document.getElementById('contact-error');
-                const contactSuccess = document.getElementById('contact-success');
 
                 function showError(message) {
                     successMessageDiv.classList.add('hidden');
@@ -464,92 +429,6 @@
                     errorMessageDiv.classList.add('hidden');
                     successMessageDiv.classList.remove('hidden');
                     successMessageDiv.innerHTML = message;
-                }
-
-                async function sendContactMessage(formData) {
-                    const response = await fetch('{{ route('contact.conversations.store') }}', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'X-CSRF-TOKEN': csrfToken
-                        }
-                    });
-                    const data = await response.json().catch(() => ({}));
-                    if (!response.ok) {
-                        let message = data.message || 'Gagal mengirim pesan.';
-                        if (response.status === 422 && data.errors) {
-                            message = Object.values(data.errors).map(e => e[0]).join('<br>');
-                        }
-                        throw new Error(message);
-                    }
-                    return data;
-                }
-
-                async function submitContactDraftIfAny() {
-                    const draftStr = localStorage.getItem('contactDraft');
-                    if (!draftStr) return false;
-                    let draft;
-                    try { draft = JSON.parse(draftStr); } catch (_) { draft = null; }
-                    if (!draft) {
-                        localStorage.removeItem('contactDraft');
-                        return false;
-                    }
-                    const formData = new FormData();
-                    formData.append('pesan', draft.pesan || '');
-                    try {
-                        await sendContactMessage(formData);
-                        localStorage.removeItem('contactDraft');
-                        return true;
-                    } catch (e) {
-                        // jika gagal, biarkan draft tetap ada
-                        return false;
-                    }
-                }
-
-                const contactForm = document.getElementById('contact-form');
-                if (contactForm) {
-                    contactForm.addEventListener('submit', async function (event) {
-                        event.preventDefault();
-                        if (contactError) contactError.classList.add('hidden');
-                        if (contactSuccess) contactSuccess.classList.add('hidden');
-                        const submitButton = this.querySelector('button[type="submit"]');
-                        const originalButtonText = submitButton.innerHTML;
-                        submitButton.innerHTML = 'Memproses...';
-                        submitButton.disabled = true;
-
-                        const formData = new FormData(this);
-                        if (isAuthenticated) {
-                            try {
-                                await sendContactMessage(formData);
-                                if (contactSuccess) {
-                                    contactSuccess.textContent = 'Pesan terkirim ke admin. Lihat balasan di menu Pesan Admin.';
-                                    contactSuccess.classList.remove('hidden');
-                                }
-                                this.reset();
-                            } catch (e) {
-                                if (contactError) {
-                                    contactError.innerHTML = e.message;
-                                    contactError.classList.remove('hidden');
-                                }
-                            } finally {
-                                submitButton.innerHTML = originalButtonText;
-                                submitButton.disabled = false;
-                            }
-                        } else {
-                            const draft = {
-                                pesan: formData.get('pesan'),
-                            };
-                            localStorage.setItem('contactDraft', JSON.stringify(draft));
-                            submitButton.innerHTML = originalButtonText;
-                            submitButton.disabled = false;
-                            const loginBtn = document.getElementById('open-login-btn');
-                            if (loginBtn) {
-                                loginBtn.click();
-                            }
-                        }
-                    });
                 }
 
                 const loginForm = document.getElementById('login-form');
@@ -584,8 +463,7 @@
                                 }
                                 showError(errorText);
                             } else {
-                                const draftSent = await submitContactDraftIfAny();
-                                window.location.href = draftSent ? '{{ route('contact.conversations.index') }}' : '{{ route('dashboard') }}';
+                                window.location.href = '{{ route('dashboard') }}';
                             }
                         } catch (error) {
                             showError('Tidak dapat terhubung ke server.');

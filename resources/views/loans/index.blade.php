@@ -42,17 +42,28 @@
                 {{-- Form Filter Status Otomatis --}}
                 <div class="mb-6 bg-white overflow-hidden shadow-lg sm:rounded-xl">
                     <form action="{{ route('loans.index') }}" method="GET" class="p-4 sm:p-6" id="filter-form">
-                        <div class="flex items-center space-x-4">
-                            <label for="status" class="text-sm font-medium text-gray-700">Filter Status:</label>
-                            <select name="status" id="status" class="w-full sm:w-auto rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
-                                <option value="">Semua Status</option>
-                                {{-- PERBAIKAN DI SINI --}}
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu Persetujuan</option>
-                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
-                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
-                                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
-                                <option value="Terlambat" @selected(request('status') == 'Terlambat')>Terlambat</option>
-                            </select>
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:space-x-4">
+                            <div class="flex items-center space-x-2">
+                                <label for="status" class="text-sm font-medium text-gray-700">Status:</label>
+                                <select name="status" id="status" class="w-full sm:w-auto rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                                    <option value="">Semua Status</option>
+                                    {{-- PERBAIKAN DI SINI --}}
+                                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu Persetujuan</option>
+                                    <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
+                                    <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
+                                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
+                                    <option value="Terlambat" @selected(request('status') == 'Terlambat')>Terlambat</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <label for="laboratorium" class="text-sm font-medium text-gray-700">Lab:</label>
+                                <select name="laboratorium" id="laboratorium" class="w-full sm:w-auto rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                                    <option value="">Semua Lab</option>
+                                    <option value="Biologi" @selected(request('laboratorium') === 'Biologi')>Biologi</option>
+                                    <option value="Fisika" @selected(request('laboratorium') === 'Fisika')>Fisika</option>
+                                    <option value="Bahasa" @selected(request('laboratorium') === 'Bahasa')>Bahasa</option>
+                                </select>
+                            </div>
                             {{-- Indikator Loading --}}
                             <i id="loading-spinner" class="fas fa-spinner fa-spin text-gray-500 hidden"></i>
                         </div>
@@ -71,6 +82,7 @@
                                     @endif
                                     <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Pinjam</th>
                                     <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Jml Item</th>
+                                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lab</th>
                                     <th class="py-3 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                     <th class="py-3 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                                 </tr>
@@ -84,6 +96,7 @@
                                         @endif
                                         <td class="py-4 px-6 text-sm">{{ \Carbon\Carbon::parse($loan->tanggal_pinjam)->format('d M Y') }}</td>
                                         <td class="py-4 px-6 text-sm hidden sm:table-cell">{{ $loan->items->count() }} item</td>
+                                        <td class="py-4 px-6 text-sm font-semibold text-gray-800">{{ $loan->laboratorium }}</td>
                                         <td class="py-4 px-6 text-center">
                                             @if($loan->status == 'pending')
                                                 <span class="px-3 py-1 text-xs font-bold leading-none text-yellow-800 bg-yellow-100 rounded-full">Menunggu</span>
@@ -105,7 +118,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="{{ auth()->user()->role == 'admin' ? '6' : '5' }}" class="py-8 text-center text-gray-500">
+                                        <td colspan="{{ auth()->user()->role == 'admin' ? '7' : '6' }}" class="py-8 text-center text-gray-500">
                                             <p class="font-semibold">Tidak Ada Data</p>
                                             <p class="text-sm mt-1">Belum ada data peminjaman yang cocok dengan filter Anda.</p>
                                         </td>
@@ -127,12 +140,15 @@
             document.addEventListener('DOMContentLoaded', function () {
                 const filterForm = document.getElementById('filter-form');
                 const statusSelect = document.getElementById('status');
+                const labSelect = document.getElementById('laboratorium');
 
                 // PERBAIKAN: Menambahkan spinner saat form disubmit
-                statusSelect.addEventListener('change', () => {
+                function submitWithSpinner() {
                     filterForm.submit();
                     document.getElementById('loading-spinner').classList.remove('hidden');
-                });
+                }
+                statusSelect.addEventListener('change', submitWithSpinner);
+                labSelect.addEventListener('change', submitWithSpinner);
             });
         </script>
     @endpush

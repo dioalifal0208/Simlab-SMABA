@@ -39,9 +39,9 @@ Route::middleware('guest')->group(function () {
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
                 ->name('password.reset');
 
-    // PERBAIKAN: Mengganti nama 'password.store' menjadi 'password.update' agar konsisten
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-                ->name('password.update');
+    // Permintaan reset password (guest) - terima POST (standar) dan PUT (fallback untuk form yang salah method)
+    Route::match(['post', 'put'], 'reset-password', [NewPasswordController::class, 'store'])
+                ->name('password.store');
 
     // Tantangan OTP login
     Route::get('two-factor-challenge', [TwoFactorLoginController::class, 'show'])
@@ -67,6 +67,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
+    // Ubah password saat login
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])

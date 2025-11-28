@@ -25,7 +25,8 @@ class UserImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
         return new User([
             'name'     => $row['nama'],
             'email'    => $row['email'],
-            'role'     => $row['role'] ?? 'siswa', // Default role adalah 'siswa' jika dikosongkan
+            'role'     => $row['role'] ?? 'guru', // Default role adalah 'guru' jika dikosongkan
+            'laboratorium' => $row['laboratorium'] ?? null,
             'password' => Hash::make($row['password']), // PENTING: Password di-hash
         ]);
     }
@@ -38,7 +39,8 @@ class UserImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
         return [
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email', // Pastikan email unik
-            'role' => 'nullable|in:admin,guru,siswa', // Hanya izinkan 3 role ini
+            'role' => 'nullable|in:admin,guru', // Hanya izinkan admin atau guru
+            'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa',
             'password' => 'required|string|min:8', // Wajibkan password minimal 8 karakter
         ];
     }

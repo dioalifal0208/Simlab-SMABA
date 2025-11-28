@@ -7,8 +7,8 @@
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Daftar semua alat dan bahan yang tersedia di laboratorium.</p>
             </div>
-            @can('is-admin')
-                <div class="mt-3 sm:mt-0 flex items-center space-x-3">
+            <div class="mt-3 sm:mt-0 flex items-center space-x-3">
+                @can('is-admin')
                     {{-- Tombol Impor Item (membuka modal) --}}
                     <button @click="showImportModal = true" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-semibold text-sm shadow-sm transition-colors">
                         <i class="fas fa-upload mr-2"></i> Import Item
@@ -18,8 +18,13 @@
                     <a href="{{ route('items.create') }}" class="inline-block px-4 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-md hover:bg-smaba-light-blue shadow-sm transition-colors">
                         + Tambah Item
                     </a>
-                </div>
-            @endcan
+                @else
+                    {{-- Guru/Staf: Ajukan penambahan item --}}
+                    <a href="{{ route('item-requests.create') }}" class="inline-flex items-center px-4 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-md hover:bg-smaba-light-blue shadow-sm transition-colors">
+                        <i class="fas fa-plus mr-2"></i> Ajukan Tambah Item
+                    </a>
+                @endcan
+            </div>
         </div>
     </x-slot>
 
@@ -69,6 +74,22 @@
                                 <option value="Kurang Baik" @selected(request('kondisi') == 'Kurang Baik')>Kurang Baik</option>
                                 <option value="Rusak" @selected(request('kondisi') == 'Rusak')>Rusak</option>
                             </select>
+                            @php
+                                $isAdmin = auth()->user()?->role === 'admin';
+                                $lockedLab = auth()->user()?->laboratorium;
+                            @endphp
+                            <div class="flex items-center gap-2">
+                                <select name="laboratorium" id="laboratorium" class="w-auto rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm" {{ $isAdmin ? '' : 'disabled' }}>
+                                    <option value="">Semua Lab</option>
+                                    <option value="Biologi" @selected(request('laboratorium', $lockedLab) == 'Biologi')>Biologi</option>
+                                    <option value="Fisika" @selected(request('laboratorium', $lockedLab) == 'Fisika')>Fisika</option>
+                                    <option value="Bahasa" @selected(request('laboratorium', $lockedLab) == 'Bahasa')>Bahasa</option>
+                                </select>
+                                @unless($isAdmin)
+                                    <input type="hidden" name="laboratorium" value="{{ request('laboratorium', $lockedLab) }}">
+                                    <span class="text-xs text-gray-500">Lab dikunci sesuai penugasan Anda.</span>
+                                @endunless
+                            </div>
                             {{-- Tombol Reset --}}
                             <a href="{{ route('items.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-semibold text-sm shadow-sm transition-colors" title="Reset Filter">
                                 <i class="fas fa-sync-alt"></i>
@@ -113,6 +134,7 @@
                                 </th>
                                 <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Alat/Bahan</th>
                                 <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Tipe</th>
+                                <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lab</th>
                                 <th class="py-4 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah</th>
                                 <th class="py-4 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Kondisi</th>
                                 <th class="py-4 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
@@ -147,6 +169,7 @@
                                         </div>
                                     </td>
                                     <td class="py-4 px-6 text-sm hidden md:table-cell">{{ $item->tipe }}</td>
+                                    <td class="py-4 px-6 text-sm font-semibold text-gray-800">{{ $item->laboratorium }}</td>
                                     <td class="py-4 px-6 text-sm text-center">
                                         {{ $item->jumlah }} {{ $item->satuan }}
                                         @if($item->stok_minimum && $item->jumlah < $item->stok_minimum)
@@ -170,7 +193,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="py-8 text-center text-gray-500">
+                                    <td colspan="7" class="py-8 text-center text-gray-500">
                                         <p class="font-semibold">Tidak Ada Item Ditemukan</p>
                                         <p class="text-sm mt-1">Coba ubah filter pencarian Anda atau tambahkan item baru.</p>
                                     </td>
@@ -220,9 +243,11 @@
                 const filterForm = document.getElementById('filter-form');
                 const tipeSelect = document.getElementById('tipe');
                 const kondisiSelect = document.getElementById('kondisi');
+                const labSelect = document.getElementById('laboratorium');
 
                 if(tipeSelect) tipeSelect.addEventListener('change', () => filterForm.submit());
                 if(kondisiSelect) kondisiSelect.addEventListener('change', () => filterForm.submit());
+                if(labSelect && !labSelect.disabled) labSelect.addEventListener('change', () => filterForm.submit());
             });
 
             // --- Logika untuk Konfirmasi Hapus Massal dengan Alpine & SweetAlert ---

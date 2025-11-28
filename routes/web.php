@@ -17,6 +17,7 @@ use App\Http\Controllers\StockRequestController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\Auth\TwoFactorSettingsController;
 use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\ItemRequestController;
 use App\Models\Testimonial;
 use App\Models\Booking;
 use Carbon\Carbon;
@@ -88,6 +89,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/items/{item}/report-damage', [DamageReportController::class, 'store'])->name('damage-reports.store');
     Route::post('/items/{item}/request-stock', [StockRequestController::class, 'store'])->name('stock-requests.store');
 
+    // Permintaan tambah alat/bahan (guru)
+    Route::get('/item-requests/create', [ItemRequestController::class, 'create'])->name('item-requests.create');
+    Route::post('/item-requests', [ItemRequestController::class, 'store'])->name('item-requests.store');
+
     // ===== Pustaka Digital (Sebagian Publik, Sebagian Terproteksi) =====
     Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
     Route::get('/documents/{document}/preview', [DocumentController::class, 'preview'])->name('documents.preview');
@@ -153,6 +158,12 @@ Route::middleware('auth')->group(function () {
         // Moderasi Testimoni
         Route::get('/admin/testimonials', [TestimonialController::class, 'index'])->name('admin.testimonials.index');
         Route::post('/admin/testimonials/{testimonial}/status', [TestimonialController::class, 'updateStatus'])->name('admin.testimonials.update-status');
+
+        // Permintaan item dari guru
+        Route::get('/admin/item-requests', [ItemRequestController::class, 'index'])->name('admin.item-requests.index');
+        Route::get('/admin/item-requests/{itemRequest}', [ItemRequestController::class, 'show'])->name('admin.item-requests.show');
+        Route::post('/admin/item-requests/{itemRequest}/approve', [ItemRequestController::class, 'approve'])->name('admin.item-requests.approve');
+        Route::post('/admin/item-requests/{itemRequest}/reject', [ItemRequestController::class, 'reject'])->name('admin.item-requests.reject');
     });
 });
 

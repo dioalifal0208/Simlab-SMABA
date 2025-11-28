@@ -26,6 +26,11 @@ class BookingController extends Controller
             $query->where('user_id', Auth::id());
         }
 
+        // Kunci laboratorium sesuai penugasan guru
+        if (Auth::user()->role === 'guru' && Auth::user()->laboratorium) {
+            $request->merge(['laboratorium' => Auth::user()->laboratorium]);
+        }
+
         // Menerapkan filter status jika ada dari request URL.
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -45,7 +50,11 @@ class BookingController extends Controller
      */
     public function create()
     {
-        return view('bookings.create');
+        $selectedLaboratorium = Auth::user()->role === 'admin'
+            ? null
+            : (Auth::user()->laboratorium ?? 'Biologi');
+
+        return view('bookings.create', compact('selectedLaboratorium'));
     }
 
     /**
@@ -62,8 +71,22 @@ class BookingController extends Controller
             'jumlah_peserta' => 'nullable|integer|min:1',
         ]);
 
+        // Jika guru, paksa gunakan lab yang ditugaskan
+        if (Auth::user()->role === 'guru') {
+            if (!Auth::user()->laboratorium) {
+                return back()->withErrors(['laboratorium' => 'Akun Anda belum memiliki penugasan laboratorium. Hubungi admin.'])->withInput();
+            }
+            if ($validated['laboratorium'] !== Auth::user()->laboratorium) {
+                return back()->withErrors(['laboratorium' => 'Anda hanya dapat mengajukan untuk Lab ' . Auth::user()->laboratorium . '.'])->withInput();
+            }
+        }
+
+        $selectedLab = Auth::user()->role === 'admin'
+            ? $validated['laboratorium']
+            : Auth::user()->laboratorium;
+
         $isConflict = Booking::where('status', 'approved')
-            ->where('laboratorium', $validated['laboratorium'])
+            ->where('laboratorium', $selectedLab)
             ->where(function ($query) use ($validated) {
                 $query->where('waktu_mulai', '<', $validated['waktu_selesai'])
                       ->where('waktu_selesai', '>', $validated['waktu_mulai']);
@@ -81,7 +104,7 @@ class BookingController extends Controller
             'guru_pengampu' => $validated['guru_pengampu'],
             'tujuan_kegiatan' => $validated['tujuan_kegiatan'],
             'status' => 'pending',
-            'laboratorium' => $validated['laboratorium'],
+            'laboratorium' => $selectedLab,
             'waktu_mulai' => $validated['waktu_mulai'],
             'waktu_selesai' => $validated['waktu_selesai'],
             'jumlah_peserta' => $validated['jumlah_peserta'],

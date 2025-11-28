@@ -31,6 +31,12 @@ class LoanController extends Controller
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
+        if (Auth::user()->role === 'guru' && Auth::user()->laboratorium) {
+            $request->merge(['laboratorium' => Auth::user()->laboratorium]);
+        }
+        if ($request->filled('laboratorium')) {
+            $query->where('laboratorium', $request->laboratorium);
+        }
 
         $loans = $query->paginate(15);
 
@@ -42,7 +48,11 @@ class LoanController extends Controller
      */
     public function create(Request $request)
     {
-        $items = Item::where('kondisi', 'Baik')->orderBy('nama_alat')->get();
+        $selectedLaboratorium = $request->get('laboratorium', Auth::user()->laboratorium ?? 'Biologi');
+        $items = Item::where('kondisi', 'Baik')
+            ->where('laboratorium', $selectedLaboratorium)
+            ->orderBy('nama_alat')
+            ->get();
 
         $selectedItemIds = [];
         if ($request->filled('module_items')) {
@@ -58,7 +68,7 @@ class LoanController extends Controller
                 ->all();
         }
 
-        return view('loans.create', compact('items', 'selectedItemIds'));
+        return view('loans.create', compact('items', 'selectedItemIds', 'selectedLaboratorium'));
     }
 
     /**
@@ -67,10 +77,11 @@ class LoanController extends Controller
     public function store(Request $request)
 {
     $request->validate([
-        'tanggal_pinjam' => 'required|date|after_or_equal:today',
+        'tanggal_pinjam' => 'required|date|after:today',
         'tanggal_estimasi_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
         'items' => 'required|array|min:1',
         'jumlah.*' => 'nullable|integer|min:1',
+        'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
     ]);
 
     // ... (Logika validasi stok Anda yang sudah ada) ...
@@ -78,12 +89,15 @@ class LoanController extends Controller
     $stockErrors = [];
     $itemsToAttach = [];
     $requestedItems = Item::findMany($request->items);
+    $laboratoriumDipilih = $request->laboratorium;
     foreach ($request->items as $itemId) {
         $item = $requestedItems->find($itemId);
         if ($item && isset($request->jumlah[$itemId]) && $request->jumlah[$itemId] > 0) {
             $requestedQuantity = (int) $request->jumlah[$itemId];
             if ($item->jumlah < $requestedQuantity) {
                 $stockErrors[] = "Stok '{$item->nama_alat}' tidak mencukupi (sisa: {$item->jumlah}, diminta: {$requestedQuantity}).";
+            } elseif ($item->laboratorium !== $laboratoriumDipilih) {
+                $stockErrors[] = "Item '{$item->nama_alat}' berada di lab {$item->laboratorium}, tidak sesuai pilihan lab ({$laboratoriumDipilih}).";
             } else {
                 $itemsToAttach[$itemId] = ['jumlah' => $requestedQuantity];
             }
@@ -103,6 +117,7 @@ class LoanController extends Controller
         'tanggal_estimasi_kembali' => $request->tanggal_estimasi_kembali,
         'status' => 'pending',
         'catatan' => $request->catatan,
+        'laboratorium' => $laboratoriumDipilih,
     ]);
 
     $loan->items()->attach($itemsToAttach);

@@ -42,6 +42,7 @@
                             <tr>
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lab</th>
                                 <th class="py-3 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Peran (Role)</th>
                                 <th class="py-3 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                             </tr>
@@ -51,13 +52,14 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="py-4 px-6 text-sm font-semibold text-gray-900">{{ $user->name }}</td>
                                     <td class="py-4 px-6 text-sm text-gray-600">{{ $user->email }}</td>
+                                    <td class="py-4 px-6 text-sm text-gray-700">{{ $user->laboratorium ?? '-' }}</td>
                                     <td class="py-4 px-6 text-center">
                                         @if($user->role == 'admin')
                                             <span class="px-3 py-1 text-xs font-bold leading-none text-red-800 bg-red-100 rounded-full">Admin</span>
                                         @elseif($user->role == 'guru')
                                             <span class="px-3 py-1 text-xs font-bold leading-none text-blue-800 bg-blue-100 rounded-full">Guru</span>
                                         @else
-                                            <span class="px-3 py-1 text-xs font-bold leading-none text-green-800 bg-green-100 rounded-full">Siswa</span>
+                                            <span class="px-3 py-1 text-xs font-bold leading-none text-gray-800 bg-gray-100 rounded-full">Peran lain</span>
                                         @endif
                                     </td>
                                     <td class="py-4 px-6 text-center">
@@ -68,7 +70,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="py-8 text-center text-gray-500">
+                                    <td colspan="5" class="py-8 text-center text-gray-500">
                                         <p class="font-semibold">Tidak Ada Pengguna</p>
                                     </td>
                                 </tr>
@@ -147,8 +149,8 @@
                 {{-- Instruksi Header --}}
                 <div class="mt-4 text-xs text-gray-600">
                     <p class="font-semibold">Pastikan header file Anda sesuai (wajib):</p>
-                    <p class="font-mono text-gray-500">nama, email, password, role</p>
-                    <p class="text-gray-500 mt-1">*) Kolom `role` opsional, akan otomatis menjadi 'siswa' jika dikosongkan.</p>
+                    <p class="font-mono text-gray-500">nama, email, password, role, laboratorium</p>
+                    <p class="text-gray-500 mt-1">*) Kolom `role` opsional, otomatis 'guru' jika dikosongkan. Kolom `laboratorium` opsional untuk guru (isi: Biologi/Fisika/Bahasa).</p>
                 </div>
 
                 <div class="mt-6 flex justify-end">

@@ -26,6 +26,7 @@ class Item extends Model
         'kode_inventaris',
         'tahun_pengadaan',
         'deskripsi', // Mengganti 'keterangan' menjadi 'deskripsi' agar konsisten
+        'laboratorium',
         'user_id'
     ];
     public function user(): BelongsTo

@@ -112,7 +112,7 @@ class AuthenticatedSessionController extends Controller
      */
     protected function shouldUseTwoFactor(User $user): bool
     {
-        return in_array($user->role, ['admin', 'guru', 'siswa'], true)
+        return in_array($user->role, ['admin', 'guru'], true)
             && $user->two_factor_enabled
             && $user->two_factor_secret;
     }

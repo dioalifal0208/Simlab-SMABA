@@ -38,12 +38,16 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label for="laboratorium" class="block font-medium text-sm text-gray-700">Pilih Laboratorium</label>
-                                    <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>
+                                    <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required {{ auth()->user()->role === 'admin' ? '' : 'disabled' }}>
                                         <option value="">-- Pilih Lab --</option>
-                                        <option value="Biologi" @selected(old('laboratorium') === 'Biologi')>Lab Biologi</option>
-                                        <option value="Fisika" @selected(old('laboratorium') === 'Fisika')>Lab Fisika</option>
-                                        <option value="Bahasa" @selected(old('laboratorium') === 'Bahasa')>Lab Bahasa</option>
+                                        <option value="Biologi" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Biologi')>Lab Biologi</option>
+                                        <option value="Fisika" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Fisika')>Lab Fisika</option>
+                                        <option value="Bahasa" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Bahasa')>Lab Bahasa</option>
                                     </select>
+                                    @if(auth()->user()->role !== 'admin')
+                                        <input type="hidden" name="laboratorium" value="{{ old('laboratorium', $selectedLaboratorium) }}">
+                                        <p class="text-xs text-gray-500 mt-1">Lab dikunci sesuai penugasan Anda.</p>
+                                    @endif
                                 </div>
                                 <div>
                                     <label for="jumlah_peserta" class="block font-medium text-sm text-gray-700">Jumlah Peserta <span class="text-xs text-gray-400">(Opsional)</span></label>

@@ -178,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (bellButton && window.axios) {
         const listContainer = document.getElementById('notification-list');
         let hasShownNotificationDot = sessionStorage.getItem(notificationDotKey) === '1';
+        let poller = null;
 
         const markDotShown = () => {
             hasShownNotificationDot = true;
@@ -267,8 +268,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
         };
 
-        // Polling setiap 10 detik
-        setInterval(fetchSummary, 10000);
+        const startPolling = () => {
+            if (poller) return;
+            fetchSummary();
+            poller = setInterval(fetchSummary, 10000);
+        };
+
+        const stopPolling = () => {
+            if (poller) {
+                clearInterval(poller);
+                poller = null;
+            }
+        };
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                startPolling();
+            } else {
+                stopPolling();
+            }
+        });
+
+        if (logoutForm) {
+            logoutForm.addEventListener('submit', stopPolling);
+        }
+
+        startPolling();
     }
 });
 

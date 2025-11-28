@@ -3,7 +3,7 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
                 <h2 class="font-bold text-2xl text-smaba-text leading-tight">Percakapan Pengguna</h2>
-                <p class="text-sm text-gray-500 mt-1">Daftar percakapan siswa/guru dengan admin.</p>
+                <p class="text-sm text-gray-500 mt-1">Daftar percakapan guru atau staf dengan admin.</p>
             </div>
         </div>
     </x-slot>

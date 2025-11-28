@@ -30,6 +30,19 @@ class ItemController extends Controller
         // Memulai query
         $query = Item::with(['user', 'activeLoans']);
 
+        // Filter otomatis untuk guru berdasarkan lab-nya
+        if (auth()->user()->role === 'guru' && auth()->user()->laboratorium) {
+            $lockedLab = auth()->user()->laboratorium;
+            // Paksa filter di query untuk mencegah pengubahan manual di request
+            $query->where('laboratorium', $lockedLab);
+            $request->merge(['laboratorium' => $lockedLab]);
+        } elseif (auth()->user()->role === 'guru' && !auth()->user()->laboratorium) {
+            // Jika guru belum punya penugasan lab, tampilkan inventaris kosong dengan pesan
+            $items = Item::whereRaw('1=0')->paginate(12);
+            return view('items.index', compact('items'))
+                ->withErrors(['laboratorium' => 'Akun Anda belum memiliki penugasan laboratorium. Hubungi admin.']);
+        }
+
         // Menerapkan filter pencarian jika ada
         if ($request->filled('search')) {
             $query->where('nama_alat', 'like', '%' . $request->search . '%');
@@ -43,6 +56,10 @@ class ItemController extends Controller
         // Menerapkan filter tipe jika ada
         if ($request->filled('tipe')) {
             $query->where('tipe', $request->tipe);
+        }
+
+        if ($request->filled('laboratorium')) {
+            $query->where('laboratorium', $request->laboratorium);
         }
 
         // Menjalankan query dengan sorting dan paginasi
@@ -78,6 +95,7 @@ class ItemController extends Controller
             'kondisi' => 'required|in:Baik,Kurang Baik,Rusak',
             'lokasi_penyimpanan' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
+            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
             'photos' => 'nullable|array', // Validasi untuk array foto
             'photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048', // Validasi untuk setiap file
         ]);
@@ -135,6 +153,7 @@ class ItemController extends Controller
             'kondisi' => 'required|in:Baik,Kurang Baik,Rusak',
             'lokasi_penyimpanan' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
+            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
             'photos' => 'nullable|array',
             'photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
