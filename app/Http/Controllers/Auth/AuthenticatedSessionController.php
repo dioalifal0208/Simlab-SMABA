@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
@@ -71,6 +72,8 @@ class AuthenticatedSessionController extends Controller
             Auth::attempt($credentials, $remember);
 
             $request->session()->regenerate();
+            $this->invalidateOtherSessions(Auth::user(), $request);
+            $this->setCurrentSessionId(Auth::user(), $request);
 
             // JIKA PERMINTAAN DATANG DARI AJAX
             if ($request->expectsJson()) {
@@ -97,6 +100,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
 {
+    $user = $request->user();
+
+    if ($user) {
+        $user->forceFill(['current_session_id' => null])->save();
+    }
+
     Auth::guard('web')->logout();
 
     $request->session()->invalidate();
@@ -115,5 +124,36 @@ class AuthenticatedSessionController extends Controller
         return in_array($user->role, ['admin', 'guru'], true)
             && $user->two_factor_enabled
             && $user->two_factor_secret;
+    }
+
+    /**
+     * Hapus sesi lain milik user agar hanya satu sesi yang aktif.
+     */
+    protected function invalidateOtherSessions(?User $user, Request $request): void
+    {
+        if (! $user || config('session.driver') !== 'database') {
+            return;
+        }
+
+        $sessionTable = config('session.table', 'sessions');
+
+        DB::table($sessionTable)
+            ->where('user_id', $user->id)
+            ->where('id', '<>', $request->session()->getId())
+            ->delete();
+    }
+
+    /**
+     * Simpan ID sesi yang sedang aktif pada user.
+     */
+    protected function setCurrentSessionId(?User $user, Request $request): void
+    {
+        if (! $user) {
+            return;
+        }
+
+        $user->forceFill([
+            'current_session_id' => $request->session()->getId(),
+        ])->save();
     }
 }

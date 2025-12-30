@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
 ->withMiddleware(function (Middleware $middleware) {
     $middleware->alias([
         'no.cache' => \App\Http\Middleware\PreventCaching::class,
+        'single.session' => \App\Http\Middleware\EnsureSingleSession::class,
     ]);
 })
 ->withExceptions(function (Exceptions $exceptions) {

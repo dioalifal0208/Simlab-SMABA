@@ -49,7 +49,7 @@ Route::post('/testimonials', [TestimonialController::class, 'store'])->name('tes
 Route::post('/contact-admin', [ContactAdminController::class, 'store'])->name('contact.admin.store');
 
 // Grup Rute yang hanya bisa diakses setelah login
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'single.session'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

@@ -50,7 +50,7 @@ Route::middleware('guest')->group(function () {
                 ->name('two-factor.store');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'single.session'])->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');
 

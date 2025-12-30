@@ -79,6 +79,7 @@ class DashboardController extends Controller
             $chartColors = $chartLabels->map(fn($_, $i) => $palette[$i % count($palette)])->values();
 
             $recentDocuments = Document::with('user:id,name')
+                ->visibleTo($user)
                 ->latest()
                 ->take(5)
                 ->get();
@@ -133,6 +134,7 @@ class DashboardController extends Controller
 
         // Dokumen terbaru
         $recentDocuments = Document::with('user:id,name')
+            ->visibleTo($user)
             ->latest()
             ->take(5)
             ->get();

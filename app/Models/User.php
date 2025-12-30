@@ -41,6 +41,7 @@ class User extends Authenticatable
         'two_factor_code',
         'two_factor_secret',
         'two_factor_recovery_codes',
+        'current_session_id',
     ];
 
     /**

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -82,6 +83,8 @@ class TwoFactorLoginController extends Controller
 
         Auth::login($user, $remember);
         $request->session()->regenerate();
+        $this->invalidateOtherSessions($user, $request);
+        $this->setCurrentSessionId($user, $request);
 
         return redirect()->intended(route('dashboard'));
     }
@@ -96,6 +99,33 @@ class TwoFactorLoginController extends Controller
         $user->forceFill([
             'two_factor_code' => null,
             'two_factor_expires_at' => null,
+        ])->save();
+    }
+
+    /**
+     * Hapus sesi lain milik user agar hanya satu sesi yang aktif.
+     */
+    protected function invalidateOtherSessions(User $user, Request $request): void
+    {
+        if (config('session.driver') !== 'database') {
+            return;
+        }
+
+        $sessionTable = config('session.table', 'sessions');
+
+        DB::table($sessionTable)
+            ->where('user_id', $user->id)
+            ->where('id', '<>', $request->session()->getId())
+            ->delete();
+    }
+
+    /**
+     * Simpan ID sesi aktif pada user.
+     */
+    protected function setCurrentSessionId(User $user, Request $request): void
+    {
+        $user->forceFill([
+            'current_session_id' => $request->session()->getId(),
         ])->save();
     }
 }
