@@ -446,12 +446,19 @@
                             const response = await fetch('{{ route('login') }}', {
                                 method: 'POST',
                                 body: formData,
+                                credentials: 'include',
                                 headers: {
                                     'Accept': 'application/json',
                                     'X-Requested-With': 'XMLHttpRequest',
                                     'X-CSRF-TOKEN': csrfToken
                                 }
                             });
+
+                            if (response.redirected) {
+                                window.location.href = response.url;
+                                return;
+                            }
+
                             const data = await response.json();
                             if (!response.ok) {
                                 let errorText = 'Terjadi kesalahan.';
@@ -489,12 +496,19 @@
                             const response = await fetch('{{ route('register') }}', {
                                 method: 'POST',
                                 body: formData,
+                                credentials: 'include',
                                 headers: {
                                     'Accept': 'application/json',
                                     'X-Requested-With': 'XMLHttpRequest',
                                     'X-CSRF-TOKEN': csrfToken
                                 }
                             });
+
+                            if (response.redirected) {
+                                window.location.href = response.url;
+                                return;
+                            }
+
                             const data = await response.json();
                             if (!response.ok) {
                                 let errorText = 'Terjadi kesalahan.';
@@ -533,6 +547,7 @@
                             const response = await fetch('{{ route('password.email') }}', {
                                 method: 'POST',
                                 body: formData,
+                                credentials: 'include',
                                 headers: {
                                     'Accept': 'application/json',
                                     'X-Requested-With': 'XMLHttpRequest',
@@ -565,5 +580,3 @@
 
     </body>
 </html>
-
-
