@@ -45,7 +45,8 @@ class PeminjamanLabBaruNotification extends Notification
             'peminjaman_id' => $this->peminjaman->id,
             'user_name' => $this->peminjaman->user->name, // Asumsi ada relasi 'user' di model PeminjamanLab
             'lab_name' => $this->peminjaman->lab->nama_lab, // Asumsi ada relasi 'lab' di model PeminjamanLab
-            'message' => 'Pengajuan peminjaman lab baru dari ' . $this->peminjaman->user->name . '.'
+            'message' => 'Pengajuan peminjaman lab baru dari ' . $this->peminjaman->user->name . '.',
+            'url' => route('bookings.index'), // Fallback ke index booking
         ];
     }
 }

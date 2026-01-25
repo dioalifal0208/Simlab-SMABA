@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\AuditLog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Http\RedirectResponse;
@@ -44,6 +45,16 @@ class AuthenticatedSessionController extends Controller
             // Cek kredensial tanpa login penuh (untuk alur 2FA)
             if (!Auth::validate($credentials)) {
                 RateLimiter::hit($request->throttleKey());
+                
+                // Log failed login attempt
+                AuditLog::create([
+                    'user_id' => null,
+                    'action' => 'failed_login',
+                    'model' => 'Auth',
+                    'details' => ['email' => $request->email],
+                    'ip_address' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                ]);
 
                 throw ValidationException::withMessages([
                     'email' => trans('auth.failed'),
@@ -74,6 +85,16 @@ class AuthenticatedSessionController extends Controller
             $request->session()->regenerate();
             $this->invalidateOtherSessions(Auth::user(), $request);
             $this->setCurrentSessionId(Auth::user(), $request);
+            
+            // Log successful login
+            AuditLog::create([
+                'user_id' => Auth::id(),
+                'action' => 'login',
+                'model' => 'Auth',
+                'details' => ['method' => '2fa' ? 'password_2fa' : 'password'],
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
 
             // JIKA PERMINTAAN DATANG DARI AJAX
             if ($request->expectsJson()) {
@@ -103,6 +124,15 @@ class AuthenticatedSessionController extends Controller
     $user = $request->user();
 
     if ($user) {
+        // Log logout before destroying session
+        AuditLog::create([
+            'user_id' => $user->id,
+            'action' => 'logout',
+            'model' => 'Auth',
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
+        
         $user->forceFill(['current_session_id' => null])->save();
     }
 

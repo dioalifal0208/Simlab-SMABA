@@ -1,4 +1,5 @@
 @auth
+@unless(request()->routeIs('admin.contact-conversations.*'))
 <div
     x-data="chatWidget()"
     x-init="init()"
@@ -8,12 +9,11 @@
         @click="toggle()"
         x-show="!open"
         x-transition
-        class="flex items-center gap-2 px-4 py-3 rounded-full shadow-lg bg-smaba-dark-blue text-white hover:bg-smaba-light-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-smaba-light-blue transition"
+        class="relative flex items-center justify-center w-14 h-14 rounded-full shadow-lg bg-smaba-dark-blue text-white hover:bg-smaba-light-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-smaba-light-blue transition"
         style="display: none;"
     >
-        <i class="fas fa-comments"></i>
-        <span class="text-sm font-semibold">Pesan Admin</span>
-        <span x-show="unreadCount > 0" class="ml-1 inline-flex items-center justify-center h-5 min-w-[1.25rem] px-1 rounded-full bg-red-500 text-[11px] font-bold" x-text="unreadCount"></span>
+        <i class="fas fa-comments text-xl"></i>
+        <span x-show="unreadCount > 0" class="absolute -top-1 -right-1 inline-flex items-center justify-center h-5 min-w-[1.25rem] px-1 rounded-full bg-red-500 text-[11px] font-bold text-white" x-text="unreadCount"></span>
     </button>
 
     <div
@@ -279,4 +279,5 @@
     }
 </script>
 @endpush
+@endunless
 @endauth

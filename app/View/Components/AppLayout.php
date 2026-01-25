@@ -13,6 +13,7 @@ class AppLayout extends Component
      */
     public function __construct(
         public bool $hideChrome = false,
+        public bool $hideFooter = false,
     ) {
     }
 

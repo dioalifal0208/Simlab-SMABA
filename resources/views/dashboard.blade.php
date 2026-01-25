@@ -19,16 +19,56 @@
             @if (auth()->user()->role === 'admin')
                 <div class="space-y-6" data-aos="fade-in" data-aos-duration="500" data-aos-once="true">
                     
-                    {{-- Welcome Banner (Tetap Sama) --}}
-                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
-                        <div class="p-6 md:p-8">
-                            <h3 class="text-2xl font-bold text-smaba-text">Selamat datang kembali, {{ Auth::user()->name }}!</h3>
-                            <p class="mt-1 text-gray-600">Berikut adalah ringkasan aktivitas laboratorium hari ini. Apa yang ingin Anda lakukan?</p>
-                            <div class="mt-4 flex flex-wrap gap-3">
-                                <a href="{{ route('items.create') }}" class="px-4 py-2 bg-smaba-dark-blue text-white text-xs font-semibold rounded-lg hover:bg-smaba-light-blue shadow-sm transition-colors">
-                                    + Tambah Item Baru
+                    {{-- Quick Stats Summary Bar --}}
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-4 shadow-lg" data-aos="fade-down" data-aos-once="true">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {{-- Total Items --}}
+                            <div class="flex items-center gap-4 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
+                                <div class="flex-shrink-0 p-3 bg-white/20 rounded-lg">
+                                    <i class="fas fa-flask text-2xl text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-blue-100 text-xs font-medium uppercase tracking-wider">Total Item</p>
+                                    <p class="text-white text-2xl font-bold">{{ number_format($totalItemsCount ?? 0) }}</p>
+                                </div>
+                            </div>
+                            
+                            {{-- Total Users --}}
+                            <div class="flex items-center gap-4 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
+                                <div class="flex-shrink-0 p-3 bg-white/20 rounded-lg">
+                                    <i class="fas fa-users text-2xl text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-blue-100 text-xs font-medium uppercase tracking-wider">Total Pengguna</p>
+                                    <p class="text-white text-2xl font-bold">{{ number_format($totalUsersCount ?? 0) }}</p>
+                                </div>
+                            </div>
+                            
+                            {{-- Monthly Transactions --}}
+                            <div class="flex items-center gap-4 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
+                                <div class="flex-shrink-0 p-3 bg-white/20 rounded-lg">
+                                    <i class="fas fa-exchange-alt text-2xl text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-blue-100 text-xs font-medium uppercase tracking-wider">Transaksi Bulan Ini</p>
+                                    <p class="text-white text-2xl font-bold">{{ number_format($monthlyTransactionsCount ?? 0) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {{-- Welcome Banner (Clean Style) --}}
+                    <div class="bg-white border border-gray-200 rounded-xl p-6 md:p-8" data-aos="fade-up" data-aos-once="true">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">Selamat datang, {{ Auth::user()->name }}! 👋</h3>
+                                <p class="mt-1 text-gray-500">Berikut ringkasan aktivitas laboratorium hari ini.</p>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <a href="{{ route('items.create') }}" class="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                                    + Tambah Item
                                 </a>
-                                <a href="{{ route('loans.index', ['status' => 'pending']) }}" class="px-4 py-2 bg-gray-200 text-gray-800 text-xs font-semibold rounded-lg hover:bg-gray-300 transition-colors">
+                                <a href="{{ route('loans.index', ['status' => 'pending']) }}" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors">
                                     Proses Peminjaman
                                 </a>
                             </div>
@@ -49,42 +89,84 @@
                     {{-- ============================================== --}}
                     {{-- ## PERUBAHAN: KARTU STATISTIK DIKONSOLIDASI ## --}}
                     {{-- ============================================== --}}
-                    <div class="bg-white border border-gray-100 overflow-hidden shadow-sm sm:rounded-xl" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-xl font-bold text-gray-900">Ringkasan Status Laboratorium</h3>
-                                <span class="text-xs text-gray-500">Hari ini</span>
+                    {{-- ============================================== --}}
+                    {{-- ## ENHANCED: GRADIENT STATISTICS CARDS ## --}}
+                    {{-- ============================================== --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
+                        {{-- Peminjaman Pending --}}
+                        <a href="{{ route('loans.index', ['status' => 'pending']) }}" class="group bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:border-blue-500 hover:shadow-md transition-all duration-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-gray-500 text-xs font-bold uppercase tracking-wider">Peminjaman Pending</h3>
+                                <div class="p-2 bg-blue-50 rounded-lg text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
                             </div>
-                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-                                <a href="{{ route('loans.index', ['status' => 'pending']) }}" class="block p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-smaba-dark-blue/30 hover:bg-smaba-light-blue/5">
-                                    <p class="text-xs uppercase tracking-wide text-gray-500">Peminjaman pending</p>
-                                    <p class="text-3xl font-bold text-gray-900">{{ $pendingLoansCount ?? 0 }}</p>
-                                </a>
-                                <a href="{{ route('bookings.index', ['status' => 'pending']) }}" class="block p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-smaba-dark-blue/30 hover:bg-smaba-light-blue/5">
-                                    <p class="text-xs uppercase tracking-wide text-gray-500">Booking pending</p>
-                                    <p class="text-3xl font-bold text-gray-900">{{ $pendingBookingsCount ?? 0 }}</p>
-                                </a>
-                                <a href="{{ route('items.index', ['kondisi' => 'Rusak']) }}" class="block p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-smaba-dark-blue/30 hover:bg-smaba-light-blue/5">
-                                    <p class="text-xs uppercase tracking-wide text-gray-500">Item rusak</p>
-                                    <p class="text-3xl font-bold text-gray-900">{{ $brokenItemsCount ?? 0 }}</p>
-                                </a>
-                                <a href="{{ route('damage-reports.index', ['status' => 'Dilaporkan']) }}" class="block p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-smaba-dark-blue/30 hover:bg-smaba-light-blue/5">
-                                    <p class="text-xs uppercase tracking-wide text-gray-500">Laporan kerusakan</p>
-                                    <p class="text-3xl font-bold text-gray-900">{{ $newDamageReportsCount ?? 0 }}</p>
-                                </a>
-                                <a href="{{ route('loans.index', ['status' => 'Terlambat']) }}" class="block p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-smaba-dark-blue/30 hover:bg-smaba-light-blue/5">
-                                    <p class="text-xs uppercase tracking-wide text-gray-500">Peminjaman terlambat</p>
-                                    <p class="text-3xl font-bold text-gray-900">{{ $overdueLoansCount ?? 0 }}</p>
-                                </a>
-                                <a href="{{ route('calendar.index') }}" class="block p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-smaba-dark-blue/30 hover:bg-smaba-light-blue/5">
-                                    <p class="text-xs uppercase tracking-wide text-gray-500">Jadwal terdekat</p>
-                                    <p class="text-3xl font-bold text-gray-900">{{ $upcomingBookingsCount ?? 0 }}</p>
-                                </a>
+                            <p class="text-3xl font-bold text-gray-900">{{ $pendingLoansCount ?? 0 }}</p>
+                            <p class="text-xs text-blue-600 mt-1 font-medium">Perlu persetujuan</p>
+                        </a>
+
+                        {{-- Booking Pending --}}
+                        <a href="{{ route('bookings.index', ['status' => 'pending']) }}" class="group bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:border-purple-500 hover:shadow-md transition-all duration-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-gray-500 text-xs font-bold uppercase tracking-wider">Booking Pending</h3>
+                                <div class="p-2 bg-purple-50 rounded-lg text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                </div>
                             </div>
-                        </div>
+                            <p class="text-3xl font-bold text-gray-900">{{ $pendingBookingsCount ?? 0 }}</p>
+                            <p class="text-xs text-purple-600 mt-1 font-medium">Jadwal tertunda</p>
+                        </a>
+
+                        {{-- Item Rusak --}}
+                        <a href="{{ route('items.index', ['kondisi' => 'Rusak']) }}" class="group bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:border-red-500 hover:shadow-md transition-all duration-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-gray-500 text-xs font-bold uppercase tracking-wider">Item Rusak</h3>
+                                <div class="p-2 bg-red-50 rounded-lg text-red-600 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                </div>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-900">{{ $brokenItemsCount ?? 0 }}</p>
+                            <p class="text-xs text-red-600 mt-1 font-medium">Perlu perbaikan</p>
+                        </a>
+
+                        {{-- Laporan Kerusakan --}}
+                        <a href="{{ route('damage-reports.index', ['status' => 'Dilaporkan']) }}" class="group bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:border-orange-500 hover:shadow-md transition-all duration-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-gray-500 text-xs font-bold uppercase tracking-wider">Laporan Baru</h3>
+                                <div class="p-2 bg-orange-50 rounded-lg text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                </div>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-900">{{ $newDamageReportsCount ?? 0 }}</p>
+                            <p class="text-xs text-orange-600 mt-1 font-medium">Verifikasi laporan</p>
+                        </a>
+
+                        {{-- Peminjaman Terlambat --}}
+                        <a href="{{ route('loans.index', ['status' => 'Terlambat']) }}" class="group bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:border-rose-500 hover:shadow-md transition-all duration-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-gray-500 text-xs font-bold uppercase tracking-wider">Terlambat</h3>
+                                <div class="p-2 bg-rose-50 rounded-lg text-rose-600 group-hover:bg-rose-600 group-hover:text-white transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-900">{{ $overdueLoansCount ?? 0 }}</p>
+                            <p class="text-xs text-rose-600 mt-1 font-medium">Segera tindak lanjuti</p>
+                        </a>
+
+                        {{-- Jadwal Terdekat --}}
+                        <a href="{{ route('calendar.index') }}" class="group bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all duration-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-gray-500 text-xs font-bold uppercase tracking-wider">Minggu Ini</h3>
+                                <div class="p-2 bg-emerald-50 rounded-lg text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                </div>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-900">{{ $upcomingBookingsCount ?? 0 }}</p>
+                            <p class="text-xs text-emerald-600 mt-1 font-medium">Jadwal praktikum</p>
+                        </a>
                     </div>
                     {{-- ============================================== --}}
-                    {{-- ##          AKHIR DARI KARTU KONSOLIDASI          ## --}}
+                    {{-- ##    END ENHANCED GRADIENT CARDS           ## --}}
                     {{-- ============================================== --}}
 
 

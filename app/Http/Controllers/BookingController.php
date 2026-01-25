@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\User;
+use App\Http\Requests\StoreBookingRequest;
+use App\Http\Requests\UpdateBookingRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate; // <-- Direkomendasikan untuk otorisasi
-use App\Notifications\BookingStatusUpdated; // <-- TAMBAHKAN INI
+use Illuminate\Support\Facades\Gate;
+use App\Notifications\BookingStatusUpdated;
 use App\Notifications\NewBookingRequest;
-use Illuminate\Support\Facades\Notification; // <-- TAMBAHKAN INI
+use Illuminate\Support\Facades\Notification;
 
 class BookingController extends Controller
 {
@@ -60,16 +62,10 @@ class BookingController extends Controller
     /**
      * Menyimpan booking baru ke database.
      */
-    public function store(Request $request)
+    public function store(StoreBookingRequest $request)
     {
-        $validated = $request->validate([
-            'guru_pengampu' => 'required|string|max:255',
-            'tujuan_kegiatan' => 'required|string',
-            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
-            'waktu_mulai' => 'required|date',
-            'waktu_selesai' => 'required|date|after:waktu_mulai',
-            'jumlah_peserta' => 'nullable|integer|min:1',
-        ]);
+        // Authorization dan validation sudah di-handle di StoreBookingRequest
+        $validated = $request->validated();
 
         // Jika guru, paksa gunakan lab yang ditugaskan
         if (Auth::user()->role === 'guru') {
@@ -152,14 +148,10 @@ public function show($id)
     /**
      * Mengupdate status booking (aksi oleh Admin).
      */
-    public function update(Request $request, Booking $booking)
+    public function update(UpdateBookingRequest $request, Booking $booking)
 {
-    Gate::authorize('is-admin');
-
-    $request->validate([
-        'status' => 'required|in:approved,rejected,completed',
-        'admin_notes' => 'nullable|string|max:1000',
-    ]);
+    // Authorization dan validation sudah di-handle di UpdateBookingRequest
+    $validated = $request->validated();
 
     if ($request->status == 'approved') {
         $isConflict = Booking::where('status', 'approved')

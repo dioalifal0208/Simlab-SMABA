@@ -24,7 +24,7 @@
             class="max-w-7xl mx-auto sm:px-6 lg:px-8" 
             x-data="{ 
                 showPhotoModal: false, 
-                activeImage: '{{ $item->images->first() ? Storage::url($item->images->first()->path) : '' }}' 
+                activeImage: '{{ $item->images->first() ? asset('storage/item-photos/thumbnails/medium/' . basename($item->images->first()->path)) : '' }}' 
             }"
         >
             {{-- Pesan Sukses/Error --}}
@@ -46,18 +46,30 @@
                             <!-- Gambar Utama -->
                             <a href="#" @click.prevent="showPhotoModal = true" title="Klik untuk memperbesar gambar" class="block">
                                 @if($item->images->isNotEmpty())
-                                    <img :src="activeImage" alt="{{ $item->nama_alat }}" class="w-full h-56 object-cover rounded-lg border cursor-pointer transition-all duration-300">
+                                    <img 
+                                        :src="activeImage" 
+                                        alt="{{ $item->nama_alat }}" 
+                                        class="w-full h-56 object-cover rounded-lg border cursor-pointer transition-all duration-300"
+                                        loading="lazy"
+                                    >
                                 @else
                                     <div class="w-full h-56 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 border cursor-pointer">
                                         <svg class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
                                     </div>
                                 @endif
                             </a>
-                            <!-- Thumbnail -->
+                            <!-- Thumbnail Gallery -->
                             @if($item->images->count() > 1)
                             <div class="grid grid-cols-5 gap-2 mt-2">
                                 @foreach($item->images as $image)
-                                <img @click="activeImage = '{{ Storage::url($image->path) }}'" src="{{ Storage::url($image->path) }}" alt="Thumbnail" class="w-full h-12 object-cover rounded-md cursor-pointer border-2 transition-all" :class="{ 'border-smaba-light-blue': activeImage === '{{ Storage::url($image->path) }}', 'border-transparent': activeImage !== '{{ Storage::url($image->path) }}' }">
+                                <img 
+                                    @click="activeImage = '{{ asset('storage/item-photos/thumbnails/medium/' . basename($image->path)) }}'"
+                                    src="{{ asset('storage/item-photos/thumbnails/small/' . basename($image->path)) }}" 
+                                    alt="Thumbnail" 
+                                    class="w-full h-12 object-cover rounded-md cursor-pointer border-2 transition-all"
+                                    :class="{ 'border-smaba-light-blue': activeImage === '{{ asset('storage/item-photos/thumbnails/medium/' . basename($image->path)) }}', 'border-transparent': activeImage !== '{{ asset('storage/item-photos/thumbnails/medium/' . basename($image->path)) }}' }"
+                                    loading="lazy"
+                                >
                                 @endforeach
                             </div>
                             @else
@@ -90,7 +102,12 @@
                         <div x-show="showPhotoModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" style="display: none;">
                             <div @click.outside="showPhotoModal = false" class="relative max-w-3xl max-h-full">
                                 @if ($item->images->isNotEmpty())
-                                    <img :src="activeImage" alt="Detail foto {{ $item->nama_alat }}" class="w-full h-auto object-contain rounded-lg shadow-2xl" style="max-height: 90vh;">
+                                    <img 
+                                        :src="activeImage.replace('/thumbnails/medium/', '/original/')" 
+                                        alt="Detail foto {{ $item->nama_alat }}" 
+                                        class="w-full h-auto object-contain rounded-lg shadow-2xl" 
+                                        style="max-height: 90vh;"
+                                    >
                                 @else
                                     <div class="w-96 h-96 bg-white rounded-lg flex items-center justify-center text-gray-500"><p>Tidak ada foto untuk item ini.</p></div>
                                 @endif

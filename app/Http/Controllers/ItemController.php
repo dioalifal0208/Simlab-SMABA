@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\ItemImage;
 use App\Models\Item;
 use App\Exports\ItemsExport;
-use App\Exports\ItemsTemplateExport; // <-- Pastikan ini ada
-use App\Imports\ItemImport; // Nama class import yang benar adalah ItemImport
+use App\Exports\ItemsTemplateExport;
+use App\Imports\ItemImport;
+use App\Http\Requests\StoreItemRequest;
+use App\Http\Requests\UpdateItemRequest;
+use App\Http\Requests\ImportItemRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
-use Illuminate\Support\Facades\Log; // Tambahkan Log untuk debugging
+use Illuminate\Support\Facades\Log;
+use Intervention\Image\Facades\Image;
 
 class ItemController extends Controller
 {
@@ -66,6 +70,10 @@ class ItemController extends Controller
         // withQueryString() penting agar filter tetap aktif saat pindah halaman
         $items = $query->orderBy($sort, $direction)->paginate(12)->withQueryString();
 
+        if ($request->ajax()) {
+            return view('items.partials.item-table', compact('items'));
+        }
+
         return view('items.index', compact('items'));
     }
 
@@ -82,34 +90,64 @@ class ItemController extends Controller
     /**
      * Menyimpan item baru ke database, termasuk foto.
      */
-    public function store(Request $request)
+    public function store(StoreItemRequest $request)
     {
-        // ... (Tidak ada perubahan)
-        $this->authorize('is-admin');
-        $validated = $request->validate([
-            'nama_alat' => 'required|string|max:255',
-            'tipe' => 'required|in:Alat,Bahan Habis Pakai',
-            'jumlah' => 'required|integer|min:0',
-            'stok_minimum' => 'nullable|integer|min:0',
-            'satuan' => 'required|string|max:50',
-            'kondisi' => 'required|in:Baik,Kurang Baik,Rusak',
-            'lokasi_penyimpanan' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
-            'photos' => 'nullable|array', // Validasi untuk array foto
-            'photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048', // Validasi untuk setiap file
-        ]);
-
+        // Authorization sudah di-handle di StoreItemRequest
+        // Validation sudah di-handle di StoreItemRequest
+        $validated = $request->validated();
         $validated['user_id'] = $request->user()->id;
 
         // Buat item tanpa foto terlebih dahulu
         $item = Item::create($validated);
 
-        // Jika ada file foto yang diunggah, simpan satu per satu
+        // Jika ada file foto yang diunggah, proses dengan compression dan thumbnails
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
-                $path = $photo->store('item-photos', 'public');
-                $item->images()->create(['path' => $path]);
+                // Generate unique filename
+                $filename = uniqid() . '_' . time() . '.jpg';
+                
+                // Load image dengan Intervention
+                $image = Image::make($photo);
+                
+                // Auto-rotate berdasarkan EXIF data
+                $image->orientate();
+                
+                // Compress dan resize original (max 1200px width)
+                $original = $image->resize(1200, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize(); // Don't upscale smaller images
+                })->encode('jpg', 80); // 80% quality
+                
+                // Save compressed original
+                Storage::disk('public')->put(
+                    'item-photos/original/' . $filename,
+                    (string) $original
+                );
+                
+                // Generate small thumbnail (150x150) untuk list pages
+                $thumbnailSmall = Image::make($photo)
+                    ->fit(150, 150) // Crop to exact size
+                    ->encode('jpg', 85);
+                    
+                Storage::disk('public')->put(
+                    'item-photos/thumbnails/small/' . $filename,
+                    (string) $thumbnailSmall
+                );
+                
+                // Generate medium thumbnail (400x400) untuk detail cards
+                $thumbnailMedium = Image::make($photo)
+                    ->fit(400, 400)
+                    ->encode('jpg', 85);
+                    
+                Storage::disk('public')->put(
+                    'item-photos/thumbnails/medium/' . $filename,
+                    (string) $thumbnailMedium
+                );
+                
+                // Store path in database (pointing to original)
+                $item->images()->create([
+                    'path' => 'item-photos/original/' . $filename
+                ]);
             }
         }
 
@@ -140,32 +178,59 @@ class ItemController extends Controller
     /**
      * Memperbarui data item di database, termasuk foto.
      */
-    public function update(Request $request, Item $item)
+    public function update(UpdateItemRequest $request, Item $item)
     {
-        // ... (Tidak ada perubahan)
-        $this->authorize('is-admin');
-        $validated = $request->validate([
-            'nama_alat' => 'required|string|max:255',
-            'tipe' => 'required|in:Alat,Bahan Habis Pakai',
-            'jumlah' => 'required|integer|min:0',
-            'stok_minimum' => 'nullable|integer|min:0',
-            'satuan' => 'required|string|max:50',
-            'kondisi' => 'required|in:Baik,Kurang Baik,Rusak',
-            'lokasi_penyimpanan' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
-            'photos' => 'nullable|array',
-            'photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
-        ]);
+        // Authorization dan validation sudah di-handle di UpdateItemRequest
+        $validated = $request->validated();
 
         // Update data item
         $item->update($validated);
 
-        // Jika ada file foto baru yang diunggah, tambahkan ke galeri
+        // Jika ada file foto baru yang diunggah, proses dengan compression dan thumbnails
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
-                $path = $photo->store('item-photos', 'public');
-                $item->images()->create(['path' => $path]);
+                // Generate unique filename
+                $filename = uniqid() . '_' . time() . '.jpg';
+                
+                // Load image dengan Intervention
+                $image = Image::make($photo);
+                
+                // Auto-rotate berdasarkan EXIF data
+                $image->orientate();
+                
+                // Compress dan resize original (max 1200px width)
+                $original = $image->resize(1200, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })->encode('jpg', 80);
+                
+                // Save compressed original
+                Storage::disk('public')->put(
+                    'item-photos/original/' . $filename,
+                    (string) $original
+                );
+                
+                // Generate thumbnails
+                $thumbnailSmall = Image::make($photo)
+                    ->fit(150, 150)
+                    ->encode('jpg', 85);
+                Storage::disk('public')->put(
+                    'item-photos/thumbnails/small/' . $filename,
+                    (string) $thumbnailSmall
+                );
+                
+                $thumbnailMedium = Image::make($photo)
+                    ->fit(400, 400)
+                    ->encode('jpg', 85);
+                Storage::disk('public')->put(
+                    'item-photos/thumbnails/medium/' . $filename,
+                    (string) $thumbnailMedium
+                );
+                
+                // Store path in database
+                $item->images()->create([
+                    'path' => 'item-photos/original/' . $filename
+                ]);
             }
         }
 
@@ -248,12 +313,9 @@ class ItemController extends Controller
      * Menangani unggahan file dan proses impor dalam satu langkah.
      * Mirip dengan alur kerja impor pengguna.
      */
-    public function handleImport(Request $request)
+    public function handleImport(ImportItemRequest $request)
     {
-        $this->authorize('is-admin');
-        $request->validate([
-            'file' => 'required|mimes:csv,xlsx,xls|max:5120' // Max 5MB
-        ]);
+        // Authorization dan validation sudah di-handle di ImportItemRequest
 
         try {
             // Langsung jalankan impor dari file yang diunggah

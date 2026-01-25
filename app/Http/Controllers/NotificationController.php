@@ -51,6 +51,7 @@ class NotificationController extends Controller
                         'message'          => $notification->data['message'] ?? '',
                         'created_at_human' => $notification->created_at->diffForHumans(),
                         'url'              => route('notifications.read', $notification->id),
+                        'target_url'       => $notification->data['url'] ?? route('dashboard'),
                     ];
                 }),
         ]);

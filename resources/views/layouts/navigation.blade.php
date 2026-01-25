@@ -21,7 +21,7 @@
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
-                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('loans.*') || request()->routeIs('bookings.*') || request()->routeIs('calendar.index')) ? 'border-indigo-400 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium leading-5 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('loans.*') || request()->routeIs('bookings.*') || request()->routeIs('calendar.index')) ? 'border-blue-600 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium leading-5 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
                                     <div>Layanan Lab</div>
                                     <div class="ms-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
                                 </button>
@@ -55,7 +55,7 @@
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
-                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('damage-reports.*') || request()->routeIs('users.*') || request()->routeIs('reports.*') || request()->routeIs('announcements.index')) ? 'border-indigo-400 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium ...">
+                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('damage-reports.*') || request()->routeIs('users.*') || request()->routeIs('reports.*') || request()->routeIs('announcements.index')) ? 'border-blue-600 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium ...">
                             <div>Manajemen</div>
                                     <div class="ms-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
                                 </button>
@@ -77,6 +77,12 @@
                                 <x-dropdown-link :href="route('announcements.index')" :active="request()->routeIs('announcements.index')">
                                     {{ __('Pengumuman Global') }}
                                 </x-dropdown-link>
+                                <x-dropdown-link :href="route('admin.contact-conversations.index')" :active="request()->routeIs('admin.contact-conversations.*')">
+                                    {{ __('Pusat Pesan') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('audit-logs.index')" :active="request()->routeIs('audit-logs.*')">
+                                    {{ __('Audit Trail') }}
+                                </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
                     </div>
@@ -86,7 +92,7 @@
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
-                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('documents.*') || request()->routeIs('practicum-modules.*')) ? 'border-indigo-400 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium leading-5 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('documents.*') || request()->routeIs('practicum-modules.*')) ? 'border-blue-600 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium leading-5 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
                                     <div>Sumber Daya</div>
                                     <div class="ms-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
                                 </button>
@@ -107,6 +113,14 @@
             {{-- PERUBAHAN DI SINI: Menggabungkan Dropdown Notifikasi dan Profile ke dalam satu div --}}
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 
+                {{-- Dark Mode Toggle --}}
+                <button 
+                    class="dark-mode-toggle p-2 text-gray-400 hover:text-blue-600 transition-colors duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    aria-label="Toggle Dark Mode"
+                >
+                    <i class="fas fa-moon text-lg"></i>
+                </button>
+
                 {{-- Dropdown Notifikasi --}}
                 <div class="ms-3 relative"> {{-- Menggunakan ms-3 untuk jarak antar dropdown --}}
                     <x-dropdown align="right" width="64">
@@ -205,6 +219,8 @@
                 <x-responsive-nav-link :href="route('damage-reports.index')" :active="request()->routeIs('damage-reports.*')"> {{ __('Laporan Kerusakan') }} </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')"> {{ __('Manajemen User') }} </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')"> {{ __('Laporan & Analitik') }} </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.contact-conversations.index')" :active="request()->routeIs('admin.contact-conversations.*')"> {{ __('Pusat Pesan') }} </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('audit-logs.index')" :active="request()->routeIs('audit-logs.*')"> {{ __('Audit Trail') }} </x-responsive-nav-link>
             @endcan
             <x-responsive-nav-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')"> {{ __('Kalender') }} </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('documents.index')" :active="request()->routeIs('documents.*')"> {{ __('Pustaka Digital') }} </x-responsive-nav-link>

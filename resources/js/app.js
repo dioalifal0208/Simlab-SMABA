@@ -2,6 +2,7 @@
 //    File ini juga secara otomatis mengimpor dan menginisialisasi Alpine.js,
 //    yang merupakan mesin di balik fungsionalitas dropdown.
 import './bootstrap';
+import './personalization';
 import Chart from 'chart.js/auto';
 window.Chart = Chart;
 // Import CSS AOS
@@ -236,6 +237,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 link.appendChild(message);
                 link.appendChild(time);
+
+                // PENAMBAHAN: Intercept klik untuk SPA behavior (Chat)
+                link.addEventListener('click', function(e) {
+                    // Cek jika ini adalah link chat dan kita sedang di halaman chat
+                    const currentPath = window.location.pathname;
+                    if (item.target_url && item.target_url.includes('contact-conversations') && currentPath.includes('contact-conversations')) {
+                        e.preventDefault();
+                        
+                        // 1. Tandai sudah dibaca via AJAX (background)
+                        if (item.url) {
+                            axios.get(item.url).catch(err => console.error('Gagal tandai baca:', err));
+                        }
+
+                        // 2. Ambil ID dari query param 'open' di target_url
+                        try {
+                            const urlObj = new URL(item.target_url);
+                            const openId = urlObj.searchParams.get('open');
+                            if (openId) {
+                                // 3. Dispatch event agar Alpine menangkap
+                                window.dispatchEvent(new CustomEvent('open-chat', { detail: { id: openId } }));
+                            }
+                        } catch (err) {
+                            console.error('Invalid URL:', err);
+                        }
+                    }
+                });
+
                 listContainer.appendChild(link);
             });
         };

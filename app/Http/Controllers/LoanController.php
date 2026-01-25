@@ -6,10 +6,15 @@ use App\Models\Item;
 use App\Models\Loan;
 use App\Models\User;
 use App\Services\FonnteService;
+use App\Http\Requests\StoreLoanRequest;
+use App\Http\Requests\UpdateLoanRequest;
+use App\Mail\LoanApproved;
+use App\Mail\LoanRejected;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use App\Notifications\LoanStatusUpdated; // <-- TAMBAHKAN INI
+use Illuminate\Support\Facades\Mail;
+use App\Notifications\LoanStatusUpdated;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewLoanRequest;
 use Illuminate\Support\Str;
@@ -74,15 +79,10 @@ class LoanController extends Controller
     /**
      * Menyimpan pengajuan peminjaman baru ke database.
      */
-    public function store(Request $request)
+    public function store(StoreLoanRequest $request)
 {
-    $request->validate([
-        'tanggal_pinjam' => 'required|date|after:today',
-        'tanggal_estimasi_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
-        'items' => 'required|array|min:1',
-        'jumlah.*' => 'nullable|integer|min:1',
-        'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
-    ]);
+    // Authorization dan validation sudah di-handle di StoreLoanRequest
+    $validated = $request->validated();
 
     // ... (Logika validasi stok Anda yang sudah ada) ...
     // (Saya akan gunakan kode dari update terakhir kita)
@@ -198,14 +198,10 @@ public function show(Loan $loan)
     /**
      * Memproses perubahan status peminjaman (aksi oleh Admin).
      */
-    public function update(Request $request, Loan $loan)
+    public function update(UpdateLoanRequest $request, Loan $loan)
 {
-    Gate::authorize('is-admin');
-
-    $request->validate([
-        'status' => 'required|in:approved,rejected,completed',
-        'admin_notes' => 'nullable|string|max:1000',
-    ]);
+    // Authorization dan validation sudah di-handle di UpdateLoanRequest
+    $validated = $request->validated();
 
     $loan->load('items'); // Load item untuk validasi stok
 
@@ -227,15 +223,24 @@ public function show(Loan $loan)
 
     $loan->save(); // Simpan perubahan status
 
-    // --- PENAMBAHAN: KIRIM NOTIFIKASI KE PENGGUNA ---
+    // --- PENAMBAHAN: KIRIM NOTIFIKASI & EMAIL KE PENGGUNA ---
     if ($request->status == 'approved' || $request->status == 'rejected') {
         try {
-            // Kita perlu memuat relasi 'user' untuk mengirim notifikasi
+            // Load relasi user untuk notifikasi
             $loan->load('user'); 
+            
+            // Send email notification
+            if ($request->status == 'approved') {
+                Mail::to($loan->user->email)->send(new LoanApproved($loan));
+            } elseif ($request->status == 'rejected') {
+                Mail::to($loan->user->email)->send(new LoanRejected($loan));
+            }
+            
+            // Send in-app notification (existing)
             Notification::send($loan->user, new LoanStatusUpdated($loan));
         } catch (\Exception $e) {
-            // Opsional: Log error untuk debugging di masa depan
-            // \Log::error('Gagal mengirim notifikasi update status pinjaman: ' . $e->getMessage());
+            // Log error tapi tetap lanjut - email notification opsional
+            \Log::warning('Email notification failed: ' . $e->getMessage());
         }
     }
     // ----------------------------------------------

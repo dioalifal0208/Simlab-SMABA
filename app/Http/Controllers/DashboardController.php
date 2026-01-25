@@ -7,8 +7,10 @@ use App\Models\Booking;
 use App\Models\Item;
 use App\Models\Document;
 use App\Models\DamageReport; // <-- Import DamageReport
+use App\Models\User;
 use Illuminate\Http\Request; // <-- Import Request
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -21,6 +23,17 @@ class DashboardController extends Controller
         //       DASHBOARD UNTUK ADMIN
         // ==============================
         if ($user->role === 'admin') {
+            
+            // Quick Stats Summary Bar Data
+            $totalItemsCount = Item::count();
+            $totalUsersCount = User::count();
+            $monthlyLoansCount = Loan::whereMonth('created_at', Carbon::now()->month)
+                                     ->whereYear('created_at', Carbon::now()->year)
+                                     ->count();
+            $monthlyBookingsCount = Booking::whereMonth('created_at', Carbon::now()->month)
+                                           ->whereYear('created_at', Carbon::now()->year)
+                                           ->count();
+            $monthlyTransactionsCount = $monthlyLoansCount + $monthlyBookingsCount;
             
             $lowStockItems = Item::where('tipe', 'Bahan Habis Pakai')
                                  ->whereNotNull('stok_minimum')
@@ -86,13 +99,18 @@ class DashboardController extends Controller
 
             // --- PERBAIKAN: Menambahkan $overdueLoansCount ke return view ---
             return view('dashboard', [
+                // Quick Stats Summary
+                'totalItemsCount'         => $totalItemsCount,
+                'totalUsersCount'         => $totalUsersCount,
+                'monthlyTransactionsCount' => $monthlyTransactionsCount,
+                // Existing stats
                 'lowStockItems'         => $lowStockItems,
                 'newDamageReportsCount' => $newDamageReportsCount,
                 'pendingLoansCount'     => $pendingLoansCount,
                 'pendingBookingsCount'  => $pendingBookingsCount,
                 'brokenItemsCount'      => $brokenItemsCount,
                 'upcomingBookingsCount' => $upcomingBookingsCount,
-                'overdueLoansCount'     => $overdueLoansCount, // <-- Variabel baru ditambahkan di sini
+                'overdueLoansCount'     => $overdueLoansCount,
                 'recentActivities'      => $recentActivities,
                 'chartLabels'           => $chartLabels,
                 'chartData'             => $chartData,
@@ -108,6 +126,7 @@ class DashboardController extends Controller
 
         // Riwayat peminjaman terakhir
         $recentUserLoans = Loan::where('user_id', $user->id)
+            ->with('items') // Eager load items untuk mencegah N+1 query
             ->latest()
             ->take(5)
             ->get();

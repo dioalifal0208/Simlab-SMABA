@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use App\Http\Controllers\ContactAdminController;
 use App\Http\Controllers\ContactConversationController;
 use App\Http\Controllers\AdminContactConversationController;
+use App\Http\Controllers\AuditLogController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -158,6 +159,11 @@ Route::middleware(['auth', 'single.session'])->group(function () {
         // Moderasi Testimoni
         Route::get('/admin/testimonials', [TestimonialController::class, 'index'])->name('admin.testimonials.index');
         Route::post('/admin/testimonials/{testimonial}/status', [TestimonialController::class, 'updateStatus'])->name('admin.testimonials.update-status');
+
+        // Audit Trail / Log Aktivitas
+        Route::get('/admin/audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
+        Route::get('/admin/audit-logs/export', [AuditLogController::class, 'export'])->name('audit-logs.export');
+        Route::get('/admin/audit-logs/{auditLog}', [AuditLogController::class, 'show'])->name('audit-logs.show');
 
         // Permintaan item dari guru
         Route::get('/admin/item-requests', [ItemRequestController::class, 'index'])->name('admin.item-requests.index');

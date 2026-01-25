@@ -34,8 +34,8 @@ class AdminContactMessage extends Notification
         return [
             'message'       => "Pesan baru dari {$this->namaPengirim} ({$this->emailPengirim})",
             'url'           => $this->conversationId
-                ? route('admin.contact-conversations.show', $this->conversationId)
-                : route('admin.contact-messages.index'),
+                ? route('admin.contact-conversations.index', ['open' => $this->conversationId])
+                : route('admin.contact-conversations.index'),
             'body'          => $this->pesan,
             'sender_name'   => $this->namaPengirim,
             'sender_email'  => $this->emailPengirim,

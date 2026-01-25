@@ -7,6 +7,7 @@ use App\Models\ContactMessage;
 use App\Notifications\ContactConversationReplied;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 class AdminContactConversationController extends Controller
 {
@@ -40,9 +41,11 @@ class AdminContactConversationController extends Controller
                     'id'              => $conv->id,
                     'user_name'       => $conv->user->name ?? 'Pengguna',
                     'user_email'      => $conv->user->email ?? '-',
+                    'user_avatar'     => $conv->user->avatar ?? null, // Placeholder if avatar exists
                     'status'          => $conv->status,
-                    'last_message'    => $latest?->body,
-                    'last_message_at' => $latest?->created_at?->toDateTimeString(),
+                    'unread'          => $latest && $latest->sender_type === 'user',
+                    'last_message'    => Str::limit($latest?->body, 50),
+                    'last_message_at' => $latest?->created_at?->toIso8601String(),
                 ];
             });
 
@@ -76,11 +79,7 @@ class AdminContactConversationController extends Controller
     {
         Gate::authorize('is-admin');
 
-        $conversation->load(['user', 'messages' => function ($query) {
-            $query->orderBy('created_at');
-        }]);
-
-        return view('admin.contact-conversations.show', compact('conversation'));
+        return redirect()->route('admin.contact-conversations.index', ['open' => $conversation->id]);
     }
 
     public function reply(Request $request, ContactConversation $conversation)

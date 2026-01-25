@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -11,6 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Prevent crash if column doesn't exist yet
+        if (!Schema::hasColumn('users', 'laboratorium')) {
+            return; 
+        }
+
         $mapping = [
             'gurubiologi@smaba.sch.id' => 'Biologi',
             'gurufisika@smaba.sch.id' => 'Fisika',

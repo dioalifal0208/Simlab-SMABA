@@ -1,0 +1,254 @@
+/* Form Enhancements for Lab-SMABA */
+
+/* Floating Label Input */
+.floating-label-group {
+    position: relative;
+}
+
+.floating-label-input {
+    width: 100%;
+    padding: 1rem 0.75rem 0.5rem 0.75rem;
+    border: 1px solid #d1d5db; /* gray-300 */
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: all 200ms ease-in-out;
+}
+
+.floating-label-input:focus {
+    outline: none;
+    border-color: #1e3a8a; /* smaba-dark-blue */
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+
+.floating-label {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 0.25rem;
+    background-color: white;
+    color: #6b7280; /* gray-500 */
+    font-size: 1rem;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.floating-label-input:focus ~ .floating-label,
+.floating-label-input:not(:placeholder-shown) ~ .floating-label {
+    top: 0;
+    font-size: 0.75rem;
+    color: #1e3a8a; /* smaba-dark-blue */
+}
+
+/* Input with Icon */
+.input-with-icon-wrapper {
+    position: relative;
+}
+
+.input-with-icon-left {
+    padding-left: 2.5rem;
+}
+
+.input-with-icon-right {
+    padding-right: 2.5rem;
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af; /* gray-400 */
+    pointer-events: none;
+}
+
+.input-icon-left {
+    left: 0.75rem;
+}
+
+.input-icon-right {
+    right: 0.75rem;
+}
+
+.input-with-icon-wrapper input:focus ~ .input-icon {
+    color: #1e3a8a; /* smaba-dark-blue */
+}
+
+/* Enhanced Select Dropdown */
+.select-enhanced {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+/* Input States */
+.input-success {
+    border-color: #10b981; /* green-500 */
+}
+
+.input-success:focus {
+    border-color: #059669; /* green-600 */
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.input-error {
+    border-color: #ef4444; /* red-500 */
+}
+
+.input-error:focus {
+    border-color: #dc2626; /* red-600 */
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Validation Feedback Icons */
+.validation-icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.validation-icon-success {
+    color: #10b981; /* green-500 */
+}
+
+.validation-icon-error {
+    color: #ef4444; /* red-500 */
+}
+
+/* Helper Text */
+.form-helper-text {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    color: #6b7280; /* gray-500 */
+}
+
+.form-error-text {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    color: #ef4444; /* red-500 */
+}
+
+/* Checkbox & Radio Enhancements */
+.checkbox-enhanced,
+.radio-enhanced {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #d1d5db; /* gray-300 */
+    transition: all 150ms ease-in-out;
+}
+
+.checkbox-enhanced:checked,
+.radio-enhanced:checked {
+    background-color: #1e3a8a; /* smaba-dark-blue */
+    border-color: #1e3a8a;
+}
+
+.checkbox-enhanced:focus,
+.radio-enhanced:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 3rem;
+    height: 1.5rem;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #d1d5db; /* gray-300 */
+    transition: 0.3s;
+    border-radius: 1.5rem;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 1.125rem;
+    width: 1.125rem;
+    left: 0.1875rem;
+    bottom: 0.1875rem;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background-color: #1e3a8a; /* smaba-dark-blue */
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+    transform: translateX(1.5rem);
+}
+
+/* File Upload Drag & Drop */
+.file-upload-zone {
+    border: 2px dashed #d1d5db; /* gray-300 */
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    transition: all 200ms ease-in-out;
+    cursor: pointer;
+}
+
+.file-upload-zone:hover,
+.file-upload-zone.drag-over {
+    border-color: #1e3a8a; /* smaba-dark-blue */
+    background-color: rgba(30, 58, 138, 0.05);
+}
+
+/* Input Group (Input + Button) */
+.input-group {
+    display: flex;
+    align-items: stretch;
+}
+
+.input-group input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+}
+
+.input-group button,
+.input-group .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Date/Time Picker Enhancements */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+    position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+input[type="date"]:hover::-webkit-calendar-picker-indicator,
+input[type="time"]:hover::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]:hover::-webkit-calendar-picker-indicator {
+    opacity: 1;
+}
