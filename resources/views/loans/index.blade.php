@@ -1,7 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-            {{-- Judul dan Sub-judul Halaman --}}
             <div>
                 <h2 class="font-bold text-2xl text-smaba-text leading-tight">
                     @if (auth()->user()->role == 'admin')
@@ -19,7 +18,6 @@
                 </p>
             </div>
             
-            {{-- Tombol Aksi untuk Pengguna Biasa --}}
             @unless (auth()->user()->role == 'admin')
                 <a href="{{ route('loans.create') }}" class="mt-3 sm:mt-0 px-5 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors duration-300 ease-in-out transform hover:-translate-y-0.5">
                     <i class="fas fa-plus mr-2"></i> Ajukan Peminjaman Baru
@@ -40,14 +38,13 @@
 
             <div data-aos="fade-up" data-aos-duration="500" data-aos-once="true">
                 {{-- Form Filter Status Otomatis --}}
-                <div class="mb-6 bg-white overflow-hidden shadow-lg sm:rounded-xl">
+                <div class="mb-6 bg-white overflow-hidden border border-gray-100 shadow-sm sm:rounded-xl">
                     <form action="{{ route('loans.index') }}" method="GET" class="p-4 sm:p-6" id="filter-form">
                         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:space-x-4">
                             <div class="flex items-center space-x-2">
                                 <label for="status" class="text-sm font-medium text-gray-700">Status:</label>
                                 <select name="status" id="status" class="w-full sm:w-auto rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
                                     <option value="">Semua Status</option>
-                                    {{-- PERBAIKAN DI SINI --}}
                                     <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu Persetujuan</option>
                                     <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
                                     <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
@@ -64,14 +61,13 @@
                                     <option value="Bahasa" @selected(request('laboratorium') === 'Bahasa')>Bahasa</option>
                                 </select>
                             </div>
-                            {{-- Indikator Loading --}}
                             <i id="loading-spinner" class="fas fa-spinner fa-spin text-gray-500 hidden"></i>
                         </div>
                     </form>
                 </div>
 
                 {{-- Tabel Daftar Peminjaman --}}
-                <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl">
+                <div class="bg-white overflow-hidden border border-gray-100 shadow-sm sm:rounded-xl">
                     <div class="overflow-x-auto">
                         <table class="min-w-full bg-white">
                             <thead class="bg-gray-50">
@@ -106,7 +102,7 @@
                                                 <span class="px-3 py-1 text-xs font-bold leading-none text-red-800 bg-red-100 rounded-full">Ditolak</span>
                                             @elseif($loan->status == 'completed')
                                                 <span class="px-3 py-1 text-xs font-bold leading-none text-gray-800 bg-gray-100 rounded-full">Selesai</span>
-                                                @elseif($loan->status == 'Terlambat')
+                                            @elseif($loan->status == 'Terlambat')
                                                 <span class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-200 rounded-full">Terlambat</span>
                                             @endif
                                         </td>
@@ -118,9 +114,19 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="{{ auth()->user()->role == 'admin' ? '7' : '6' }}" class="py-8 text-center text-gray-500">
-                                            <p class="font-semibold">Tidak Ada Data</p>
-                                            <p class="text-sm mt-1">Belum ada data peminjaman yang cocok dengan filter Anda.</p>
+                                        <td colspan="{{ auth()->user()->role == 'admin' ? '7' : '6' }}" class="py-12">
+                                            <div class="text-center">
+                                                <div class="w-20 h-20 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                                                    <i class="fas fa-clipboard-list text-3xl text-gray-400"></i>
+                                                </div>
+                                                <h3 class="text-lg font-semibold text-gray-900 mb-1">Tidak Ada Data Peminjaman</h3>
+                                                <p class="text-sm text-gray-500 mb-4">Belum ada data peminjaman yang cocok dengan filter Anda.</p>
+                                                @unless (auth()->user()->role == 'admin')
+                                                <a href="{{ route('loans.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                                                    <i class="fas fa-plus"></i> Ajukan Peminjaman Baru
+                                                </a>
+                                                @endunless
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforelse
@@ -142,7 +148,6 @@
                 const statusSelect = document.getElementById('status');
                 const labSelect = document.getElementById('laboratorium');
 
-                // PERBAIKAN: Menambahkan spinner saat form disubmit
                 function submitWithSpinner() {
                     filterForm.submit();
                     document.getElementById('loading-spinner').classList.remove('hidden');

@@ -66,9 +66,23 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="py-8 text-center text-gray-500">
-                        <p class="font-semibold">Tidak Ada Item Ditemukan</p>
-                        <p class="text-sm mt-1">Coba ubah filter pencarian Anda atau tambahkan item baru.</p>
+                    <td colspan="7" class="py-12">
+                        <div class="text-center">
+                            <div class="w-20 h-20 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                                <i class="fas fa-flask text-3xl text-gray-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Tidak Ada Item Ditemukan</h3>
+                            <p class="text-sm text-gray-500 mb-4">Coba ubah filter pencarian Anda atau tambahkan item baru.</p>
+                            @can('is-admin')
+                            <a href="{{ route('items.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                                <i class="fas fa-plus"></i> Tambah Item Baru
+                            </a>
+                            @else
+                            <a href="{{ route('item-requests.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                                <i class="fas fa-plus"></i> Ajukan Item Baru
+                            </a>
+                            @endcan
+                        </div>
                     </td>
                 </tr>
             @endforelse

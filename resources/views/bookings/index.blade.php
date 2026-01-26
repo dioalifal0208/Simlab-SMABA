@@ -1,7 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-            {{-- Judul dan Sub-judul Halaman --}}
             <div>
                 <h2 class="font-bold text-2xl text-smaba-text leading-tight">
                     @if (auth()->user()->role == 'admin')
@@ -19,7 +18,6 @@
                 </p>
             </div>
             
-            {{-- Tombol Aksi "Ajukan Booking Baru" --}}
             <a href="{{ route('bookings.create') }}" class="mt-3 sm:mt-0 px-5 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors duration-300 ease-in-out transform hover:-translate-y-0.5">
                 <i class="fas fa-plus mr-2"></i> Ajukan Booking Baru
             </a>
@@ -29,7 +27,6 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            {{-- Pesan Sukses (Flash Message) --}}
             @if (session('success'))
                 <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg" role="alert">
                     <p class="font-bold">Sukses</p>
@@ -37,7 +34,6 @@
                 </div>
             @endif
 
-            {{-- Wrapper Konten Utama dengan Animasi --}}
             <div data-aos="fade-up" data-aos-duration="500" data-aos-once="true">
                 {{-- Form Filter Status Otomatis --}}
                 <div class="mb-6 bg-white overflow-hidden border border-gray-100 shadow-sm sm:rounded-xl">
@@ -62,29 +58,25 @@
                                     <option value="Bahasa" {{ request('laboratorium') == 'Bahasa' ? 'selected' : '' }}>Bahasa</option>
                                 </select>
                             </div>
-                            {{-- Indikator Loading --}}
                             <i id="loading-spinner" class="fas fa-spinner fa-spin text-gray-500 hidden"></i>
                         </div>
                     </form>
                 </div>
 
-                {{-- Daftar Booking (REDESIGNED with Cards) --}}
+                {{-- Daftar Booking Cards --}}
                 <div class="space-y-4">
                     @forelse ($bookings as $booking)
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border-l-4 border-gray-200 transition-all duration-200 hover:-translate-y-1 hover:shadow-md 
-                            @if($booking->status == 'approved') border-green-500 @elseif($booking->status == 'pending') border-yellow-500 @elseif($booking->status == 'rejected') border-red-500 @else border-gray-400 @endif">
+                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl border border-gray-100 border-l-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-md 
+                            @if($booking->status == 'approved') border-l-green-500 @elseif($booking->status == 'pending') border-l-yellow-500 @elseif($booking->status == 'rejected') border-l-red-500 @else border-l-gray-400 @endif">
                             <div class="p-4 sm:p-6">
                                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                                    {{-- Kolom Kiri: Info Utama --}}
                                     <div class="flex-grow">
                                         <div class="flex items-center space-x-3 flex-wrap gap-2">
-                                            {{-- Status Badge --}}
                                             <span class="px-3 py-1 text-xs font-bold leading-none rounded-full
                                                 @if($booking->status == 'pending') text-yellow-800 bg-yellow-100
                                                 @elseif($booking->status == 'approved') text-green-800 bg-green-100
                                                 @elseif($booking->status == 'rejected') text-red-800 bg-red-100
                                                 @else text-gray-800 bg-gray-100 @endif">
-                                                {{-- Menggunakan pemetaan untuk teks yang lebih ramah pengguna --}}
                                                 {{ match($booking->status) {
                                                     'pending' => 'Menunggu',
                                                     'approved' => 'Disetujui',
@@ -104,14 +96,12 @@
                                             </p>
                                         @endif
                                     </div>
-                                    {{-- Kolom Kanan: Aksi --}}
                                     <div class="mt-4 sm:mt-0 sm:ml-4 flex-shrink-0">
                                         <a href="{{ route('bookings.show', $booking->id) }}" class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-xs shadow-sm transition-colors duration-300">
                                             <i class="fas fa-eye mr-2"></i> Lihat Detail
                                         </a>
                                     </div>
                                 </div>
-                                {{-- Footer Kartu: Info Tanggal --}}
                                 <div class="mt-4 pt-4 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm text-gray-500">
                                     <div class="flex items-center">
                                         <i class="fas fa-calendar-alt fa-fw mr-2 text-gray-400"></i>
@@ -125,10 +115,15 @@
                             </div>
                         </div>
                     @empty
-                        <div class="text-center py-12 bg-white rounded-lg shadow-md">
-                            <i class="fas fa-folder-open text-4xl text-gray-300"></i>
-                            <p class="mt-4 font-semibold text-gray-700">Tidak Ada Data Booking</p>
-                            <p class="text-sm mt-1 text-gray-500">Belum ada data booking yang cocok dengan filter Anda.</p>
+                        <div class="text-center py-12 bg-white rounded-xl border border-gray-100 shadow-sm">
+                            <div class="w-20 h-20 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                                <i class="fas fa-calendar-times text-3xl text-gray-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Tidak Ada Data Booking</h3>
+                            <p class="text-sm text-gray-500 mb-4">Belum ada data booking yang cocok dengan filter Anda.</p>
+                            <a href="{{ route('bookings.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                                <i class="fas fa-plus"></i> Ajukan Booking Baru
+                            </a>
                         </div>
                     @endforelse
                 </div>
@@ -141,7 +136,6 @@
         </div>
     </div>
 
-    {{-- Script untuk Auto-Filter --}}
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -155,8 +149,7 @@
                     if (spinner) spinner.classList.remove('hidden');
                 };
 
-                if (statusSelect) { // Pastikan elemen ada
-                    // PERBAIKAN: Menambahkan spinner saat form disubmit
+                if (statusSelect) {
                     statusSelect.addEventListener('change', submitFilters);
                 }
 

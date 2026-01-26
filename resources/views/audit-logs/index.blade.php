@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-bold text-xl text-gray-800 leading-tight">
+        <h2 class="font-bold text-2xl text-smaba-text leading-tight">
             {{ __('Audit Trail') }}
         </h2>
     </x-slot>
@@ -118,9 +118,14 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="py-8 text-center text-gray-500">
-                                    <p class="font-semibold">Tidak Ada Log Ditemukan</p>
-                                    <p class="text-sm mt-1">Coba ubah filter pencarian Anda.</p>
+                                <td colspan="6" class="py-12">
+                                    <div class="text-center">
+                                        <div class="w-20 h-20 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                                            <i class="fas fa-history text-3xl text-gray-400"></i>
+                                        </div>
+                                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Tidak Ada Log Ditemukan</h3>
+                                        <p class="text-sm text-gray-500">Coba ubah filter pencarian Anda untuk melihat log aktivitas.</p>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse
