@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Booking;
+use App\Models\User;
+use App\Http\Requests\StoreBookingRequest;
+use App\Http\Requests\UpdateBookingRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate; // <-- Direkomendasikan untuk otorisasi
-use App\Notifications\BookingStatusUpdated; // <-- TAMBAHKAN INI
-use Illuminate\Support\Facades\Notification; // <-- TAMBAHKAN INI
+use Illuminate\Support\Facades\Gate;
+use App\Notifications\BookingStatusUpdated;
+use App\Notifications\NewBookingRequest;
+use Illuminate\Support\Facades\Notification;
 
 class BookingController extends Controller
 {
@@ -24,9 +28,17 @@ class BookingController extends Controller
             $query->where('user_id', Auth::id());
         }
 
+        // Kunci laboratorium sesuai penugasan guru
+        if (Auth::user()->role === 'guru' && Auth::user()->laboratorium) {
+            $request->merge(['laboratorium' => Auth::user()->laboratorium]);
+        }
+
         // Menerapkan filter status jika ada dari request URL.
         if ($request->filled('status')) {
             $query->where('status', $request->status);
+        }
+        if ($request->filled('laboratorium')) {
+            $query->where('laboratorium', $request->laboratorium);
         }
 
         // Eksekusi query dengan paginasi.
@@ -40,24 +52,37 @@ class BookingController extends Controller
      */
     public function create()
     {
-        return view('bookings.create');
+        $selectedLaboratorium = Auth::user()->role === 'admin'
+            ? null
+            : (Auth::user()->laboratorium ?? 'Biologi');
+
+        return view('bookings.create', compact('selectedLaboratorium'));
     }
 
     /**
      * Menyimpan booking baru ke database.
      */
-    public function store(Request $request)
+    public function store(StoreBookingRequest $request)
     {
-        // Kode Anda di sini sudah sangat baik. Tidak ada perubahan.
-        $validated = $request->validate([
-            'guru_pengampu' => 'required|string|max:255',
-            'tujuan_kegiatan' => 'required|string',
-            'waktu_mulai' => 'required|date',
-            'waktu_selesai' => 'required|date|after:waktu_mulai',
-            'jumlah_peserta' => 'nullable|integer|min:1',
-        ]);
+        // Authorization dan validation sudah di-handle di StoreBookingRequest
+        $validated = $request->validated();
+
+        // Jika guru, paksa gunakan lab yang ditugaskan
+        if (Auth::user()->role === 'guru') {
+            if (!Auth::user()->laboratorium) {
+                return back()->withErrors(['laboratorium' => 'Akun Anda belum memiliki penugasan laboratorium. Hubungi admin.'])->withInput();
+            }
+            if ($validated['laboratorium'] !== Auth::user()->laboratorium) {
+                return back()->withErrors(['laboratorium' => 'Anda hanya dapat mengajukan untuk Lab ' . Auth::user()->laboratorium . '.'])->withInput();
+            }
+        }
+
+        $selectedLab = Auth::user()->role === 'admin'
+            ? $validated['laboratorium']
+            : Auth::user()->laboratorium;
 
         $isConflict = Booking::where('status', 'approved')
+            ->where('laboratorium', $selectedLab)
             ->where(function ($query) use ($validated) {
                 $query->where('waktu_mulai', '<', $validated['waktu_selesai'])
                       ->where('waktu_selesai', '>', $validated['waktu_mulai']);
@@ -70,15 +95,27 @@ class BookingController extends Controller
             ])->withInput();
         }
 
-        Booking::create([
+        $booking = Booking::create([
             'user_id' => $request->user()->id,
             'guru_pengampu' => $validated['guru_pengampu'],
             'tujuan_kegiatan' => $validated['tujuan_kegiatan'],
             'status' => 'pending',
+            'laboratorium' => $selectedLab,
             'waktu_mulai' => $validated['waktu_mulai'],
             'waktu_selesai' => $validated['waktu_selesai'],
             'jumlah_peserta' => $validated['jumlah_peserta'],
         ]);
+
+        // Kirim notifikasi ke semua admin bahwa ada booking lab baru
+        try {
+            $admins = User::where('role', 'admin')->get();
+            if ($admins->isNotEmpty()) {
+                Notification::send($admins, new NewBookingRequest($booking));
+            }
+        } catch (\Exception $e) {
+            // Optional: log error jika diperlukan
+            // \Log::error('Gagal mengirim notifikasi booking baru: ' . $e->getMessage());
+        }
 
         return redirect()->route('dashboard')->with('success', 'Pengajuan booking lab berhasil dikirim dan sedang menunggu persetujuan.');
     }
@@ -88,13 +125,14 @@ class BookingController extends Controller
      */
     // app/Http/Controllers/BookingController.php
 
-public function show(Booking $booking)
+public function show($id)
 {
+    $booking = Booking::findOrFail($id);
+
     // PERBAIKAN: Ubah kedua ID menjadi (int) sebelum membandingkan
     if (Auth::user()->role !== 'admin' && (int) $booking->user_id !== (int) Auth::id()) {
         abort(403);
     }
-
     $booking->load('user');
     return view('bookings.show', compact('booking'));
 }
@@ -110,18 +148,15 @@ public function show(Booking $booking)
     /**
      * Mengupdate status booking (aksi oleh Admin).
      */
-    public function update(Request $request, Booking $booking)
+    public function update(UpdateBookingRequest $request, Booking $booking)
 {
-    Gate::authorize('is-admin');
-
-    $request->validate([
-        'status' => 'required|in:approved,rejected,completed',
-        'admin_notes' => 'nullable|string|max:1000',
-    ]);
+    // Authorization dan validation sudah di-handle di UpdateBookingRequest
+    $validated = $request->validated();
 
     if ($request->status == 'approved') {
         $isConflict = Booking::where('status', 'approved')
             ->where('id', '!=', $booking->id)
+            ->where('laboratorium', $booking->laboratorium)
             ->where(function ($query) use ($booking) {
                 $query->where('waktu_mulai', '<', $booking->waktu_selesai)
                       ->where('waktu_selesai', '>', $booking->waktu_mulai);
@@ -140,9 +175,14 @@ public function show(Booking $booking)
 
     // --- PENAMBAHAN: KIRIM NOTIFIKASI KE PENGGUNA ---
     if ($request->status == 'approved' || $request->status == 'rejected') {
-        // Kita perlu memuat relasi 'user' untuk mengirim notifikasi
-        $booking->load('user'); 
-        Notification::send($booking->user, new BookingStatusUpdated($booking));
+        try {
+            // Kita perlu memuat relasi 'user' untuk mengirim notifikasi
+            $booking->load('user'); 
+            Notification::send($booking->user, new BookingStatusUpdated($booking));
+        } catch (\Exception $e) {
+            // Opsional: Log error untuk debugging di masa depan
+            // \Log::error('Gagal mengirim notifikasi update status booking: ' . $e->getMessage());
+        }
     }
     // ----------------------------------------------
 
@@ -161,6 +201,9 @@ public function show(Booking $booking)
     // if (!in_array($booking->status, ['pending', 'rejected'])) {
     //     return back()->withErrors(['message' => 'Hanya booking yang pending atau ditolak yang bisa dihapus.']);
     // }
+
+    // Hapus notifikasi yang terkait dengan booking ini sebelum menghapus booking itu sendiri
+    $booking->notifications()->delete();
 
     // Hapus data booking
     $booking->delete();

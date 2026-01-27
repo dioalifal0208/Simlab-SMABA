@@ -66,8 +66,14 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="py-8 text-center text-gray-500">
-                                            <p class="font-semibold">Tidak Ada Laporan Kerusakan</p>
+                                        <td colspan="6" class="py-12">
+                                            <div class="text-center">
+                                                <div class="w-20 h-20 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                                                    <i class="fas fa-tools text-3xl text-gray-400"></i>
+                                                </div>
+                                                <h3 class="text-lg font-semibold text-gray-900 mb-1">Tidak Ada Laporan Kerusakan</h3>
+                                                <p class="text-sm text-gray-500">Belum ada laporan kerusakan yang tercatat.</p>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforelse

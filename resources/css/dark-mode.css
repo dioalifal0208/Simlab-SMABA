@@ -1,0 +1,167 @@
+/* Dark Mode Styles for Lab-SMABA */
+
+/* CSS Variables for theming */
+:root {
+    /* Light mode (default) */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-tertiary: #f3f4f6;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --text-tertiary: #9ca3af;
+    --border-color: #e5e7eb;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode variables */
+[data-theme="dark"] {
+    /* True Black Theme */
+    --bg-primary: #121212;      /* Cards / Surfaces (dark gray) */
+    --bg-secondary: #000000;    /* Main Background (pure black) */
+    --bg-tertiary: #1e1e1e;     /* Inputs / Hovers */
+    --text-primary: #ffffff;    /* High Emphasis Text */
+    --text-secondary: #f3f4f6;  /* Medium Emphasis (Gray 100 - Nearly White) */
+    --text-tertiary: #e5e7eb;   /* Low Emphasis (Gray 200 - Very Light Gray) */
+    --border-color: #27272a;    /* Borders (Zinc 800) */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+}
+
+/* Apply theme colors to elements */
+body {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: background-color 300ms ease, color 300ms ease;
+}
+
+/* Cards and containers */
+.card,
+.bg-white {
+    background-color: var(--bg-primary);
+    border-color: var(--border-color);
+}
+
+.bg-gray-50 {
+    background-color: var(--bg-secondary);
+}
+
+.bg-gray-100 {
+    background-color: var(--bg-tertiary);
+}
+
+/* Text colors */
+.text-gray-900 {
+    color: var(--text-primary);
+}
+
+.text-gray-600,
+.text-gray-700 {
+    color: var(--text-secondary);
+}
+
+.text-gray-500 {
+    color: var(--text-tertiary);
+}
+
+/* Borders */
+.border-gray-200,
+.border-gray-300 {
+    border-color: var(--border-color);
+}
+
+/* Shadows */
+.shadow-sm {
+    box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+    box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+    box-shadow: var(--shadow-lg);
+}
+
+/* Form inputs in dark mode */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+    color: var(--text-tertiary);
+}
+
+/* Tables in dark mode */
+[data-theme="dark"] .table-striped tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+[data-theme="dark"] .table-hover tbody tr:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Gradient cards - preserve colors in dark mode */
+[data-theme="dark"] .bg-gradient-to-br {
+    /* Gradients remain vibrant in dark mode */
+}
+
+/* Dark mode toggle button */
+.dark-mode-toggle {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    width: 3rem;
+    height: 3rem;
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    z-index: 50;
+    transition: all 200ms ease;
+}
+
+.dark-mode-toggle:hover {
+    transform: scale(1.1);
+}
+
+.dark-mode-toggle i {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+}
+
+/* Hide on mobile if nav is present */
+@media (max-width: 767px) {
+    .dark-mode-toggle {
+        bottom: 5.5rem;
+    }
+}
+
+/* Smooth transitions for theme switch */
+* {
+    transition-property: background-color, border-color, color;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+
+/* Preserve gradient and image colors */
+img,
+svg,
+.bg-gradient-to-br,
+.bg-gradient-to-r,
+.bg-gradient-to-l,
+.bg-gradient-to-t,
+.bg-gradient-to-b {
+    transition: none;
+}

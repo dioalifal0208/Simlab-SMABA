@@ -11,7 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Dibiarkan kosong karena semua kolom sudah ada
+        Schema::create('item_images', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('item_id')->constrained()->onDelete('cascade');
+            $table->string('path');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -19,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Dibiarkan kosong
+        Schema::dropIfExists('item_images');
     }
 };

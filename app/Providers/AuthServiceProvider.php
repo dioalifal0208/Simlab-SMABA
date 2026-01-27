@@ -17,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // Admin & Guru boleh mengelola dokumen
         Gate::define('manage-documents', function ($user) {
-            return in_array($user->role, ['admin', 'teacher']);
+            return in_array($user->role, ['admin', 'guru']);
         });
 
         // Gate bawaan untuk admin

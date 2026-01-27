@@ -29,12 +29,28 @@
                     <form action="{{ route('loans.store') }}" method="POST">
                         @csrf
                         <div class="space-y-6">
+                            {{-- Pilih Laboratorium --}}
+                            <div>
+                                <label for="laboratorium" class="block font-medium text-sm text-gray-700">Laboratorium</label>
+                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required {{ auth()->user()->role === 'admin' ? '' : 'disabled' }}>
+                                    <option value="Biologi" @selected(old('laboratorium', $selectedLaboratorium ?? 'Biologi') === 'Biologi')>Lab Biologi</option>
+                                    <option value="Fisika" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Fisika')>Lab Fisika</option>
+                                    <option value="Bahasa" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Bahasa')>Lab Bahasa</option>
+                                </select>
+                                @if(auth()->user()->role !== 'admin')
+                                    <input type="hidden" name="laboratorium" value="{{ old('laboratorium', $selectedLaboratorium) }}">
+                                    <p class="text-xs text-gray-500 mt-1">Lab dikunci sesuai penugasan Anda.</p>
+                                @else
+                                    <p class="text-xs text-gray-500 mt-1">Item di bawah difilter berdasarkan lab yang dipilih.</p>
+                                @endif
+                            </div>
 
                             {{-- Tanggal Pinjam & Kembali --}}
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label for="tanggal_pinjam" class="block font-medium text-sm text-gray-700">Tanggal Rencana Peminjaman</label>
                                     <input type="date" name="tanggal_pinjam" id="tanggal_pinjam" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('tanggal_pinjam') }}" required>
+                                    <p class="text-xs text-amber-600 mt-1">Pengajuan maksimal H-1 dari tanggal pinjam (tidak bisa hari ini).</p>
                                 </div>
                                 <div>
                                     <label for="tanggal_estimasi_kembali" class="block font-medium text-sm text-gray-700">Estimasi Tanggal Kembali</label>
@@ -57,7 +73,7 @@
                                     {{-- Daftar Item --}}
                                     <div class="space-y-3 border-t pt-4 max-h-72 overflow-y-auto" id="item-list">
                                         @forelse ($items as $item)
-                                            <div class="p-2 rounded-md hover:bg-gray-100 item-entry">
+                                            <div class="p-2 rounded-md hover:bg-gray-100 item-entry" data-lab="{{ $item->laboratorium }}">
                                                 <div class="flex items-center justify-between">
                                                     <div class="flex items-center">
                                                         <input type="checkbox" name="items[]" value="{{ $item->id }}" id="item_{{ $item->id }}" 
@@ -66,7 +82,7 @@
                                                         {{ isset($selectedItemIds) && in_array($item->id, $selectedItemIds) ? 'checked' : '' }}>
                                                         <div class="ms-3">
                                                             <label for="item_{{ $item->id }}" class="block text-sm font-semibold text-gray-800 item-name">{{ $item->nama_alat }}</label>
-                                                            <span class="text-xs text-gray-500">Stok Tersedia: {{ $item->jumlah }} {{ $item->satuan }}</span>
+                                                            <span class="text-xs text-gray-500">Stok Tersedia: {{ $item->jumlah }} {{ $item->satuan }} • {{ $item->laboratorium }}</span>
                                                         </div>
                                                     </div>
                                                     <div>
@@ -106,19 +122,32 @@
                 const searchInput = document.getElementById('item-search');
                 const itemList = document.getElementById('item-list');
                 const items = itemList.querySelectorAll('.item-entry');
+                const labSelect = document.getElementById('laboratorium');
 
                 searchInput.addEventListener('keyup', function(e) {
                     const searchTerm = e.target.value.toLowerCase();
 
                     items.forEach(item => {
                         const itemName = item.querySelector('.item-name').textContent.toLowerCase();
-                        if (itemName.includes(searchTerm)) {
+                        if (itemName.includes(searchTerm) && item.dataset.lab === labSelect.value) {
                             item.style.display = 'block';
                         } else {
                             item.style.display = 'none';
                         }
                     });
                 });
+
+                // Filter berdasarkan lab
+                function filterByLab() {
+                    items.forEach(item => {
+                        const matchLab = item.dataset.lab === labSelect.value;
+                        const itemName = item.querySelector('.item-name').textContent.toLowerCase();
+                        const matchSearch = searchInput.value === '' || itemName.includes(searchInput.value.toLowerCase());
+                        item.style.display = matchLab && matchSearch ? 'block' : 'none';
+                    });
+                }
+                labSelect.addEventListener('change', filterByLab);
+                filterByLab();
                 
                 // --- PENAMBAHAN: Kustomisasi Pesan Error Validasi Stok ---
                 

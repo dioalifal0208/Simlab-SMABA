@@ -13,7 +13,6 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
 
-            {{-- Pesan Sukses (Flash Message) --}}
             @if (session('success'))
                 <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg" role="alert">
                     <p class="font-bold">Sukses</p>
@@ -21,9 +20,9 @@
                 </div>
             @endif
 
-            {{-- Form Unggah (Admin & Guru) dengan Animasi --}}
+            {{-- Form Unggah (Admin & Guru) --}}
             @can('manage-documents')
-            <div class="bg-white shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
+            <div class="bg-white border border-gray-100 shadow-sm sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
                 <div class="p-6">
                     <h3 class="text-xl font-bold text-smaba-text mb-4">Unggah Dokumen Baru</h3>
                     <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
@@ -33,6 +32,21 @@
                             <input type="text" name="title" id="title" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
                             @error('title') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
                         </div>
+                        @if (auth()->user()->role === 'admin')
+                            <div>
+                                <label for="target_user_id" class="block text-sm font-medium text-gray-700">Ditujukan untuk Guru</label>
+                                <select name="target_user_id" id="target_user_id" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <option value="" disabled {{ old('target_user_id') ? '' : 'selected' }}>Pilih guru tujuan</option>
+                                    @foreach ($targetUsers as $targetUser)
+                                        <option value="{{ $targetUser->id }}" {{ old('target_user_id') == $targetUser->id ? 'selected' : '' }}>{{ $targetUser->name }}</option>
+                                    @endforeach
+                                </select>
+                                <p class="text-xs text-gray-500 mt-1">Guru hanya melihat dokumen admin yang ditujukan untuk dirinya.</p>
+                                @error('target_user_id') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
+                            </div>
+                        @else
+                            <p class="text-sm text-gray-500">Admin dapat melihat unggahan Anda. Guru lain tidak bisa.</p>
+                        @endif
                         <div>
                             <label for="file" class="block text-sm font-medium text-gray-700">Pilih File (pdf, doc, docx, ppt, pptx)</label>
                             <input type="file" name="file" id="file" required class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-smaba-mint file:text-smaba-dark-blue hover:file:bg-smaba-light-blue hover:file:text-white">
@@ -46,7 +60,6 @@
             </div>
             @endcan
 
-            {{-- Wrapper Konten Utama dengan Animasi --}}
             <div data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
                 {{-- Form untuk Live Search --}}
                 <div class="mb-6">
@@ -67,7 +80,7 @@
                     @forelse ($documents as $document)
                         @php
                             $extension = pathinfo($document->file_path, PATHINFO_EXTENSION);
-                            $iconClass = 'fa-file'; // Default icon
+                            $iconClass = 'fa-file';
                             $iconColor = 'text-gray-500';
                             if (in_array($extension, ['pdf'])) {
                                 $iconClass = 'fa-file-pdf'; $iconColor = 'text-red-500';
@@ -77,35 +90,45 @@
                                 $iconClass = 'fa-file-powerpoint'; $iconColor = 'text-orange-500';
                             }
                         @endphp
-                        <div class="bg-white overflow-hidden shadow-lg rounded-xl flex flex-col group transform hover:-translate-y-1 transition-transform duration-300">
-                            {{-- Konten Utama Kartu --}}
+                        <div class="bg-white overflow-hidden border border-gray-100 shadow-sm rounded-xl flex flex-col group transform hover:-translate-y-1 transition-transform duration-300">
                             <div class="p-6 flex-grow">
                                 <div class="flex items-start space-x-4">
                                     <i class="fas {{ $iconClass }} {{ $iconColor }} text-4xl mt-1"></i>
                                     <div>
                                         <h3 class="font-bold text-lg text-smaba-text leading-tight group-hover:text-smaba-light-blue transition-colors duration-300">{{ $document->title }}</h3>
                                         <p class="text-xs text-gray-500 mt-2">Diunggah oleh {{ $document->user->name ?? '-' }}</p>
+                                        @if ($document->targetUser)
+                                            <p class="text-xs text-gray-500">Ditujukan untuk {{ $document->targetUser->name }}</p>
+                                        @elseif (optional($document->user)->role === 'admin')
+                                            <p class="text-xs text-gray-500">Ditujukan untuk semua guru</p>
+                                        @endif
                                         <p class="text-xs text-gray-400">{{ $document->created_at?->format('d M Y') }}</p>
                                     </div>
                                 </div>
                             </div>
-                            {{-- Bagian Aksi (Footer Kartu) --}}
                             <div class="bg-gray-50 p-3 border-t flex items-center justify-end space-x-2">
                                 <a href="#" onclick="openDocModal('{{ route('documents.preview', $document) }}', '{{ e($document->title) }}'); return false;" class="px-3 py-1 bg-gray-200 text-gray-700 text-xs font-semibold rounded-full hover:bg-gray-300 transition-colors">Lihat</a>
                                 <a href="{{ route('documents.download', $document) }}" class="px-3 py-1 bg-smaba-dark-blue text-white text-xs font-semibold rounded-full hover:bg-smaba-light-blue transition-colors">Unduh</a>
                                 @can('manage-documents')
+                                    @if (auth()->user()->role === 'admin' || $document->user_id === auth()->id())
                                     <form action="{{ route('documents.destroy', $document) }}" method="POST" class="delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="px-3 py-1 bg-red-600 text-white text-xs font-semibold rounded-full hover:bg-red-700 transition-colors">Hapus</button>
                                     </form>
+                                    @endif
                                 @endcan
                             </div>
                         </div>
                     @empty
-                        <div class="sm:col-span-2 lg:col-span-3 text-center py-16">
-                             <p class="font-semibold text-gray-600">Dokumen Tidak Ditemukan</p>
-                             <p class="text-sm text-gray-500 mt-1">Coba gunakan kata kunci lain atau unggah dokumen baru.</p>
+                        <div class="sm:col-span-2 lg:col-span-3">
+                            <div class="text-center py-12 bg-white rounded-xl border border-gray-100 shadow-sm">
+                                <div class="w-20 h-20 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                                    <i class="fas fa-file-alt text-3xl text-gray-400"></i>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 mb-1">Dokumen Tidak Ditemukan</h3>
+                                <p class="text-sm text-gray-500">Coba gunakan kata kunci lain atau unggah dokumen baru.</p>
+                            </div>
                         </div>
                     @endforelse
                 </div>
@@ -131,11 +154,9 @@
         </div>
     </div>
 
-    {{-- Script dipindahkan ke @push untuk best practice dan memastikan semua berfungsi --}}
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            // --- DEKLARASI FUNGSI MODAL ---
             function openDocModal(url, title) {
                 const modal = document.getElementById('docModal');
                 if (!modal) return;
@@ -155,9 +176,7 @@
                 document.body.style.overflow = '';
             }
 
-            // --- PEMASANGAN EVENT LISTENER SETELAH HALAMAN SIAP ---
             document.addEventListener('DOMContentLoaded', function () {
-                // --- Logika untuk Modal ---
                 const closeModalBtn = document.getElementById('closeModalButton');
                 if (closeModalBtn) {
                     closeModalBtn.addEventListener('click', closeDocModal);
@@ -172,7 +191,6 @@
                     if (e.key === 'Escape') closeDocModal();
                 });
 
-                // --- Logika untuk Live Search ---
                 const searchForm = document.getElementById('search-form');
                 const searchInput = document.getElementById('search');
                 let debounceTimer;
@@ -181,11 +199,10 @@
                         clearTimeout(debounceTimer);
                         debounceTimer = setTimeout(() => {
                             searchForm.submit();
-                        }, 500); // Jeda 500ms
+                        }, 500);
                     });
                 }
 
-                // --- Logika untuk Konfirmasi Hapus ---
                 const deleteForms = document.querySelectorAll('.delete-form');
                 deleteForms.forEach(form => {
                     form.addEventListener('submit', function (event) {

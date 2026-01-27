@@ -9,17 +9,19 @@ export default {
         './resources/views/**/*.blade.php',
     ],
 
+    darkMode: 'class', // Enable class-based dark mode
+
     theme: {
         extend: {
             // Penambahan Palet Warna Kustom
             colors: {
-              'smaba-dark-blue': '#0B2447',      // Biru Tua Profesional
-              'smaba-light-blue': '#576CBC',     // Biru Terang Ramah
-              'smaba-mint': '#A5D7E8',           // Aksen/Highlight
-              'smaba-text': '#19376D',           // Warna Teks Abu Gelap
+              'smaba-dark-blue': '#1d4ed8',      // Blue 700 (Clean SaaS Primary)
+              'smaba-light-blue': '#3b82f6',     // Blue 500 (Clean SaaS Secondary)
+              'smaba-mint': '#eff6ff',           // Blue 50 (Very Light Background)
+              'smaba-text': '#1e293b',           // Slate 800 (Modern Text)
             },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
             },
         },
     },

@@ -12,7 +12,7 @@
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             {{-- Desain Kartu Disesuaikan --}}
-            <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
+            <div class="bg-white overflow-hidden border border-gray-100 shadow-sm sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
                 <div class="p-6 md:p-8 text-gray-900">
                     
                     {{-- Pesan Error Validasi (jika ada) --}}
@@ -77,11 +77,21 @@
                                 <label for="lokasi_penyimpanan" class="block text-sm font-medium text-gray-700">Lokasi Penyimpanan</label>
                                 <input id="lokasi_penyimpanan" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" type="text" name="lokasi_penyimpanan" value="{{ old('lokasi_penyimpanan') }}" required />
                             </div>
+
+                            {{-- Laboratorium --}}
+                            <div>
+                                <label for="laboratorium" class="block text-sm font-medium text-gray-700">Laboratorium</label>
+                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>
+                                    <option value="Biologi" @selected(old('laboratorium', 'Biologi') === 'Biologi')>Lab Biologi</option>
+                                    <option value="Fisika" @selected(old('laboratorium') === 'Fisika')>Lab Fisika</option>
+                                    <option value="Bahasa" @selected(old('laboratorium') === 'Bahasa')>Lab Bahasa</option>
+                                </select>
+                            </div>
                             
                             {{-- Foto Item --}}
                             <div class="md:col-span-2">
-                                <label for="photo" class="block text-sm font-medium text-gray-700">Foto Item (Opsional)</label>
-                                <input id="photo" class="block mt-1 w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200" type="file" name="photo">
+                                <label for="photos" class="block text-sm font-medium text-gray-700">Foto Item (Bisa lebih dari satu)</label>
+                                <input id="photos" class="block mt-1 w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200" type="file" name="photos[]" multiple>
                             </div>
 
                             {{-- Deskripsi (Keterangan) --}}

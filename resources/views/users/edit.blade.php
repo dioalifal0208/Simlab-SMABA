@@ -52,8 +52,19 @@
                                 <select name="role" id="role" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>
                                     <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
                                     <option value="guru" {{ old('role', $user->role) == 'guru' ? 'selected' : '' }}>Guru</option>
-                                    <option value="siswa" {{ old('role', $user->role) == 'siswa' ? 'selected' : '' }}>Siswa</option>
                                 </select>
+                            </div>
+
+                            {{-- Laboratorium (untuk Guru) --}}
+                            <div>
+                                <label for="laboratorium" class="block font-medium text-sm text-gray-700">Laboratorium (khusus Guru)</label>
+                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <option value="">-- Pilih Lab --</option>
+                                    <option value="Biologi" @selected(old('laboratorium', $user->laboratorium) === 'Biologi')>Biologi</option>
+                                    <option value="Fisika" @selected(old('laboratorium', $user->laboratorium) === 'Fisika')>Fisika</option>
+                                    <option value="Bahasa" @selected(old('laboratorium', $user->laboratorium) === 'Bahasa')>Bahasa</option>
+                                </select>
+                                <p class="text-xs text-gray-500 mt-1">Setelan ini membatasi tampilan inventaris & peminjaman guru ke lab terkait.</p>
                             </div>
                         </div>
 

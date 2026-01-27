@@ -43,6 +43,7 @@
                             <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
                                 <div><dt class="font-medium text-gray-500">Peminjam</dt><dd class="mt-1 font-semibold text-gray-800">{{ $loan->user->name }}</dd></div>
                                 <div><dt class="font-medium text-gray-500">Tanggal Pengajuan</dt><dd class="mt-1 font-semibold text-gray-800">{{ $loan->created_at->format('d F Y, H:i') }}</dd></div>
+                                <div><dt class="font-medium text-gray-500">Laboratorium</dt><dd class="mt-1 font-semibold text-gray-800">{{ $loan->laboratorium }}</dd></div>
                                 <div><dt class="font-medium text-gray-500">Rencana Tanggal Pinjam</dt><dd class="mt-1 font-semibold text-gray-800">{{ \Carbon\Carbon::parse($loan->tanggal_pinjam)->format('d F Y') }}</dd></div>
                                 @if($loan->tanggal_kembali)
                                 <div><dt class="font-medium text-gray-500">Tanggal Kembali</dt><dd class="mt-1 font-semibold text-gray-800">{{ \Carbon\Carbon::parse($loan->tanggal_kembali)->format('d F Y') }}</dd></div>

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage; // <-- PENTING
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Validation\Rule;
 
 class DocumentController extends Controller
 {
@@ -16,16 +19,23 @@ class DocumentController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Document::with('user')->latest();
+        $user = $request->user();
+
+        $query = Document::with(['user:id,name,role', 'targetUser:id,name'])
+            ->visibleTo($user)
+            ->latest();
 
         if ($request->filled('search')) {
             $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        // PERBAIKAN: Ganti ->get() atau ->all() menjadi ->paginate()
         $documents = $query->paginate(12); // Menampilkan 12 dokumen per halaman
 
-        return view('documents.index', compact('documents'));
+        $targetUsers = $user->role === 'admin'
+            ? User::where('role', 'guru')->orderBy('name')->get(['id', 'name'])
+            : collect();
+
+        return view('documents.index', compact('documents', 'targetUsers'));
     }
 
     /**
@@ -33,24 +43,47 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('manage-documents');
+        $user = $request->user();
 
-        $request->validate([
+        // 1. Validasi request
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'file'  => 'required|file|mimes:pdf,doc,docx,ppt,pptx|max:10240', // max 10MB
+            'description' => 'nullable|string|max:1000',
+            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:20480', // 20MB
+            'target_user_id' => $user->role === 'admin'
+                ? ['required', Rule::exists('users', 'id')->where(fn ($query) => $query->where('role', 'guru'))]
+                : ['prohibited'],
         ]);
 
-        // Simpan file ke disk 'public' di dalam folder 'documents'
-        $path = $request->file('file')->store('documents', 'public');
+        try {
+            // 2. Simpan file dan dapatkan data
+            $file = $request->file('file');
+            $path = $file->store('documents', 'public');
+            $originalName = $file->getClientOriginalName();
+            $fileType = $file->getClientOriginalExtension();
+            $fileSize = $file->getSize();
 
-        Document::create([
-            'title'     => $request->title,
-            'file_path' => $path,
-            'user_id'   => $request->user()->id,
-        ]);
-
-        return redirect()->route('documents.index')
-            ->with('success', 'Dokumen berhasil diunggah.');
+            // 3. Buat record di database
+            Document::create([
+                'title' => $validated['title'],
+                'description' => $validated['description'] ?? null,
+                'file_path' => $path,
+                'file_name' => $originalName,
+                'file_type' => $fileType,
+                'file_size' => $fileSize,
+                'user_id' => $user->id,
+                'target_user_id' => $user->role === 'admin'
+                    ? $validated['target_user_id'] ?? null
+                    : null,
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Gagal mengupload: ' . $e->getMessage())
+                ->withInput(); // Bawa kembali input lama (title, desc) ke form
+        }
+        
+        // 5. Redirect sukses
+        return redirect()->route('documents.index')->with('success', 'Dokumen berhasil diupload.');
     }
 
     /**
@@ -59,6 +92,9 @@ class DocumentController extends Controller
      */
     public function preview(Document $document)
     {
+        $document->loadMissing('user');
+        $this->ensureDocumentIsAccessible($document);
+
         // Pastikan file ada di disk 'public'
         if (!Storage::disk('public')->exists($document->file_path)) {
             abort(404, 'File tidak ditemukan.');
@@ -71,7 +107,7 @@ class DocumentController extends Controller
         
         // Jika bukan PDF, langsung panggil fungsi download
         if (strtolower($extension) !== 'pdf') {
-            return $this->download($document);
+            return $this->download($document); // Download hanya dipanggil saat pratinjau gagal karena non-PDF
         }
 
         // Jika PDF, tampilkan inline di browser
@@ -86,15 +122,16 @@ class DocumentController extends Controller
      */
     public function download(Document $document)
     {
+        $document->loadMissing('user');
+        $this->ensureDocumentIsAccessible($document);
+
         // Pastikan file ada di disk 'public'
         if (!Storage::disk('public')->exists($document->file_path)) {
             abort(404, 'File tidak ditemukan.');
         }
         
-        // Ambil nama asli file atau buat nama aman dari judul
-        $originalName = pathinfo($document->file_path, PATHINFO_FILENAME);
-        $extension = pathinfo($document->file_path, PATHINFO_EXTENSION);
-        $downloadName = $originalName . '.' . $extension;
+        // Pakai nama asli jika ada, fallback ke nama file di storage
+        $downloadName = $document->file_name ?? basename($document->file_path);
 
         return response()->download(Storage::disk('public')->path($document->file_path), $downloadName);
     }
@@ -102,9 +139,15 @@ class DocumentController extends Controller
     /**
      * Menghapus dokumen (untuk tombol "Hapus").
      */
-    public function destroy(Document $document)
+    public function destroy($id)
     {
         $this->authorize('manage-documents');
+
+        $document = Document::with('user')->findOrFail($id);
+
+        if (Auth::user()->role !== 'admin' && (int) $document->user_id !== (int) Auth::id()) {
+            abort(403, 'Anda hanya dapat menghapus dokumen milik Anda sendiri.');
+        }
 
         // 1. Hapus file dari storage
         if (Storage::disk('public')->exists($document->file_path)) {
@@ -115,5 +158,15 @@ class DocumentController extends Controller
         $document->delete();
 
         return back()->with('success', 'Dokumen berhasil dihapus.');
+    }
+
+    /**
+     * Pastikan user yang sedang login berhak mengakses dokumen.
+     */
+    private function ensureDocumentIsAccessible(Document $document): void
+    {
+        if (! $document->isVisibleTo(Auth::user())) {
+            abort(403, 'Anda tidak memiliki akses ke dokumen ini.');
+        }
     }
 }

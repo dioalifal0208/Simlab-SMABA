@@ -5,16 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Traits\Auditable;
 
 class Booking extends Model
 {
-    use HasFactory;
+    use HasFactory, Auditable;
 
     protected $fillable = [
         'user_id',
         'guru_pengampu',
         'tujuan_kegiatan',
         'status',
+        'laboratorium',
         'waktu_mulai',
         'waktu_selesai',
         'jumlah_peserta',

@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\DamageReport;
+use App\Models\User;
+use App\Notifications\NewDamageReport;
+use App\Notifications\DamageReportStatusUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class DamageReportController extends Controller
@@ -36,7 +40,7 @@ class DamageReportController extends Controller
             $photoPath = $request->file('photo')->store('damage_reports', 'public');
         }
 
-        DamageReport::create([
+        $report = DamageReport::create([
             'item_id' => $item->id,
             'user_id' => Auth::id(),
             'description' => $request->description,
@@ -45,6 +49,18 @@ class DamageReportController extends Controller
         ]);
 
         $item->update(['kondisi' => 'Rusak']);
+
+        // Kirim notifikasi ke semua admin bahwa ada laporan kerusakan baru
+        try {
+            $admins = User::where('role', 'admin')->get();
+            if ($admins->isNotEmpty()) {
+                $report->load(['item', 'user']);
+                Notification::send($admins, new NewDamageReport($report));
+            }
+        } catch (\Exception $e) {
+            // Opsional: log error jika diperlukan
+            // \Log::error('Gagal mengirim notifikasi laporan kerusakan baru: ' . $e->getMessage());
+        }
 
         return redirect()->route('items.show', $item->id)
             ->with('success', 'Laporan kerusakan berhasil dikirim. Kondisi item telah diupdate menjadi "Rusak".');
@@ -88,6 +104,17 @@ class DamageReportController extends Controller
         $report->update([
             'status' => $request->status,
         ]);
+
+        // Kirim notifikasi ke pelapor bahwa status laporan berubah
+        try {
+            $report->load(['item', 'user']);
+            if ($report->user) {
+                Notification::send($report->user, new DamageReportStatusUpdated($report));
+            }
+        } catch (\Exception $e) {
+            // Opsional: log error jika diperlukan
+            // \Log::error('Gagal mengirim notifikasi update status laporan kerusakan: ' . $e->getMessage());
+        }
 
         if ($request->status == 'Diperbaiki') {
             $report->load('item');

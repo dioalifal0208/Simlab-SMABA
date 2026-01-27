@@ -41,12 +41,17 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'role' => 'guru',
             'password' => Hash::make($request->password),
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
+        $request->session()->regenerate();
+        $user->forceFill([
+            'current_session_id' => $request->session()->getId(),
+        ])->save();
 
         // JIKA PERMINTAAN DATANG DARI AJAX
         if ($request->expectsJson()) {
