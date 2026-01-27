@@ -9,195 +9,182 @@ return new class extends Migration
     /**
      * Run the migrations.
      * Menambahkan indexes untuk meningkatkan performa query pada tabel-tabel utama.
+     * Semua index ditambahkan dengan pengecekan keberadaan kolom.
      */
     public function up(): void
     {
+        // Helper function to safely add index
+        $safeIndex = function (Blueprint $table, string $tableName, $columns, string $indexName) {
+            $columnsArray = is_array($columns) ? $columns : [$columns];
+            $allColumnsExist = true;
+            foreach ($columnsArray as $column) {
+                if (!Schema::hasColumn($tableName, $column)) {
+                    $allColumnsExist = false;
+                    break;
+                }
+            }
+            if ($allColumnsExist) {
+                $table->index($columns, $indexName);
+            }
+        };
+
         // ========================================
         // ITEMS TABLE - Indexes untuk filtering dan sorting
         // ========================================
-        Schema::table('items', function (Blueprint $table) {
-            // Index untuk kolom yang sering di-filter (dengan pengecekan)
-            if (Schema::hasColumn('items', 'laboratorium')) {
-                $table->index('laboratorium', 'idx_items_laboratorium');
-            }
-            if (Schema::hasColumn('items', 'kondisi')) {
-                $table->index('kondisi', 'idx_items_kondisi');
-            }
-            if (Schema::hasColumn('items', 'tipe')) {
-                $table->index('tipe', 'idx_items_tipe');
-            }
-            
-            // Composite index untuk filter kombinasi (lab + kondisi)
-            if (Schema::hasColumn('items', 'laboratorium') && Schema::hasColumn('items', 'kondisi')) {
-                $table->index(['laboratorium', 'kondisi'], 'idx_items_lab_kondisi');
-            }
-            
-            // Index untuk sorting
-            if (Schema::hasColumn('items', 'created_at')) {
-                $table->index('created_at', 'idx_items_created_at');
-            }
-        });
+        if (Schema::hasTable('items')) {
+            Schema::table('items', function (Blueprint $table) use ($safeIndex) {
+                $safeIndex($table, 'items', 'laboratorium', 'idx_items_laboratorium');
+                $safeIndex($table, 'items', 'kondisi', 'idx_items_kondisi');
+                $safeIndex($table, 'items', 'tipe', 'idx_items_tipe');
+                $safeIndex($table, 'items', ['laboratorium', 'kondisi'], 'idx_items_lab_kondisi');
+                $safeIndex($table, 'items', 'created_at', 'idx_items_created_at');
+            });
+        }
 
         // ========================================
         // LOANS TABLE - Indexes untuk peminjaman
         // ========================================
-        Schema::table('loans', function (Blueprint $table) {
-            // Index untuk kolom yang sering di-filter
-            $table->index('status', 'idx_loans_status');
-            $table->index('laboratorium', 'idx_loans_laboratorium');
-            
-            // Index untuk tanggal (sorting dan filtering)
-            $table->index('tanggal_pinjam', 'idx_loans_tanggal_pinjam');
-            $table->index('tanggal_estimasi_kembali', 'idx_loans_tanggal_kembali');
-            
-            // Composite index untuk query dashboard admin
-            // Query seperti: WHERE status = 'pending' AND user_id = X
-            $table->index(['status', 'user_id'], 'idx_loans_status_user');
-        });
+        if (Schema::hasTable('loans')) {
+            Schema::table('loans', function (Blueprint $table) use ($safeIndex) {
+                $safeIndex($table, 'loans', 'status', 'idx_loans_status');
+                $safeIndex($table, 'loans', 'laboratorium', 'idx_loans_laboratorium');
+                $safeIndex($table, 'loans', 'tanggal_pinjam', 'idx_loans_tanggal_pinjam');
+                $safeIndex($table, 'loans', 'tanggal_estimasi_kembali', 'idx_loans_tanggal_kembali');
+                $safeIndex($table, 'loans', ['status', 'user_id'], 'idx_loans_status_user');
+            });
+        }
 
         // ========================================
         // BOOKINGS TABLE - Indexes untuk booking lab
         // ========================================
-        Schema::table('bookings', function (Blueprint $table) {
-            // Index untuk kolom yang sering di-filter
-            $table->index('status', 'idx_bookings_status');
-            $table->index('laboratorium', 'idx_bookings_laboratorium');
-            
-            // Index untuk waktu (conflict detection & sorting)
-            $table->index('waktu_mulai', 'idx_bookings_waktu_mulai');
-            $table->index('waktu_selesai', 'idx_bookings_waktu_selesai');
-            
-            // Composite index untuk conflict checking
-            // Query: WHERE laboratorium = X AND status = 'approved' 
-            //        AND waktu_mulai < Y AND waktu_selesai > Z
-            $table->index(['laboratorium', 'status', 'waktu_mulai'], 'idx_bookings_conflict');
-        });
+        if (Schema::hasTable('bookings')) {
+            Schema::table('bookings', function (Blueprint $table) use ($safeIndex) {
+                $safeIndex($table, 'bookings', 'status', 'idx_bookings_status');
+                $safeIndex($table, 'bookings', 'laboratorium', 'idx_bookings_laboratorium');
+                $safeIndex($table, 'bookings', 'waktu_mulai', 'idx_bookings_waktu_mulai');
+                $safeIndex($table, 'bookings', 'waktu_selesai', 'idx_bookings_waktu_selesai');
+                $safeIndex($table, 'bookings', ['laboratorium', 'status', 'waktu_mulai'], 'idx_bookings_conflict');
+            });
+        }
 
         // ========================================
         // DAMAGE_REPORTS TABLE - Indexes untuk laporan kerusakan
         // ========================================
-        Schema::table('damage_reports', function (Blueprint $table) {
-            // Index untuk status filtering
-            $table->index('status', 'idx_damage_reports_status');
-            
-            // Index untuk sorting
-            $table->index('created_at', 'idx_damage_reports_created_at');
-        });
+        if (Schema::hasTable('damage_reports')) {
+            Schema::table('damage_reports', function (Blueprint $table) use ($safeIndex) {
+                $safeIndex($table, 'damage_reports', 'status', 'idx_damage_reports_status');
+                $safeIndex($table, 'damage_reports', 'created_at', 'idx_damage_reports_created_at');
+            });
+        }
 
         // ========================================
         // DOCUMENTS TABLE - Indexes untuk pustaka digital
         // ========================================
-        Schema::table('documents', function (Blueprint $table) {
-            // Index untuk kategori filtering
-            $table->index('kategori', 'idx_documents_kategori');
-            
-            // Index untuk sorting
-            $table->index('created_at', 'idx_documents_created_at');
-        });
+        if (Schema::hasTable('documents')) {
+            Schema::table('documents', function (Blueprint $table) use ($safeIndex) {
+                $safeIndex($table, 'documents', 'kategori', 'idx_documents_kategori');
+                $safeIndex($table, 'documents', 'created_at', 'idx_documents_created_at');
+            });
+        }
 
         // ========================================
         // ITEM_REQUESTS TABLE - Indexes untuk permintaan item
         // ========================================
-        Schema::table('item_requests', function (Blueprint $table) {
-            // Index untuk status filtering
-            $table->index('status', 'idx_item_requests_status');
-            $table->index('laboratorium', 'idx_item_requests_laboratorium');
-            
-            // Index untuk sorting
-            $table->index('created_at', 'idx_item_requests_created_at');
-        });
+        if (Schema::hasTable('item_requests')) {
+            Schema::table('item_requests', function (Blueprint $table) use ($safeIndex) {
+                $safeIndex($table, 'item_requests', 'status', 'idx_item_requests_status');
+                $safeIndex($table, 'item_requests', 'laboratorium', 'idx_item_requests_laboratorium');
+                $safeIndex($table, 'item_requests', 'created_at', 'idx_item_requests_created_at');
+            });
+        }
 
         // ========================================
         // STOCK_REQUESTS TABLE - Indexes untuk permintaan stok
         // ========================================
-        Schema::table('stock_requests', function (Blueprint $table) {
-            // Index untuk status filtering
-            $table->index('status', 'idx_stock_requests_status');
-        });
+        if (Schema::hasTable('stock_requests')) {
+            Schema::table('stock_requests', function (Blueprint $table) use ($safeIndex) {
+                $safeIndex($table, 'stock_requests', 'status', 'idx_stock_requests_status');
+            });
+        }
 
         // ========================================
         // PRACTICUM_MODULES TABLE - Indexes untuk modul praktikum
         // ========================================
-        Schema::table('practicum_modules', function (Blueprint $table) {
-            // Index untuk sorting
-            $table->index('created_at', 'idx_practicum_modules_created_at');
-        });
+        if (Schema::hasTable('practicum_modules')) {
+            Schema::table('practicum_modules', function (Blueprint $table) use ($safeIndex) {
+                $safeIndex($table, 'practicum_modules', 'created_at', 'idx_practicum_modules_created_at');
+            });
+        }
 
         // ========================================
         // MAINTENANCE_LOGS TABLE - Indexes untuk log perawatan
         // ========================================
-        Schema::table('maintenance_logs', function (Blueprint $table) {
-            // Index untuk tanggal (sorting)
-            $table->index('tanggal_perawatan', 'idx_maintenance_logs_tanggal');
-        });
+        if (Schema::hasTable('maintenance_logs')) {
+            Schema::table('maintenance_logs', function (Blueprint $table) use ($safeIndex) {
+                $safeIndex($table, 'maintenance_logs', 'tanggal_perawatan', 'idx_maintenance_logs_tanggal');
+            });
+        }
     }
 
     /**
      * Reverse the migrations.
-     * Menghapus semua indexes yang ditambahkan.
+     * Menghapus semua indexes yang ditambahkan dengan aman.
      */
     public function down(): void
     {
+        $safeDropIndex = function (string $tableName, string $indexName) {
+            if (Schema::hasTable($tableName)) {
+                Schema::table($tableName, function (Blueprint $table) use ($indexName) {
+                    try {
+                        $table->dropIndex($indexName);
+                    } catch (\Exception $e) {
+                        // Index doesn't exist, skip
+                    }
+                });
+            }
+        };
+
         // Items
-        Schema::table('items', function (Blueprint $table) {
-            $table->dropIndex('idx_items_laboratorium');
-            $table->dropIndex('idx_items_kondisi');
-            $table->dropIndex('idx_items_tipe');
-            $table->dropIndex('idx_items_lab_kondisi');
-            $table->dropIndex('idx_items_created_at');
-        });
+        $safeDropIndex('items', 'idx_items_laboratorium');
+        $safeDropIndex('items', 'idx_items_kondisi');
+        $safeDropIndex('items', 'idx_items_tipe');
+        $safeDropIndex('items', 'idx_items_lab_kondisi');
+        $safeDropIndex('items', 'idx_items_created_at');
 
         // Loans
-        Schema::table('loans', function (Blueprint $table) {
-            $table->dropIndex('idx_loans_status');
-            $table->dropIndex('idx_loans_laboratorium');
-            $table->dropIndex('idx_loans_tanggal_pinjam');
-            $table->dropIndex('idx_loans_tanggal_kembali');
-            $table->dropIndex('idx_loans_status_user');
-        });
+        $safeDropIndex('loans', 'idx_loans_status');
+        $safeDropIndex('loans', 'idx_loans_laboratorium');
+        $safeDropIndex('loans', 'idx_loans_tanggal_pinjam');
+        $safeDropIndex('loans', 'idx_loans_tanggal_kembali');
+        $safeDropIndex('loans', 'idx_loans_status_user');
 
         // Bookings
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->dropIndex('idx_bookings_status');
-            $table->dropIndex('idx_bookings_laboratorium');
-            $table->dropIndex('idx_bookings_waktu_mulai');
-            $table->dropIndex('idx_bookings_waktu_selesai');
-            $table->dropIndex('idx_bookings_conflict');
-        });
+        $safeDropIndex('bookings', 'idx_bookings_status');
+        $safeDropIndex('bookings', 'idx_bookings_laboratorium');
+        $safeDropIndex('bookings', 'idx_bookings_waktu_mulai');
+        $safeDropIndex('bookings', 'idx_bookings_waktu_selesai');
+        $safeDropIndex('bookings', 'idx_bookings_conflict');
 
         // Damage Reports
-        Schema::table('damage_reports', function (Blueprint $table) {
-            $table->dropIndex('idx_damage_reports_status');
-            $table->dropIndex('idx_damage_reports_created_at');
-        });
+        $safeDropIndex('damage_reports', 'idx_damage_reports_status');
+        $safeDropIndex('damage_reports', 'idx_damage_reports_created_at');
 
         // Documents
-        Schema::table('documents', function (Blueprint $table) {
-            $table->dropIndex('idx_documents_kategori');
-            $table->dropIndex('idx_documents_created_at');
-        });
+        $safeDropIndex('documents', 'idx_documents_kategori');
+        $safeDropIndex('documents', 'idx_documents_created_at');
 
         // Item Requests
-        Schema::table('item_requests', function (Blueprint $table) {
-            $table->dropIndex('idx_item_requests_status');
-            $table->dropIndex('idx_item_requests_laboratorium');
-            $table->dropIndex('idx_item_requests_created_at');
-        });
+        $safeDropIndex('item_requests', 'idx_item_requests_status');
+        $safeDropIndex('item_requests', 'idx_item_requests_laboratorium');
+        $safeDropIndex('item_requests', 'idx_item_requests_created_at');
 
         // Stock Requests
-        Schema::table('stock_requests', function (Blueprint $table) {
-            $table->dropIndex('idx_stock_requests_status');
-        });
+        $safeDropIndex('stock_requests', 'idx_stock_requests_status');
 
         // Practicum Modules
-        Schema::table('practicum_modules', function (Blueprint $table) {
-            $table->dropIndex('idx_practicum_modules_created_at');
-        });
+        $safeDropIndex('practicum_modules', 'idx_practicum_modules_created_at');
 
         // Maintenance Logs
-        Schema::table('maintenance_logs', function (Blueprint $table) {
-            $table->dropIndex('idx_maintenance_logs_tanggal');
-        });
+        $safeDropIndex('maintenance_logs', 'idx_maintenance_logs_tanggal');
     }
 };
-
