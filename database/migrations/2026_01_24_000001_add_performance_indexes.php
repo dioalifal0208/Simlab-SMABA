@@ -16,17 +16,26 @@ return new class extends Migration
         // ITEMS TABLE - Indexes untuk filtering dan sorting
         // ========================================
         Schema::table('items', function (Blueprint $table) {
-            // Index untuk kolom yang sering di-filter
-            $table->index('laboratorium', 'idx_items_laboratorium');
-            $table->index('kondisi', 'idx_items_kondisi');
-            $table->index('tipe', 'idx_items_tipe');
+            // Index untuk kolom yang sering di-filter (dengan pengecekan)
+            if (Schema::hasColumn('items', 'laboratorium')) {
+                $table->index('laboratorium', 'idx_items_laboratorium');
+            }
+            if (Schema::hasColumn('items', 'kondisi')) {
+                $table->index('kondisi', 'idx_items_kondisi');
+            }
+            if (Schema::hasColumn('items', 'tipe')) {
+                $table->index('tipe', 'idx_items_tipe');
+            }
             
             // Composite index untuk filter kombinasi (lab + kondisi)
-            // Berguna untuk query seperti: WHERE laboratorium = 'Biologi' AND kondisi = 'Baik'
-            $table->index(['laboratorium', 'kondisi'], 'idx_items_lab_kondisi');
+            if (Schema::hasColumn('items', 'laboratorium') && Schema::hasColumn('items', 'kondisi')) {
+                $table->index(['laboratorium', 'kondisi'], 'idx_items_lab_kondisi');
+            }
             
             // Index untuk sorting
-            $table->index('created_at', 'idx_items_created_at');
+            if (Schema::hasColumn('items', 'created_at')) {
+                $table->index('created_at', 'idx_items_created_at');
+            }
         });
 
         // ========================================
