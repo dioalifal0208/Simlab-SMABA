@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 use Illuminate\Support\Facades\Log;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ItemController extends Controller
 {
@@ -102,21 +103,21 @@ class ItemController extends Controller
 
         // Jika ada file foto yang diunggah, proses dengan compression dan thumbnails
         if ($request->hasFile('photos')) {
+            // Create ImageManager instance with GD driver
+            $manager = new ImageManager(new Driver());
+            
             foreach ($request->file('photos') as $photo) {
                 // Generate unique filename
                 $filename = uniqid() . '_' . time() . '.jpg';
                 
-                // Load image dengan Intervention
-                $image = Image::make($photo);
+                // Load image dengan Intervention v3
+                $image = $manager->read($photo->getPathname());
                 
-                // Auto-rotate berdasarkan EXIF data
-                $image->orientate();
+                // Compress dan resize original (max 1200px width, maintain aspect ratio)
+                $image->scaleDown(width: 1200);
                 
-                // Compress dan resize original (max 1200px width)
-                $original = $image->resize(1200, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize(); // Don't upscale smaller images
-                })->encode('jpg', 80); // 80% quality
+                // Encode to JPEG with quality 80
+                $original = $image->toJpeg(80);
                 
                 // Save compressed original
                 Storage::disk('public')->put(
@@ -124,21 +125,19 @@ class ItemController extends Controller
                     (string) $original
                 );
                 
-                // Generate small thumbnail (150x150) untuk list pages
-                $thumbnailSmall = Image::make($photo)
-                    ->fit(150, 150) // Crop to exact size
-                    ->encode('jpg', 85);
-                    
+                // Generate small thumbnail (150x150 cover)
+                $thumbnailSmall = $manager->read($photo->getPathname())
+                    ->cover(150, 150)
+                    ->toJpeg(85);
                 Storage::disk('public')->put(
                     'item-photos/thumbnails/small/' . $filename,
                     (string) $thumbnailSmall
                 );
                 
-                // Generate medium thumbnail (400x400) untuk detail cards
-                $thumbnailMedium = Image::make($photo)
-                    ->fit(400, 400)
-                    ->encode('jpg', 85);
-                    
+                // Generate medium thumbnail (400x400 cover)
+                $thumbnailMedium = $manager->read($photo->getPathname())
+                    ->cover(400, 400)
+                    ->toJpeg(85);
                 Storage::disk('public')->put(
                     'item-photos/thumbnails/medium/' . $filename,
                     (string) $thumbnailMedium
@@ -188,21 +187,21 @@ class ItemController extends Controller
 
         // Jika ada file foto baru yang diunggah, proses dengan compression dan thumbnails
         if ($request->hasFile('photos')) {
+            // Create ImageManager instance with GD driver
+            $manager = new ImageManager(new Driver());
+            
             foreach ($request->file('photos') as $photo) {
                 // Generate unique filename
                 $filename = uniqid() . '_' . time() . '.jpg';
                 
-                // Load image dengan Intervention
-                $image = Image::make($photo);
+                // Load image dengan Intervention v3
+                $image = $manager->read($photo->getPathname());
                 
-                // Auto-rotate berdasarkan EXIF data
-                $image->orientate();
+                // Compress dan resize original (max 1200px width, maintain aspect ratio)
+                $image->scaleDown(width: 1200);
                 
-                // Compress dan resize original (max 1200px width)
-                $original = $image->resize(1200, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })->encode('jpg', 80);
+                // Encode to JPEG with quality 80
+                $original = $image->toJpeg(80);
                 
                 // Save compressed original
                 Storage::disk('public')->put(
@@ -210,18 +209,19 @@ class ItemController extends Controller
                     (string) $original
                 );
                 
-                // Generate thumbnails
-                $thumbnailSmall = Image::make($photo)
-                    ->fit(150, 150)
-                    ->encode('jpg', 85);
+                // Generate small thumbnail (150x150 cover)
+                $thumbnailSmall = $manager->read($photo->getPathname())
+                    ->cover(150, 150)
+                    ->toJpeg(85);
                 Storage::disk('public')->put(
                     'item-photos/thumbnails/small/' . $filename,
                     (string) $thumbnailSmall
                 );
                 
-                $thumbnailMedium = Image::make($photo)
-                    ->fit(400, 400)
-                    ->encode('jpg', 85);
+                // Generate medium thumbnail (400x400 cover)
+                $thumbnailMedium = $manager->read($photo->getPathname())
+                    ->cover(400, 400)
+                    ->toJpeg(85);
                 Storage::disk('public')->put(
                     'item-photos/thumbnails/medium/' . $filename,
                     (string) $thumbnailMedium
