@@ -10,16 +10,93 @@
             </div>
             
             @can('is-admin')
-                <div class="flex items-center space-x-3 mt-3 sm:mt-0">
+                <div class="flex items-center space-x-3 mt-3 sm:mt-0" x-data="{ showCreateUserModal: false }">
                     {{-- PENAMBAHAN: Tombol Impor User (membuka modal) --}}
                     <button @click="showImportModal = true" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-semibold text-sm shadow-sm transition-colors">
                         <i class="fas fa-upload mr-2"></i> Import User
                     </button>
 
-                    {{-- Tombol Tambah Pengguna Baru (placeholder) --}}
-                    {{-- <a href="{{ route('users.create') }}" class="px-5 py-2 bg-smaba-dark-blue ...">
+                    {{-- Tombol Tambah Pengguna Baru (Manual) --}}
+                    <button @click="showCreateUserModal = true" class="px-5 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors">
                         <i class="fas fa-plus mr-2"></i> Tambah Pengguna
-                    </a> --}}
+                    </button>
+
+                    {{-- MODAL TAMBAH PENGGUNA --}}
+                    <div x-show="showCreateUserModal" 
+                        x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        x-transition:leave="ease-in duration-200"
+                        x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                        class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" 
+                        style="display: none;">
+                        
+                        <div @click.outside="showCreateUserModal = false" 
+                             x-show="showCreateUserModal"
+                             x-transition:enter="ease-out duration-300"
+                             x-transition:enter-start="opacity-0 scale-90"
+                             x-transition:enter-end="opacity-100 scale-100"
+                             x-transition:leave="ease-in duration-200"
+                             x-transition:leave-start="opacity-100 scale-100"
+                             x-transition:leave-end="opacity-0 scale-90"
+                             class="w-full max-w-lg bg-white p-8 rounded-xl shadow-lg relative"
+                             x-data="{ role: 'guru' }">
+
+                            <button @click="showCreateUserModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+
+                            <h2 class="text-2xl font-bold text-smaba-text mb-6">Tambah Pengguna Baru</h2>
+
+                            <form action="{{ route('users.store') }}" method="POST" class="space-y-4">
+                                @csrf
+                                {{-- Nama --}}
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                                    <input type="text" name="name" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                </div>
+
+                                {{-- Email --}}
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                    <input type="email" name="email" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                </div>
+
+                                {{-- Password --}}
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                    <input type="password" name="password" required minlength="8" class="w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                </div>
+
+                                {{-- Role --}}
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Peran (Role)</label>
+                                    <select name="role" x-model="role" class="w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                        <option value="guru">Guru</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
+
+                                {{-- Laboratorium (Hanya jika Guru) --}}
+                                <div x-show="role === 'guru'" x-transition>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Laboratorium</label>
+                                    <select name="laboratorium" class="w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                        <option value="">Pilih Laboratorium</option>
+                                        <option value="Biologi">Biologi</option>
+                                        <option value="Fisika">Fisika</option>
+                                        <option value="Bahasa">Bahasa</option>
+                                    </select>
+                                    <p class="text-xs text-gray-500 mt-1">* Wajib dipilih untuk Guru Pengelola Lab.</p>
+                                </div>
+
+                                <div class="pt-4 flex justify-end">
+                                    <button type="button" @click="showCreateUserModal = false" class="mr-3 px-4 py-2 text-gray-700 hover:text-gray-900 font-medium">Batal</button>
+                                    <button type="submit" class="px-6 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold shadow-md transition-colors">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             @endcan
         </div>

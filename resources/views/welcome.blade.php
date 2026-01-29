@@ -49,7 +49,7 @@
 
     <body class="antialiased bg-white text-gray-900 overflow-x-hidden selection:bg-blue-100 selection:text-blue-900"
           data-authenticated="{{ auth()->check() ? '1' : '0' }}"
-          x-data="{ isModalOpen: false, activeTab: 'login', showTestimonialModal: false, showDemoModal: false, activeSlide: 0 }"
+          x-data="{ isModalOpen: false, showTestimonialModal: false, showDemoModal: false, activeSlide: 0 }"
           @keydown.escape.window="isModalOpen = false; showTestimonialModal = false; showDemoModal = false">
 
         {{-- BACKGROUND GRID (SPOTLIGHT) --}}
@@ -72,10 +72,7 @@
                         @auth
                             <a href="{{ url('/dashboard') }}" class="text-sm font-medium text-gray-600 hover:text-blue-700 transition-colors">Dashboard</a>
                         @else
-                            <button @click="isModalOpen = true; activeTab = 'login'" class="text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-2 transition-colors">Masuk</button>
-                            @if (Route::has('register'))
-                                <button @click="isModalOpen = true; activeTab = 'signup'" class="px-4 py-2 text-sm font-semibold text-white bg-blue-700 rounded-lg shadow-sm hover:bg-blue-800 transition-all">Daftar</button>
-                            @endif
+                            <button @click="isModalOpen = true" class="text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-2 transition-colors">Masuk</button>
                         @endauth
                     @endif
                 </div>
@@ -101,7 +98,7 @@
                     </p>
                     
                     <div class="flex flex-wrap items-center gap-4 pt-2">
-                        <button @click="isModalOpen = true; activeTab = 'login'" class="px-8 py-3.5 bg-blue-700 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-800 hover:shadow transition-all duration-200">
+                        <button @click="isModalOpen = true" class="px-8 py-3.5 bg-blue-700 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-800 hover:shadow transition-all duration-200">
                             Mulai Sekarang
                         </button>
                         <button @click="showDemoModal = true; activeSlide = 0" class="px-8 py-3.5 text-gray-700 bg-white border border-gray-200 font-semibold rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
@@ -295,8 +292,7 @@
                 <h2 class="text-4xl font-bold text-gray-900 tracking-tight mb-4">Siap Digitalisasi Lab Anda?</h2>
                 <p class="text-lg text-gray-600 mb-8">Bergabung dengan ekosistem manajemen laboratorium yang terstruktur.</p>
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <button @click="isModalOpen = true; activeTab = 'signup'" class="px-8 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors">Daftar Akun</button>
-                    <button @click="isModalOpen = true; activeTab = 'login'" class="px-8 py-3 bg-white text-gray-900 border border-gray-200 font-semibold rounded-lg hover:border-gray-400 transition-colors">Login Admin</button>
+                    <button @click="isModalOpen = true" class="px-8 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors">Login Admin</button>
                 </div>
             </div>
         </section>
@@ -321,19 +317,13 @@
         <div x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm p-4" style="display: none;">
             <div @click.outside="isModalOpen = false" x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" class="w-full max-w-md bg-white p-8 rounded-lg shadow-xl border border-gray-200 relative">
                 
-                <h2 class="text-xl font-bold text-gray-900 text-center mb-6" x-show="activeTab !== 'forgot'">Selamat Datang</h2>
-                <h2 class="text-xl font-bold text-gray-900 text-center mb-6" x-show="activeTab === 'forgot'">Reset Password</h2>
-
-                <div x-show="activeTab !== 'forgot'" class="mb-6 flex border-b border-gray-200">
-                    <button @click="activeTab = 'login'" :class="{ 'border-b-2 border-blue-600 text-blue-600': activeTab === 'login', 'text-gray-500 hover:text-gray-700': activeTab !== 'login' }" class="w-1/2 py-3 text-sm font-medium transition-colors">Masuk</button>
-                    <button @click="activeTab = 'signup'" :class="{ 'border-b-2 border-blue-600 text-blue-600': activeTab === 'signup', 'text-gray-500 hover:text-gray-700': activeTab !== 'signup' }" class="w-1/2 py-3 text-sm font-medium transition-colors">Daftar</button>
-                </div>
+                <h2 class="text-xl font-bold text-gray-900 text-center mb-6">Selamat Datang</h2>
 
                 <div id="auth-error-message" class="hidden mb-4 bg-red-50 border border-red-200 text-red-600 p-3 text-sm rounded-md" role="alert"></div>
                 <div id="auth-success-message" class="hidden mb-4 bg-green-50 border border-green-200 text-green-600 p-3 text-sm rounded-md" role="alert"></div>
 
                 {{-- Form Login --}}
-                <div x-show="activeTab === 'login'" x-transition>
+                <div>
                     <form id="login-form" method="POST" action="{{ route('login') }}" class="space-y-4">
                         @csrf
                         <div>
@@ -349,51 +339,13 @@
                                 <input type="checkbox" class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500" name="remember">
                                 <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
                             </label>
-                            <button type="button" @click.prevent="activeTab = 'forgot'" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Lupa password?</button>
+                            <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Lupa password?</a>
                         </div>
                         <button type="submit" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">Masuk</button>
                     </form>
                 </div>
 
-                {{-- Form Register --}}
-                <div x-show="activeTab === 'signup'" x-transition style="display: none;">
-                    <form id="register-form" method="POST" action="{{ route('register') }}" class="space-y-4">
-                        @csrf
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                            <input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" type="text" name="name" required />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" type="email" name="email" required />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                            <input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" type="password" name="password" required />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password</label>
-                            <input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" type="password" name="password_confirmation" required />
-                        </div>
-                        <button type="submit" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">Buat Akun</button>
-                    </form>
-                </div>
 
-                {{-- Form Forgot --}}
-                <div x-show="activeTab === 'forgot'" x-transition style="display: none;">
-                    <p class="text-sm text-gray-600 mb-4 text-center">Masukkan email Anda untuk reset password.</p>
-                    <form id="forgot-password-form" method="POST" action="{{ route('password.email') }}" class="space-y-4">
-                        @csrf
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" type="email" name="email" required />
-                        </div>
-                        <button type="submit" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">Kirim Link Reset</button>
-                        <div class="text-center">
-                            <button type="button" @click.prevent="activeTab = 'login'" class="text-sm text-gray-500 hover:text-gray-900 font-medium">Kembali ke login</button>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
 
@@ -435,7 +387,7 @@
                     </div>
 
                     <div class="mt-4 pt-4 border-t border-gray-200">
-                        <button @click="isModalOpen = true; activeTab = 'signup'; showDemoModal = false" class="w-full py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">Daftar Sekarang &rarr;</button>
+                        <button @click="isModalOpen = true; showDemoModal = false" class="w-full py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">Login Sekarang &rarr;</button>
                     </div>
                 </div>
 
@@ -584,53 +536,7 @@
                 }
 
                 const registerForm = document.getElementById('register-form');
-                if (registerForm) {
-                    registerForm.addEventListener('submit', async function (event) {
-                        event.preventDefault();
-                        const submitButton = this.querySelector('button[type="submit"]');
-                        const originalButtonText = submitButton.innerHTML;
-                        submitButton.innerHTML = 'Loading...';
-                        submitButton.disabled = true;
-                        try {
-                            const formData = new FormData(this);
-                            const response = await fetch('{{ route('register') }}', {
-                                method: 'POST', body: formData, credentials: 'include',
-                                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': csrfToken }
-                            });
-                            if (response.redirected) { window.location.href = response.url; return; }
-                            const data = await response.json();
-                            if (!response.ok) { 
-                                let errorText = data.message;
-                                if(data.errors) errorText = Object.values(data.errors).map(e => `<li>${e[0]}</li>`).join('');
-                                showError(errorText); 
-                            } 
-                            else { window.location.href = '{{ route('dashboard') }}'; }
-                        } catch (e) { showError('Network error.'); } 
-                        finally { submitButton.innerHTML = originalButtonText; submitButton.disabled = false; }
-                    });
-                }
-
-                const forgotForm = document.getElementById('forgot-password-form');
-                if (forgotForm) {
-                    forgotForm.addEventListener('submit', async function (event) {
-                        event.preventDefault();
-                        const submitButton = this.querySelector('button[type="submit"]');
-                        const originalButtonText = submitButton.innerHTML;
-                        submitButton.innerHTML = 'Sending...';
-                        submitButton.disabled = true;
-                        try {
-                            const formData = new FormData(this);
-                            const response = await fetch('{{ route('password.email') }}', {
-                                method: 'POST', body: formData, credentials: 'include',
-                                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': csrfToken }
-                            });
-                            const data = await response.json();
-                            if (!response.ok) { showError(data.message || data.errors?.email?.[0] || 'Error'); } 
-                            else { showSuccess(data.message); this.reset(); }
-                        } catch (e) { showError('Network error.'); } 
-                        finally { submitButton.innerHTML = originalButtonText; submitButton.disabled = false; }
-                    });
-                }
+                // Register form removed - registration is now admin-only
             });
         </script>
     </body>

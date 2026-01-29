@@ -7,21 +7,12 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\TwoFactorLoginController;
 
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    // Rute GET untuk register (diperbaiki controllernya)
-    Route::get('register', [RegisteredUserController::class, 'create'])
-                ->name('register.create'); // Nama diubah agar tidak konflik
-
-    // Rute POST untuk register (yang digunakan AJAX)
-    Route::post('register', [RegisteredUserController::class, 'store'])
-                ->name('register'); // <-- Nama 'register' dipindah ke sini
-
     // Rute GET untuk login
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('login.create'); // Nama diubah agar tidak konflik
