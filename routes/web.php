@@ -119,8 +119,10 @@ Route::middleware(['auth', 'single.session'])->group(function () {
 
         // Manajemen User
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
         Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
         // PENAMBAHAN: Route untuk Impor User
         Route::post('/users/import', [UserController::class, 'handleImport'])->name('users.import.store');
