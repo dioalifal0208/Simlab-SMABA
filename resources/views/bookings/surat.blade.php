@@ -5,40 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surat Peminjaman Lab - {{ $booking->id }}</title>
     <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
         body {
             font-family: 'Times New Roman', Times, serif;
-            line-height: 1.3;
+            line-height: 1.15;
             color: #000;
             background: #fff;
             margin: 0 auto;
-            padding: 1cm 2cm;
-            width: 210mm; /* Force A4 width on screen for preview */
+            padding: 1cm 2cm; /* Margin standar surat resmi: 4,3,3,3 atau 2cm rata */
+            width: 210mm;
+            min-height: 297mm;
             box-sizing: border-box;
-            background-color: white;
-            min-height: 297mm; /* Force A4 height on screen */
-            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Preview shadow */
+        }
+
+        /* KOP SURAT */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the text content */
+            position: relative; /* For absolute positioning of logo */
+            border-bottom: 3px double #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            height: 110px; /* Fixed height to prevent shifting */
+        }
+
+        .logo-wrapper {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 90px;
+            height: auto;
+        }
+
+        .header-content {
+            text-align: center;
+            width: 100%; /* Ensure text takes full width to center properly relative to container */
+        }
+
+        .header-content h2 {
+            font-size: 14pt;
+            font-weight: bold;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .header-content h3 {
+            font-size: 16pt;
+            font-weight: bold;
+            margin: 5px 0;
+            line-height: 1.2;
+        }
+
+        .header-content p {
+            font-size: 10pt;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        /* TITLE */
+        .title-section {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 12pt;
+            text-decoration: underline;
+        }
+
+        /* TABLES */
+        table.form-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
         }
         
+        table.form-table td {
+            vertical-align: top;
+            padding: 2px 0;
+            font-size: 11pt;
+        }
+        
+        .number-col { width: 25px; }
+        .label-col { width: 180px; }
+        .separator-col { width: 15px; text-align: center; }
+
+        /* CHECKBOXES & SIGNATURES */
+        .checkbox-rect {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 1px solid #000;
+            margin-right: 5px;
+            position: relative;
+            top: 2px;
+        }
+        
+        .checkbox-rect.checked {
+            background-color: #000; /* Simple fill for checked in print */
+        }
+
+        .signature-section {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            page-break-inside: avoid;
+        }
+        
+        .signature-box {
+            text-align: center;
+            flex: 1;
+        }
+
+        .signature-name {
+            margin-top: 70px;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* PRINT BUTTON */
+        .print-button {
+            position: fixed;
+            top: 20px; right: 20px;
+            background: #004ecc; color: white;
+            border: none; padding: 10px 20px;
+            border-radius: 5px; cursor: pointer;
+            z-index: 9999;
+        }
+
         @media print {
-            @page {
-                size: A4 portrait;
-                margin: 0; /* Let body padding handle margins */
-            }
             body {
-                width: 210mm;
-                height: 297mm;
-                padding: 1.5cm 2cm; /* Adjust padding for print */
                 margin: 0;
                 box-shadow: none;
+            }
+            .print-button { display: none; }
+            .header-container {
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
-            }
-            .print-button {
-                display: none;
-            }
-            .header-text .email {
-                color: #000;
-                text-decoration: none;
             }
         }
     </style>
@@ -47,14 +158,17 @@
 
     <button onclick="window.print()" class="print-button">Cetak Surat / Simpan PDF</button>
 
-    <div class="header">
-        <img src="{{ asset('images/logo-smaba.webp') }}" alt="Logo" class="logo">
-        <div class="header-text">
+    <!-- KOP SURAT -->
+    <div class="header-container">
+        <div class="logo-wrapper">
+             <img src="{{ asset('images/logo-smaba.webp') }}" alt="Logo" class="logo">
+        </div>
+        <div class="header-content">
             <h2>PEMERINTAH PROVINSI JAWA TIMUR</h2>
             <h2>DINAS PENDIDIKAN</h2>
             <h3>SMA NEGERI 1 BABAT</h3>
             <p>Jl. Sumowiharjo No.1 Telp. 0322-3326616 Fax. (0322) 451201</p>
-            <p>Email: <span class="email">smanegeri1babat.lmg@gmail.com</span></p>
+            <p>Email: smanegeri1babat.lmg@gmail.com</p>
         </div>
     </div>
 
