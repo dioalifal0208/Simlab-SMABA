@@ -1,15 +1,28 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
                 <h2 class="font-bold text-2xl text-smaba-text leading-tight">
                     Detail Booking #{{ $booking->id }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Diajukan oleh: <span class="font-semibold">{{ $booking->user->name }}</span></p>
             </div>
-            <a href="{{ route('bookings.index') }}" class="mt-3 sm:mt-0 text-sm font-semibold text-smaba-light-blue hover:text-smaba-dark-blue transition-colors">
-                &larr; Kembali ke Daftar Booking
-            </a>
+            
+            <div class="flex items-center space-x-3">
+                {{-- Tombol Cetak (Pindah ke Header) --}}
+                @if($booking->status == 'approved' && (auth()->user()->role === 'admin' || auth()->id() === $booking->user_id))
+                    <a href="{{ route('bookings.surat', $booking->id) }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-semibold text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        </svg>
+                        Cetak Surat
+                    </a>
+                @endif
+
+                <a href="{{ route('bookings.index') }}" class="text-sm font-semibold text-smaba-light-blue hover:text-smaba-dark-blue transition-colors">
+                    &larr; Kembali
+                </a>
+            </div>
         </div>
     </x-slot>
 
@@ -33,147 +46,154 @@
                 </div>
             @endif
 
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8" data-aos="fade-in" data-aos-once="true">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8" data-aos="fade-in" data-aos-once="true">
 
-                {{-- Kolom Kiri: Detail Booking --}}
-                <div class="lg:col-span-3 space-y-6">
-                    <div class="bg-white overflow-hidden shadow-sm border border-gray-100 sm:rounded-xl transition-all duration-200 hover:shadow-md">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-smaba-text mb-4">Informasi Booking</h3>
-                            <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
-                                <div><dt class="font-medium text-gray-500">Pemohon</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->user->name }}</dd></div>
-                                <div><dt class="font-medium text-gray-500">Tanggal Pengajuan</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->created_at->format('d F Y, H:i') }}</dd></div>
-                                <div><dt class="font-medium text-gray-500">Laboratorium</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->laboratorium }}</dd></div>
-                                <div><dt class="font-medium text-gray-500">Guru Pengampu</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->guru_pengampu }}</dd></div>
-                                <div><dt class="font-medium text-gray-500">Mata Pelajaran</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->mata_pelajaran ?? '-' }}</dd></div>
-                                <div><dt class="font-medium text-gray-500">Jumlah Peserta</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->jumlah_peserta ?? '-' }} orang</dd></div>
-                                <div class="sm:col-span-2"><dt class="font-medium text-gray-500">Waktu Pelaksanaan</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->waktu_mulai->format('d M Y') }}, Pukul {{ $booking->waktu_mulai->format('H:i') }} - {{ $booking->waktu_selesai->format('H:i') }}</dd></div>
-                                <div class="sm:col-span-2"><dt class="font-medium text-gray-500">Tujuan Kegiatan</dt><dd class="mt-1 text-gray-700 bg-gray-50 p-3 rounded-md whitespace-pre-wrap">{{ $booking->tujuan_kegiatan }}</dd></div>
-                                @if($booking->admin_notes)
-                                <div class="sm:col-span-2"><dt class="font-medium text-gray-500">Catatan dari Admin</dt><dd class="mt-1 text-gray-700 bg-yellow-50 p-3 rounded-md whitespace-pre-wrap">{{ $booking->admin_notes }}</dd></div>
-                                @endif
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-                
-                {{-- Laporan Pengembalian (Hanya muncul jika disetujui) --}}
-                @if($booking->status == 'approved' || $booking->status == 'completed')
-                <div class="bg-white overflow-hidden shadow-sm border border-gray-100 sm:rounded-xl transition-all duration-200 hover:shadow-md">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-smaba-text mb-4">Laporan Pengembalian</h3>
-                        
-                        @if($booking->waktu_pengembalian)
-                            <div class="bg-green-50 text-green-800 p-4 rounded-lg mb-4">
-                                <p class="font-semibold">Laporan Tersimpan</p>
-                                <p class="text-sm">Dikembalikan pada: {{ $booking->waktu_pengembalian->format('d M Y, H:i') }}</p>
-                            </div>
-                        @else
-                            <div class="bg-yellow-50 text-yellow-800 p-4 rounded-lg mb-4">
-                                <p class="text-sm">Silakan isi checklist kondisi ruangan setelah kegiatan selesai.</p>
-                            </div>
-                        @endif
-
-                        <form action="{{ route('bookings.return', $booking->id) }}" method="POST">
-                            @csrf
-                            @method('PATCH')
-                            
-                            <div class="space-y-3">
-                                <label class="flex items-center space-x-3">
-                                    <input type="checkbox" name="kondisi[]" value="Bersih dan Rapi" class="form-checkbox h-5 w-5 text-smaba-dark-blue rounded focus:ring-smaba-light-blue" 
-                                    {{ in_array('Bersih dan Rapi', $booking->kondisi_lab ?? []) ? 'checked' : '' }}
-                                    {{ $booking->status == 'completed' ? 'disabled' : '' }}>
-                                    <span class="text-gray-700">Bersih dan Rapi</span>
-                                </label>
-                                <label class="flex items-center space-x-3">
-                                    <input type="checkbox" name="kondisi[]" value="Ada Sampah / Belum Dibersihkan" class="form-checkbox h-5 w-5 text-red-600 rounded focus:ring-red-500" 
-                                    {{ in_array('Ada Sampah / Belum Dibersihkan', $booking->kondisi_lab ?? []) ? 'checked' : '' }}
-                                    {{ $booking->status == 'completed' ? 'disabled' : '' }}>
-                                    <span class="text-gray-700">Ada Sampah / Belum Dibersihkan</span>
-                                </label>
-                                <label class="flex items-center space-x-3">
-                                    <input type="checkbox" name="kondisi[]" value="Alat Tidak Kembali ke Posisi Semula" class="form-checkbox h-5 w-5 text-red-600 rounded focus:ring-red-500" 
-                                    {{ in_array('Alat Tidak Kembali ke Posisi Semula', $booking->kondisi_lab ?? []) ? 'checked' : '' }}
-                                    {{ $booking->status == 'completed' ? 'disabled' : '' }}>
-                                    <span class="text-gray-700">Alat Tidak Kembali ke Posisi Semula</span>
-                                </label>
-                                <label class="flex items-center space-x-3">
-                                    <input type="checkbox" name="kondisi[]" value="Kerusakan Pada fasilitas (Kursi, Meja, Alat, dll.)" class="form-checkbox h-5 w-5 text-red-600 rounded focus:ring-red-500" 
-                                    {{ in_array('Kerusakan Pada fasilitas (Kursi, Meja, Alat, dll.)', $booking->kondisi_lab ?? []) ? 'checked' : '' }}
-                                    {{ $booking->status == 'completed' ? 'disabled' : '' }}>
-                                    <span class="text-gray-700">Kerusakan Pada fasilitas (Kursi, Meja, Alat, dll.)</span>
-                                </label>
-                            </div>
-
-                            @if($booking->status != 'completed')
-                                <div class="mt-6">
-                                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
-                                        Simpan Laporan
-                                    </button>
-                                </div>
-                            @endif
-                        </form>
-                    </div>
-                </div>
-                @endif
-
-                {{-- Kolom Kanan: Status & Aksi Admin --}}
+                {{-- Kolom Kiri: Detail Booking (Lebih Lebar) --}}
                 <div class="lg:col-span-2 space-y-6">
-                    <div class="bg-white overflow-hidden shadow-sm border border-gray-100 sm:rounded-xl transition-all duration-200 hover:shadow-md" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
+                    <div class="bg-white overflow-hidden shadow-sm border border-gray-100 sm:rounded-xl">
                         <div class="p-6">
-                            <h3 class="text-lg font-bold text-smaba-text mb-4">Status Booking</h3>
-                             <div class="text-center">
-                                @if($booking->status == 'pending') <span class="px-4 py-2 text-sm font-bold leading-none text-yellow-800 bg-yellow-100 rounded-full">Menunggu Persetujuan</span>
-                                @elseif($booking->status == 'approved') <span class="px-4 py-2 text-sm font-bold leading-none text-green-800 bg-green-100 rounded-full">Disetujui</span>
-                                @elseif($booking->status == 'rejected') <span class="px-4 py-2 text-sm font-bold leading-none text-red-800 bg-red-100 rounded-full">Ditolak</span>
-                                @elseif($booking->status == 'completed') <span class="px-4 py-2 text-sm font-bold leading-none text-gray-800 bg-gray-100 rounded-full">Selesai</span>
+                            <h3 class="text-xl font-bold text-smaba-text mb-6 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Informasi Booking
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-4">
+                                    <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Pemohon</label><p class="font-semibold text-gray-800 text-lg">{{ $booking->user->name }}</p></div>
+                                    <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Tanggal Pengajuan</label><p class="text-gray-700">{{ $booking->created_at->format('d F Y, H:i') }}</p></div>
+                                    <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Mata Pelajaran</label><p class="text-gray-700">{{ $booking->mata_pelajaran ?? '-' }}</p></div>
+                                </div>
+                                <div class="space-y-4">
+                                    <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Laboratorium</label><p class="font-semibold text-blue-600">{{ $booking->laboratorium }}</p></div>
+                                    <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Waktu Pelaksanaan</label>
+                                        <div class="flex items-center mt-1 text-gray-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <span class="font-medium">{{ $booking->waktu_mulai->format('d M Y') }}</span>
+                                        </div>
+                                        <div class="flex items-center mt-1 text-gray-600 text-sm">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 ml-0.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            {{ $booking->waktu_mulai->format('H:i') }} - {{ $booking->waktu_selesai->format('H:i') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-2 pt-4 border-t border-gray-100">
+                                    <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Tujuan Kegiatan</label>
+                                    <p class="mt-2 text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-lg">{{ $booking->tujuan_kegiatan }}</p>
+                                </div>
+                                @if($booking->admin_notes)
+                                <div class="md:col-span-2">
+                                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                                        <label class="text-xs font-bold text-yellow-600 uppercase tracking-wider flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
+                                            Catatan Admin
+                                        </label>
+                                        <p class="mt-1 text-yellow-800">{{ $booking->admin_notes }}</p>
+                                    </div>
+                                </div>
                                 @endif
                             </div>
-
-                            @if($booking->status == 'approved' && (auth()->user()->role === 'admin' || auth()->id() === $booking->user_id))
-                                <div class="mt-6 text-center">
-                                    <a href="{{ route('bookings.surat', $booking->id) }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-md">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                                        </svg>
-                                        Cetak Surat Izin
-                                    </a>
-                                </div>
-                            @endif
-
-                            @can('is-admin')
-                                @if($booking->status == 'pending')
-                                    <form action="{{ route('bookings.update', $booking->id) }}" method="POST" class="mt-6 border-t pt-6 space-y-4">
-                                        @csrf @method('PATCH')
-                                        <h4 class="font-semibold text-gray-700">Tindak Lanjut Booking</h4>
-                                        <div><label for="admin_notes" class="block text-sm font-medium text-gray-700">Catatan (Opsional)</label><textarea name="admin_notes" id="admin_notes" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" placeholder="Contoh: Jadwal bentrok, silakan ajukan ulang."></textarea></div>
-                                        <div class="flex space-x-3">
-                                            <button type="submit" name="status" value="approved" class="w-full py-2 px-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 shadow-md transition-colors">Setujui</button>
-                                            <button type="submit" name="status" value="rejected" class="w-full py-2 px-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 shadow-md transition-colors">Tolak</button>
-                                        </div>
-                                    </form>
-                                @elseif($booking->status == 'approved')
-                                    <form action="{{ route('bookings.update', $booking->id) }}" method="POST" class="mt-6 border-t pt-6">
-                                        @csrf @method('PATCH')
-                                        <h4 class="font-semibold text-gray-700 mb-2">Aksi Selesai</h4>
-                                        <button type="submit" name="status" value="completed" class="w-full py-3 px-4 bg-smaba-dark-blue text-white font-semibold rounded-lg hover:bg-smaba-light-blue shadow-md transition-colors">Tandai Kegiatan Selesai</button>
-                                    </form>
-                                @endif
-
-                                {{-- PENAMBAHAN: Form Tombol Hapus --}}
-                                @if(in_array($booking->status, ['pending', 'rejected']))
-                                <div class="mt-4 border-t pt-4">
-                                    <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" class="delete-form">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="w-full text-center py-2 px-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-md transition-colors text-sm">Hapus Booking Ini</button>
-                                    </form>
-                                </div>
-                                @endif
-                            @endcan
                         </div>
                     </div>
+
+                    {{-- Include Laporan Form (Reused Logic) --}}
+                    @if($booking->status == 'approved' || $booking->status == 'completed')
+                        @include('bookings.partials.return-form')
+                    @endif
                 </div>
+
+                {{-- Kolom Kanan: Status & Control Panel --}}
+                <div class="space-y-6">
+                    
+                    {{-- Card Status --}}
+                    <div class="bg-white overflow-hidden shadow-sm border border-gray-100 sm:rounded-xl">
+                        <div class="p-6 text-center">
+                            <h3 class="text-gray-500 font-medium text-sm uppercase tracking-wider mb-4">Status Saat Ini</h3>
+                            @if($booking->status == 'pending') 
+                                <div class="inline-flex flex-col items-center justify-center bg-yellow-100 text-yellow-800 rounded-full h-32 w-32 mb-2 ring-4 ring-yellow-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    <span class="font-bold text-lg">Pending</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2">Menunggu persetujuan Admin</p>
+                            @elseif($booking->status == 'approved') 
+                                <div class="inline-flex flex-col items-center justify-center bg-green-100 text-green-800 rounded-full h-32 w-32 mb-2 ring-4 ring-green-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    <span class="font-bold text-lg">Disetujui</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2">Silakan cetak surat izin</p>
+                            @elseif($booking->status == 'rejected')
+                                <div class="inline-flex flex-col items-center justify-center bg-red-100 text-red-800 rounded-full h-32 w-32 mb-2 ring-4 ring-red-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    <span class="font-bold text-lg">Ditolak</span>
+                                </div>
+                            @elseif($booking->status == 'completed')
+                                <div class="inline-flex flex-col items-center justify-center bg-gray-100 text-gray-800 rounded-full h-32 w-32 mb-2 ring-4 ring-gray-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                    <span class="font-bold text-lg">Selesai</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2">Kegiatan telah berakhir</p>
+                            @endif
+                        </div>
+                    </div>
+
+                    {{-- Admin Control Panel --}}
+                    @can('is-admin')
+                    <div class="bg-gradient-to-br from-white to-gray-50 overflow-hidden shadow-sm border border-gray-200 sm:rounded-xl">
+                        <div class="p-4 border-b border-gray-100 bg-gray-50">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                Admin Control
+                            </h3>
+                        </div>
+                        <div class="p-5 space-y-4">
+                            @if($booking->status == 'pending')
+                                <form action="{{ route('bookings.update', $booking->id) }}" method="POST" class="space-y-4">
+                                    @csrf @method('PATCH')
+                                    <div>
+                                        <label for="admin_notes" class="block text-xs font-medium text-gray-500 uppercase mb-1">Catatan (Review)</label>
+                                        <textarea name="admin_notes" id="admin_notes" rows="2" class="block w-full text-sm rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Berikan alasan jika menolak..."></textarea>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <button type="submit" name="status" value="approved" class="w-full flex justify-center items-center py-2 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg shadow-sm transition-all transform active:scale-95 text-sm">
+                                            ✔ Setujui
+                                        </button>
+                                        <button type="submit" name="status" value="rejected" class="w-full flex justify-center items-center py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg shadow-sm transition-all transform active:scale-95 text-sm">
+                                            ✖ Tolak
+                                        </button>
+                                    </div>
+                                </form>
+                            @elseif($booking->status == 'approved')
+                                <form action="{{ route('bookings.update', $booking->id) }}" method="POST">
+                                    @csrf @method('PATCH')
+                                    <button type="submit" name="status" value="completed" class="w-full flex justify-center items-center py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-md transition-all transform hover:-translate-y-0.5 text-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                        Tandai Selesai
+                                    </button>
+                                    <p class="text-xs text-gray-400 mt-2 text-center">Klik jika kegiatan & pengembalian sudah beres.</p>
+                                </form>
+                            @endif
+
+                            {{-- Form Hapus --}}
+                            @if(in_array($booking->status, ['pending', 'rejected', 'completed']))
+                                <div class="border-t border-gray-200 pt-4 mt-2">
+                                    <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus permanen?');">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="w-full text-gray-400 hover:text-red-600 text-xs font-medium transition-colors flex justify-center items-center p-2 rounded hover:bg-red-50">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                            Hapus Data Booking
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    @endcan
+                </div>
+
             </div>
         </div>
     </div>
