@@ -318,24 +318,13 @@
         <!-- SIGNATURES -->
         <div style="margin-top: 15px; margin-bottom: 5px;">
              <b style="font-size: 12pt;">• TANDA TANGAN</b>
-        </div>
-
-        <div class="signature-section">
             <div class="signature-box">
-                Peminjam<br>
+                <p style="margin-bottom: 5px;">Laboran</p>
                 <br>
-                <div class="signature-name">( {{ $booking->user->name }} )</div>
-            </div>
-            <div class="signature-box">
-                Guru Pengampu<br>
+                {{-- QR Code TTE --}}
+                <img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(90)->merge('/public/images/logo-smaba.webp', 0.3, true)->generate(route('bookings.verify', $booking->id))) }}" alt="QR Validation">
                 <br>
-                <!-- If the borrower IS the teacher, this might be redundant, but following format -->
-                <div class="signature-name">( ........................................ )</div>
-            </div>
-            <div class="signature-box">
-                Laboran<br>
-                <br>
-                <div class="signature-name">Dio Alif Alfarizi I</div>
+                <div class="signature-name" style="font-size: 8pt; margin-top: 5px;">(Ditandatangani Secara Elektronik)</div>
             </div>
         </div>
 

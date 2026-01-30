@@ -48,6 +48,7 @@ Route::get('/', function () {
 
 Route::post('/testimonials', [TestimonialController::class, 'store'])->name('testimonials.store');
 Route::post('/contact-admin', [ContactAdminController::class, 'store'])->name('contact.admin.store');
+Route::get('/verify/booking/{booking}', [BookingController::class, 'verify'])->name('bookings.verify'); // Public Verification Route
 
 // Grup Rute yang hanya bisa diakses setelah login
 Route::middleware(['auth', 'single.session'])->group(function () {

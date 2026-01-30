@@ -270,4 +270,15 @@ public function show($id)
 
         return back()->with('success', 'Laporan pengembalian berhasil disimpan.');
     }
+
+    /**
+     * Verifikasi Booking via QR Code (Public Access).
+     */
+    public function verify(Booking $booking)
+    {
+        // Eager load data user untuk menampilkan nama peminjam
+        $booking->load('user');
+
+        return view('bookings.verify', compact('booking'));
+    }
 }
