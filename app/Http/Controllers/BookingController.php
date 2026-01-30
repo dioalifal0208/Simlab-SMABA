@@ -95,10 +95,23 @@ class BookingController extends Controller
             ])->withInput();
         }
 
+        // --- UPDATE PROFILE USER ON-THE-FLY ---
+        // Jika user mengisi data diri di form booking, kita update profile mereka
+        $user = $request->user();
+        if ($request->hasAny(['nomor_induk', 'kelas', 'phone_number'])) {
+            $user->update([
+                'nomor_induk' => $request->nomor_induk ?? $user->nomor_induk,
+                'kelas' => $request->kelas ?? $user->kelas,
+                'phone_number' => $request->phone_number ?? $user->phone_number,
+            ]);
+        }
+        // ---------------------------------------
+
         $booking = Booking::create([
-            'user_id' => $request->user()->id,
+            'user_id' => $user->id,
             'guru_pengampu' => $validated['guru_pengampu'],
             'tujuan_kegiatan' => $validated['tujuan_kegiatan'],
+            'mata_pelajaran' => $validated['mata_pelajaran'] ?? null,
             'status' => 'pending',
             'laboratorium' => $selectedLab,
             'waktu_mulai' => $validated['waktu_mulai'],
@@ -230,5 +243,29 @@ public function show($id)
         }
 
         return view('bookings.surat', compact('booking'));
+    }
+
+    /**
+     * Menyimpan detail pengembalian (Lab Return Report).
+     */
+    public function storeReturnDetails(Request $request, Booking $booking)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'kondisi' => 'required|array',
+            'kondisi.*' => 'string',
+        ]);
+
+        // Cek otorisasi: hanya peminjam atau admin
+        if (Auth::user()->role !== 'admin' && Auth::id() !== $booking->user_id) {
+            abort(403);
+        }
+
+        $booking->update([
+            'waktu_pengembalian' => now(),
+            'kondisi_lab' => $validated['kondisi'],
+        ]);
+
+        return back()->with('success', 'Laporan pengembalian berhasil disimpan.');
     }
 }

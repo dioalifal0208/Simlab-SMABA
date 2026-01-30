@@ -56,6 +56,66 @@
                         </div>
                     </div>
                 </div>
+                
+                {{-- Laporan Pengembalian (Hanya muncul jika disetujui) --}}
+                @if($booking->status == 'approved' || $booking->status == 'completed')
+                <div class="bg-white overflow-hidden shadow-sm border border-gray-100 sm:rounded-xl transition-all duration-200 hover:shadow-md">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-smaba-text mb-4">Laporan Pengembalian</h3>
+                        
+                        @if($booking->waktu_pengembalian)
+                            <div class="bg-green-50 text-green-800 p-4 rounded-lg mb-4">
+                                <p class="font-semibold">Laporan Tersimpan</p>
+                                <p class="text-sm">Dikembalikan pada: {{ $booking->waktu_pengembalian->format('d M Y, H:i') }}</p>
+                            </div>
+                        @else
+                            <div class="bg-yellow-50 text-yellow-800 p-4 rounded-lg mb-4">
+                                <p class="text-sm">Silakan isi checklist kondisi ruangan setelah kegiatan selesai.</p>
+                            </div>
+                        @endif
+
+                        <form action="{{ route('bookings.return', $booking->id) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            
+                            <div class="space-y-3">
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" name="kondisi[]" value="Bersih dan Rapi" class="form-checkbox h-5 w-5 text-smaba-dark-blue rounded focus:ring-smaba-light-blue" 
+                                    {{ in_array('Bersih dan Rapi', $booking->kondisi_lab ?? []) ? 'checked' : '' }}
+                                    {{ $booking->status == 'completed' ? 'disabled' : '' }}>
+                                    <span class="text-gray-700">Bersih dan Rapi</span>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" name="kondisi[]" value="Ada Sampah / Belum Dibersihkan" class="form-checkbox h-5 w-5 text-red-600 rounded focus:ring-red-500" 
+                                    {{ in_array('Ada Sampah / Belum Dibersihkan', $booking->kondisi_lab ?? []) ? 'checked' : '' }}
+                                    {{ $booking->status == 'completed' ? 'disabled' : '' }}>
+                                    <span class="text-gray-700">Ada Sampah / Belum Dibersihkan</span>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" name="kondisi[]" value="Alat Tidak Kembali ke Posisi Semula" class="form-checkbox h-5 w-5 text-red-600 rounded focus:ring-red-500" 
+                                    {{ in_array('Alat Tidak Kembali ke Posisi Semula', $booking->kondisi_lab ?? []) ? 'checked' : '' }}
+                                    {{ $booking->status == 'completed' ? 'disabled' : '' }}>
+                                    <span class="text-gray-700">Alat Tidak Kembali ke Posisi Semula</span>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" name="kondisi[]" value="Kerusakan Pada fasilitas (Kursi, Meja, Alat, dll.)" class="form-checkbox h-5 w-5 text-red-600 rounded focus:ring-red-500" 
+                                    {{ in_array('Kerusakan Pada fasilitas (Kursi, Meja, Alat, dll.)', $booking->kondisi_lab ?? []) ? 'checked' : '' }}
+                                    {{ $booking->status == 'completed' ? 'disabled' : '' }}>
+                                    <span class="text-gray-700">Kerusakan Pada fasilitas (Kursi, Meja, Alat, dll.)</span>
+                                </label>
+                            </div>
+
+                            @if($booking->status != 'completed')
+                                <div class="mt-6">
+                                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                        Simpan Laporan
+                                    </button>
+                                </div>
+                            @endif
+                        </form>
+                    </div>
+                </div>
+                @endif
 
                 {{-- Kolom Kanan: Status & Aksi Admin --}}
                 <div class="lg:col-span-2 space-y-6">

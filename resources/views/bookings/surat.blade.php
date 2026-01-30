@@ -229,7 +229,7 @@
             </tr>
             <tr>
                 <td class="number-col">3.</td>
-                <td class="label-col">NIP / NIS</td>
+                <td class="label-col">NIP</td>
                 <td class="separator-col">:</td>
                 <td>{{ $booking->user->nomor_induk ?? $booking->user->email }}</td> <!-- Fallback to email if no induk -->
             </tr>
@@ -314,7 +314,15 @@
                 <td class="number-col">1.</td>
                 <td class="label-col">Tanggal Pengembalian</td>
                 <td class="separator-col">:</td>
-                <td>......... / .................... / 2026</td>
+                <td>
+                    @if($booking->waktu_pengembalian)
+                         {{ $booking->waktu_pengembalian->format('d') }} / 
+                         {{ $booking->waktu_pengembalian->format('m') }} / 
+                         {{ $booking->waktu_pengembalian->format('Y') }}
+                    @else
+                        ......... / .................... / {{ date('Y') }}
+                    @endif
+                </td>
             </tr>
             <tr>
                 <td class="number-col">2.</td>
@@ -325,10 +333,10 @@
         </table>
         
         <div style="margin-left: 247px;"> <!-- Indent to align with colon roughly or just below -->
-            <div><span class="checkbox-rect"></span> Bersih dan Rapi</div>
-            <div><span class="checkbox-rect"></span> Ada Sampah / Belum Dibersihkan</div>
-            <div><span class="checkbox-rect"></span> Alat Tidak Kembali ke Posisi Semula</div>
-            <div><span class="checkbox-rect"></span> Kerusakan Pada fasilitas (Kursi, Meja, Alat, dll.)</div>
+            <div><span class="checkbox-rect {{ in_array('Bersih dan Rapi', $booking->kondisi_lab ?? []) ? 'checked' : '' }}"></span> Bersih dan Rapi</div>
+            <div><span class="checkbox-rect {{ in_array('Ada Sampah / Belum Dibersihkan', $booking->kondisi_lab ?? []) ? 'checked' : '' }}"></span> Ada Sampah / Belum Dibersihkan</div>
+            <div><span class="checkbox-rect {{ in_array('Alat Tidak Kembali ke Posisi Semula', $booking->kondisi_lab ?? []) ? 'checked' : '' }}"></span> Alat Tidak Kembali ke Posisi Semula</div>
+            <div><span class="checkbox-rect {{ in_array('Kerusakan Pada fasilitas (Kursi, Meja, Alat, dll.)', $booking->kondisi_lab ?? []) ? 'checked' : '' }}"></span> Kerusakan Pada fasilitas (Kursi, Meja, Alat, dll.)</div>
         </div>
 
         <!-- SIGNATURES -->

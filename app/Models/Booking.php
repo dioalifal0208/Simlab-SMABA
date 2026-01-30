@@ -13,14 +13,19 @@ class Booking extends Model
 
     protected $fillable = [
         'user_id',
-        'guru_pengampu',
-        'tujuan_kegiatan',
-        'mata_pelajaran',
-        'status',
         'laboratorium',
         'waktu_mulai',
         'waktu_selesai',
+        'tujuan_kegiatan',
         'jumlah_peserta',
+        'status',
+        'admin_notes',
+        'guru_pengampu',
+        'mata_pelajaran',
+        
+        // Return Details
+        'waktu_pengembalian',
+        'kondisi_lab',
     ];
 
     /**
@@ -29,6 +34,8 @@ class Booking extends Model
     protected $casts = [
         'waktu_mulai' => 'datetime',
         'waktu_selesai' => 'datetime',
+        'waktu_pengembalian' => 'datetime',
+        'kondisi_lab' => 'array',
     ];
 
     /**

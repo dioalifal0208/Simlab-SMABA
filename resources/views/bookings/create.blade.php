@@ -55,6 +55,21 @@
                                 </div>
                             </div>
 
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label for="nomor_induk" class="block font-medium text-sm text-gray-700">NIP</label>
+                                    <input type="text" name="nomor_induk" id="nomor_induk" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('nomor_induk', auth()->user()->nomor_induk) }}" placeholder="NIP">
+                                </div>
+                                <div>
+                                    <label for="kelas" class="block font-medium text-sm text-gray-700">Kelas / Jabatan</label>
+                                    <input type="text" name="kelas" id="kelas" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('kelas', auth()->user()->kelas) }}" placeholder="Contoh: XII MIPA 1">
+                                </div>
+                                <div>
+                                    <label for="phone_number" class="block font-medium text-sm text-gray-700">No. HP / WA</label>
+                                    <input type="text" name="phone_number" id="phone_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('phone_number', auth()->user()->phone_number) }}" placeholder="08xxxxxxxx">
+                                </div>
+                            </div>
+                            
                             <div>
                                 <label for="mata_pelajaran" class="block font-medium text-sm text-gray-700">Mata Pelajaran <span class="text-xs text-gray-400">(Opsional)</span></label>
                                 <input type="text" name="mata_pelajaran" id="mata_pelajaran" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('mata_pelajaran') }}" placeholder="Contoh: Biologi, Fisika Dasar">

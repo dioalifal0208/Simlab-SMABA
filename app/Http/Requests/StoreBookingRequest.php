@@ -26,6 +26,12 @@ class StoreBookingRequest extends FormRequest
             'guru_pengampu' => 'required|string|max:255',
             'tujuan_kegiatan' => 'required|string',
             'mata_pelajaran' => 'nullable|string|max:255',
+            
+            // Tambahan untuk update profile user on-the-fly
+            'nomor_induk' => 'nullable|string|max:50',
+            'kelas' => 'nullable|string|max:50',
+            'phone_number' => 'nullable|string|max:20',
+
             'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
             'waktu_mulai' => 'required|date',
             'waktu_selesai' => 'required|date|after:waktu_mulai',
