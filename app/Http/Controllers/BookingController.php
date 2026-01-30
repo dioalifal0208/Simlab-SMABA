@@ -239,8 +239,8 @@ public function show($id)
             abort(403, 'Anda tidak memiliki hak akses untuk mencetak surat ini.');
         }
 
-        // Pastikan hanya booking yang disetujui yang bisa dicetak (Opsional, tapi disarankan)
-        if ($booking->status !== 'approved') {
+        // Pastikan hanya booking yang disetujui atau selesai yang bisa dicetak
+        if ($booking->status !== 'approved' && $booking->status !== 'completed') {
             return back()->withErrors(['message' => 'Hanya peminjaman yang sudah disetujui yang dapat dicetak suratnya.']);
         }
 
