@@ -7,172 +7,34 @@
     <style>
         body {
             font-family: 'Times New Roman', Times, serif;
-            line-height: 1.3; /* Adjusted for tighter spacing like the image */
+            line-height: 1.3;
             color: #000;
             background: #fff;
-            margin: 0;
-            padding: 1cm 2cm; /* Standard margin for formal letters */
-        }
-        .header {
-            text-align: center;
-            border-bottom: 3px double #000; /* Double line */
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-            position: relative;
-        }
-        .logo {
-            width: 90px;
-            height: auto;
-            position: absolute;
-            left: 0;
-            top: 5px;
-        }
-        .header-text {
-            /* padding-left: 100px; Center text properly even with logo absolute */
-        }
-        .header-text h2 {
-            font-size: 14pt;
-            font-weight: bold;
-            margin: 0;
-        }
-        .header-text h3 {
-            font-size: 16pt;
-            font-weight: bold;
-            margin: 0;
-        }
-        .header-text p {
-            font-size: 10pt;
-            margin: 0;
-        }
-        .header-text .email {
-            color: blue;
-            text-decoration: underline;
-        }
-        
-        .title-section {
-            text-align: center;
-            margin-top: 10px;
-            margin-bottom: 15px;
-            font-weight: bold;
-            font-size: 12pt;
-        }
-
-        .content {
-            font-size: 11pt;
-        }
-        
-        /* Numbered list styling to match image */
-        .section-title {
-            font-weight: bold;
-            margin-top: 10px;
-            margin-bottom: 5px;
-            list-style-type: disc; /* Bullet point */
-        }
-        
-        ul {
-            list-style-type: none; /* We will use numbering manually or table */
-            padding-left: 0;
-            margin: 0;
-        }
-
-        table.form-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-left: 15px; /* Indent slightly */
-        }
-        
-        table.form-table td {
-            vertical-align: top;
-            padding: 2px 0;
-        }
-        
-        .number-col {
-            width: 20px;
-        }
-        
-        .label-col {
-            width: 200px;
-        }
-        
-        .separator-col {
-            width: 15px;
-            text-align: center;
-        }
-        
-        .dotted-line {
-            border-bottom: 1px dotted #000;
-            display: inline-block;
-            min-width: 200px;
-            width: 100%; /* Fill remainder */
-            height: 14px; /* Align check */
-        }
-
-        .checkbox-rect {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border: 1px solid #000;
-            margin-right: 5px;
-            vertical-align: middle;
-            text-align: center;
-            line-height: 10px;
-        }
-
-        /* Checkbox checkmark simulation for checked items */
-        .checked::after {
-            content: "✓";
-            font-size: 10px;
-        }
-
-        .signature-section {
-            margin-top: 40px;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 20px;
-        }
-        
-        .signature-box {
-            text-align: center;
-            width: 30%;
-        }
-
-        .signature-name {
-            margin-top: 70px; /* Space for signature */
-            display: block;
-            /* text-decoration: underline; Optional based on preference, image shows bracket names mostly or no underline? Image shows (.....) */
-        }
-        
-        .footnote {
-            margin-top: 50px;
-            font-size: 9pt;
-        }
-
-        .print-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #004ecc;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: sans-serif;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            z-index: 1000;
+            margin: 0 auto;
+            padding: 1cm 2cm;
+            width: 210mm; /* Force A4 width on screen for preview */
+            box-sizing: border-box;
+            background-color: white;
+            min-height: 297mm; /* Force A4 height on screen */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Preview shadow */
         }
         
         @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0; /* Let body padding handle margins */
+            }
             body {
-                padding: 0;
-                margin: 1cm;
+                width: 210mm;
+                height: 297mm;
+                padding: 1.5cm 2cm; /* Adjust padding for print */
+                margin: 0;
+                box-shadow: none;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
             .print-button {
                 display: none;
-            }
-            @page {
-                size: A4;
-                margin: 0;
             }
             .header-text .email {
                 color: #000;
