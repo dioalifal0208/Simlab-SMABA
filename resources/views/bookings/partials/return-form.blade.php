@@ -39,7 +39,7 @@
                 <label class="cursor-pointer group relative">
                     <input type="checkbox" name="kondisi[]" value="Bersih dan Rapi" class="peer sr-only" 
                         {{ in_array('Bersih dan Rapi', $booking->kondisi_lab ?? []) ? 'checked' : '' }}
-                        {{ $booking->status == 'completed' ? 'disabled' : '' }}>
+                        {{ ($booking->status == 'completed' || $booking->waktu_pengembalian) ? 'disabled' : '' }}>
                     
                     <div class="p-4 rounded-xl border-2 border-gray-200 bg-white transition-all duration-200 hover:border-green-300 peer-checked:border-green-500 peer-checked:bg-green-50 peer-checked:shadow-sm">
                         <div class="flex items-center space-x-3">
@@ -62,7 +62,7 @@
                 <label class="cursor-pointer group relative">
                     <input type="checkbox" name="kondisi[]" value="Ada Sampah / Belum Dibersihkan" class="peer sr-only" 
                         {{ in_array('Ada Sampah / Belum Dibersihkan', $booking->kondisi_lab ?? []) ? 'checked' : '' }}
-                        {{ $booking->status == 'completed' ? 'disabled' : '' }}>
+                        {{ ($booking->status == 'completed' || $booking->waktu_pengembalian) ? 'disabled' : '' }}>
                     
                     <div class="p-4 rounded-xl border-2 border-gray-200 bg-white transition-all duration-200 hover:border-orange-300 peer-checked:border-orange-500 peer-checked:bg-orange-50 peer-checked:shadow-sm">
                         <div class="flex items-center space-x-3">
@@ -85,7 +85,7 @@
                 <label class="cursor-pointer group relative">
                     <input type="checkbox" name="kondisi[]" value="Alat Tidak Kembali ke Posisi Semula" class="peer sr-only" 
                         {{ in_array('Alat Tidak Kembali ke Posisi Semula', $booking->kondisi_lab ?? []) ? 'checked' : '' }}
-                        {{ $booking->status == 'completed' ? 'disabled' : '' }}>
+                        {{ ($booking->status == 'completed' || $booking->waktu_pengembalian) ? 'disabled' : '' }}>
                     
                     <div class="p-4 rounded-xl border-2 border-gray-200 bg-white transition-all duration-200 hover:border-yellow-300 peer-checked:border-yellow-500 peer-checked:bg-yellow-50 peer-checked:shadow-sm">
                         <div class="flex items-center space-x-3">
@@ -109,7 +109,7 @@
                 <label class="cursor-pointer group relative">
                     <input type="checkbox" name="kondisi[]" value="Kerusakan Pada fasilitas (Kursi, Meja, Alat, dll.)" class="peer sr-only" 
                         {{ in_array('Kerusakan Pada fasilitas (Kursi, Meja, Alat, dll.)', $booking->kondisi_lab ?? []) ? 'checked' : '' }}
-                        {{ $booking->status == 'completed' ? 'disabled' : '' }}>
+                        {{ ($booking->status == 'completed' || $booking->waktu_pengembalian) ? 'disabled' : '' }}>
                     
                     <div class="p-4 rounded-xl border-2 border-gray-200 bg-white transition-all duration-200 hover:border-red-300 peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:shadow-sm">
                         <div class="flex items-center space-x-3">
@@ -129,7 +129,7 @@
                 </label>
             </div>
 
-            @if($booking->status != 'completed')
+            @if($booking->status != 'completed' && !$booking->waktu_pengembalian)
                 <div class="mt-6 flex justify-end">
                     <button type="submit" class="inline-flex items-center px-6 py-3 bg-smaba-dark-blue border border-transparent rounded-lg font-semibold text-white uppercase tracking-widest hover:bg-smaba-light-blue active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150 shadow-lg transform hover:-translate-y-0.5">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
