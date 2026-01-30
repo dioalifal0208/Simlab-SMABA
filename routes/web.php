@@ -74,7 +74,12 @@ Route::middleware(['auth', 'single.session'])->group(function () {
     // Fitur Utama (Resource Routes)
     Route::resource('items', ItemController::class);
     Route::resource('loans', LoanController::class);
+
+    
+    // Custom route for Booking Letter must be before resource to avoid parameter conflict issues (though less likely here)
+    Route::get('/bookings/{booking}/surat', [BookingController::class, 'printSurat'])->name('bookings.surat');
     Route::resource('bookings', BookingController::class);
+
     Route::resource('practicum-modules', PracticumModuleController::class);
 
     // Kalender

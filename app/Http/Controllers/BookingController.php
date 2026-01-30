@@ -208,8 +208,27 @@ public function show($id)
     // Hapus data booking
     $booking->delete();
 
-    // Redirect ke halaman daftar booking
-    return redirect()->route('bookings.index')
-           ->with('success', 'Data booking berhasil dihapus.');
-}
+    // ... (existing destroy method)
+        // Redirect ke halaman daftar booking
+        return redirect()->route('bookings.index')
+               ->with('success', 'Data booking berhasil dihapus.');
+    }
+
+    /**
+     * Menampilkan Surat Peminjaman Lab untuk dicetak.
+     */
+    public function printSurat(Booking $booking)
+    {
+        // Otorisasi: Hanya Admin atau Pemilik Booking yang boleh mencetak
+        if (Auth::user()->role !== 'admin' && Auth::id() !== $booking->user_id) {
+            abort(403, 'Anda tidak memiliki hak akses untuk mencetak surat ini.');
+        }
+
+        // Pastikan hanya booking yang disetujui yang bisa dicetak (Opsional, tapi disarankan)
+        if ($booking->status !== 'approved') {
+            return back()->withErrors(['message' => 'Hanya peminjaman yang sudah disetujui yang dapat dicetak suratnya.']);
+        }
+
+        return view('bookings.surat', compact('booking'));
+    }
 }

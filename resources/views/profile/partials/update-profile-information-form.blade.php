@@ -72,6 +72,24 @@
                         </div>
                     @endif
                 </div>
+
+                <div class="md:col-span-1">
+                    <label for="nomor_induk" class="block text-sm font-medium text-gray-700">Nomor Induk (NIP/NIS)</label>
+                    <x-text-input id="nomor_induk" name="nomor_induk" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" :value="old('nomor_induk', $user->nomor_induk)" />
+                    <x-input-error class="mt-2" :messages="$errors->get('nomor_induk')" />
+                </div>
+
+                <div class="md:col-span-1">
+                    <label for="phone_number" class="block text-sm font-medium text-gray-700">Nomor HP / WA</label>
+                    <x-text-input id="phone_number" name="phone_number" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" :value="old('phone_number', $user->phone_number)" placeholder="Contoh: 08123456789" />
+                    <x-input-error class="mt-2" :messages="$errors->get('phone_number')" />
+                </div>
+
+                <div class="md:col-span-1">
+                    <label for="kelas" class="block text-sm font-medium text-gray-700">Kelas / Jabatan</label>
+                    <x-text-input id="kelas" name="kelas" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" :value="old('kelas', $user->kelas)" placeholder="Contoh: XII MIPA 1 atau Guru Biologi" />
+                    <x-input-error class="mt-2" :messages="$errors->get('kelas')" />
+                </div>
             </div>
 
             <div class="flex items-center justify-end gap-4">

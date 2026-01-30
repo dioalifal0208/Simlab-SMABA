@@ -45,6 +45,7 @@
                                 <div><dt class="font-medium text-gray-500">Tanggal Pengajuan</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->created_at->format('d F Y, H:i') }}</dd></div>
                                 <div><dt class="font-medium text-gray-500">Laboratorium</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->laboratorium }}</dd></div>
                                 <div><dt class="font-medium text-gray-500">Guru Pengampu</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->guru_pengampu }}</dd></div>
+                                <div><dt class="font-medium text-gray-500">Mata Pelajaran</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->mata_pelajaran ?? '-' }}</dd></div>
                                 <div><dt class="font-medium text-gray-500">Jumlah Peserta</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->jumlah_peserta ?? '-' }} orang</dd></div>
                                 <div class="sm:col-span-2"><dt class="font-medium text-gray-500">Waktu Pelaksanaan</dt><dd class="mt-1 font-semibold text-gray-800">{{ $booking->waktu_mulai->format('d M Y') }}, Pukul {{ $booking->waktu_mulai->format('H:i') }} - {{ $booking->waktu_selesai->format('H:i') }}</dd></div>
                                 <div class="sm:col-span-2"><dt class="font-medium text-gray-500">Tujuan Kegiatan</dt><dd class="mt-1 text-gray-700 bg-gray-50 p-3 rounded-md whitespace-pre-wrap">{{ $booking->tujuan_kegiatan }}</dd></div>

@@ -56,6 +56,11 @@
                             </div>
 
                             <div>
+                                <label for="mata_pelajaran" class="block font-medium text-sm text-gray-700">Mata Pelajaran <span class="text-xs text-gray-400">(Opsional)</span></label>
+                                <input type="text" name="mata_pelajaran" id="mata_pelajaran" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('mata_pelajaran') }}" placeholder="Contoh: Biologi, Fisika Dasar">
+                            </div>
+
+                            <div>
                                 <label for="tujuan_kegiatan" class="block font-medium text-sm text-gray-700">Tujuan Kegiatan / Judul Praktikum</label>
                                 <textarea name="tujuan_kegiatan" id="tujuan_kegiatan" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>{{ old('tujuan_kegiatan') }}</textarea>
                             </div>

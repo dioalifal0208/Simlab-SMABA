@@ -25,6 +25,7 @@ class StoreBookingRequest extends FormRequest
         return [
             'guru_pengampu' => 'required|string|max:255',
             'tujuan_kegiatan' => 'required|string',
+            'mata_pelajaran' => 'nullable|string|max:255',
             'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
             'waktu_mulai' => 'required|date',
             'waktu_selesai' => 'required|date|after:waktu_mulai',
@@ -44,6 +45,9 @@ class StoreBookingRequest extends FormRequest
             'guru_pengampu.max' => 'Nama guru pengampu tidak boleh lebih dari :max karakter.',
             
             'tujuan_kegiatan.required' => 'Tujuan kegiatan wajib diisi.',
+            
+            'mata_pelajaran.string' => 'Mata pelajaran harus berupa teks.',
+            'mata_pelajaran.max' => 'Mata pelajaran tidak boleh lebih dari :max karakter.',
             
             'laboratorium.required' => 'Laboratorium wajib dipilih.',
             'laboratorium.in' => 'Laboratorium harus berupa "Biologi", "Fisika", atau "Bahasa".',
@@ -70,6 +74,7 @@ class StoreBookingRequest extends FormRequest
         return [
             'guru_pengampu' => 'guru pengampu',
             'tujuan_kegiatan' => 'tujuan kegiatan',
+            'mata_pelajaran' => 'mata pelajaran',
             'laboratorium' => 'laboratorium',
             'waktu_mulai' => 'waktu mulai',
             'waktu_selesai' => 'waktu selesai',

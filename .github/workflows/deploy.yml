@@ -1,0 +1,54 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout Code
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    # 2. Setup Node.js for Building Assets
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install NPM Dependencies
+      run: npm install
+
+    - name: Build Assets
+      run: npm run build
+
+    # 3. Setup PHP (Optional if you want to test syntax, but main deploy is via SSH)
+    # Skipped to save time
+
+    # 4. Copy Build Assets to Server via SCP
+    - name: Copy Build Folder to Server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOSTINGER_HOST }}
+        username: ${{ secrets.HOSTINGER_USER }}
+        key: ${{ secrets.HOSTINGER_SSH_KEY }}
+        port: ${{ secrets.HOSTINGER_PORT }}
+        source: "public/build"
+        target: "~/Simlab-SMABA"
+
+    # 5. Execute Remote Commands via SSH
+    - name: Deploy on Server via SSH
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOSTINGER_HOST }}
+        username: ${{ secrets.HOSTINGER_USER }}
+        key: ${{ secrets.HOSTINGER_SSH_KEY }}
+        port: ${{ secrets.HOSTINGER_PORT }}
+        script: |
+          cd ~/Simlab-SMABA
+          git pull origin main
+          sh deploy.sh
