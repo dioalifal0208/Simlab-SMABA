@@ -147,6 +147,9 @@ Route::middleware(['auth', 'single.session'])->group(function () {
         // Laporan & Analitik
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
         Route::post('/reports/export', [ReportController::class, 'export'])->name('reports.export'); // <-- Export Route
+
+        // Lock Screen Unlock
+        Route::post('/lock-screen/unlock', [\App\Http\Controllers\Auth\LockScreenController::class, 'unlock'])->name('lock-screen.unlock');
         
         // Manajemen Pengumuman Global
         Route::get('/announcements', [AnnouncementController::class, 'index'])->name('announcements.index');

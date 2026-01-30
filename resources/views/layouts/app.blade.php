@@ -158,6 +158,46 @@
             @include('components.chat-widget')
         @endauth
         
+        {{-- Lock Screen Modal --}}
+        @auth
+        <div x-data="lockScreen" @keydown.window="resetTimer" @mousemove.window="resetTimer" @click.window="resetTimer" @scroll.window="resetTimer" style="display: none;" x-show="isOpen" class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            {{-- Blur Backdrop --}}
+            <div x-show="isOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm transition-opacity"></div>
+
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div x-show="isOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md border border-gray-100">
+                    
+                    <div class="px-4 pb-4 pt-5 sm:p-6 sm:pb-4 text-center">
+                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 mb-4 animate-pulse">
+                            <svg class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold leading-6 text-gray-900" id="modal-title">Sesi Terkunci</h3>
+                        <p class="text-sm text-gray-500 mt-2">Demi keamanan, sesi Anda dikunci karena tidak ada aktivitas selama 5 menit.</p>
+                        
+                        <div class="mt-6">
+                            <div class="text-left mb-2">
+                                <label class="text-xs font-semibold text-gray-500 uppercase">User</label>
+                                <p class="font-medium text-gray-900">{{ Auth::user()->name }}</p>
+                            </div>
+                            <input type="password" x-model="password" @keydown.enter="unlock" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Masukkan Password Anda...">
+                            <p x-show="error" x-text="error" class="text-red-600 text-xs mt-2 text-left"></p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                        <button type="button" @click="unlock" :disabled="isLoading" class="inline-flex w-full justify-center rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span x-show="isLoading" class="mr-2 animate-spin"><i class="fas fa-spinner"></i></span>    
+                            Buka Kunci
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endauth
+
         {{-- @stack('scripts') dipindahkan ke akhir <body> agar dimuat setelah Alpine --}}
         @stack('scripts')
 
