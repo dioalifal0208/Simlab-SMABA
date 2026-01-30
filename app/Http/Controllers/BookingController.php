@@ -181,10 +181,12 @@ public function show($id)
         }
     }
 
-    $booking->update([
-        'status' => $request->status,
-        'admin_notes' => $request->admin_notes,
-    ]);
+    $data = ['status' => $request->status];
+    if ($request->has('admin_notes')) {
+        $data['admin_notes'] = $request->admin_notes;
+    }
+
+    $booking->update($data);
 
     // --- PENAMBAHAN: KIRIM NOTIFIKASI KE PENGGUNA ---
     if ($request->status == 'approved' || $request->status == 'rejected') {
