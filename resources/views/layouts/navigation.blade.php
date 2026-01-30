@@ -30,8 +30,11 @@
                                 <x-dropdown-link :href="route('loans.index')" :active="request()->routeIs('loans.*')">
                                     {{ __('Peminjaman') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
+                                <x-dropdown-link :href="route('bookings.index')" :active="request()->routeIs('bookings.index') && !request('status')">
                                     {{ __('Booking Lab') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('bookings.index', ['status' => 'completed'])" :active="request('status') == 'completed'">
+                                    {{ __('Arsip Peminjaman') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')">
                                     {{ __('Kalender') }}
@@ -207,7 +210,8 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"> {{ __('Dashboard') }} </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('items.index')" :active="request()->routeIs('items.*')"> {{ __('Inventaris') }} </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.*')"> {{ __('Peminjaman') }} </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')"> {{ __('Booking Lab') }} </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.index') && !request('status')"> {{ __('Booking Lab') }} </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('bookings.index', ['status' => 'completed'])" :active="request('status') == 'completed'"> {{ __('Arsip Peminjaman') }} </x-responsive-nav-link>
             @cannot('is-admin')
                 <x-responsive-nav-link :href="route('item-requests.create')" :active="request()->routeIs('item-requests.create')"> {{ __('Ajukan Tambah Item') }} </x-responsive-nav-link>
             @endcannot
