@@ -10,7 +10,7 @@
             
             <div class="flex items-center space-x-3">
                 {{-- Tombol Cetak (Pindah ke Header) --}}
-                @if($booking->status == 'approved' && (auth()->user()->role === 'admin' || auth()->id() === $booking->user_id))
+                @if(($booking->status == 'approved' || $booking->status == 'completed') && (auth()->user()->role === 'admin' || auth()->id() === $booking->user_id))
                     <button onclick="openDocModal('{{ route('bookings.surat', $booking->id) }}', 'Surat Booking #{{ $booking->id }}')" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-semibold text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
