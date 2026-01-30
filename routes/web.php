@@ -146,6 +146,7 @@ Route::middleware(['auth', 'single.session'])->group(function () {
         
         // Laporan & Analitik
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+        Route::post('/reports/export', [ReportController::class, 'export'])->name('reports.export'); // <-- Export Route
         
         // Manajemen Pengumuman Global
         Route::get('/announcements', [AnnouncementController::class, 'index'])->name('announcements.index');

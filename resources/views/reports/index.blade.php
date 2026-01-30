@@ -11,6 +11,37 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
 
+            {{-- Export Card --}}
+            <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl p-6 md:p-8" data-aos="fade-up" data-aos-once="true">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-smaba-text">Download Laporan Bulanan</h3>
+                        <p class="text-sm text-gray-500 mt-1">Unduh rekapitulasi data peminjaman dalam format Excel.</p>
+                    </div>
+                    
+                    <form action="{{ route('reports.export') }}" method="POST" class="flex flex-col sm:flex-row gap-3">
+                        @csrf
+                        <select name="month" class="rounded-lg border-gray-300 focus:border-smaba-dark-blue focus:ring-smaba-dark-blue shadow-sm text-sm">
+                            @foreach(range(1, 12) as $m)
+                                <option value="{{ $m }}" {{ date('n') == $m ? 'selected' : '' }}>
+                                    {{ date('F', mktime(0, 0, 0, $m, 10)) }}
+                                </option>
+                            @endforeach
+                        </select>
+                        
+                        <select name="year" class="rounded-lg border-gray-300 focus:border-smaba-dark-blue focus:ring-smaba-dark-blue shadow-sm text-sm">
+                            @foreach(range(date('Y')-1, date('Y')+1) as $y)
+                                <option value="{{ $y }}" {{ date('Y') == $y ? 'selected' : '' }}>{{ $y }}</option>
+                            @endforeach
+                        </select>
+
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-800 focus:outline-none focus:border-green-800 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
+                            <i class="fas fa-file-excel mr-2"></i> Download Excel
+                        </button>
+                    </form>
+                </div>
+            </div>
+
             {{-- Grafik Tren Peminjaman --}}
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
                 <div class="p-6 md:p-8">
