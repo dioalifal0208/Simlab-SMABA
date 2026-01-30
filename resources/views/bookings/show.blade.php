@@ -11,12 +11,14 @@
             <div class="flex items-center space-x-3">
                 {{-- Tombol Cetak (Pindah ke Header) --}}
                 @if($booking->status == 'approved' && (auth()->user()->role === 'admin' || auth()->id() === $booking->user_id))
-                    <a href="{{ route('bookings.surat', $booking->id) }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-semibold text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-sm">
+                    <button onclick="openDocModal('{{ route('bookings.surat', $booking->id) }}', 'Surat Booking #{{ $booking->id }}')" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-semibold text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
-                        Cetak Surat
-                    </a>
+                        Lihat Surat
+                    </button>
+                    {{-- Hidden link for direct download if needed --}}
                 @endif
 
                 <a href="{{ route('bookings.index') }}" class="text-sm font-semibold text-smaba-light-blue hover:text-smaba-dark-blue transition-colors">
@@ -197,4 +199,108 @@
             </div>
         </div>
     </div>
+    {{-- Modal Pratinjau Surat --}}
+    <div id="docModal" class="hidden fixed inset-0 z-50 bg-black/60 items-center justify-center backdrop-blur-sm transition-opacity duration-300" role="dialog" aria-modal="true" aria-labelledby="docModalTitle">
+        <div class="bg-white w-full h-full md:w-11/12 md:h-[90vh] md:max-w-5xl md:rounded-2xl shadow-2xl flex flex-col overflow-hidden transform transition-all scale-100">
+            
+            {{-- Header Modal --}}
+            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-indigo-100 text-indigo-600 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 id="docModalTitle" class="text-lg font-bold text-gray-800">Pratinjau Surat</h3>
+                        <p class="text-xs text-gray-500">Pastikan margin dan layout sesuai sebelum mencetak.</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeDocModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-full transition-colors focus:outline-none" aria-label="Tutup">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            {{-- Content Iframe --}}
+            <div class="flex-grow bg-gray-100 relative">
+                <div id="loadingSpinner" class="absolute inset-0 flex items-center justify-center bg-white z-10">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                </div>
+                <iframe id="docFrame" class="w-full h-full" src="" title="Pratinjau Surat" onload="document.getElementById('loadingSpinner').classList.add('hidden')"></iframe>
+            </div>
+
+            {{-- Footer Actions --}}
+            <div class="px-6 py-4 border-t border-gray-100 bg-white flex justify-end space-x-3">
+                <button type="button" onclick="closeDocModal()" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                    Tutup
+                </button>
+                <button type="button" onclick="printFrame()" class="inline-flex items-center px-5 py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Download PDF / Cetak
+                </button>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+    <script>
+        function openDocModal(url, title) {
+            const modal = document.getElementById('docModal');
+            const frame = document.getElementById('docFrame');
+            const spinner = document.getElementById('loadingSpinner');
+            
+            if (!modal) return;
+            
+            // Set title and title attribute
+            document.getElementById('docModalTitle').textContent = title || 'Pratinjau Dokumen';
+            
+            // Show loading spinner
+            if(spinner) spinner.classList.remove('hidden');
+            
+            // Set styles to show modal
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+            // Load URL into iframe
+            frame.src = url;
+        }
+
+        function closeDocModal() {
+            const modal = document.getElementById('docModal');
+            if (!modal) return;
+            
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.getElementById('docFrame').src = ''; // Stop loading
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        function printFrame() {
+            const frame = document.getElementById('docFrame');
+            if (frame && frame.contentWindow) {
+                frame.contentWindow.focus();
+                frame.contentWindow.print();
+            }
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeDocModal();
+            }
+        });
+
+        // Close on clicking outside modal content
+        document.getElementById('docModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeDocModal();
+            }
+        });
+    </script>
+    @endpush
 </x-app-layout>
