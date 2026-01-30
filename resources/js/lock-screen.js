@@ -5,8 +5,7 @@ document.addEventListener('alpine:init', () => {
         isLoading: false,
         error: '',
         idleTime: 0,
-        idleLimit: 10,
-        // idleLimit: 5 * 60, // 5 minutes in seconds
+        idleLimit: 5 * 60, // 5 minutes in seconds
         timer: null,
 
         init() {
