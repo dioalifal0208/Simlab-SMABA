@@ -206,10 +206,10 @@
                     {{-- Feature 2 --}}
                     <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-blue-600 transition-colors duration-300" data-aos="fade-up" data-aos-delay="100">
                         <div class="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center mb-4 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                            <i class="fas fa-check-circle text-xl"></i>
+                            <i class="fas fa-qrcode text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Approval Berjenjang</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-4">Sistem validasi peminjaman oleh kepala lab untuk memastikan keamanan alat.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Validasi Digital (QR)</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4">Surat peminjaman dilengkapi QR Code unik yang terverifikasi. Cek keaslian dokumen tanpa login.</p>
                         <a href="#workflow" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Alur <i class="fas fa-arrow-right text-xs"></i></a>
                     </div>
 
@@ -226,10 +226,10 @@
                     {{-- Feature 4 --}}
                     <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-blue-600 transition-colors duration-300" data-aos="fade-up" data-aos-delay="300">
                         <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
-                            <i class="fas fa-chart-pie text-xl"></i>
+                            <i class="fas fa-file-excel text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Laporan Otomatis</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-4">Export data penggunaan lab dan kondisi alat ke format Excel/PDF untuk administrasi.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Laporan & Export Excel</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4">Pantau tren peminjaman dan download rekapitulasi laporan bulanan dalam format Excel otomatis.</p>
                         <a href="#workflow" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Alur <i class="fas fa-arrow-right text-xs"></i></a>
                     </div>
                 </div>
@@ -253,8 +253,8 @@
                             <div class="flex gap-4" data-aos="fade-up" data-aos-delay="200">
                                 <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm">2</div>
                                 <div>
-                                    <h4 class="text-lg font-bold text-gray-900">Validasi Petugas</h4>
-                                    <p class="text-gray-600 text-sm mt-1">Kepala Lab menyetujui jika alat tersedia dan kondisi baik.</p>
+                                    <h4 class="text-lg font-bold text-gray-900">Validasi Digital</h4>
+                                    <p class="text-gray-600 text-sm mt-1">Kepala Lab menyetujui dan sistem menerbitkan QR Code otomatis pada surat peminjaman.</p>
                                 </div>
                             </div>
                             <div class="flex gap-4" data-aos="fade-up" data-aos-delay="300">

@@ -9,6 +9,11 @@ document.addEventListener('alpine:init', () => {
         timer: null,
 
         init() {
+            // Check persistence on load
+            if (localStorage.getItem('isLocked') === 'true') {
+                this.isOpen = true;
+            }
+
             // Start the idle timer
             this.startTimer();
 
@@ -44,6 +49,7 @@ document.addEventListener('alpine:init', () => {
 
         lock() {
             this.isOpen = true;
+            localStorage.setItem('isLocked', 'true'); // Persist lock state
             this.error = '';
             this.password = '';
         },
@@ -64,6 +70,7 @@ document.addEventListener('alpine:init', () => {
 
                 if (response.data.success) {
                     this.isOpen = false;
+                    localStorage.removeItem('isLocked'); // Clear persistence
                     this.resetTimer();
                     this.password = '';
                 }
