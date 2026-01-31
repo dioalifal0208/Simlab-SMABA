@@ -357,8 +357,9 @@
         </div>
 
         {{-- PRODUCT TOUR MODAL (INTERACTIVE) --}}
-        <div x-show="showDemoModal" x-transition.opacity class="fixed inset-0 z-[60] flex items-center justify-center bg-gray-900/80 backdrop-blur-sm p-4" style="display: none;">
-            <div @click.outside="showDemoModal = false" class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl h-[600px] flex overflow-hidden border border-gray-200 flex-col md:flex-row">
+        <div x-show="showDemoModal" x-transition.opacity class="fixed inset-0 z-[60] overflow-y-auto bg-gray-900/80 backdrop-blur-sm" style="display: none;">
+            <div class="flex min-h-full items-center justify-center p-4">
+                <div @click.outside="showDemoModal = false" class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl h-auto md:h-[600px] flex overflow-hidden border border-gray-200 flex-col md:flex-row relative">
                 
                 {{-- Sidebar Navigation --}}
                 <div class="w-full md:w-1/3 bg-gray-50 border-r border-gray-200 p-6 flex flex-col">
@@ -483,12 +484,14 @@
                     </div>
 
                 </div>
+                </div>
             </div>
         </div>
 
         {{-- FEATURE SPOTLIGHT MODAL --}}
-        <div x-show="showFeatureModal" x-transition.opacity class="fixed inset-0 z-[70] flex items-center justify-center bg-gray-900/80 backdrop-blur-sm p-4" style="display: none;">
-            <div @click.outside="showFeatureModal = false" class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden border border-gray-200 flex flex-col relative animate-[popIn_0.3s_ease-out]">
+        <div x-show="showFeatureModal" x-transition.opacity class="fixed inset-0 z-[70] overflow-y-auto bg-gray-900/80 backdrop-blur-sm" style="display: none;">
+            <div class="flex min-h-full items-center justify-center p-4">
+                <div @click.outside="showFeatureModal = false" class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden border border-gray-200 flex flex-col relative animate-[popIn_0.3s_ease-out] my-8">
                 
                 {{-- Header --}}
                 <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
@@ -648,6 +651,7 @@
                     100% { transform: scale(1); opacity: 1; }
                 }
             </style>
+            </div>
         </div>
 
         {{-- AOS ANIMATION SCRIPT --}}
