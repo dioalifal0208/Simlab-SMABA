@@ -200,7 +200,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Inventaris Digital</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">Database terpusat untuk semua alat dan bahan. Lacak kondisi dan lokasi dengan mudah.</p>
-                        <a href="#workflow" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Alur <i class="fas fa-arrow-right text-xs"></i></a>
+                        <button @click="showDemoModal = true; activeSlide = 0" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Demo <i class="fas fa-play-circle text-xs"></i></button>
                     </div>
                     
                     {{-- Feature 2 --}}
@@ -210,7 +210,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Validasi Digital (QR)</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">Surat peminjaman dilengkapi QR Code unik yang terverifikasi. Cek keaslian dokumen tanpa login.</p>
-                        <a href="#workflow" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Alur <i class="fas fa-arrow-right text-xs"></i></a>
+                        <button @click="showDemoModal = true; activeSlide = 2" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Demo <i class="fas fa-play-circle text-xs"></i></button>
                     </div>
 
                     {{-- Feature 3 --}}
@@ -220,7 +220,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Kalender Cerdas</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">Cegah bentrok jadwal antar guru mata pelajaran Fisika, Biologi, dan Bahasa.</p>
-                        <a href="#workflow" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Alur <i class="fas fa-arrow-right text-xs"></i></a>
+                        <button @click="showDemoModal = true; activeSlide = 1" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Demo <i class="fas fa-play-circle text-xs"></i></button>
                     </div>
 
                     {{-- Feature 4 --}}
@@ -230,7 +230,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Laporan & Export Excel</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">Pantau tren peminjaman dan download rekapitulasi laporan bulanan dalam format Excel otomatis.</p>
-                        <a href="#workflow" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Alur <i class="fas fa-arrow-right text-xs"></i></a>
+                        <button @click="showDemoModal = true; activeSlide = 0" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Demo <i class="fas fa-play-circle text-xs"></i></button>
                     </div>
                 </div>
             </div>
