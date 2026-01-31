@@ -49,8 +49,8 @@
 
     <body class="antialiased bg-white text-gray-900 overflow-x-hidden selection:bg-blue-100 selection:text-blue-900"
           data-authenticated="{{ auth()->check() ? '1' : '0' }}"
-          x-data="{ isModalOpen: false, showTestimonialModal: false, showDemoModal: false, activeSlide: 0 }"
-          @keydown.escape.window="isModalOpen = false; showTestimonialModal = false; showDemoModal = false">
+          x-data="{ isModalOpen: false, showTestimonialModal: false, showDemoModal: false, showFeatureModal: false, activeSlide: 0, activeFeature: 'inventory' }"
+          @keydown.escape.window="isModalOpen = false; showTestimonialModal = false; showDemoModal = false; showFeatureModal = false">
 
         {{-- BACKGROUND GRID (SPOTLIGHT) --}}
         <div class="fixed inset-0 z-0 pointer-events-none bg-grid-pattern"></div>
@@ -200,7 +200,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Inventaris Digital</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">Database terpusat untuk semua alat dan bahan. Lacak kondisi dan lokasi dengan mudah.</p>
-                        <button @click="showDemoModal = true; activeSlide = 0" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Demo <i class="fas fa-play-circle text-xs"></i></button>
+                        <button @click="showFeatureModal = true; activeFeature = 'inventory'" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
                     
                     {{-- Feature 2 --}}
@@ -210,7 +210,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Validasi Digital (QR)</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">Surat peminjaman dilengkapi QR Code unik yang terverifikasi. Cek keaslian dokumen tanpa login.</p>
-                        <button @click="showDemoModal = true; activeSlide = 2" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Demo <i class="fas fa-play-circle text-xs"></i></button>
+                        <button @click="showFeatureModal = true; activeFeature = 'validation'" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
 
                     {{-- Feature 3 --}}
@@ -220,7 +220,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Kalender Cerdas</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">Cegah bentrok jadwal antar guru mata pelajaran Fisika, Biologi, dan Bahasa.</p>
-                        <button @click="showDemoModal = true; activeSlide = 1" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Demo <i class="fas fa-play-circle text-xs"></i></button>
+                        <button @click="showFeatureModal = true; activeFeature = 'calendar'" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
 
                     {{-- Feature 4 --}}
@@ -230,7 +230,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Laporan & Export Excel</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">Pantau tren peminjaman dan download rekapitulasi laporan bulanan dalam format Excel otomatis.</p>
-                        <button @click="showDemoModal = true; activeSlide = 0" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Demo <i class="fas fa-play-circle text-xs"></i></button>
+                        <button @click="showFeatureModal = true; activeFeature = 'report'" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
                 </div>
             </div>
@@ -477,6 +477,170 @@
 
                 </div>
             </div>
+        </div>
+
+        {{-- FEATURE SPOTLIGHT MODAL --}}
+        <div x-show="showFeatureModal" x-transition.opacity class="fixed inset-0 z-[70] flex items-center justify-center bg-gray-900/80 backdrop-blur-sm p-4" style="display: none;">
+            <div @click.outside="showFeatureModal = false" class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden border border-gray-200 flex flex-col relative animate-[popIn_0.3s_ease-out]">
+                
+                {{-- Header --}}
+                <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900" x-text="activeFeature === 'inventory' ? 'Inventaris Digital' : (activeFeature === 'validation' ? 'Validasi Dokumen QR' : (activeFeature === 'calendar' ? 'Kalender Laboratorium' : 'Laporan & Analitik'))"></h3>
+                        <p class="text-gray-500 text-sm mt-1">Preview fitur unggulan SIMLAB SMABA</p>
+                    </div>
+                    <button @click="showFeatureModal = false" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                {{-- Body Content --}}
+                <div class="p-8 bg-gray-50/30 min-h-[400px] flex items-center justify-center">
+                    
+                    {{-- 1. INVENTORY MOCKUP --}}
+                    <div x-show="activeFeature === 'inventory'" class="w-full max-w-3xl space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex gap-4">
+                            <div class="flex-1 relative">
+                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                                <input disabled type="text" value="Mikroskop" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700">
+                            </div>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700"><i class="fas fa-plus mr-2"></i> Tambah Alat</button>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                            <table class="w-full text-sm text-left">
+                                <thead class="bg-gray-50 text-gray-500 font-medium">
+                                    <tr><th class="px-6 py-3">Nama Alat</th><th class="px-6 py-3">Kondisi</th><th class="px-6 py-3">Stok</th></tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="hover:bg-blue-50/50 transition">
+                                        <td class="px-6 py-4 font-medium text-gray-900">Mikroskop Binokuler X-200</td>
+                                        <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold">Baik</span></td>
+                                        <td class="px-6 py-4 text-gray-600">12 Unit</td>
+                                    </tr>
+                                    <tr class="hover:bg-blue-50/50 transition">
+                                        <td class="px-6 py-4 font-medium text-gray-900">Gelas Ukur 100ml</td>
+                                        <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold">Baik</span></td>
+                                        <td class="px-6 py-4 text-gray-600">25 Unit</td>
+                                    </tr>
+                                    <tr class="hover:bg-blue-50/50 transition">
+                                        <td class="px-6 py-4 font-medium text-gray-900">Tabung Reaksi Pyrex</td>
+                                        <td class="px-6 py-4"><span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs font-bold">Perlu Cek</span></td>
+                                        <td class="px-6 py-4 text-gray-600">48 Unit</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {{-- 2. VALIDATION UI MOCKUP --}}
+                    <div x-show="activeFeature === 'validation'" class="w-full max-w-sm bg-white p-8 rounded-xl shadow-lg border border-gray-200 text-center relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-emerald-500"></div>
+                        <div class="w-24 h-24 mx-auto bg-white p-2 rounded-lg border-2 border-dashed border-gray-300 mb-6">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Validasi-SMABA-Official" class="w-full h-full opacity-80">
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-900">Dokumen Valid</h4>
+                        <p class="text-sm text-gray-500 mb-6">Surat Peminjaman #BOOK-2026-001</p>
+                        
+                        <div class="space-y-3 text-left bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Peminjam:</span>
+                                <span class="font-medium text-gray-900">Drs. Sutrisno</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Status:</span>
+                                <span class="text-emerald-600 font-bold flex items-center gap-1"><i class="fas fa-check-circle"></i> Disetujui</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-center">
+                            <img class="h-8 opacity-50" src="{{ asset('images/logo-smaba.webp') }}">
+                        </div>
+                    </div>
+
+                    {{-- 3. CALENDAR UI MOCKUP --}}
+                    <div x-show="activeFeature === 'calendar'" class="w-full max-w-3xl bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="bg-white border-b border-gray-200 p-4 flex justify-between items-center">
+                            <h4 class="font-bold text-gray-800">Januari 2026</h4>
+                            <div class="flex gap-2">
+                                <button class="p-1 px-3 text-sm bg-gray-100 rounded hover:bg-gray-200">Bulan</button>
+                                <button class="p-1 px-3 text-sm text-gray-500 hover:bg-gray-50">Minggu</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-7 gap-px bg-gray-200 border-b border-gray-200 text-center text-xs font-semibold text-gray-500 bg-gray-50">
+                            <div class="py-2">Sen</div><div class="py-2">Sel</div><div class="py-2">Rab</div><div class="py-2">Kam</div><div class="py-2">Jum</div><div class="py-2">Sab</div><div class="py-2 text-red-500">Mig</div>
+                        </div>
+                        <div class="grid grid-cols-7 grid-rows-2 h-64 gap-px bg-gray-200">
+                             {{-- Dummy Calendar Cells --}}
+                             <div class="bg-white p-2 min-h-[100px] text-sm text-gray-400">29</div>
+                             <div class="bg-white p-2 min-h-[100px] text-sm text-gray-400">30</div>
+                             <div class="bg-white p-2 min-h-[100px] text-sm font-bold">1</div>
+                             <div class="bg-white p-2 min-h-[100px]">
+                                 <span class="text-sm font-bold">2</span>
+                                 <div class="mt-1 px-2 py-1 bg-blue-100 text-blue-700 text-[10px] rounded border border-blue-200 font-medium truncate">10:00 - Fisika XII</div>
+                             </div>
+                             <div class="bg-white p-2 min-h-[100px] text-sm font-bold">3</div>
+                             <div class="bg-white p-2 min-h-[100px] text-sm font-bold">4</div>
+                             <div class="bg-red-50 p-2 min-h-[100px] text-sm text-red-500 font-bold">5</div>
+                             
+                             <div class="bg-white p-2 min-h-[100px] text-sm font-bold">6</div>
+                             <div class="bg-white p-2 min-h-[100px]">
+                                 <span class="text-sm font-bold">7</span>
+                                 <div class="mt-1 px-2 py-1 bg-purple-100 text-purple-700 text-[10px] rounded border border-purple-200 font-medium truncate">08:00 - Kimia X</div>
+                                 <div class="mt-1 px-2 py-1 bg-amber-100 text-amber-700 text-[10px] rounded border border-amber-200 font-medium truncate">13:00 - Biologi XI</div>
+                             </div>
+                             <div class="bg-white p-2 min-h-[100px] text-sm font-bold">8</div>
+                             <div class="bg-white p-2 min-h-[100px] text-sm font-bold">9</div>
+                             <div class="bg-white p-2 min-h-[100px] text-sm font-bold">10</div>
+                             <div class="bg-white p-2 min-h-[100px] text-sm font-bold">11</div>
+                             <div class="bg-red-50 p-2 min-h-[100px] text-sm text-red-500 font-bold">12</div>
+                        </div>
+                    </div>
+
+                    {{-- 4. EXCEL/REPORT UI MOCKUP --}}
+                    <div x-show="activeFeature === 'report'" class="w-full max-w-3xl flex flex-col md:flex-row gap-6">
+                         <div class="flex-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center text-center space-y-4">
+                             <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-2">
+                                 <i class="fas fa-file-excel text-3xl"></i>
+                             </div>
+                             <h4 class="text-lg font-bold text-gray-900">Export Laporan Bulanan</h4>
+                             <p class="text-sm text-gray-500">Unduh rekapitulasi peminjaman lengkap dengan detail alat dan penanggung jawab.</p>
+                             <button class="w-full py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition shadow-md"><i class="fas fa-download mr-2"></i> Download .XLSX</button>
+                         </div>
+                         <div class="flex-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                             <h5 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wide">Statistik Peminjaman</h5>
+                             <div class="space-y-4">
+                                 <div>
+                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">Lab Fisika</span> <span class="text-gray-500">85%</span></div>
+                                     <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-blue-600 h-2 rounded-full" style="width: 85%"></div></div>
+                                 </div>
+                                 <div>
+                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">Lab Biologi</span> <span class="text-gray-500">62%</span></div>
+                                     <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-emerald-500 h-2 rounded-full" style="width: 62%"></div></div>
+                                 </div>
+                                 <div>
+                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">Lab Kimia</span> <span class="text-gray-500">45%</span></div>
+                                     <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-amber-500 h-2 rounded-full" style="width: 45%"></div></div>
+                                 </div>
+                                  <div>
+                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">Lab Komputer</span> <span class="text-gray-500">92%</span></div>
+                                     <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-purple-600 h-2 rounded-full" style="width: 92%"></div></div>
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
+
+                </div>
+                
+                {{-- Footer --}}
+                <div class="bg-gray-50 p-4 border-t border-gray-200 text-center">
+                    <button @click="isModalOpen = true; showFeatureModal = false" class="text-blue-600 font-semibold text-sm hover:underline hover:text-blue-800">Coba Langsung di Dashboard &rarr;</button>
+                </div>
+            </div>
+            <style>
+                @keyframes popIn {
+                    0% { transform: scale(0.95); opacity: 0; }
+                    100% { transform: scale(1); opacity: 1; }
+                }
+            </style>
         </div>
 
         {{-- AOS ANIMATION SCRIPT --}}
