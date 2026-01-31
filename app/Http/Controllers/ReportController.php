@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
+use App\Exports\BookingsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class ReportController extends Controller
 {
     public function index()
@@ -51,5 +54,18 @@ class ReportController extends Controller
             'topItemsLabels',
             'topItemsData'
         ));
+    }
+
+    public function export(Request $request)
+    {
+        $request->validate([
+            'month' => 'required|numeric|min:1|max:12',
+            'year' => 'required|numeric|min:2020|max:' . (date('Y') + 1),
+        ]);
+
+        $month = $request->month;
+        $year = $request->year;
+
+        return Excel::download(new BookingsExport($month, $year), 'Laporan-Peminjaman-Lab-' . $month . '-' . $year . '.xlsx');
     }
 }

@@ -7,8 +7,11 @@ use App\Models\Booking;
 use App\Models\Item;
 use App\Models\Document;
 use App\Models\DamageReport; // <-- Import DamageReport
+use App\Models\User;
+use App\Models\AuditLog;
 use Illuminate\Http\Request; // <-- Import Request
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -21,6 +24,17 @@ class DashboardController extends Controller
         //       DASHBOARD UNTUK ADMIN
         // ==============================
         if ($user->role === 'admin') {
+            
+            // Quick Stats Summary Bar Data
+            $totalItemsCount = Item::count();
+            $totalUsersCount = User::count();
+            $monthlyLoansCount = Loan::whereMonth('created_at', Carbon::now()->month)
+                                     ->whereYear('created_at', Carbon::now()->year)
+                                     ->count();
+            $monthlyBookingsCount = Booking::whereMonth('created_at', Carbon::now()->month)
+                                           ->whereYear('created_at', Carbon::now()->year)
+                                           ->count();
+            $monthlyTransactionsCount = $monthlyLoansCount + $monthlyBookingsCount;
             
             $lowStockItems = Item::where('tipe', 'Bahan Habis Pakai')
                                  ->whereNotNull('stok_minimum')
@@ -40,7 +54,7 @@ class DashboardController extends Controller
             $overdueLoansCount = Loan::where('status', 'Terlambat')->count();
             // -----------------------------------------------
 
-            // Ambil lebih banyak lalu gabungkan, baru batasi 5 terakhir
+            // Ambil aktivitas dari berbagai sumber
             $loanActivities = Loan::with('user:id,name')
                 ->select('id', 'user_id', 'created_at')
                 ->latest()
@@ -55,10 +69,20 @@ class DashboardController extends Controller
                 ->get()
                 ->map(fn($x) => tap($x, fn($i) => $i->type = 'booking'));
 
+            // Tambahkan audit logs
+            $auditActivities = AuditLog::with('user:id,name')
+                ->whereNotNull('user_id')
+                ->whereIn('action', ['created', 'updated', 'deleted', 'login'])
+                ->latest('created_at')
+                ->take(15)
+                ->get()
+                ->map(fn($x) => tap($x, fn($i) => $i->type = 'audit'));
+
             $recentActivities = $loanActivities
                 ->merge($bookingActivities)
+                ->merge($auditActivities)
                 ->sortByDesc('created_at')
-                ->take(5) // <-- Batasi hanya 5 item terbaru
+                ->take(10) // <-- Tingkatkan dari 5 ke 10
                 ->values();
 
             $agg = Item::selectRaw('kondisi, COUNT(*) AS total')
@@ -79,19 +103,25 @@ class DashboardController extends Controller
             $chartColors = $chartLabels->map(fn($_, $i) => $palette[$i % count($palette)])->values();
 
             $recentDocuments = Document::with('user:id,name')
+                ->visibleTo($user)
                 ->latest()
                 ->take(5)
                 ->get();
 
             // --- PERBAIKAN: Menambahkan $overdueLoansCount ke return view ---
             return view('dashboard', [
+                // Quick Stats Summary
+                'totalItemsCount'         => $totalItemsCount,
+                'totalUsersCount'         => $totalUsersCount,
+                'monthlyTransactionsCount' => $monthlyTransactionsCount,
+                // Existing stats
                 'lowStockItems'         => $lowStockItems,
                 'newDamageReportsCount' => $newDamageReportsCount,
                 'pendingLoansCount'     => $pendingLoansCount,
                 'pendingBookingsCount'  => $pendingBookingsCount,
                 'brokenItemsCount'      => $brokenItemsCount,
                 'upcomingBookingsCount' => $upcomingBookingsCount,
-                'overdueLoansCount'     => $overdueLoansCount, // <-- Variabel baru ditambahkan di sini
+                'overdueLoansCount'     => $overdueLoansCount,
                 'recentActivities'      => $recentActivities,
                 'chartLabels'           => $chartLabels,
                 'chartData'             => $chartData,
@@ -107,6 +137,7 @@ class DashboardController extends Controller
 
         // Riwayat peminjaman terakhir
         $recentUserLoans = Loan::where('user_id', $user->id)
+            ->with('items') // Eager load items untuk mencegah N+1 query
             ->latest()
             ->take(5)
             ->get();
@@ -133,16 +164,49 @@ class DashboardController extends Controller
 
         // Dokumen terbaru
         $recentDocuments = Document::with('user:id,name')
+            ->visibleTo($user)
             ->latest()
             ->take(5)
             ->get();
 
+        // ==============================
+        // STATUS SUMMARY UNTUK GURU
+        // ==============================
+        
+        // Loan status counts
+        $userLoanStats = [
+            'pending' => Loan::where('user_id', $user->id)->where('status', 'pending')->count(),
+            'approved' => Loan::where('user_id', $user->id)->where('status', 'approved')->count(),
+            'completed' => Loan::where('user_id', $user->id)->where('status', 'completed')->count(),
+            'rejected' => Loan::where('user_id', $user->id)->where('status', 'rejected')->count(),
+            'overdue' => Loan::where('user_id', $user->id)->where('status', 'Terlambat')->count(),
+            'total' => Loan::where('user_id', $user->id)->count(),
+        ];
+        
+        // Booking status counts
+        $userBookingStats = [
+            'pending' => Booking::where('user_id', $user->id)->where('status', 'pending')->count(),
+            'approved' => Booking::where('user_id', $user->id)->where('status', 'approved')->count(),
+            'completed' => Booking::where('user_id', $user->id)->where('status', 'completed')->count(),
+            'rejected' => Booking::where('user_id', $user->id)->where('status', 'rejected')->count(),
+            'total' => Booking::where('user_id', $user->id)->count(),
+        ];
+        
+        // Upcoming bookings count (in next 7 days)
+        $upcomingUserBookingsCount = Booking::where('user_id', $user->id)
+            ->where('status', 'approved')
+            ->whereBetween('waktu_mulai', [now(), now()->addDays(7)])
+            ->count();
+
         return view('dashboard', [
-            'recentUserLoans' => $recentUserLoans,
-            'nextBooking'     => $nextBooking,
-            'activeLoans'     => $activeLoans,
-            'recentDocuments' => $recentDocuments,
-            'overdueLoans'    => $overdueLoans,
+            'recentUserLoans'   => $recentUserLoans,
+            'nextBooking'       => $nextBooking,
+            'activeLoans'       => $activeLoans,
+            'recentDocuments'   => $recentDocuments,
+            'overdueLoans'      => $overdueLoans,
+            'userLoanStats'     => $userLoanStats,
+            'userBookingStats'  => $userBookingStats,
+            'upcomingUserBookingsCount' => $upcomingUserBookingsCount,
         ]);
     }
 }

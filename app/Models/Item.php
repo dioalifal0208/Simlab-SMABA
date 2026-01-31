@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\ItemImage;
+use App\Traits\Auditable;
 
 
 class Item extends Model
 {
-    use HasFactory;
+    use HasFactory, Auditable;
 
     protected $fillable = [
         'nama_alat',
@@ -23,9 +26,9 @@ class Item extends Model
         'lokasi_penyimpanan',
         'kode_inventaris',
         'tahun_pengadaan',
-        'keterangan',
-        'user_id',
-        'photo',
+        'deskripsi', // Mengganti 'keterangan' menjadi 'deskripsi' agar konsisten
+        'laboratorium',
+        'user_id'
     ];
     public function user(): BelongsTo
     {
@@ -34,6 +37,16 @@ class Item extends Model
     public function loans(): BelongsToMany
     {
         return $this->belongsToMany(Loan::class, 'loan_item')->withPivot('jumlah')->withTimestamps();
+    }
+
+    /**
+     * PENAMBAHAN: Relasi ke peminjaman yang sedang aktif (status 'approved').
+     * Ini akan memperbaiki error 'undefined relationship'.
+     */
+    public function activeLoans(): BelongsToMany
+    {
+        return $this->belongsToMany(Loan::class, 'loan_item')
+                    ->where('status', 'approved');
     }
     // (Di dalam kelas Item)
     public function maintenanceLogs()
@@ -54,4 +67,17 @@ class Item extends Model
 {
     return $this->hasMany(StockRequest::class);
 }
+
+    // ==============================================
+    // ## RELASI BARU UNTUK GALERI GAMBAR ##
+    // ==============================================
+    public function images(): HasMany
+    {
+        return $this->hasMany(ItemImage::class);
+    }
+
+    public function mainImage(): HasOne
+    {
+        return $this->hasOne(ItemImage::class)->oldestOfMany();
+    }
 }

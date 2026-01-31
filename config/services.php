@@ -39,4 +39,11 @@ return [
         'calendar_api_key' => env('GOOGLE_CALENDAR_API_KEY'),
     ],
 
+    'fonnte' => [
+        'token'        => env('FONNTE_TOKEN'),
+        'endpoint'     => env('FONNTE_ENDPOINT', 'https://api.fonnte.com/send'),
+        // Daftar nomor admin, dipisahkan koma, mis: "62812xxxx,62813xxxx"
+        'admin_numbers' => env('FONNTE_ADMIN_NUMBERS'),
+    ],
+
 ];

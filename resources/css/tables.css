@@ -1,0 +1,127 @@
+/* Enhanced Table Styles for Lab-SMABA */
+
+/* Striped rows with hover effect */
+.table-striped tbody tr:nth-child(even) {
+    background-color: #f9fafb; /* gray-50 */
+}
+
+.table-striped tbody tr:hover {
+    background-color: rgba(59, 130, 246, 0.05); /* smaba-light-blue/5 */
+    transition: background-color 200ms ease-in-out;
+}
+
+/* Sticky table header */
+.table-sticky thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced table borders */
+.table-enhanced {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-enhanced th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: #6b7280; /* gray-500 */
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid #e5e7eb; /* gray-200 */
+}
+
+.table-enhanced td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f3f4f6; /* gray-100 */
+}
+
+.table-enhanced tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Compact table variant */
+.table-compact th,
+.table-compact td {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+/* Hoverable rows with smooth transition */
+.table-hover tbody tr {
+    transition: all 150ms ease-in-out;
+    cursor: pointer;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(30, 58, 138, 0.05); /* smaba-dark-blue/5 */
+    transform: translateX(2px);
+}
+
+/* Action column styling */
+.table-actions {
+    white-space: nowrap;
+    text-align: right;
+}
+
+.table-actions a,
+.table-actions button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    transition: all 150ms ease-in-out;
+}
+
+/* Responsive table wrapper */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile: Stack table cells */
+@media (max-width: 640px) {
+    .table-mobile-stack thead {
+        display: none;
+    }
+    
+    .table-mobile-stack tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+    }
+    
+    .table-mobile-stack tbody td {
+        display: block;
+        text-align: right;
+        padding: 0.5rem 0;
+        border: none;
+    }
+    
+    .table-mobile-stack tbody td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        color: #6b7280;
+    }
+}
+
+/* Loading state for tables */
+.table-loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Empty state message */
+.table-empty td {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #9ca3af; /* gray-400 */
+}

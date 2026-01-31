@@ -24,14 +24,25 @@ class CalendarController extends Controller
         $events = [];
 
         // 1. Ambil semua data booking yang sudah disetujui (approved)
-        $bookings = Booking::with('user')->where('status', 'approved')->get();
+        $labColors = [
+            'Biologi' => '#2563eb', // blue
+            'Fisika'  => '#16a34a', // green
+            'Bahasa'  => '#f59e0b', // amber
+        ];
+
+        $bookingsQuery = Booking::with('user')->where('status', 'approved');
+        if (request()->filled('laboratorium')) {
+            $bookingsQuery->where('laboratorium', request('laboratorium'));
+        }
+        $bookings = $bookingsQuery->get();
         foreach ($bookings as $booking) {
+            $color = $labColors[$booking->laboratorium] ?? '#2563eb';
             $events[] = [
-                'title' => 'Lab Dibooking: ' . $booking->tujuan_kegiatan,
+                'title' => $booking->laboratorium . ': ' . $booking->tujuan_kegiatan,
                 'start' => $booking->waktu_mulai->toIso8601String(), // Format standar
                 'end' => $booking->waktu_selesai->toIso8601String(), // Format standar
                 'url'   => route('bookings.show', $booking->id), // Link saat event di-klik
-                'color' => '#3788d8', // Warna biru untuk booking lab
+                'color' => $color, // Warna per laboratorium
             ];
         }
 

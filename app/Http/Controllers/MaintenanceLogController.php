@@ -45,6 +45,8 @@ class MaintenanceLogController extends Controller
             'biaya' => $validated['biaya'],
         ]);
 
-        return back()->with('success', 'Catatan perawatan berhasil ditambahkan.');
+        // PERUBAHAN: Arahkan ke halaman detail item, bukan kembali ke form.
+        // Kita menggunakan route 'items.show' dan memberikan ID item yang sedang dirawat.
+        return redirect()->route('items.show', $item->id)->with('success', 'Catatan perawatan berhasil ditambahkan.');
     }
 }
