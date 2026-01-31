@@ -49,8 +49,8 @@
 
     <body class="antialiased bg-white text-gray-900 overflow-x-hidden selection:bg-blue-100 selection:text-blue-900"
           data-authenticated="{{ auth()->check() ? '1' : '0' }}"
-          x-data="{ isModalOpen: false, showTestimonialModal: false, showDemoModal: false, showFeatureModal: false, activeSlide: 0, activeFeature: 'inventory' }"
-          @keydown.escape.window="isModalOpen = false; showTestimonialModal = false; showDemoModal = false; showFeatureModal = false">
+          x-data="{ isModalOpen: false, showDemoModal: false, showFeatureModal: false, activeSlide: 0, activeFeature: 'inventory' }"
+          @keydown.escape.window="isModalOpen = false; showDemoModal = false; showFeatureModal = false">
 
         {{-- BACKGROUND GRID (SPOTLIGHT) --}}
         <div class="fixed inset-0 z-0 pointer-events-none bg-grid-pattern"></div>
@@ -264,21 +264,28 @@
                                     <p class="text-gray-600 text-sm mt-1">Praktikum berjalan, pengembalian alat dicatat kondisi akhirnya.</p>
                                 </div>
                             </div>
+                            <div class="flex gap-4" data-aos="fade-up" data-aos-delay="400">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm">4</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-gray-900">Laporan Otomatis</h4>
+                                    <p class="text-gray-600 text-sm mt-1">Data tersimpan otomatis dan bisa diexport ke Excel untuk laporan bulanan.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm" data-aos="fade-left">
                         <div class="space-y-4">
                             <div class="flex items-center gap-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
-                                <div class="w-2 h-2 rounded-full bg-blue-600"></div>
-                                <span class="text-sm font-medium text-blue-900">Notifikasi WhatsApp (Coming Soon)</span>
+                                <i class="fas fa-mobile-alt text-blue-600 w-5 text-center"></i>
+                                <span class="text-sm font-medium text-blue-900">Akses Multi-Device (HP/Laptop)</span>
                             </div>
                             <div class="flex items-center gap-3 p-3 bg-emerald-50 border border-emerald-100 rounded-lg">
-                                <div class="w-2 h-2 rounded-full bg-emerald-600"></div>
-                                <span class="text-sm font-medium text-emerald-900">Cetak Surat Peminjaman</span>
+                                <i class="fas fa-leaf text-emerald-600 w-5 text-center"></i>
+                                <span class="text-sm font-medium text-emerald-900">Paperless & Hemat Kertas</span>
                             </div>
                             <div class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                                <div class="w-2 h-2 rounded-full bg-gray-400"></div>
-                                <span class="text-sm font-medium text-gray-600">Riwayat Digital</span>
+                                <i class="fas fa-shield-alt text-gray-500 w-5 text-center"></i>
+                                <span class="text-sm font-medium text-gray-600">Keamanan Privasi (Auto-Lock)</span>
                             </div>
                         </div>
                     </div>
@@ -699,8 +706,7 @@
                     });
                 }
 
-                const registerForm = document.getElementById('register-form');
-                // Register form removed - registration is now admin-only
+
             });
         </script>
     </body>
