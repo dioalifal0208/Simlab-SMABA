@@ -88,5 +88,5 @@
 ---
 
 <p align="center">
-    Dikembangkan oleh <strong>Tim IT SMA Negeri 1 Babat</strong> © 2026
+    Dikembangkan oleh <strong> Dio Indrawan - SMA Negeri 1 Babat</strong> © 2026
 </p>
