@@ -45,9 +45,10 @@
                 }
             });
         </script>
+        @vite(['resources/js/app.js'])
     </head>
 
-    <body class="antialiased bg-white text-gray-900 overflow-x-hidden selection:bg-blue-100 selection:text-blue-900"
+    <body class="landing-page antialiased bg-white text-gray-900 overflow-x-hidden selection:bg-blue-100 selection:text-blue-900"
           data-authenticated="{{ auth()->check() ? '1' : '0' }}"
           x-data="{ isModalOpen: false, showDemoModal: false, showFeatureModal: false, activeSlide: 0, activeFeature: 'inventory' }"
           @keydown.escape.window="isModalOpen = false; showDemoModal = false; showFeatureModal = false">
@@ -74,6 +75,12 @@
                         <span class="text-gray-300">|</span>
                         <a href="{{ route('lang.switch', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'font-bold text-blue-700' : 'text-gray-500 hover:text-gray-700' }}">EN</a>
                     </div>
+                    
+                    {{-- Product Tour Button --}}
+                    <button onclick="window.startProductTour()" class="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-700 transition-colors px-3 py-2 rounded-lg hover:bg-blue-50" title="Start Product Tour">
+                        <i class="fas fa-route text-blue-600"></i>
+                        <span class="hidden sm:inline">Tour</span>
+                    </button>
                     
                     @if (Route::has('login'))
                         @auth

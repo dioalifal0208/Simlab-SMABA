@@ -10,6 +10,7 @@ import 'aos/dist/aos.css';
 // PENAMBAHAN: Impor JavaScript AOS
 import AOS from 'aos';
 import './lock-screen'; // Import Lock Screen Logic
+import { initProductTour, startProductTour } from './product-tour'; // Import Product Tour
 
 // 2. Impor SweetAlert2 untuk popup konfirmasi modern.
 //    Kita juga mendaftarkannya ke objek `window` agar bisa diakses dari mana saja.
@@ -26,6 +27,13 @@ import googleCalendarPlugin from '@fullcalendar/google-calendar'; // Plugin untu
 
 // 4. Jalankan skrip ini hanya setelah seluruh halaman HTML selesai dimuat.
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize product tour for landing page
+    if (document.body.classList.contains('landing-page')) {
+        initProductTour();
+        // Expose startProductTour globally for manual trigger
+        window.startProductTour = startProductTour;
+    }
+    
     // Cari elemen div dengan id 'calendar' di halaman.
     var calendarEl = document.getElementById('calendar');
 
