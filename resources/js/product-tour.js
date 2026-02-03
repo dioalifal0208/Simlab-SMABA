@@ -1,102 +1,214 @@
 import Shepherd from 'shepherd.js';
 import 'shepherd.js/dist/css/shepherd.css';
 
-// Custom styling for Shepherd tour to match LAB-SMABA bright theme
+// Custom styling for Shepherd tour with Glassmorphism effect
 const tourStyles = `
     .shepherd-element {
         z-index: 9999;
+        max-width: 400px;
     }
     
     .shepherd-modal-overlay-container {
         z-index: 9998;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(2px);
     }
     
+    /* Glassmorphism Effect */
     .shepherd-content {
-        border-radius: 12px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        border: 1px solid #e5e7eb;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 
+            0 25px 50px -12px rgba(0, 0, 0, 0.25),
+            0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+            0 1px 2px rgba(0, 0, 0, 0.05) inset;
+        overflow: hidden;
     }
     
+    /* Header with Glass Effect */
     .shepherd-header {
-        background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
-        padding: 16px 20px;
-        border-radius: 12px 12px 0 0;
+        background: linear-gradient(135deg, 
+            rgba(29, 78, 216, 0.95) 0%, 
+            rgba(59, 130, 246, 0.95) 100%);
+        backdrop-filter: blur(10px);
+        padding: 18px 24px;
+        border-radius: 16px 16px 0 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
     
     .shepherd-title {
         color: white;
         font-weight: 700;
-        font-size: 16px;
+        font-size: 17px;
         margin: 0;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     
     .shepherd-cancel-icon {
         color: white;
-        opacity: 0.8;
-        transition: opacity 0.2s;
+        opacity: 0.9;
+        transition: all 0.3s ease;
+        width: 24px;
+        height: 24px;
     }
     
     .shepherd-cancel-icon:hover {
         opacity: 1;
+        transform: scale(1.1);
     }
     
+    /* Content Area */
     .shepherd-text {
-        padding: 20px;
-        color: #374151;
-        font-size: 14px;
-        line-height: 1.6;
+        padding: 24px;
+        color: #1f2937;
+        font-size: 15px;
+        line-height: 1.7;
+        background: rgba(255, 255, 255, 0.5);
     }
     
+    /* Footer with Glass Effect */
     .shepherd-footer {
-        padding: 16px 20px;
-        border-top: 1px solid #e5e7eb;
+        padding: 18px 24px;
+        border-top: 1px solid rgba(229, 231, 235, 0.5);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #f9fafb;
-        border-radius: 0 0 12px 12px;
+        background: rgba(249, 250, 251, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 0 0 16px 16px;
     }
     
+    /* Buttons with Premium Style */
     .shepherd-button {
-        padding: 8px 16px;
-        border-radius: 8px;
+        padding: 10px 20px;
+        border-radius: 10px;
         font-weight: 600;
         font-size: 14px;
-        transition: all 0.2s;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         border: none;
         cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .shepherd-button::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+    
+    .shepherd-button:hover::before {
+        width: 300px;
+        height: 300px;
     }
     
     .shepherd-button-primary {
-        background: #1d4ed8;
+        background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
         color: white;
+        box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
     }
     
     .shepherd-button-primary:hover {
-        background: #1e40af;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(29, 78, 216, 0.4);
+    }
+    
+    .shepherd-button-primary:active {
+        transform: translateY(0);
     }
     
     .shepherd-button-secondary {
-        background: white;
+        background: rgba(255, 255, 255, 0.8);
         color: #6b7280;
-        border: 1px solid #d1d5db;
+        border: 1px solid rgba(209, 213, 219, 0.5);
+        backdrop-filter: blur(10px);
     }
     
     .shepherd-button-secondary:hover {
-        background: #f3f4f6;
+        background: rgba(243, 244, 246, 0.9);
         color: #374151;
+        border-color: rgba(156, 163, 175, 0.5);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     
+    /* Progress Indicator */
     .shepherd-progress {
         color: #9ca3af;
-        font-size: 12px;
-        font-weight: 500;
+        font-size: 13px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.5);
+        padding: 4px 12px;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
     }
     
+    /* Arrow with Glass Effect */
     .shepherd-arrow:before {
-        background: white;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    /* Highlighted Element Styling */
+    .shepherd-target {
+        animation: pulse-highlight 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse-highlight {
+        0%, 100% {
+            box-shadow: 0 0 0 0 rgba(29, 78, 216, 0.4);
+        }
+        50% {
+            box-shadow: 0 0 0 10px rgba(29, 78, 216, 0);
+        }
+    }
+    
+    /* Smooth entrance animation */
+    .shepherd-element {
+        animation: shepherd-entrance 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    @keyframes shepherd-entrance {
+        from {
+            opacity: 0;
+            transform: scale(0.95) translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+    
+    /* Responsive sizing */
+    @media (max-width: 640px) {
+        .shepherd-element {
+            max-width: 90vw;
+        }
+        
+        .shepherd-text {
+            font-size: 14px;
+            padding: 20px;
+        }
+        
+        .shepherd-header {
+            padding: 16px 20px;
+        }
+        
+        .shepherd-footer {
+            padding: 16px 20px;
+        }
     }
 `;
 
