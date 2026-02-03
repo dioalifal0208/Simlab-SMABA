@@ -13,16 +13,12 @@ use App\Http\Controllers\Auth\TwoFactorLoginController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    // Rute GET untuk login
-    // Rute Login via Livewire
-    Route::get('login', \App\Livewire\Auth\Login::class)
+    // Login routes
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('login');
-
-    // Route::get('login', [AuthenticatedSessionController::class, 'create'])
-    //             ->name('login.create');
-
-    // Route::post('login', [AuthenticatedSessionController::class, 'store'])
-    //             ->name('login.store');
+    
+    Route::post('login', [AuthenticatedSessionController::class, 'store'])
+                ->name('login.store');
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
                 ->name('password.request');

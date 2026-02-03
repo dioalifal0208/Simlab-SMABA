@@ -11,7 +11,7 @@
             <p class="text-sm text-gray-500 mt-1">Silakan masuk untuk melanjutkan.</p>
         </div>
 
-        {{-- Menampilkan Pesan Error Validasi --}}
+        {{-- Menampilkan Pesan Error Validasi (Consolidated) --}}
         @if ($errors->any())
             <div class="mb-4 bg-red-50 border-l-4 border-red-400 text-red-700 p-4 text-sm" role="alert">
                 <p class="font-bold">Oops! Ada yang salah:</p>
@@ -24,7 +24,7 @@
         @endif
         
         {{-- Form Login --}}
-        <form method="POST" action="{{ route('login') }}" class="space-y-4">
+        <form method="POST" action="{{ route('login.store') }}" class="space-y-4">
             @csrf
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Alamat Email</label>
