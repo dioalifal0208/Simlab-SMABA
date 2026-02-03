@@ -40,7 +40,7 @@ class Login extends Component
         }
     }
 
-    public function login(Request $request)
+    public function login()
     {
         $this->validate([
             'email' => ['required', 'string', 'email'],
