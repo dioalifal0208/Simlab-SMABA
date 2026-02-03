@@ -4,81 +4,81 @@ import 'shepherd.js/dist/css/shepherd.css';
 // Custom styling for Shepherd tour with Glassmorphism effect
 const tourStyles = `
     .shepherd-element {
-        z-index: 9999;
-        max-width: 400px;
+        z-index: 9999 !important;
+        max-width: 400px !important;
     }
     
     .shepherd-modal-overlay-container {
-        z-index: 9998;
-        background: rgba(0, 0, 0, 0.4);
-        backdrop-filter: blur(2px);
+        z-index: 9998 !important;
+        background: rgba(0, 0, 0, 0.4) !important;
+        backdrop-filter: blur(2px) !important;
     }
     
     /* Glassmorphism Effect */
     .shepherd-content {
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.85) !important;
+        backdrop-filter: blur(20px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+        border-radius: 16px !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
         box-shadow: 
             0 25px 50px -12px rgba(0, 0, 0, 0.25),
             0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-            0 1px 2px rgba(0, 0, 0, 0.05) inset;
-        overflow: hidden;
+            0 1px 2px rgba(0, 0, 0, 0.05) inset !important;
+        overflow: hidden !important;
     }
     
     /* Header with Glass Effect */
     .shepherd-header {
         background: linear-gradient(135deg, 
             rgba(29, 78, 216, 0.95) 0%, 
-            rgba(59, 130, 246, 0.95) 100%);
-        backdrop-filter: blur(10px);
-        padding: 18px 24px;
-        border-radius: 16px 16px 0 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            rgba(59, 130, 246, 0.95) 100%) !important;
+        backdrop-filter: blur(10px) !important;
+        padding: 18px 24px !important;
+        border-radius: 16px 16px 0 0 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
     }
     
     .shepherd-title {
-        color: white;
-        font-weight: 700;
-        font-size: 17px;
-        margin: 0;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        color: white !important;
+        font-weight: 700 !important;
+        font-size: 17px !important;
+        margin: 0 !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
     
     .shepherd-cancel-icon {
-        color: white;
-        opacity: 0.9;
-        transition: all 0.3s ease;
-        width: 24px;
-        height: 24px;
+        color: white !important;
+        opacity: 0.9 !important;
+        transition: all 0.3s ease !important;
+        width: 24px !important;
+        height: 24px !important;
     }
     
     .shepherd-cancel-icon:hover {
-        opacity: 1;
-        transform: scale(1.1);
+        opacity: 1 !important;
+        transform: scale(1.1) !important;
     }
     
     /* Content Area */
     .shepherd-text {
-        padding: 24px;
-        color: #1f2937;
-        font-size: 15px;
-        line-height: 1.7;
-        background: rgba(255, 255, 255, 0.5);
+        padding: 24px !important;
+        color: #1f2937 !important;
+        font-size: 15px !important;
+        line-height: 1.7 !important;
+        background: rgba(255, 255, 255, 0.5) !important;
     }
     
     /* Footer with Glass Effect */
     .shepherd-footer {
-        padding: 18px 24px;
-        border-top: 1px solid rgba(229, 231, 235, 0.5);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: rgba(249, 250, 251, 0.7);
-        backdrop-filter: blur(10px);
-        border-radius: 0 0 16px 16px;
+        padding: 18px 24px !important;
+        border-top: 1px solid rgba(229, 231, 235, 0.5) !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        background: rgba(249, 250, 251, 0.7) !important;
+        backdrop-filter: blur(10px) !important;
+        border-radius: 0 0 16px 16px !important;
     }
     
     /* Buttons with Premium Style */
