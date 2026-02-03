@@ -77,9 +77,9 @@
                     
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="text-sm font-medium text-gray-600 hover:text-blue-700 transition-colors">Dashboard</a>
+                            <a href="{{ url('/dashboard') }}" class="text-sm font-medium text-gray-600 hover:text-blue-700 transition-colors">{{ __('welcome.nav.dashboard') }}</a>
                         @else
-                            <button @click="isModalOpen = true" class="text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-2 transition-colors">Masuk</button>
+                            <button @click="isModalOpen = true" class="text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-2 transition-colors">{{ __('welcome.nav.login') }}</button>
                         @endauth
                     @endif
                 </div>
@@ -92,24 +92,23 @@
                 <div class="max-w-2xl space-y-8" data-aos="fade-right">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold uppercase tracking-wide">
                         <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-                        Sistem Manajemen Laboratorium Sekolah
+                        {{ __('welcome.hero.badge') }}
                     </div>
                     
                     <h1 class="text-5xl sm:text-6xl font-bold text-gray-900 tracking-tight leading-tight">
-                        Kelola Praktikum <br/><span class="text-blue-700">Lebih Profesional</span>
+                        {{ __('welcome.hero.title') }} <br/><span class="text-blue-700">{{ __('welcome.hero.title_highlight') }}</span>
                     </h1>
                     
                     <p class="text-lg text-gray-600 leading-relaxed">
-                        Platform terintegrasi untuk inventaris, peminjaman alat, dan penjadwalan laboratorium. 
-                        Singkirkan birokrasi kertas, beralih ke sistem digital yang transparan & efisien.
+                        {{ __('welcome.hero.description') }}
                     </p>
                     
                     <div class="flex flex-wrap items-center gap-4 pt-2">
                         <button @click="isModalOpen = true" class="px-8 py-3.5 bg-blue-700 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-800 hover:shadow transition-all duration-200">
-                            Mulai Sekarang
+                            {{ __('welcome.hero.cta_start') }}
                         </button>
                         <button @click="showDemoModal = true; activeSlide = 0" class="px-8 py-3.5 text-gray-700 bg-white border border-gray-200 font-semibold rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
-                            <i class="fas fa-play-circle mr-2 text-gray-400"></i> Tur Produk
+                            <i class="fas fa-play-circle mr-2 text-gray-400"></i> {{ __('welcome.hero.cta_tour') }}
                         </button>
                     </div>
 
@@ -117,15 +116,15 @@
                     <div class="grid grid-cols-3 gap-8 pt-8 border-t border-gray-100">
                         <div>
                             <div class="text-2xl font-bold text-gray-900">500+</div>
-                            <div class="text-sm text-gray-500 font-medium">Item Inventaris</div>
+                            <div class="text-sm text-gray-500 font-medium">{{ __('welcome.stats.items') }}</div>
                         </div>
                         <div>
                             <div class="text-2xl font-bold text-gray-900">50+</div>
-                            <div class="text-sm text-gray-500 font-medium">Guru Aktif</div>
+                            <div class="text-sm text-gray-500 font-medium">{{ __('welcome.stats.teachers') }}</div>
                         </div>
                         <div>
                             <div class="text-2xl font-bold text-gray-900">100%</div>
-                            <div class="text-sm text-gray-500 font-medium">Transparan</div>
+                            <div class="text-sm text-gray-500 font-medium">{{ __('welcome.stats.transparent') }}</div>
                         </div>
                     </div>
                 </div>
@@ -195,8 +194,8 @@
         <section class="py-24 bg-white border-t border-gray-100" id="features">
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="text-center max-w-2xl mx-auto mb-16">
-                    <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Semua Fitur dalam Satu Platform</h2>
-                    <p class="mt-4 text-gray-600">Sistem yang dirancang khusus untuk kebutuhan laboratorium sekolah modern.</p>
+                    <h2 class="text-3xl font-bold text-gray-900 tracking-tight">{{ __('welcome.features.title') }}</h2>
+                    <p class="mt-4 text-gray-600">{{ __('welcome.features.subtitle') }}</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
