@@ -13,14 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const data = JSON.parse(saved);
                     this.theme = data.theme || 'light';
                     
-                    // FORCE LIGHT MODE for Admin and Guru
-                    // Check body attribute set in app.blade.php
-                    const userRole = document.body.dataset.userRole;
-                    if (userRole === 'admin' || userRole === 'guru') {
-                        this.theme = 'light';
-                        // Update storage to prevent future flashes
-                        this.save();
-                    }
+
                 } catch (e) {
                     console.error('Failed to load preferences:', e);
                 }
@@ -76,13 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load preferences on page load
     preferences.load();
 
-    // Double check enforcement for current session
-    const userRole = document.body.dataset.userRole;
-    if ((userRole === 'admin' || userRole === 'guru') && preferences.theme === 'dark') {
-        preferences.theme = 'light';
-        preferences.save();
-        preferences.apply();
-    }
+
     
     // Create theme toggle button if doesn't exist
     // Handle theme toggle button
@@ -113,13 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Auto-apply on first visit
         // Auto-apply on first visit
         if (!localStorage.getItem('lab-smaba-preferences')) {
-            const userRole = document.body.dataset.userRole;
-            // Only auto-detect dark mode if NOT admin/guru
-            if (userRole !== 'admin' && userRole !== 'guru') {
-                 preferences.theme = darkModeQuery.matches ? 'dark' : 'light';
-            } else {
-                 preferences.theme = 'light';
-            }
+            preferences.theme = darkModeQuery.matches ? 'dark' : 'light';
             preferences.save();
             preferences.apply();
         }

@@ -14,12 +14,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     // Rute GET untuk login
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-                ->name('login.create'); // Nama diubah agar tidak konflik
+    // Rute Login via Livewire
+    Route::get('login', \App\Livewire\Auth\Login::class)
+                ->name('login');
 
-    // Rute POST untuk login (yang digunakan AJAX)
-    Route::post('login', [AuthenticatedSessionController::class, 'store'])
-                ->name('login'); // <-- Nama 'login' dipindah ke sini
+    // Route::get('login', [AuthenticatedSessionController::class, 'create'])
+    //             ->name('login.create');
+
+    // Route::post('login', [AuthenticatedSessionController::class, 'store'])
+    //             ->name('login.store');
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
                 ->name('password.request');

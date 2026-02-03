@@ -46,6 +46,14 @@ Route::get('/', function () {
     return view('welcome', compact('testimonials', 'todayBookings'));
 })->middleware('no.cache')->name('welcome');
 
+// Route untuk ganti bahasa
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'id'])) {
+        session()->put('locale', $locale);
+    }
+    return back();
+})->name('lang.switch');
+
 Route::post('/testimonials', [TestimonialController::class, 'store'])->name('testimonials.store');
 Route::post('/contact-admin', [ContactAdminController::class, 'store'])->name('contact.admin.store');
 Route::get('/verify/booking/{booking}', [BookingController::class, 'verify'])->name('bookings.verify'); // Public Verification Route
@@ -158,9 +166,9 @@ Route::middleware(['auth', 'single.session'])->group(function () {
 
         // Impor Item
         Route::post('/items/import', [ItemController::class, 'handleImport'])->name('items.import.handle');
-        // PERBAIKAN: Route untuk mengunduh template kosong
-        Route::get('/items/import-template', [ItemController::class, 'exportTemplate'])->name('items.template.export');
-        Route::get('/items/export-all', [ItemController::class, 'handleExport'])->name('items.export.all'); // Route untuk ekspor semua data
+        // PERBAIKAN: Route untuk mengunduh template kosong (Prefix /admin untuk hindari konflik dengan items/{id})
+        Route::get('/admin/items/import-template', [ItemController::class, 'exportTemplate'])->name('items.template.export');
+        Route::get('/admin/items/export-all', [ItemController::class, 'handleExport'])->name('items.export.all'); // Route untuk ekspor semua data
 
         // Percakapan kontak admin (dari landing page)
         Route::get('/admin/contact-conversations', [AdminContactConversationController::class, 'index'])->name('admin.contact-conversations.index');

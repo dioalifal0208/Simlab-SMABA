@@ -15,6 +15,13 @@
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
     <body class="font-sans text-gray-900 antialiased overflow-x-hidden">
+        {{-- Language Toggle --}}
+        <div class="fixed top-4 right-4 z-50 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
+            <a href="{{ route('lang.switch', 'id') }}" class="text-sm {{ app()->getLocale() == 'id' ? 'font-bold text-smaba-dark-blue' : 'text-gray-500 hover:text-gray-700' }}">ID</a>
+            <span class="text-gray-300 mx-1">|</span>
+            <a href="{{ route('lang.switch', 'en') }}" class="text-sm {{ app()->getLocale() == 'en' ? 'font-bold text-smaba-dark-blue' : 'text-gray-500 hover:text-gray-700' }}">EN</a>
+        </div>
+
         <div class="h-screen lg:grid lg:grid-cols-2 overflow-hidden">
             
             <div class="hidden lg:flex flex-col items-center justify-center bg-smaba-dark-blue p-12 text-white h-full" data-aos="fade-right">
