@@ -32,6 +32,7 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
             'satuan' => $row['satuan'] ?? 'unit',
             'kondisi' => $row['kondisi'] ?? 'Baik',
             'lokasi_penyimpanan' => $row['lokasi_penyimpanan'] ?? 'Gudang',
+            'laboratorium' => $row['laboratorium'] ?? 'Biologi', // Default 'Biologi' sesuai DB
             'stok_minimum' => $row['stok_minimum'] ?? 0,
             'deskripsi' => $row['deskripsi'] ?? null,
             'user_id' => Auth::id(),
@@ -61,6 +62,7 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
             'satuan' => 'nullable|string|max:50',
             'kondisi' => 'required|in:Baik,Kurang Baik,Rusak',
             'lokasi_penyimpanan' => 'nullable|string|max:255',
+            'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa,Komputer,Kimia,Multimedia', // Validasi lab
             'stok_minimum' => 'nullable|integer|min:0',
         ];
     }

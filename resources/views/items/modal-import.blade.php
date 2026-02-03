@@ -41,7 +41,7 @@
     </div>
 </form>
 <div class="mt-4 text-center">
-    <a href="{{ asset('templates/import_item_template.xlsx') }}" download class="text-sm text-smaba-light-blue hover:underline">
+    <a href="{{ route('items.template.export') }}" class="text-sm text-smaba-light-blue hover:underline">
         <i class="fas fa-download mr-1"></i> Unduh Template Excel
     </a>
 </div>
