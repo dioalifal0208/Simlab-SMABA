@@ -17,9 +17,10 @@ jobs:
 
     # 2. Setup Node.js for Building Assets
     - name: Setup Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: '18'
+        node-version: '20'
+        cache: 'npm'
 
     - name: Install NPM Dependencies
       run: npm install
@@ -38,8 +39,10 @@ jobs:
         username: ${{ secrets.HOSTINGER_USER }}
         key: ${{ secrets.HOSTINGER_SSH_KEY }}
         port: ${{ secrets.HOSTINGER_PORT }}
-        source: "public/build"
-        target: "~/Simlab-SMABA"
+        source: "public/build/*"
+        target: "~/Simlab-SMABA/public/build/"
+        strip_components: 2
+        overwrite: true
 
     # 5. Execute Remote Commands via SSH
     - name: Deploy on Server via SSH
