@@ -1,7 +1,7 @@
 import Shepherd from 'shepherd.js';
 import 'shepherd.js/dist/css/shepherd.css';
 
-// Custom styling for Shepherd tour with Glassmorphism effect
+// Custom styling for Shepherd tour with Pure Clear Glass effect
 const tourStyles = `
     .shepherd-element {
         z-index: 9999 !important;
@@ -10,33 +10,33 @@ const tourStyles = `
     
     .shepherd-modal-overlay-container {
         z-index: 9998 !important;
-        background: rgba(0, 0, 0, 0.4) !important;
-        backdrop-filter: blur(2px) !important;
+        background: rgba(0, 0, 0, 0.5) !important;
+        backdrop-filter: blur(4px) !important;
     }
     
-    /* Glassmorphism Effect */
+    /* Pure Clear Glass Effect - Natural Glass Look */
     .shepherd-content {
-        background: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(20px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-        border-radius: 16px !important;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        backdrop-filter: blur(30px) saturate(150%) brightness(1.1) !important;
+        -webkit-backdrop-filter: blur(30px) saturate(150%) brightness(1.1) !important;
+        border-radius: 20px !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
         box-shadow: 
-            0 25px 50px -12px rgba(0, 0, 0, 0.25),
-            0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-            0 1px 2px rgba(0, 0, 0, 0.05) inset !important;
+            0 30px 60px -15px rgba(0, 0, 0, 0.35),
+            0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+            0 2px 4px rgba(255, 255, 255, 0.3) inset !important;
         overflow: hidden !important;
     }
     
-    /* Header with Glass Effect */
+    /* Header with Glass Effect - Keep Blue for Branding */
     .shepherd-header {
         background: linear-gradient(135deg, 
             rgba(29, 78, 216, 0.95) 0%, 
             rgba(59, 130, 246, 0.95) 100%) !important;
-        backdrop-filter: blur(10px) !important;
-        padding: 18px 24px !important;
-        border-radius: 16px 16px 0 0 !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+        backdrop-filter: blur(15px) !important;
+        padding: 20px 24px !important;
+        border-radius: 20px 20px 0 0 !important;
+        border-bottom: 1.5px solid rgba(255, 255, 255, 0.3) !important;
     }
     
     .shepherd-title {
@@ -60,25 +60,27 @@ const tourStyles = `
         transform: scale(1.1) !important;
     }
     
-    /* Content Area */
+    /* Content Area - Clear Glass */
     .shepherd-text {
         padding: 24px !important;
-        color: #1f2937 !important;
+        color: #111827 !important;
         font-size: 15px !important;
         line-height: 1.7 !important;
-        background: rgba(255, 255, 255, 0.5) !important;
+        font-weight: 500 !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8) !important;
     }
     
-    /* Footer with Glass Effect */
+    /* Footer with Clear Glass Effect */
     .shepherd-footer {
         padding: 18px 24px !important;
-        border-top: 1px solid rgba(229, 231, 235, 0.5) !important;
+        border-top: 1.5px solid rgba(255, 255, 255, 0.3) !important;
         display: flex !important;
         justify-content: space-between !important;
         align-items: center !important;
-        background: rgba(249, 250, 251, 0.7) !important;
-        backdrop-filter: blur(10px) !important;
-        border-radius: 0 0 16px 16px !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        backdrop-filter: blur(20px) !important;
+        border-radius: 0 0 20px 20px !important;
     }
     
     /* Buttons with Premium Style */
