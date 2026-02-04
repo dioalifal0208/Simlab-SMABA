@@ -13,11 +13,11 @@ jobs:
     steps:
     # 1. Checkout Code
     - name: Checkout Code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     # 2. Setup Node.js for Building Assets
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '20'
         cache: 'npm'
@@ -33,7 +33,7 @@ jobs:
 
     # 4. Copy Build Assets to Server via SCP
     - name: Copy Build Folder to Server
-      uses: appleboy/scp-action@master
+      uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.HOSTINGER_HOST }}
         username: ${{ secrets.HOSTINGER_USER }}
@@ -46,7 +46,7 @@ jobs:
 
     # 5. Execute Remote Commands via SSH
     - name: Deploy on Server via SSH
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.HOSTINGER_HOST }}
         username: ${{ secrets.HOSTINGER_USER }}
