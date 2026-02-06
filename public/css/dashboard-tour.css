@@ -81,46 +81,46 @@
     transform: scale(1) translateY(0);
 }
 
-/* Arrow Pointer */
+/* Arrow Pointer - Larger and More Visible */
 .tour-tooltip::before {
     content: '';
     position: absolute;
     width: 0;
     height: 0;
-    border: 12px solid transparent;
+    border: 16px solid transparent;
     z-index: -1;
 }
 
 .tour-tooltip[data-position="top"]::before {
-    bottom: -24px;
+    bottom: -32px;
     left: 50%;
     transform: translateX(-50%);
-    border-top-color: rgba(255, 255, 255, 0.1);
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    border-top-color: rgba(255, 255, 255, 0.15);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .tour-tooltip[data-position="bottom"]::before {
-    top: -24px;
+    top: -32px;
     left: 50%;
     transform: translateX(-50%);
-    border-bottom-color: rgba(255, 255, 255, 0.1);
-    filter: drop-shadow(0 -4px 8px rgba(0, 0, 0, 0.2));
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+    filter: drop-shadow(0 -4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .tour-tooltip[data-position="left"]::before {
-    right: -24px;
+    right: -32px;
     top: 50%;
     transform: translateY(-50%);
-    border-left-color: rgba(255, 255, 255, 0.1);
-    filter: drop-shadow(4px 0 8px rgba(0, 0, 0, 0.2));
+    border-left-color: rgba(255, 255, 255, 0.15);
+    filter: drop-shadow(4px 0 8px rgba(0, 0, 0, 0.3));
 }
 
 .tour-tooltip[data-position="right"]::before {
-    left: -24px;
+    left: -32px;
     top: 50%;
     transform: translateY(-50%);
-    border-right-color: rgba(255, 255, 255, 0.1);
-    filter: drop-shadow(-4px 0 8px rgba(0, 0, 0, 0.2));
+    border-right-color: rgba(255, 255, 255, 0.15);
+    filter: drop-shadow(-4px 0 8px rgba(0, 0, 0, 0.3));
 }
 
 /* Header - Glass with subtle gradient */

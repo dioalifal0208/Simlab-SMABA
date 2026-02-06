@@ -183,8 +183,8 @@ class DashboardTour {
         
         // Force a reflow to get accurate dimensions
         const tooltipRect = this.tooltip.getBoundingClientRect();
-        const spacing = 24; // Space between tooltip and target
-        const viewportPadding = 16; // Padding from viewport edges
+        const spacing = 16; // REDUCED: Closer to spotlight
+        const viewportPadding = 12;
         
         let left, top, transform;
         let finalPosition = position;
@@ -195,30 +195,57 @@ class DashboardTour {
         const spaceLeft = targetRect.left;
         const spaceRight = window.innerWidth - targetRect.right;
         
-        // Determine best position based on available space
-        if (position === 'top' && spaceTop < tooltipRect.height + spacing + viewportPadding) {
-            if (spaceBottom > spaceTop) {
+        // Check if tooltip fits in preferred position
+        const fitsTop = spaceTop >= tooltipRect.height + spacing + viewportPadding;
+        const fitsBottom = spaceBottom >= tooltipRect.height + spacing + viewportPadding;
+        const fitsLeft = spaceLeft >= tooltipRect.width + spacing + viewportPadding;
+        const fitsRight = spaceRight >= tooltipRect.width + spacing + viewportPadding;
+        
+        // Determine best position - prioritize keeping tooltip close to target
+        if (position === 'top' && !fitsTop) {
+            if (fitsBottom) {
                 finalPosition = 'bottom';
-            } else {
-                finalPosition = 'center';
-            }
-        } else if (position === 'bottom' && spaceBottom < tooltipRect.height + spacing + viewportPadding) {
-            if (spaceTop > spaceBottom) {
-                finalPosition = 'top';
-            } else {
-                finalPosition = 'center';
-            }
-        } else if (position === 'left' && spaceLeft < tooltipRect.width + spacing + viewportPadding) {
-            if (spaceRight > spaceLeft) {
+            } else if (fitsRight) {
                 finalPosition = 'right';
-            } else {
-                finalPosition = 'center';
-            }
-        } else if (position === 'right' && spaceRight < tooltipRect.width + spacing + viewportPadding) {
-            if (spaceLeft > spaceRight) {
+            } else if (fitsLeft) {
                 finalPosition = 'left';
             } else {
-                finalPosition = 'center';
+                // If nothing fits, use position with most space
+                const maxSpace = Math.max(spaceTop, spaceBottom, spaceLeft, spaceRight);
+                if (maxSpace === spaceBottom) finalPosition = 'bottom';
+                else if (maxSpace === spaceTop) finalPosition = 'top';
+                else if (maxSpace === spaceRight) finalPosition = 'right';
+                else finalPosition = 'left';
+            }
+        } else if (position === 'bottom' && !fitsBottom) {
+            if (fitsTop) {
+                finalPosition = 'top';
+            } else if (fitsRight) {
+                finalPosition = 'right';
+            } else if (fitsLeft) {
+                finalPosition = 'left';
+            } else {
+                const maxSpace = Math.max(spaceTop, spaceBottom, spaceLeft, spaceRight);
+                if (maxSpace === spaceTop) finalPosition = 'top';
+                else if (maxSpace === spaceBottom) finalPosition = 'bottom';
+                else if (maxSpace === spaceRight) finalPosition = 'right';
+                else finalPosition = 'left';
+            }
+        } else if (position === 'left' && !fitsLeft) {
+            if (fitsRight) {
+                finalPosition = 'right';
+            } else if (fitsBottom) {
+                finalPosition = 'bottom';
+            } else if (fitsTop) {
+                finalPosition = 'top';
+            }
+        } else if (position === 'right' && !fitsRight) {
+            if (fitsLeft) {
+                finalPosition = 'left';
+            } else if (fitsBottom) {
+                finalPosition = 'bottom';
+            } else if (fitsTop) {
+                finalPosition = 'top';
             }
         }
         
@@ -228,51 +255,53 @@ class DashboardTour {
                 left = targetRect.left + (targetRect.width / 2);
                 top = targetRect.top - spacing;
                 transform = 'translate(-50%, -100%)';
+                
+                // Ensure horizontally centered but within viewport
+                left = Math.max(tooltipRect.width / 2 + viewportPadding, 
+                               Math.min(window.innerWidth - tooltipRect.width / 2 - viewportPadding, left));
                 break;
                 
             case 'bottom':
                 left = targetRect.left + (targetRect.width / 2);
                 top = targetRect.bottom + spacing;
                 transform = 'translateX(-50%)';
+                
+                // Ensure horizontally centered but within viewport
+                left = Math.max(tooltipRect.width / 2 + viewportPadding, 
+                               Math.min(window.innerWidth - tooltipRect.width / 2 - viewportPadding, left));
                 break;
                 
             case 'left':
                 left = targetRect.left - spacing;
                 top = targetRect.top + (targetRect.height / 2);
                 transform = 'translate(-100%, -50%)';
+                
+                // Ensure vertically centered but within viewport
+                top = Math.max(tooltipRect.height / 2 + viewportPadding, 
+                              Math.min(window.innerHeight - tooltipRect.height / 2 - viewportPadding, top));
                 break;
                 
             case 'right':
                 left = targetRect.right + spacing;
                 top = targetRect.top + (targetRect.height / 2);
                 transform = 'translateY(-50%)';
+                
+                // Ensure vertically centered but within viewport
+                top = Math.max(tooltipRect.height / 2 + viewportPadding, 
+                              Math.min(window.innerHeight - tooltipRect.height / 2 - viewportPadding, top));
                 break;
                 
             case 'center':
             default:
-                // Center in viewport if no good position
                 left = window.innerWidth / 2;
                 top = window.innerHeight / 2;
                 transform = 'translate(-50%, -50%)';
                 finalPosition = 'center';
         }
         
-        // Ensure tooltip doesn't go off-screen horizontally
-        const tempLeft = finalPosition.includes('center') ? left : 
-                        (finalPosition === 'left' || finalPosition === 'right') ? left :
-                        Math.max(viewportPadding + tooltipRect.width / 2, 
-                                Math.min(window.innerWidth - viewportPadding - tooltipRect.width / 2, left));
-        
-        // Ensure tooltip doesn't go off-screen vertically
-        const tempTop = finalPosition === 'center' ? top :
-                       Math.max(viewportPadding, 
-                               Math.min(window.innerHeight - tooltipRect.height - viewportPadding, 
-                                       finalPosition === 'top' ? top - tooltipRect.height : 
-                                       finalPosition === 'bottom' ? top : top - tooltipRect.height / 2));
-        
         // Apply positioning
-        this.tooltip.style.left = tempLeft + 'px';
-        this.tooltip.style.top = (finalPosition === 'center' ? top : tempTop) + 'px';
+        this.tooltip.style.left = left + 'px';
+        this.tooltip.style.top = top + 'px';
         this.tooltip.style.transform = transform;
         
         // Update arrow position
