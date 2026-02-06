@@ -178,82 +178,105 @@ class DashboardTour {
 
     positionTooltip(targetRect, position) {
         this.tooltip.style.position = 'fixed';
-        this.tooltip.style.maxWidth = '420px';
+        this.tooltip.style.maxWidth = '380px';
+        this.tooltip.style.width = 'auto';
         
+        // Force a reflow to get accurate dimensions
         const tooltipRect = this.tooltip.getBoundingClientRect();
-        const spacing = 30; // Space between tooltip and target
-        const viewportPadding = 20; // Padding from viewport edges
+        const spacing = 24; // Space between tooltip and target
+        const viewportPadding = 16; // Padding from viewport edges
         
         let left, top, transform;
+        let finalPosition = position;
         
-        switch (position) {
+        // Calculate available space in each direction
+        const spaceTop = targetRect.top;
+        const spaceBottom = window.innerHeight - targetRect.bottom;
+        const spaceLeft = targetRect.left;
+        const spaceRight = window.innerWidth - targetRect.right;
+        
+        // Determine best position based on available space
+        if (position === 'top' && spaceTop < tooltipRect.height + spacing + viewportPadding) {
+            if (spaceBottom > spaceTop) {
+                finalPosition = 'bottom';
+            } else {
+                finalPosition = 'center';
+            }
+        } else if (position === 'bottom' && spaceBottom < tooltipRect.height + spacing + viewportPadding) {
+            if (spaceTop > spaceBottom) {
+                finalPosition = 'top';
+            } else {
+                finalPosition = 'center';
+            }
+        } else if (position === 'left' && spaceLeft < tooltipRect.width + spacing + viewportPadding) {
+            if (spaceRight > spaceLeft) {
+                finalPosition = 'right';
+            } else {
+                finalPosition = 'center';
+            }
+        } else if (position === 'right' && spaceRight < tooltipRect.width + spacing + viewportPadding) {
+            if (spaceLeft > spaceRight) {
+                finalPosition = 'left';
+            } else {
+                finalPosition = 'center';
+            }
+        }
+        
+        // Calculate position based on final position
+        switch (finalPosition) {
             case 'top':
                 left = targetRect.left + (targetRect.width / 2);
                 top = targetRect.top - spacing;
                 transform = 'translate(-50%, -100%)';
-                
-                // Adjust if tooltip goes off-screen
-                if (top - tooltipRect.height < viewportPadding) {
-                    // Switch to bottom if not enough space on top
-                    position = 'bottom';
-                    top = targetRect.bottom + spacing;
-                    transform = 'translateX(-50%)';
-                }
                 break;
                 
             case 'bottom':
                 left = targetRect.left + (targetRect.width / 2);
                 top = targetRect.bottom + spacing;
                 transform = 'translateX(-50%)';
-                
-                // Adjust if tooltip goes off-screen
-                if (top + tooltipRect.height > window.innerHeight - viewportPadding) {
-                    // Switch to top if not enough space on bottom
-                    position = 'top';
-                    top = targetRect.top - spacing;
-                    transform = 'translate(-50%, -100%)';
-                }
                 break;
                 
             case 'left':
                 left = targetRect.left - spacing;
                 top = targetRect.top + (targetRect.height / 2);
                 transform = 'translate(-100%, -50%)';
-                
-                // Adjust if tooltip goes off-screen
-                if (left - tooltipRect.width < viewportPadding) {
-                    position = 'right';
-                    left = targetRect.right + spacing;
-                    transform = 'translateY(-50%)';
-                }
                 break;
                 
             case 'right':
                 left = targetRect.right + spacing;
                 top = targetRect.top + (targetRect.height / 2);
                 transform = 'translateY(-50%)';
-                
-                // Adjust if tooltip goes off-screen
-                if (left + tooltipRect.width > window.innerWidth - viewportPadding) {
-                    position = 'left';
-                    left = targetRect.left - spacing;
-                    transform = 'translate(-100%, -50%)';
-                }
                 break;
                 
+            case 'center':
             default:
+                // Center in viewport if no good position
                 left = window.innerWidth / 2;
                 top = window.innerHeight / 2;
                 transform = 'translate(-50%, -50%)';
+                finalPosition = 'center';
         }
         
+        // Ensure tooltip doesn't go off-screen horizontally
+        const tempLeft = finalPosition.includes('center') ? left : 
+                        (finalPosition === 'left' || finalPosition === 'right') ? left :
+                        Math.max(viewportPadding + tooltipRect.width / 2, 
+                                Math.min(window.innerWidth - viewportPadding - tooltipRect.width / 2, left));
+        
+        // Ensure tooltip doesn't go off-screen vertically
+        const tempTop = finalPosition === 'center' ? top :
+                       Math.max(viewportPadding, 
+                               Math.min(window.innerHeight - tooltipRect.height - viewportPadding, 
+                                       finalPosition === 'top' ? top - tooltipRect.height : 
+                                       finalPosition === 'bottom' ? top : top - tooltipRect.height / 2));
+        
         // Apply positioning
-        this.tooltip.style.left = left + 'px';
-        this.tooltip.style.top = top + 'px';
+        this.tooltip.style.left = tempLeft + 'px';
+        this.tooltip.style.top = (finalPosition === 'center' ? top : tempTop) + 'px';
         this.tooltip.style.transform = transform;
         
         // Update arrow position
-        this.tooltip.setAttribute('data-position', position);
+        this.tooltip.setAttribute('data-position', finalPosition);
     }
 
     next() {
