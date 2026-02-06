@@ -1,6 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
+        
+        {{-- Product Tour CSS & JS --}}
+        <link rel="stylesheet" href="{{ asset('css/dashboard-tour.css') }}">
+        <script src="{{ asset('js/dashboard-tour.js') }}" defer></script>
     </x-slot>
 
     <div class="py-6"> {{-- Padding py-6 yang lebih padat --}}

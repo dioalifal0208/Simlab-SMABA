@@ -76,12 +76,6 @@
                         <a href="{{ route('lang.switch', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'font-bold text-blue-700' : 'text-gray-500 hover:text-gray-700' }}">EN</a>
                     </div>
                     
-                    {{-- Product Tour Button --}}
-                    <button onclick="window.startProductTour()" class="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-700 transition-colors px-3 py-2 rounded-lg hover:bg-blue-50" title="Start Product Tour">
-                        <i class="fas fa-route text-blue-600"></i>
-                        <span class="hidden sm:inline">Tour</span>
-                    </button>
-                    
                     @if (Route::has('login'))
                         @auth
                             <a href="{{ url('/dashboard') }}" class="text-sm font-medium text-gray-600 hover:text-blue-700 transition-colors">{{ __('welcome.nav.dashboard') }}</a>
