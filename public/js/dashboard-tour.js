@@ -1,5 +1,5 @@
 /**
- * Dashboard Product Tour - Pure Vanilla JavaScript
+ * Dashboard Product Tour - Pure Vanilla JavaScript with Spotlight
  * No external dependencies required
  */
 
@@ -41,6 +41,7 @@ class DashboardTour {
         
         this.overlay = null;
         this.tooltip = null;
+        this.spotlight = null;
         this.hasSeenTour = localStorage.getItem('lab-smaba-dashboard-tour-completed') === 'true';
     }
 
@@ -52,7 +53,10 @@ class DashboardTour {
 
     start() {
         this.currentStep = 0;
+        document.body.classList.add('tour-active');
+        document.documentElement.classList.add('tour-active');
         this.createOverlay();
+        this.createSpotlight();
         this.createTooltip();
         this.showStep(0);
     }
@@ -62,6 +66,13 @@ class DashboardTour {
         this.overlay.className = 'tour-overlay';
         this.overlay.innerHTML = '<div class="tour-backdrop"></div>';
         document.body.appendChild(this.overlay);
+    }
+
+    createSpotlight() {
+        this.spotlight = document.createElement('div');
+        this.spotlight.className = 'tour-spotlight';
+        this.spotlight.style.display = 'none';
+        document.body.appendChild(this.spotlight);
     }
 
     createTooltip() {
@@ -95,6 +106,9 @@ class DashboardTour {
         this.tooltip.querySelector('.tour-tooltip-content').textContent = step.content;
         this.tooltip.querySelector('.tour-tooltip-progress').textContent = `${index + 1} / ${this.steps.length}`;
         
+        // Update position attribute for arrow
+        this.tooltip.setAttribute('data-position', step.position);
+        
         // Update buttons
         const buttons = this.tooltip.querySelector('.tour-tooltip-buttons');
         if (index === 0) {
@@ -114,11 +128,8 @@ class DashboardTour {
             `;
         }
         
-        // Position tooltip
-        this.positionTooltip(step);
-        
-        // Highlight target
-        this.highlightTarget(step.target);
+        // Position spotlight and tooltip
+        this.positionElements(step);
         
         // Show tooltip with animation
         setTimeout(() => {
@@ -126,9 +137,10 @@ class DashboardTour {
         }, 50);
     }
 
-    positionTooltip(step) {
+    positionElements(step) {
         if (!step.target) {
             // Center position for welcome step
+            this.spotlight.style.display = 'none';
             this.tooltip.style.position = 'fixed';
             this.tooltip.style.top = '50%';
             this.tooltip.style.left = '50%';
@@ -140,59 +152,108 @@ class DashboardTour {
         const target = document.querySelector(step.target);
         if (!target) {
             console.warn('Target not found:', step.target);
+            this.spotlight.style.display = 'none';
             return;
         }
 
-        const rect = target.getBoundingClientRect();
-        const tooltipRect = this.tooltip.getBoundingClientRect();
-        
-        this.tooltip.style.position = 'fixed';
-        this.tooltip.style.maxWidth = '400px';
-        
-        // Scroll target into view
+        // Scroll target into view smoothly
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
-        // Position based on step.position
-        switch (step.position) {
-            case 'top':
-                this.tooltip.style.left = rect.left + (rect.width / 2) + 'px';
-                this.tooltip.style.top = (rect.top - 20) + 'px';
-                this.tooltip.style.transform = 'translate(-50%, -100%)';
-                break;
-            case 'bottom':
-                this.tooltip.style.left = rect.left + (rect.width / 2) + 'px';
-                this.tooltip.style.top = (rect.bottom + 20) + 'px';
-                this.tooltip.style.transform = 'translateX(-50%)';
-                break;
-            case 'left':
-                this.tooltip.style.left = (rect.left - 20) + 'px';
-                this.tooltip.style.top = rect.top + (rect.height / 2) + 'px';
-                this.tooltip.style.transform = 'translate(-100%, -50%)';
-                break;
-            case 'right':
-                this.tooltip.style.left = (rect.right + 20) + 'px';
-                this.tooltip.style.top = rect.top + (rect.height / 2) + 'px';
-                this.tooltip.style.transform = 'translateY(-50%)';
-                break;
-            default:
-                this.tooltip.style.left = '50%';
-                this.tooltip.style.top = '50%';
-                this.tooltip.style.transform = 'translate(-50%, -50%)';
-        }
+        // Wait for scroll to complete
+        setTimeout(() => {
+            const rect = target.getBoundingClientRect();
+            const padding = 12;
+            
+            // Position spotlight
+            this.spotlight.style.display = 'block';
+            this.spotlight.style.left = (rect.left - padding) + 'px';
+            this.spotlight.style.top = (rect.top - padding) + 'px';
+            this.spotlight.style.width = (rect.width + padding * 2) + 'px';
+            this.spotlight.style.height = (rect.height + padding * 2) + 'px';
+            
+            // Position tooltip
+            this.positionTooltip(rect, step.position);
+        }, 300);
     }
 
-    highlightTarget(selector) {
-        // Remove previous highlights
-        document.querySelectorAll('.tour-highlight').forEach(el => {
-            el.classList.remove('tour-highlight');
-        });
+    positionTooltip(targetRect, position) {
+        this.tooltip.style.position = 'fixed';
+        this.tooltip.style.maxWidth = '420px';
         
-        if (!selector) return;
+        const tooltipRect = this.tooltip.getBoundingClientRect();
+        const spacing = 30; // Space between tooltip and target
+        const viewportPadding = 20; // Padding from viewport edges
         
-        const target = document.querySelector(selector);
-        if (target) {
-            target.classList.add('tour-highlight');
+        let left, top, transform;
+        
+        switch (position) {
+            case 'top':
+                left = targetRect.left + (targetRect.width / 2);
+                top = targetRect.top - spacing;
+                transform = 'translate(-50%, -100%)';
+                
+                // Adjust if tooltip goes off-screen
+                if (top - tooltipRect.height < viewportPadding) {
+                    // Switch to bottom if not enough space on top
+                    position = 'bottom';
+                    top = targetRect.bottom + spacing;
+                    transform = 'translateX(-50%)';
+                }
+                break;
+                
+            case 'bottom':
+                left = targetRect.left + (targetRect.width / 2);
+                top = targetRect.bottom + spacing;
+                transform = 'translateX(-50%)';
+                
+                // Adjust if tooltip goes off-screen
+                if (top + tooltipRect.height > window.innerHeight - viewportPadding) {
+                    // Switch to top if not enough space on bottom
+                    position = 'top';
+                    top = targetRect.top - spacing;
+                    transform = 'translate(-50%, -100%)';
+                }
+                break;
+                
+            case 'left':
+                left = targetRect.left - spacing;
+                top = targetRect.top + (targetRect.height / 2);
+                transform = 'translate(-100%, -50%)';
+                
+                // Adjust if tooltip goes off-screen
+                if (left - tooltipRect.width < viewportPadding) {
+                    position = 'right';
+                    left = targetRect.right + spacing;
+                    transform = 'translateY(-50%)';
+                }
+                break;
+                
+            case 'right':
+                left = targetRect.right + spacing;
+                top = targetRect.top + (targetRect.height / 2);
+                transform = 'translateY(-50%)';
+                
+                // Adjust if tooltip goes off-screen
+                if (left + tooltipRect.width > window.innerWidth - viewportPadding) {
+                    position = 'left';
+                    left = targetRect.left - spacing;
+                    transform = 'translate(-100%, -50%)';
+                }
+                break;
+                
+            default:
+                left = window.innerWidth / 2;
+                top = window.innerHeight / 2;
+                transform = 'translate(-50%, -50%)';
         }
+        
+        // Apply positioning
+        this.tooltip.style.left = left + 'px';
+        this.tooltip.style.top = top + 'px';
+        this.tooltip.style.transform = transform;
+        
+        // Update arrow position
+        this.tooltip.setAttribute('data-position', position);
     }
 
     next() {
@@ -223,12 +284,20 @@ class DashboardTour {
     }
 
     end() {
+        document.body.classList.remove('tour-active');
+        document.documentElement.classList.remove('tour-active');
+        
         if (this.tooltip) {
             this.tooltip.classList.remove('tour-tooltip-visible');
             setTimeout(() => {
                 this.tooltip.remove();
                 this.tooltip = null;
             }, 300);
+        }
+        
+        if (this.spotlight) {
+            this.spotlight.remove();
+            this.spotlight = null;
         }
         
         if (this.overlay) {

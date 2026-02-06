@@ -1,6 +1,6 @@
-/* Dashboard Product Tour Styles - Pure CSS */
+/* Dashboard Product Tour Styles - Pure Glass Design */
 
-/* Overlay */
+/* Overlay with Spotlight Effect */
 .tour-overlay {
     position: fixed;
     top: 0;
@@ -17,31 +17,62 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     animation: fadeIn 0.3s ease-out;
 }
 
-/* Tooltip Container */
+/* Spotlight Cutout for Target Element */
+.tour-spotlight {
+    position: fixed;
+    z-index: 9997;
+    pointer-events: none;
+    border: 3px solid rgba(59, 130, 246, 0.8);
+    border-radius: 12px;
+    box-shadow: 
+        0 0 0 9999px rgba(0, 0, 0, 0.7),
+        0 0 30px rgba(59, 130, 246, 0.5),
+        inset 0 0 20px rgba(59, 130, 246, 0.3);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: pulse-border 2s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+    0%, 100% {
+        border-color: rgba(59, 130, 246, 0.8);
+        box-shadow: 
+            0 0 0 9999px rgba(0, 0, 0, 0.7),
+            0 0 30px rgba(59, 130, 246, 0.5),
+            inset 0 0 20px rgba(59, 130, 246, 0.3);
+    }
+    50% {
+        border-color: rgba(96, 165, 250, 1);
+        box-shadow: 
+            0 0 0 9999px rgba(0, 0, 0, 0.7),
+            0 0 40px rgba(59, 130, 246, 0.8),
+            inset 0 0 30px rgba(59, 130, 246, 0.5);
+    }
+}
+
+/* Tooltip Container - Pure Glass */
 .tour-tooltip {
     position: fixed;
     z-index: 9999;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(30px) saturate(150%) brightness(1.1);
-    -webkit-backdrop-filter: blur(30px) saturate(150%) brightness(1.1);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
     border-radius: 20px;
-    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 
-        0 30px 60px -15px rgba(0, 0, 0, 0.35),
-        0 0 0 1px rgba(255, 255, 255, 0.2) inset,
-        0 2px 4px rgba(255, 255, 255, 0.3) inset;
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     overflow: hidden;
     opacity: 0;
-    transform: scale(0.95) translateY(-10px);
+    transform: scale(0.9) translateY(-20px);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: auto;
-    max-width: 400px;
+    max-width: 420px;
     width: 90vw;
 }
 
@@ -50,73 +81,124 @@
     transform: scale(1) translateY(0);
 }
 
-/* Header */
+/* Arrow Pointer */
+.tour-tooltip::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 12px solid transparent;
+    z-index: -1;
+}
+
+.tour-tooltip[data-position="top"]::before {
+    bottom: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: rgba(255, 255, 255, 0.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.tour-tooltip[data-position="bottom"]::before {
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+    filter: drop-shadow(0 -4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.tour-tooltip[data-position="left"]::before {
+    right: -24px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left-color: rgba(255, 255, 255, 0.1);
+    filter: drop-shadow(4px 0 8px rgba(0, 0, 0, 0.2));
+}
+
+.tour-tooltip[data-position="right"]::before {
+    left: -24px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-right-color: rgba(255, 255, 255, 0.1);
+    filter: drop-shadow(-4px 0 8px rgba(0, 0, 0, 0.2));
+}
+
+/* Header - Glass with subtle gradient */
 .tour-tooltip-header {
-    background: linear-gradient(135deg, rgba(29, 78, 216, 0.95) 0%, rgba(59, 130, 246, 0.95) 100%);
-    backdrop-filter: blur(15px);
+    background: linear-gradient(135deg, 
+        rgba(59, 130, 246, 0.15) 0%, 
+        rgba(96, 165, 250, 0.1) 100%);
+    backdrop-filter: blur(20px);
     padding: 20px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1.5px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .tour-tooltip-title {
-    color: white;
+    color: #ffffff;
     font-weight: 700;
-    font-size: 17px;
+    font-size: 18px;
     margin: 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.02em;
 }
 
 .tour-tooltip-close {
-    background: none;
-    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
+    font-size: 20px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
     cursor: pointer;
     opacity: 0.9;
     transition: all 0.3s ease;
     padding: 0;
     line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .tour-tooltip-close:hover {
     opacity: 1;
-    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
 }
 
-/* Content */
+/* Content - Pure Glass */
 .tour-tooltip-content {
     padding: 24px;
-    color: #111827;
+    color: #ffffff;
     font-size: 15px;
     line-height: 1.7;
-    font-weight: 500;
-    background: rgba(255, 255, 255, 0.1);
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    font-weight: 400;
+    background: rgba(255, 255, 255, 0.03);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-/* Footer */
+/* Footer - Glass */
 .tour-tooltip-footer {
     padding: 18px 24px;
-    border-top: 1.5px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(20px);
 }
 
 .tour-tooltip-progress {
-    color: #9ca3af;
+    color: rgba(255, 255, 255, 0.8);
     font-size: 13px;
     font-weight: 600;
-    background: rgba(255, 255, 255, 0.5);
-    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 14px;
     border-radius: 20px;
     backdrop-filter: blur(10px);
     display: inline-block;
     margin-bottom: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .tour-tooltip-buttons {
@@ -125,10 +207,10 @@
     gap: 12px;
 }
 
-/* Buttons */
+/* Buttons - Glass Style */
 .tour-btn {
-    padding: 10px 20px;
-    border-radius: 10px;
+    padding: 11px 22px;
+    border-radius: 12px;
     font-weight: 600;
     font-size: 14px;
     border: none;
@@ -136,6 +218,7 @@
     position: relative;
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
 }
 
 .tour-btn::before {
@@ -146,7 +229,7 @@
     width: 0;
     height: 0;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
     transform: translate(-50%, -50%);
     transition: width 0.6s, height 0.6s;
 }
@@ -157,15 +240,25 @@
 }
 
 .tour-btn-primary {
-    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+    background: linear-gradient(135deg, 
+        rgba(59, 130, 246, 0.8) 0%, 
+        rgba(37, 99, 235, 0.9) 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 4px 16px rgba(59, 130, 246, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .tour-btn-primary:hover {
-    background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, 
+        rgba(59, 130, 246, 0.9) 0%, 
+        rgba(37, 99, 235, 1) 100%);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(29, 78, 216, 0.4);
+    box-shadow: 
+        0 6px 20px rgba(59, 130, 246, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .tour-btn-primary:active {
@@ -173,34 +266,24 @@
 }
 
 .tour-btn-secondary {
-    background: rgba(255, 255, 255, 0.8);
-    color: #6b7280;
-    border: 1px solid rgba(209, 213, 219, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .tour-btn-secondary:hover {
-    background: rgba(243, 244, 246, 0.9);
-    color: #374151;
-    border-color: rgba(156, 163, 175, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Highlight Effect */
+/* Highlight Effect - Removed (using spotlight instead) */
 .tour-highlight {
     position: relative;
     z-index: 9997;
-    animation: pulse-highlight 2s ease-in-out infinite;
-}
-
-@keyframes pulse-highlight {
-    0%, 100% {
-        box-shadow: 0 0 0 0 rgba(29, 78, 216, 0.4);
-    }
-    50% {
-        box-shadow: 0 0 0 10px rgba(29, 78, 216, 0);
-    }
 }
 
 /* Animations */
@@ -213,10 +296,25 @@
     }
 }
 
+/* Pulse animation for spotlight */
+@keyframes spotlight-pulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 0 9999px rgba(0, 0, 0, 0.7),
+            0 0 30px rgba(59, 130, 246, 0.5);
+    }
+    50% {
+        box-shadow: 
+            0 0 0 9999px rgba(0, 0, 0, 0.7),
+            0 0 50px rgba(59, 130, 246, 0.8);
+    }
+}
+
 /* Responsive */
 @media (max-width: 640px) {
     .tour-tooltip {
         max-width: 90vw;
+        margin: 0 16px;
     }
     
     .tour-tooltip-content {
@@ -239,4 +337,18 @@
     .tour-btn {
         width: 100%;
     }
+    
+    .tour-tooltip-title {
+        font-size: 16px;
+    }
+}
+
+/* Smooth scrolling for tour */
+html.tour-active {
+    scroll-behavior: smooth;
+}
+
+/* Prevent body scroll when tour is active */
+body.tour-active {
+    overflow: hidden;
 }
