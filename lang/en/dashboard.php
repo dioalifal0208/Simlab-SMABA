@@ -3,15 +3,16 @@
 return [
     // Welcome Section
     'welcome' => [
-        'title' => 'Welcome to LAB-SMABA Dashboard',
-        'subtitle' => 'Laboratory Management System',
+        'admin' => 'Welcome, Admin Lab SMABA!',
+        'user' => 'Welcome, :name!',
+        'subtitle' => 'Laboratory activity summary today.',
     ],
 
     // Metrics
     'metrics' => [
-        'total_items' => 'Total Items',
-        'total_users' => 'Total Users',
-        'transactions_this_month' => 'Transactions This Month',
+        'total_items' => 'TOTAL ITEMS',
+        'total_users' => 'TOTAL USERS',
+        'transactions_this_month' => 'TRANSACTIONS THIS MONTH',
         'items' => 'Items',
         'users' => 'Users',
         'transactions' => 'Transactions',
@@ -22,16 +23,19 @@ return [
         'title' => 'Quick Actions',
         'add_item' => 'Add Item',
         'process_loan' => 'Process Loan',
-        'create_booking' => 'Create Booking',
         'view_reports' => 'View Reports',
     ],
 
     // Activity Cards
     'cards' => [
         'pending_loans' => 'Pending Loans',
-        'pending_bookings' => 'Waiting Bookings',
+        'needs_approval' => 'Needs approval',
+        'pending_bookings' => 'Pending Bookings',
+        'waiting_schedule' => 'Waiting schedule',
         'damage_reports' => 'Damage Reports',
+        'needs_verification' => 'Needs verification',
         'this_week_schedule' => 'This Week\'s Schedule',
+        'scheduled_practicum' => 'Scheduled practicum',
         'view_all' => 'View All',
         'no_data' => 'No data',
     ],
@@ -39,6 +43,7 @@ return [
     // Recent Activity
     'recent_activity' => [
         'title' => 'Recent Activity',
+        'description' => 'View all activity in the system, loans, bookings, and data changes.',
         'page' => 'Page',
         'of' => 'of',
         'no_activity' => 'No recent activity',

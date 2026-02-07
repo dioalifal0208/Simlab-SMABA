@@ -3,15 +3,16 @@
 return [
     // Bagian Selamat Datang
     'welcome' => [
-        'title' => 'Selamat Datang di Dashboard LAB-SMABA',
-        'subtitle' => 'Sistem Manajemen Laboratorium',
+        'admin' => 'Selamat datang, Admin Lab SMABA!',
+        'user' => 'Selamat datang, :name!',
+        'subtitle' => 'Ringkasan aktivitas laboratorium hari ini.',
     ],
 
     // Metrik
     'metrics' => [
-        'total_items' => 'Total Item',
-        'total_users' => 'Total Pengguna',
-        'transactions_this_month' => 'Transaksi Bulan Ini',
+        'total_items' => 'TOTAL ITEM',
+        'total_users' => 'TOTAL PENGGUNA',
+        'transactions_this_month' => 'TRANSAKSI BULAN INI',
         'items' => 'Item',
         'users' => 'Pengguna',
         'transactions' => 'Transaksi',
@@ -22,16 +23,19 @@ return [
         'title' => 'Aksi Cepat',
         'add_item' => 'Tambah Item',
         'process_loan' => 'Proses Peminjaman',
-        'create_booking' => 'Buat Booking',
         'view_reports' => 'Lihat Laporan',
     ],
 
     // Kartu Aktivitas
     'cards' => [
         'pending_loans' => 'Peminjaman Pending',
-        'pending_bookings' => 'Booking Menunggu',
+        'needs_approval' => 'Perlu persetujuan',
+        'pending_bookings' => 'Booking Pending',
+        'waiting_schedule' => 'Jadwal menunggu',
         'damage_reports' => 'Laporan Kerusakan',
+        'needs_verification' => 'Perlu verifikasi',
         'this_week_schedule' => 'Jadwal Minggu Ini',
+        'scheduled_practicum' => 'Praktikum terjadwal',
         'view_all' => 'Lihat Semua',
         'no_data' => 'Tidak ada data',
     ],
@@ -39,6 +43,7 @@ return [
     // Aktivitas Terbaru
     'recent_activity' => [
         'title' => 'Aktivitas Terbaru',
+        'description' => 'Lihat semua aktivitas terbaru di sistem, peminjaman, booking, dan perubahan data.',
         'page' => 'Halaman',
         'of' => 'dari',
         'no_activity' => 'Tidak ada aktivitas terbaru',

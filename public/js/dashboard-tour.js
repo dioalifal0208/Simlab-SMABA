@@ -316,6 +316,35 @@ class DashboardTour {
         this.tooltip.style.top = top + 'px';
         this.tooltip.style.transform = transform;
         
+        // CRITICAL: Final boundary check to prevent any clipping
+        // Get actual tooltip dimensions after positioning
+        setTimeout(() => {
+            const finalRect = this.tooltip.getBoundingClientRect();
+            let adjustLeft = 0;
+            let adjustTop = 0;
+            
+            // Check if tooltip is clipped on any edge
+            if (finalRect.left < viewportPadding) {
+                adjustLeft = viewportPadding - finalRect.left;
+            } else if (finalRect.right > window.innerWidth - viewportPadding) {
+                adjustLeft = (window.innerWidth - viewportPadding) - finalRect.right;
+            }
+            
+            if (finalRect.top < viewportPadding) {
+                adjustTop = viewportPadding - finalRect.top;
+            } else if (finalRect.bottom > window.innerHeight - viewportPadding) {
+                adjustTop = (window.innerHeight - viewportPadding) - finalRect.bottom;
+            }
+            
+            // Apply adjustments if needed
+            if (adjustLeft !== 0 || adjustTop !== 0) {
+                const currentLeft = parseFloat(this.tooltip.style.left);
+                const currentTop = parseFloat(this.tooltip.style.top);
+                this.tooltip.style.left = (currentLeft + adjustLeft) + 'px';
+                this.tooltip.style.top = (currentTop + adjustTop) + 'px';
+            }
+        }, 10);
+        
         // Update arrow position
         this.tooltip.setAttribute('data-position', finalPosition);
     }

@@ -3,25 +3,25 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
                 <h2 class="font-bold text-2xl text-smaba-text leading-tight">
-                    {{ __('Inventaris Laboratorium') }}
+                    {{ __('items.title') }}
                 </h2>
-                <p class="text-sm text-gray-500 mt-1">Daftar semua alat dan bahan yang tersedia di laboratorium.</p>
+                <p class="text-sm text-gray-500 mt-1">{{ __('items.subtitle') }}</p>
             </div>
             <div class="mt-3 sm:mt-0 flex items-center space-x-3">
                 @can('is-admin')
                     {{-- Tombol Impor Item (membuka modal) --}}
                     <button @click="showImportModal = true" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-semibold text-sm shadow-sm transition-colors">
-                        <i class="fas fa-upload mr-2"></i> Import Item
+                        <i class="fas fa-upload mr-2"></i> {{ __('items.actions.import') }}
                     </button>
 
                     {{-- Tombol Tambah Item --}}
                     <a href="{{ route('items.create') }}" class="inline-block px-4 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-md hover:bg-smaba-light-blue shadow-sm transition-colors">
-                        + Tambah Item
+                        + {{ __('items.actions.add') }}
                     </a>
                 @else
                     {{-- Guru/Staf: Ajukan penambahan item --}}
                     <a href="{{ route('item-requests.create') }}" class="inline-flex items-center px-4 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-md hover:bg-smaba-light-blue shadow-sm transition-colors">
-                        <i class="fas fa-plus mr-2"></i> Ajukan Tambah Item
+                        <i class="fas fa-plus mr-2"></i> {{ __('items.actions.request_add') }}
                     </a>
                 @endcan
             </div>
@@ -60,19 +60,19 @@
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i class="fas fa-search text-gray-400"></i>
                                 </div>
-                                <input type="text" name="search" id="search" placeholder="Cari nama alat..." value="{{ request('search') }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue pl-10 text-sm">
+                                <input type="text" name="search" id="search" placeholder="{{ __('items.filters.search') }}" value="{{ request('search') }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue pl-10 text-sm">
                             </div>
                             {{-- Dropdown Filter --}}
                             <select name="tipe" id="tipe" class="w-auto rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
-                                <option value="">Tipe</option>
-                                <option value="Alat" @selected(request('tipe') == 'Alat')>Alat</option>
-                                <option value="Bahan Habis Pakai" @selected(request('tipe') == 'Bahan Habis Pakai')>Bahan</option>
+                                <option value="">{{ __('items.filters.type') }}</option>
+                                <option value="Alat" @selected(request('tipe') == 'Alat')>{{ __('items.categories.alat') }}</option>
+                                <option value="Bahan Habis Pakai" @selected(request('tipe') == 'Bahan Habis Pakai')>{{ __('items.categories.bahan') }}</option>
                             </select>
                             <select name="kondisi" id="kondisi" class="w-auto rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
-                                <option value="">Kondisi</option>
-                                <option value="Baik" @selected(request('kondisi') == 'Baik')>Baik</option>
-                                <option value="Kurang Baik" @selected(request('kondisi') == 'Kurang Baik')>Kurang Baik</option>
-                                <option value="Rusak" @selected(request('kondisi') == 'Rusak')>Rusak</option>
+                                <option value="">{{ __('items.filters.condition') }}</option>
+                                <option value="Baik" @selected(request('kondisi') == 'Baik')>{{ __('items.conditions.baik') }}</option>
+                                <option value="Kurang Baik" @selected(request('kondisi') == 'Kurang Baik')>{{ __('items.conditions.rusak_ringan') }}</option>
+                                <option value="Rusak" @selected(request('kondisi') == 'Rusak')>{{ __('items.conditions.rusak_berat') }}</option>
                             </select>
                             @php
                                 $isAdmin = auth()->user()?->role === 'admin';
@@ -80,7 +80,7 @@
                             @endphp
                             <div class="flex items-center gap-2">
                                 <select name="laboratorium" id="laboratorium" class="w-auto rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm" {{ $isAdmin ? '' : 'disabled' }}>
-                                    <option value="">Semua Lab</option>
+                                    <option value="">{{ __('items.filters.all_labs') }}</option>
                                     <option value="Biologi" @selected(request('laboratorium', $lockedLab) == 'Biologi')>Biologi</option>
                                     <option value="Fisika" @selected(request('laboratorium', $lockedLab) == 'Fisika')>Fisika</option>
                                     <option value="Bahasa" @selected(request('laboratorium', $lockedLab) == 'Bahasa')>Bahasa</option>

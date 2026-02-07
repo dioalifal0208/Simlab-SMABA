@@ -2,22 +2,26 @@
 
 return [
     // Page Titles
-    'title' => 'Inventory',
+    'title' => 'Laboratory Inventory',
+    'subtitle' => 'List of all equipment and materials available in the laboratory.',
     'add_item' => 'Add Item',
     'edit_item' => 'Edit Item',
     'item_details' => 'Item Details',
+    'add_new_item' => 'Add New Inventory Item',
 
     // Table Headers
     'table' => [
-        'name' => 'Name',
-        'category' => 'Category',
-        'stock' => 'Stock',
-        'condition' => 'Condition',
-        'location' => 'Location',
-        'actions' => 'Actions',
-        'code' => 'Code',
-        'type' => 'Type',
-        'unit' => 'Unit',
+        'name' => 'EQUIPMENT/MATERIAL NAME',
+        'category' => 'CATEGORY',
+        'stock' => 'STOCK',
+        'condition' => 'CONDITION',
+        'location' => 'LOCATION',
+        'actions' => 'ACTIONS',
+        'code' => 'CODE',
+        'type' => 'TYPE',
+        'unit' => 'UNIT',
+        'lab' => 'LAB',
+        'quantity' => 'QUANTITY',
     ],
 
     // Form Labels
@@ -72,6 +76,8 @@ return [
         'view' => 'View Details',
         'report_damage' => 'Report Damage',
         'request_stock' => 'Request Stock',
+        'import' => 'Import Item',
+        'request_add' => 'Request Add Item',
     ],
 
     // Messages
@@ -82,5 +88,20 @@ return [
         'not_found' => 'Item not found',
         'low_stock' => 'Low stock',
         'out_of_stock' => 'Out of stock',
+    ],
+
+    // Empty State
+    'empty' => [
+        'title' => 'No Items Found',
+        'description' => 'Try changing the search filter or add a new item.',
+        'action' => 'Add New Item',
+    ],
+
+    // Filters
+    'filters' => [
+        'search' => 'Search by name...',
+        'type' => 'Type',
+        'condition' => 'Condition',
+        'all_labs' => 'All Labs',
     ],
 ];

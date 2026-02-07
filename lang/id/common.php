@@ -112,4 +112,19 @@ return [
         'active' => 'Aktif',
         'inactive' => 'Tidak Aktif',
     ],
+
+    // Peran
+    'roles' => [
+        'admin' => 'Admin',
+        'teacher' => 'Guru',
+        'student' => 'Siswa',
+    ],
+
+    // Filter (untuk UI pencarian/filter)
+    'filters' => [
+        'all' => 'Semua',
+        'search' => 'Cari...',
+        'filter' => 'Filter',
+        'reset' => 'Reset',
+    ],
 ];

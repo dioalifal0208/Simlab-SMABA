@@ -4,23 +4,23 @@
             <div>
                 <h2 class="font-bold text-2xl text-smaba-text leading-tight">
                     @if (auth()->user()->role == 'admin')
-                        {{ __('Kelola Peminjaman') }}
+                        {{ __('loans.title_admin') }}
                     @else
-                        {{ __('Riwayat Peminjaman Saya') }}
+                        {{ __('loans.title_user') }}
                     @endif
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">
                     @if (auth()->user()->role == 'admin')
-                        Lihat dan proses semua pengajuan peminjaman alat.
+                        {{ __('loans.subtitle_admin') }}
                     @else
-                        Lacak status semua pengajuan peminjaman alat Anda.
+                        {{ __('loans.subtitle_user') }}
                     @endif
                 </p>
             </div>
             
             @unless (auth()->user()->role == 'admin')
                 <a href="{{ route('loans.create') }}" class="mt-3 sm:mt-0 px-5 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors duration-300 ease-in-out transform hover:-translate-y-0.5">
-                    <i class="fas fa-plus mr-2"></i> Ajukan Peminjaman Baru
+                    <i class="fas fa-plus mr-2"></i> {{ __('loans.actions.create_new') }}
                 </a>
             @endunless
         </div>
@@ -72,15 +72,15 @@
                         <table class="min-w-full bg-white">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('loans.table.id') }}</th>
                                     @if (auth()->user()->role == 'admin')
-                                        <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Peminjam</th>
+                                        <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('loans.table.borrower') }}</th>
                                     @endif
-                                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Pinjam</th>
-                                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Jml Item</th>
-                                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lab</th>
-                                    <th class="py-3 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="py-3 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('loans.table.borrow_date') }}</th>
+                                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">{{ __('loans.table.item_count') }}</th>
+                                    <th class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('loans.table.lab') }}</th>
+                                    <th class="py-3 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('loans.table.status') }}</th>
+                                    <th class="py-3 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('loans.table.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="text-gray-700 divide-y divide-gray-200">
@@ -119,8 +119,8 @@
                                                 <div class="w-20 h-20 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-4">
                                                     <i class="fas fa-clipboard-list text-3xl text-gray-400"></i>
                                                 </div>
-                                                <h3 class="text-lg font-semibold text-gray-900 mb-1">Tidak Ada Data Peminjaman</h3>
-                                                <p class="text-sm text-gray-500 mb-4">Belum ada data peminjaman yang cocok dengan filter Anda.</p>
+                                                <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ __('loans.empty.title') }}</h3>
+                                                <p class="text-sm text-gray-500 mb-4">{{ __('loans.empty.description') }}</p>
                                                 @unless (auth()->user()->role == 'admin')
                                                 <a href="{{ route('loans.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
                                                     <i class="fas fa-plus"></i> Ajukan Peminjaman Baru

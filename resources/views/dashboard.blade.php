@@ -35,11 +35,11 @@
                         <div class="relative px-8 py-10 md:px-12 md:py-14">
                             {{-- Greeting --}}
                             <div class="mb-8" data-aos="fade-up" data-aos-once="true">
-                                <p class="text-blue-600 text-sm font-medium uppercase tracking-wider mb-2">Dashboard Admin</p>
+                                <p class="text-blue-600 text-sm font-medium uppercase tracking-wider mb-2">{{ __('common.nav.dashboard') }} {{ __('common.roles.admin') }}</p>
                                 <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-                                    Selamat datang, {{ Auth::user()->name }}! 👋
+                                    {{ __('dashboard.welcome.admin', ['name' => Auth::user()->name]) }} 👋
                                 </h1>
-                                <p class="mt-2 text-gray-600 text-lg">Ringkasan aktivitas laboratorium hari ini.</p>
+                                <p class="mt-2 text-gray-600 text-lg">{{ __('dashboard.welcome.subtitle') }}</p>
                             </div>
                             
                             {{-- Key Metrics Grid --}}
@@ -50,7 +50,7 @@
                                             <i class="fas fa-flask text-2xl text-blue-600"></i>
                                         </div>
                                         <div>
-                                            <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">Total Item</p>
+                                            <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">{{ __('dashboard.metrics.total_items') }}</p>
                                             <p class="text-gray-900 text-3xl font-bold">{{ number_format($totalItemsCount ?? 0) }}</p>
                                         </div>
                                     </div>
@@ -62,7 +62,7 @@
                                             <i class="fas fa-users text-2xl text-purple-600"></i>
                                         </div>
                                         <div>
-                                            <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">Total Pengguna</p>
+                                            <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">{{ __('dashboard.metrics.total_users') }}</p>
                                             <p class="text-gray-900 text-3xl font-bold">{{ number_format($totalUsersCount ?? 0) }}</p>
                                         </div>
                                     </div>
@@ -74,7 +74,7 @@
                                             <i class="fas fa-exchange-alt text-2xl text-emerald-600"></i>
                                         </div>
                                         <div>
-                                            <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">Transaksi Bulan Ini</p>
+                                            <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">{{ __('dashboard.metrics.transactions_this_month') }}</p>
                                             <p class="text-gray-900 text-3xl font-bold">{{ number_format($monthlyTransactionsCount ?? 0) }}</p>
                                         </div>
                                     </div>
@@ -84,13 +84,13 @@
                             {{-- Quick Actions --}}
                             <div class="mt-8 flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="400" data-aos-once="true">
                                 <a href="{{ route('items.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
-                                    <i class="fas fa-plus"></i> Tambah Item
+                                    <i class="fas fa-plus"></i> {{ __('dashboard.quick_actions.add_item') }}
                                 </a>
                                 <a href="{{ route('loans.index', ['status' => 'pending']) }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors border border-gray-300">
-                                    <i class="fas fa-clock"></i> Proses Peminjaman
+                                    <i class="fas fa-clock"></i> {{ __('dashboard.quick_actions.process_loan') }}
                                 </a>
                                 <a href="{{ route('reports.index') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors border border-gray-300">
-                                    <i class="fas fa-chart-bar"></i> Lihat Laporan
+                                    <i class="fas fa-chart-bar"></i> {{ __('dashboard.quick_actions.view_reports') }}
                                 </a>
                             </div>
                         </div>
@@ -145,8 +145,8 @@
                                 </div>
                                 <span class="text-3xl font-bold text-gray-900">{{ $pendingLoansCount ?? 0 }}</span>
                             </div>
-                            <h3 class="font-semibold text-gray-700">Peminjaman Pending</h3>
-                            <p class="text-sm text-gray-500 mt-1">Perlu persetujuan</p>
+                            <h3 class="font-semibold text-gray-700">{{ __('dashboard.cards.pending_loans') }}</h3>
+                            <p class="text-sm text-gray-500 mt-1">{{ __('dashboard.cards.needs_approval') }}</p>
                         </a>
                         
                         {{-- Pending Bookings --}}
@@ -157,8 +157,8 @@
                                 </div>
                                 <span class="text-3xl font-bold text-gray-900">{{ $pendingBookingsCount ?? 0 }}</span>
                             </div>
-                            <h3 class="font-semibold text-gray-700">Booking Pending</h3>
-                            <p class="text-sm text-gray-500 mt-1">Jadwal menunggu</p>
+                            <h3 class="font-semibold text-gray-700">{{ __('dashboard.cards.pending_bookings') }}</h3>
+                            <p class="text-sm text-gray-500 mt-1">{{ __('dashboard.cards.waiting_schedule') }}</p>
                         </a>
                         
                         {{-- Damage Reports --}}
@@ -169,8 +169,8 @@
                                 </div>
                                 <span class="text-3xl font-bold text-gray-900">{{ $newDamageReportsCount ?? 0 }}</span>
                             </div>
-                            <h3 class="font-semibold text-gray-700">Laporan Kerusakan</h3>
-                            <p class="text-sm text-gray-500 mt-1">Perlu verifikasi</p>
+                            <h3 class="font-semibold text-gray-700">{{ __('dashboard.cards.damage_reports') }}</h3>
+                            <p class="text-sm text-gray-500 mt-1">{{ __('dashboard.cards.needs_verification') }}</p>
                         </a>
                         
                         {{-- This Week Schedule --}}
@@ -181,8 +181,8 @@
                                 </div>
                                 <span class="text-3xl font-bold text-gray-900">{{ $upcomingBookingsCount ?? 0 }}</span>
                             </div>
-                            <h3 class="font-semibold text-gray-700">Jadwal Minggu Ini</h3>
-                            <p class="text-sm text-gray-500 mt-1">Praktikum terjadwal</p>
+                            <h3 class="font-semibold text-gray-700">{{ __('dashboard.cards.this_week_schedule') }}</h3>
+                            <p class="text-sm text-gray-500 mt-1">{{ __('dashboard.cards.scheduled_practicum') }}</p>
                         </a>
                     </div>
                     
@@ -200,9 +200,9 @@
                             isVisible(index) { return index >= this.startIndex && index < this.endIndex }
                          }">
                         <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
-                            <h2 class="text-lg font-semibold text-gray-900">Aktivitas Terbaru</h2>
+                            <h2 class="text-lg font-semibold text-gray-900">{{ __('dashboard.recent_activity.title') }}</h2>
                             <span class="text-sm text-gray-500" x-show="totalPages > 1">
-                                Halaman <span x-text="currentPage"></span> dari <span x-text="totalPages"></span>
+                                {{ __('dashboard.recent_activity.page') }} <span x-text="currentPage"></span> {{ __('dashboard.recent_activity.of') }} <span x-text="totalPages"></span>
                             </span>
                         </div>
                         <div class="p-6">

@@ -6,12 +6,12 @@
                 <th class="py-4 px-4">
                     <input type="checkbox" @click="selectedItems = $event.target.checked ? Array.from(document.querySelectorAll('#item-list input[type=\'checkbox\']')).map(cb => cb.value) : []" class="rounded border-gray-300 text-smaba-dark-blue shadow-sm focus:ring-smaba-light-blue">
                 </th>
-                <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Alat/Bahan</th>
-                <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Tipe</th>
-                <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lab</th>
-                <th class="py-4 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah</th>
-                <th class="py-4 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Kondisi</th>
-                <th class="py-4 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('items.table.name') }}</th>
+                <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">{{ __('items.table.type') }}</th>
+                <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('items.table.lab') }}</th>
+                <th class="py-4 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('items.table.quantity') }}</th>
+                <th class="py-4 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">{{ __('items.table.condition') }}</th>
+                <th class="py-4 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('items.table.actions') }}</th>
             </tr>
         </thead>
         <tbody class="text-gray-700 divide-y divide-gray-200" id="item-list">
@@ -71,11 +71,11 @@
                             <div class="w-20 h-20 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-4">
                                 <i class="fas fa-flask text-3xl text-gray-400"></i>
                             </div>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Tidak Ada Item Ditemukan</h3>
-                            <p class="text-sm text-gray-500 mb-4">Coba ubah filter pencarian Anda atau tambahkan item baru.</p>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ __('items.empty.title') }}</h3>
+                            <p class="text-sm text-gray-500 mb-4">{{ __('items.empty.description') }}</p>
                             @can('is-admin')
                             <a href="{{ route('items.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
-                                <i class="fas fa-plus"></i> Tambah Item Baru
+                                <i class="fas fa-plus"></i> {{ __('items.empty.action') }}
                             </a>
                             @else
                             <a href="{{ route('item-requests.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">

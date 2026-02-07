@@ -112,4 +112,19 @@ return [
         'active' => 'Active',
         'inactive' => 'Inactive',
     ],
+
+    // Roles
+    'roles' => [
+        'admin' => 'Admin',
+        'teacher' => 'Teacher',
+        'student' => 'Student',
+    ],
+
+    // Filters (for search/filter UI)
+    'filters' => [
+        'all' => 'All',
+        'search' => 'Search...',
+        'filter' => 'Filter',
+        'reset' => 'Reset',
+    ],
 ];
