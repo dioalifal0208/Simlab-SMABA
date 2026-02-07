@@ -124,6 +124,16 @@
                     <i class="fas fa-moon text-lg"></i>
                 </button>
 
+                {{-- Product Tour Button --}}
+                <button 
+                    onclick="if(typeof window.startDashboardTour === 'function') { window.startDashboardTour(); } else { alert('Product tour hanya tersedia di halaman Dashboard'); }"
+                    class="p-2 text-gray-400 hover:text-blue-600 transition-colors duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    aria-label="Start Product Tour"
+                    title="Mulai Tour Panduan"
+                >
+                    <i class="fas fa-route text-lg"></i>
+                </button>
+
                 {{-- Dropdown Notifikasi --}}
                 <div class="ms-3 relative"> {{-- Menggunakan ms-3 untuk jarak antar dropdown --}}
                     <x-dropdown align="right" width="64">
@@ -237,6 +247,27 @@
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
+            
+            {{-- Mobile: Dark Mode & Product Tour Buttons --}}
+            <div class="px-4 mt-3 flex gap-3">
+                <button 
+                    class="dark-mode-toggle flex-1 p-3 text-gray-600 hover:text-blue-600 bg-gray-100 hover:bg-blue-50 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                    aria-label="Toggle Dark Mode"
+                >
+                    <i class="fas fa-moon"></i>
+                    <span class="text-sm font-medium">Dark Mode</span>
+                </button>
+                
+                <button 
+                    onclick="if(typeof window.startDashboardTour === 'function') { window.startDashboardTour(); } else { alert('Product tour hanya tersedia di halaman Dashboard'); }"
+                    class="flex-1 p-3 text-gray-600 hover:text-blue-600 bg-gray-100 hover:bg-blue-50 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                    aria-label="Start Product Tour"
+                >
+                    <i class="fas fa-route"></i>
+                    <span class="text-sm font-medium">Tour</span>
+                </button>
+            </div>
+            
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
