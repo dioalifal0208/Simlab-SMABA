@@ -370,11 +370,3 @@
 html.tour-active {
     scroll-behavior: smooth;
 }
-
-/* Prevent body scroll when tour is active - IMPORTANT FIX */
-body.tour-active {
-    overflow: hidden !important;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-}

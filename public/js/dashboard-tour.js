@@ -34,7 +34,7 @@ class DashboardTour {
             {
                 title: 'Aktivitas Terbaru',
                 content: 'Lihat semua aktivitas terbaru di sistem, termasuk peminjaman, booking, dan perubahan data.',
-                target: '.bg-white.rounded-xl.border.border-gray-100.shadow-sm[x-data]',
+                target: '.bg-white.rounded-xl.border.border-gray-100.shadow-sm[data-aos="fade-up"]',
                 position: 'top'
             }
         ];
@@ -156,11 +156,23 @@ class DashboardTour {
             return;
         }
 
-        // Scroll target into view smoothly
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Temporarily enable scroll for smooth scrolling
+        const scrollY = window.scrollY;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        window.scrollTo(0, scrollY);
         
-        // Wait for scroll to complete
+        // Scroll target into view smoothly
+        target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+        
+        // Wait for scroll to complete, then re-disable scroll
         setTimeout(() => {
+            // Re-apply fixed position to prevent manual scrolling
+            const currentScrollY = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${currentScrollY}px`;
+            document.body.style.width = '100%';
+            
             const rect = target.getBoundingClientRect();
             const padding = 12;
             
@@ -173,7 +185,7 @@ class DashboardTour {
             
             // Position tooltip
             this.positionTooltip(rect, step.position);
-        }, 300);
+        }, 600); // Increased timeout for smooth scroll completion
     }
 
     positionTooltip(targetRect, position) {
@@ -336,6 +348,15 @@ class DashboardTour {
     }
 
     end() {
+        // Restore scroll position
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        if (scrollY) {
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        }
+        
         document.body.classList.remove('tour-active');
         document.documentElement.classList.remove('tour-active');
         

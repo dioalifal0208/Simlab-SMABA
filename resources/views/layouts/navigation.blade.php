@@ -11,10 +11,10 @@
                 {{-- Link Navigasi Desktop --}}
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('common.nav.dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('items.index')" :active="request()->routeIs('items.*')">
-                        {{ __('Inventaris') }}
+                        {{ __('common.nav.inventory') }}
                     </x-nav-link>
 
                     {{-- Dropdown "Layanan Lab" --}}
@@ -22,31 +22,31 @@
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
                                 <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('loans.*') || request()->routeIs('bookings.*') || request()->routeIs('calendar.index')) ? 'border-blue-600 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium leading-5 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                    <div>Layanan Lab</div>
+                                    <div>{{ __('common.nav.lab_services') }}</div>
                                     <div class="ms-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
                                 </button>
                             </x-slot>
                             <x-slot name="content">
                                 <x-dropdown-link :href="route('loans.index')" :active="request()->routeIs('loans.*')">
-                                    {{ __('Peminjaman') }}
+                                    {{ __('common.nav.loans') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('bookings.index')" :active="request()->routeIs('bookings.index') && !request('status')">
-                                    {{ __('Booking Lab') }}
+                                    {{ __('common.nav.bookings') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('bookings.index', ['status' => 'completed'])" :active="request('status') == 'completed'">
-                                    {{ __('Arsip Peminjaman') }}
+                                    {{ __('common.nav.booking_archive') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')">
-                                    {{ __('Kalender') }}
+                                    {{ __('common.nav.calendar') }}
                                 </x-dropdown-link>
                                 @cannot('is-admin')
                                     <x-dropdown-link :href="route('item-requests.create')" :active="request()->routeIs('item-requests.create')">
-                                        {{ __('Ajukan Tambah Item') }}
+                                        {{ __('common.nav.item_requests') }}
                                     </x-dropdown-link>
                                 @endcannot
                                 @can('is-admin')
                                     <x-dropdown-link :href="route('admin.testimonials.index')" :active="request()->routeIs('admin.testimonials.index')">
-                                        {{ __('Testimoni') }}
+                                        {{ __('common.nav.testimonials') }}
                                     </x-dropdown-link>
                                 @endcan
                             </x-slot>
@@ -59,32 +59,32 @@
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
                                 <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('damage-reports.*') || request()->routeIs('users.*') || request()->routeIs('reports.*') || request()->routeIs('announcements.index')) ? 'border-blue-600 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium ...">
-                            <div>Manajemen</div>
+                            <div>{{ __('common.nav.management') }}</div>
                                     <div class="ms-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
                                 </button>
                             </x-slot>
                             <x-slot name="content">
                                 <x-dropdown-link :href="route('damage-reports.index')" :active="request()->routeIs('damage-reports.*')">
-                                    {{ __('Laporan Kerusakan') }}
+                                    {{ __('common.nav.damage_reports') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('admin.item-requests.index')" :active="request()->routeIs('admin.item-requests.*')">
-                                    {{ __('Permintaan Item') }}
+                                    {{ __('common.nav.item_requests') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('users.index')" :active="request()->routeIs('users.*')">
-                                    {{ __('Manajemen User') }}
+                                    {{ __('common.nav.users') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
-                                    {{ __('Laporan & Analitik') }}
+                                    {{ __('common.nav.reports') }}
                                 </x-dropdown-link>
                                 {{-- TAMBAHKAN LINK BARU INI --}}
                                 <x-dropdown-link :href="route('announcements.index')" :active="request()->routeIs('announcements.index')">
-                                    {{ __('Pengumuman Global') }}
+                                    {{ __('common.nav.announcements') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('admin.contact-conversations.index')" :active="request()->routeIs('admin.contact-conversations.*')">
-                                    {{ __('Pusat Pesan') }}
+                                    {{ __('common.nav.messages') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('audit-logs.index')" :active="request()->routeIs('audit-logs.*')">
-                                    {{ __('Audit Trail') }}
+                                    {{ __('common.nav.audit_logs') }}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
@@ -96,16 +96,16 @@
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
                                 <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('documents.*') || request()->routeIs('practicum-modules.*')) ? 'border-blue-600 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium leading-5 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                    <div>Sumber Daya</div>
+                                    <div>{{ __('common.nav.resources') }}</div>
                                     <div class="ms-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
                                 </button>
                             </x-slot>
                             <x-slot name="content">
                                 <x-dropdown-link :href="route('documents.index')" :active="request()->routeIs('documents.*')">
-                                    {{ __('Pustaka Digital') }}
+                                    {{ __('common.nav.documents') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('practicum-modules.index')" :active="request()->routeIs('practicum-modules.*')">
-                                    {{ __('Modul Praktikum') }}
+                                    {{ __('common.nav.practicum_modules') }}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
@@ -123,6 +123,19 @@
                 >
                     <i class="fas fa-moon text-lg"></i>
                 </button>
+
+                {{-- Language Toggle --}}
+                <div class="flex items-center gap-2 text-sm px-2">
+                    <a href="{{ route('lang.switch', 'id') }}" 
+                       class="px-2 py-1 rounded {{ app()->getLocale() == 'id' ? 'font-bold text-blue-700 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }} transition-colors">
+                        ID
+                    </a>
+                    <span class="text-gray-300">|</span>
+                    <a href="{{ route('lang.switch', 'en') }}" 
+                       class="px-2 py-1 rounded {{ app()->getLocale() == 'en' ? 'font-bold text-blue-700 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }} transition-colors">
+                        EN
+                    </a>
+                </div>
 
                 {{-- Product Tour Button --}}
                 <button 
@@ -188,13 +201,13 @@
                         </x-slot>
                         <x-slot name="content">
                             <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profile') }}
+                                {{ __('common.nav.profile') }}
                             </x-dropdown-link>
                             <form id="logout-form" method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <x-dropdown-link :href="route('logout')"
                                         onclick="event.preventDefault(); this.closest('form').submit();">
-                                    {{ __('Log Out') }}
+                                    {{ __('common.nav.logout') }}
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
@@ -217,28 +230,28 @@
     {{-- Menu Navigasi Responsive (Mobile) --}}
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"> {{ __('Dashboard') }} </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('items.index')" :active="request()->routeIs('items.*')"> {{ __('Inventaris') }} </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.*')"> {{ __('Peminjaman') }} </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.index') && !request('status')"> {{ __('Booking Lab') }} </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('bookings.index', ['status' => 'completed'])" :active="request('status') == 'completed'"> {{ __('Arsip Peminjaman') }} </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"> {{ __('common.nav.dashboard') }} </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('items.index')" :active="request()->routeIs('items.*')"> {{ __('common.nav.inventory') }} </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.*')"> {{ __('common.nav.loans') }} </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.index') && !request('status')"> {{ __('common.nav.bookings') }} </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('bookings.index', ['status' => 'completed'])" :active="request('status') == 'completed'"> {{ __('common.nav.booking_archive') }} </x-responsive-nav-link>
             @cannot('is-admin')
-                <x-responsive-nav-link :href="route('item-requests.create')" :active="request()->routeIs('item-requests.create')"> {{ __('Ajukan Tambah Item') }} </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('item-requests.create')" :active="request()->routeIs('item-requests.create')"> {{ __('common.nav.item_requests') }} </x-responsive-nav-link>
             @endcannot
             @can('is-admin')
-                <x-responsive-nav-link :href="route('admin.testimonials.index')" :active="request()->routeIs('admin.testimonials.index')"> {{ __('Testimoni') }} </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.testimonials.index')" :active="request()->routeIs('admin.testimonials.index')"> {{ __('common.nav.testimonials') }} </x-responsive-nav-link>
             @endcan
             @can('is-admin')
-                <x-responsive-nav-link :href="route('admin.item-requests.index')" :active="request()->routeIs('admin.item-requests.*')"> {{ __('Permintaan Item') }} </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('damage-reports.index')" :active="request()->routeIs('damage-reports.*')"> {{ __('Laporan Kerusakan') }} </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')"> {{ __('Manajemen User') }} </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')"> {{ __('Laporan & Analitik') }} </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('admin.contact-conversations.index')" :active="request()->routeIs('admin.contact-conversations.*')"> {{ __('Pusat Pesan') }} </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('audit-logs.index')" :active="request()->routeIs('audit-logs.*')"> {{ __('Audit Trail') }} </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.item-requests.index')" :active="request()->routeIs('admin.item-requests.*')"> {{ __('common.nav.item_requests') }} </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('damage-reports.index')" :active="request()->routeIs('damage-reports.*')"> {{ __('common.nav.damage_reports') }} </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')"> {{ __('common.nav.users') }} </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')"> {{ __('common.nav.reports') }} </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.contact-conversations.index')" :active="request()->routeIs('admin.contact-conversations.*')"> {{ __('common.nav.messages') }} </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('audit-logs.index')" :active="request()->routeIs('audit-logs.*')"> {{ __('common.nav.audit_logs') }} </x-responsive-nav-link>
             @endcan
-            <x-responsive-nav-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')"> {{ __('Kalender') }} </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('documents.index')" :active="request()->routeIs('documents.*')"> {{ __('Pustaka Digital') }} </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('practicum-modules.index')" :active="request()->routeIs('practicum-modules.*')"> {{ __('Modul Praktikum') }} </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')"> {{ __('common.nav.calendar') }} </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('documents.index')" :active="request()->routeIs('documents.*')"> {{ __('common.nav.documents') }} </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('practicum-modules.index')" :active="request()->routeIs('practicum-modules.*')"> {{ __('common.nav.practicum_modules') }} </x-responsive-nav-link>
         </div>
 
         {{-- Opsi Responsive Pengguna --}}
@@ -248,35 +261,50 @@
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
             
-            {{-- Mobile: Dark Mode & Product Tour Buttons --}}
-            <div class="px-4 mt-3 flex gap-3">
-                <button 
-                    class="dark-mode-toggle flex-1 p-3 text-gray-600 hover:text-blue-600 bg-gray-100 hover:bg-blue-50 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-                    aria-label="Toggle Dark Mode"
-                >
-                    <i class="fas fa-moon"></i>
-                    <span class="text-sm font-medium">Dark Mode</span>
-                </button>
+            {{-- Mobile: Dark Mode, Language & Product Tour Buttons --}}
+            <div class="px-4 mt-3 space-y-2">
+                <div class="flex gap-2">
+                    <button 
+                        class="dark-mode-toggle flex-1 p-3 text-gray-600 hover:text-blue-600 bg-gray-100 hover:bg-blue-50 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                        aria-label="Toggle Dark Mode"
+                    >
+                        <i class="fas fa-moon"></i>
+                        <span class="text-sm font-medium">Dark Mode</span>
+                    </button>
+                    
+                    <button 
+                        onclick="if(typeof window.startDashboardTour === 'function') { window.startDashboardTour(); } else { alert('Product tour hanya tersedia di halaman Dashboard'); }"
+                        class="flex-1 p-3 text-gray-600 hover:text-blue-600 bg-gray-100 hover:bg-blue-50 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                        aria-label="Start Product Tour"
+                    >
+                        <i class="fas fa-route"></i>
+                        <span class="text-sm font-medium">Tour</span>
+                    </button>
+                </div>
                 
-                <button 
-                    onclick="if(typeof window.startDashboardTour === 'function') { window.startDashboardTour(); } else { alert('Product tour hanya tersedia di halaman Dashboard'); }"
-                    class="flex-1 p-3 text-gray-600 hover:text-blue-600 bg-gray-100 hover:bg-blue-50 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-                    aria-label="Start Product Tour"
-                >
-                    <i class="fas fa-route"></i>
-                    <span class="text-sm font-medium">Tour</span>
-                </button>
+                {{-- Language Toggle --}}
+                <div class="flex items-center justify-center gap-3 p-3 bg-gray-100 rounded-lg">
+                    <span class="text-sm text-gray-600 font-medium">Bahasa:</span>
+                    <a href="{{ route('lang.switch', 'id') }}" 
+                       class="px-3 py-1.5 rounded {{ app()->getLocale() == 'id' ? 'font-bold text-white bg-blue-600' : 'text-gray-600 bg-white hover:bg-gray-50' }} transition-colors text-sm">
+                        ID
+                    </a>
+                    <a href="{{ route('lang.switch', 'en') }}" 
+                       class="px-3 py-1.5 rounded {{ app()->getLocale() == 'en' ? 'font-bold text-white bg-blue-600' : 'text-gray-600 bg-white hover:bg-gray-50' }} transition-colors text-sm">
+                        EN
+                    </a>
+                </div>
             </div>
             
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('common.nav.profile') }}
                 </x-responsive-nav-link>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('common.nav.logout') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
