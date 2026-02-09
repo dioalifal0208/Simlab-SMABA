@@ -8,7 +8,7 @@ class DashboardTour {
         this.currentStep = 0;
         this.steps = [
             {
-                title: 'Selamat Datang di Dashboard! 👋',
+                title: 'Selamat Datang di Dashboard!',
                 content: 'Kami akan memandu Anda melalui fitur-fitur utama dashboard LAB-SMABA. Tour ini hanya memakan waktu 1-2 menit.',
                 target: null,
                 position: 'center'
@@ -66,6 +66,7 @@ class DashboardTour {
         this.overlay.className = 'tour-overlay';
         this.overlay.innerHTML = '<div class="tour-backdrop"></div>';
         document.body.appendChild(this.overlay);
+        this.backdrop = this.overlay.querySelector('.tour-backdrop');
     }
 
     createSpotlight() {
@@ -141,6 +142,7 @@ class DashboardTour {
         if (!step.target) {
             // Center position for welcome step
             this.spotlight.style.display = 'none';
+            this.backdrop.classList.remove('has-spotlight');
             this.tooltip.style.position = 'fixed';
             this.tooltip.style.top = '50%';
             this.tooltip.style.left = '50%';
@@ -153,6 +155,7 @@ class DashboardTour {
         if (!target) {
             console.warn('Target not found:', step.target);
             this.spotlight.style.display = 'none';
+            this.backdrop.classList.remove('has-spotlight');
             return;
         }
 
@@ -183,6 +186,14 @@ class DashboardTour {
             this.spotlight.style.width = (rect.width + padding * 2) + 'px';
             this.spotlight.style.height = (rect.height + padding * 2) + 'px';
             
+            // Create cutout in backdrop using clip-path
+            // This ensures the highlighted area is NOT blurred
+            this.backdrop.classList.add('has-spotlight');
+            this.backdrop.style.setProperty('--spotlight-x1', `${rect.left - padding}px`);
+            this.backdrop.style.setProperty('--spotlight-y1', `${rect.top - padding}px`);
+            this.backdrop.style.setProperty('--spotlight-x2', `${rect.right + padding}px`);
+            this.backdrop.style.setProperty('--spotlight-y2', `${rect.bottom + padding}px`);
+            
             // Position tooltip
             this.positionTooltip(rect, step.position);
         }, 600); // Increased timeout for smooth scroll completion
@@ -195,8 +206,8 @@ class DashboardTour {
         
         // Force a reflow to get accurate dimensions
         const tooltipRect = this.tooltip.getBoundingClientRect();
-        const spacing = 16; // REDUCED: Closer to spotlight
-        const viewportPadding = 12;
+        const spacing = 20; // Spacing between spotlight and tooltip
+        const viewportPadding = 20; // Increased padding from viewport edges
         
         let left, top, transform;
         let finalPosition = position;
@@ -374,17 +385,21 @@ class DashboardTour {
     complete() {
         localStorage.setItem('lab-smaba-dashboard-tour-completed', 'true');
         this.end();
+        // Scroll to top after tour completes
+        setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 300);
     }
 
     end() {
-        // Restore scroll position
+        // Restore scroll position and scroll to top
         const scrollY = document.body.style.top;
         document.body.style.position = '';
         document.body.style.top = '';
         document.body.style.width = '';
-        if (scrollY) {
-            window.scrollTo(0, parseInt(scrollY || '0') * -1);
-        }
+        
+        // Always scroll to top when tour ends
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         
         document.body.classList.remove('tour-active');
         document.documentElement.classList.remove('tour-active');

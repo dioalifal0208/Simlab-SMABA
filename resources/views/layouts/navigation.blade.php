@@ -144,7 +144,7 @@
                     aria-label="Start Product Tour"
                     title="Mulai Tour Panduan"
                 >
-                    <i class="fas fa-route text-lg"></i>
+                    <i class="fas fa-compass text-lg"></i>
                 </button>
 
                 {{-- Dropdown Notifikasi --}}
@@ -277,7 +277,7 @@
                         class="flex-1 p-3 text-gray-600 hover:text-blue-600 bg-gray-100 hover:bg-blue-50 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                         aria-label="Start Product Tour"
                     >
-                        <i class="fas fa-route"></i>
+                        <i class="fas fa-compass"></i>
                         <span class="text-sm font-medium">Tour</span>
                     </button>
                 </div>

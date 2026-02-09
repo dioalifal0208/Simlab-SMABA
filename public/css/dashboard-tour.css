@@ -1,6 +1,6 @@
 /* Dashboard Product Tour Styles - Pure Glass Design */
 
-/* Overlay with Spotlight Effect */
+/* Overlay with Spotlight Effect - Separate layers for blur control */
 .tour-overlay {
     position: fixed;
     top: 0;
@@ -17,48 +17,63 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     animation: fadeIn 0.3s ease-out;
 }
 
-/* Spotlight Cutout for Target Element */
+/* Spotlight Cutout for Target Element - No blur on highlighted area */
 .tour-spotlight {
     position: fixed;
-    z-index: 9997;
+    z-index: 10000;
     pointer-events: none;
-    border: 3px solid rgba(59, 130, 246, 0.8);
+    background: transparent;
+    border: 3px solid rgba(59, 130, 246, 0.9);
     border-radius: 12px;
+    /* Remove box-shadow that creates the dark overlay */
     box-shadow: 
-        0 0 0 9999px rgba(0, 0, 0, 0.7),
-        0 0 30px rgba(59, 130, 246, 0.5),
-        inset 0 0 20px rgba(59, 130, 246, 0.3);
+        0 0 0 4px rgba(59, 130, 246, 0.2),
+        0 0 30px rgba(59, 130, 246, 0.6),
+        0 0 60px rgba(59, 130, 246, 0.4);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     animation: pulse-border 2s ease-in-out infinite;
 }
 
+/* Create cutout effect using clip-path on backdrop */
+.tour-backdrop.has-spotlight {
+    /* The backdrop will be clipped by JavaScript to create cutout */
+    clip-path: polygon(
+        0% 0%, 0% 100%, 100% 100%, 100% 0%, 0% 0%,
+        var(--spotlight-x1, 0px) var(--spotlight-y1, 0px),
+        var(--spotlight-x1, 0px) var(--spotlight-y2, 0px),
+        var(--spotlight-x2, 0px) var(--spotlight-y2, 0px),
+        var(--spotlight-x2, 0px) var(--spotlight-y1, 0px),
+        var(--spotlight-x1, 0px) var(--spotlight-y1, 0px)
+    );
+}
+
 @keyframes pulse-border {
     0%, 100% {
-        border-color: rgba(59, 130, 246, 0.8);
+        border-color: rgba(59, 130, 246, 0.9);
         box-shadow: 
-            0 0 0 9999px rgba(0, 0, 0, 0.7),
-            0 0 30px rgba(59, 130, 246, 0.5),
-            inset 0 0 20px rgba(59, 130, 246, 0.3);
+            0 0 0 4px rgba(59, 130, 246, 0.2),
+            0 0 30px rgba(59, 130, 246, 0.6),
+            0 0 60px rgba(59, 130, 246, 0.4);
     }
     50% {
         border-color: rgba(96, 165, 250, 1);
         box-shadow: 
-            0 0 0 9999px rgba(0, 0, 0, 0.7),
+            0 0 0 4px rgba(96, 165, 250, 0.3),
             0 0 40px rgba(59, 130, 246, 0.8),
-            inset 0 0 30px rgba(59, 130, 246, 0.5);
+            0 0 80px rgba(59, 130, 246, 0.6);
     }
 }
 
 /* Tooltip Container - Pure Glass */
 .tour-tooltip {
     position: fixed;
-    z-index: 9999;
+    z-index: 10001; /* Above spotlight */
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(40px) saturate(180%);
     -webkit-backdrop-filter: blur(40px) saturate(180%);
