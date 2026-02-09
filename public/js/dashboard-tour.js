@@ -185,6 +185,12 @@ class DashboardTour {
             const rect = target.getBoundingClientRect();
             const padding = 12;
             
+            // Remove blur from highlighted element and its parents
+            this.currentTarget = target;
+            target.style.filter = 'blur(0px) !important';
+            target.style.position = 'relative';
+            target.style.zIndex = '9999';
+            
             // Position spotlight
             this.spotlight.style.display = 'block';
             this.spotlight.style.left = (rect.left - padding) + 'px';
@@ -206,16 +212,17 @@ class DashboardTour {
     }
 
     positionTooltip(targetRect, preferredPosition) {
-        const viewportPadding = 16;
-        const spacing = 16;
+        const viewportPadding = 10; // Reduced padding for more space
+        const spacing = 12; // Reduced spacing to allow more flexibility
         
         // Reset tooltip positioning for accurate measurement
         this.tooltip.style.position = 'fixed';
-        this.tooltip.style.maxWidth = '400px';
+        this.tooltip.style.maxWidth = '420px'; // Slightly larger max width
         this.tooltip.style.width = 'auto';
         this.tooltip.style.left = '0px';
         this.tooltip.style.top = '0px';
         this.tooltip.style.transform = 'none';
+        this.tooltip.style.zIndex = '10001'; // Ensure tooltip is above everything
         
         // Force reflow and get actual tooltip dimensions
         this.tooltip.offsetHeight; // Force reflow
@@ -225,18 +232,18 @@ class DashboardTour {
         
         // Calculate available space in all directions
         const spaces = {
-            top: targetRect.top - viewportPadding - spacing,
-            bottom: window.innerHeight - targetRect.bottom - viewportPadding - spacing,
-            left: targetRect.left - viewportPadding - spacing,
-            right: window.innerWidth - targetRect.right - viewportPadding - spacing
+            top: targetRect.top - viewportPadding,
+            bottom: window.innerHeight - targetRect.bottom - viewportPadding,
+            left: targetRect.left - viewportPadding,
+            right: window.innerWidth - targetRect.right - viewportPadding
         };
         
         // Determine which positions can fit the tooltip
         const canFit = {
-            top: spaces.top >= tooltipHeight,
-            bottom: spaces.bottom >= tooltipHeight,
-            left: spaces.left >= tooltipWidth,
-            right: spaces.right >= tooltipWidth
+            top: spaces.top >= tooltipHeight + spacing,
+            bottom: spaces.bottom >= tooltipHeight + spacing,
+            left: spaces.left >= tooltipWidth + spacing,
+            right: spaces.right >= tooltipWidth + spacing
         };
         
         // Choose best position
@@ -255,6 +262,7 @@ class DashboardTour {
             }
             
             // If nothing fits perfectly, use position with most space
+            // and allow tooltip to overlap with highlight if needed
             if (!canFit[finalPosition]) {
                 finalPosition = positionsBySpace[0];
             }
@@ -273,6 +281,12 @@ class DashboardTour {
                 const maxLeftForTop = window.innerWidth - viewportPadding - (tooltipWidth / 2);
                 const minLeftForTop = viewportPadding + (tooltipWidth / 2);
                 left = Math.max(minLeftForTop, Math.min(maxLeftForTop, left));
+                
+                // If doesn't fit, allow overlap
+                if (spaces.top < tooltipHeight + spacing) {
+                    top = viewportPadding;
+                    transform = 'translateX(-50%)';
+                }
                 break;
                 
             case 'bottom':
@@ -284,6 +298,11 @@ class DashboardTour {
                 const maxLeftForBottom = window.innerWidth - viewportPadding - (tooltipWidth / 2);
                 const minLeftForBottom = viewportPadding + (tooltipWidth / 2);
                 left = Math.max(minLeftForBottom, Math.min(maxLeftForBottom, left));
+                
+                // If doesn't fit, allow overlap
+                if (spaces.bottom < tooltipHeight + spacing) {
+                    top = Math.max(viewportPadding, window.innerHeight - tooltipHeight - viewportPadding);
+                }
                 break;
                 
             case 'left':
@@ -295,6 +314,12 @@ class DashboardTour {
                 const maxTopForLeft = window.innerHeight - viewportPadding - (tooltipHeight / 2);
                 const minTopForLeft = viewportPadding + (tooltipHeight / 2);
                 top = Math.max(minTopForLeft, Math.min(maxTopForLeft, top));
+                
+                // If doesn't fit, allow overlap
+                if (spaces.left < tooltipWidth + spacing) {
+                    left = viewportPadding;
+                    transform = 'translateY(-50%)';
+                }
                 break;
                 
             case 'right':
@@ -306,6 +331,11 @@ class DashboardTour {
                 const maxTopForRight = window.innerHeight - viewportPadding - (tooltipHeight / 2);
                 const minTopForRight = viewportPadding + (tooltipHeight / 2);
                 top = Math.max(minTopForRight, Math.min(maxTopForRight, top));
+                
+                // If doesn't fit, allow overlap
+                if (spaces.right < tooltipWidth + spacing) {
+                    left = Math.max(viewportPadding, window.innerWidth - tooltipWidth - viewportPadding);
+                }
                 break;
                 
             default:
