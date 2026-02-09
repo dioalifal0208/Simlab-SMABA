@@ -142,7 +142,10 @@ class DashboardTour {
         if (!step.target) {
             // Center position for welcome step
             this.spotlight.style.display = 'none';
-            this.backdrop.classList.remove('has-spotlight');
+            if (this.maskCutout) {
+                this.maskCutout.setAttribute('width', '0');
+                this.maskCutout.setAttribute('height', '0');
+            }
             this.tooltip.style.position = 'fixed';
             this.tooltip.style.top = '50%';
             this.tooltip.style.left = '50%';
@@ -155,7 +158,10 @@ class DashboardTour {
         if (!target) {
             console.warn('Target not found:', step.target);
             this.spotlight.style.display = 'none';
-            this.backdrop.classList.remove('has-spotlight');
+            if (this.maskCutout) {
+                this.maskCutout.setAttribute('width', '0');
+                this.maskCutout.setAttribute('height', '0');
+            }
             return;
         }
 
@@ -186,102 +192,87 @@ class DashboardTour {
             this.spotlight.style.width = (rect.width + padding * 2) + 'px';
             this.spotlight.style.height = (rect.height + padding * 2) + 'px';
             
-            // Create cutout in backdrop using clip-path
-            // This ensures the highlighted area is NOT blurred
-            this.backdrop.classList.add('has-spotlight');
-            this.backdrop.style.setProperty('--spotlight-x1', `${rect.left - padding}px`);
-            this.backdrop.style.setProperty('--spotlight-y1', `${rect.top - padding}px`);
-            this.backdrop.style.setProperty('--spotlight-x2', `${rect.right + padding}px`);
-            this.backdrop.style.setProperty('--spotlight-y2', `${rect.bottom + padding}px`);
+            // Update SVG mask cutout - this creates the transparent area
+            if (this.maskCutout) {
+                this.maskCutout.setAttribute('x', (rect.left - padding).toString());
+                this.maskCutout.setAttribute('y', (rect.top - padding).toString());
+                this.maskCutout.setAttribute('width', (rect.width + padding * 2).toString());
+                this.maskCutout.setAttribute('height', (rect.height + padding * 2).toString());
+            }
             
             // Position tooltip
             this.positionTooltip(rect, step.position);
-        }, 600); // Increased timeout for smooth scroll completion
+        }, 600);
     }
 
-    positionTooltip(targetRect, position) {
+    positionTooltip(targetRect, preferredPosition) {
+        const viewportPadding = 16;
+        const spacing = 16;
+        
+        // Reset tooltip positioning for accurate measurement
         this.tooltip.style.position = 'fixed';
-        this.tooltip.style.maxWidth = '380px';
+        this.tooltip.style.maxWidth = '400px';
         this.tooltip.style.width = 'auto';
+        this.tooltip.style.left = '0px';
+        this.tooltip.style.top = '0px';
+        this.tooltip.style.transform = 'none';
         
-        // Force a reflow to get accurate dimensions
+        // Force reflow and get actual tooltip dimensions
+        this.tooltip.offsetHeight; // Force reflow
         const tooltipRect = this.tooltip.getBoundingClientRect();
-        const spacing = 20; // Spacing between spotlight and tooltip
-        const viewportPadding = 20; // Increased padding from viewport edges
+        const tooltipWidth = tooltipRect.width;
+        const tooltipHeight = tooltipRect.height;
         
-        let left, top, transform;
-        let finalPosition = position;
+        // Calculate available space in all directions
+        const spaces = {
+            top: targetRect.top - viewportPadding - spacing,
+            bottom: window.innerHeight - targetRect.bottom - viewportPadding - spacing,
+            left: targetRect.left - viewportPadding - spacing,
+            right: window.innerWidth - targetRect.right - viewportPadding - spacing
+        };
         
-        // Calculate available space in each direction
-        const spaceTop = targetRect.top;
-        const spaceBottom = window.innerHeight - targetRect.bottom;
-        const spaceLeft = targetRect.left;
-        const spaceRight = window.innerWidth - targetRect.right;
+        // Determine which positions can fit the tooltip
+        const canFit = {
+            top: spaces.top >= tooltipHeight,
+            bottom: spaces.bottom >= tooltipHeight,
+            left: spaces.left >= tooltipWidth,
+            right: spaces.right >= tooltipWidth
+        };
         
-        // Check if tooltip fits in preferred position
-        const fitsTop = spaceTop >= tooltipRect.height + spacing + viewportPadding;
-        const fitsBottom = spaceBottom >= tooltipRect.height + spacing + viewportPadding;
-        const fitsLeft = spaceLeft >= tooltipRect.width + spacing + viewportPadding;
-        const fitsRight = spaceRight >= tooltipRect.width + spacing + viewportPadding;
+        // Choose best position
+        let finalPosition = preferredPosition;
         
-        // Determine best position - prioritize keeping tooltip close to target
-        if (position === 'top' && !fitsTop) {
-            if (fitsBottom) {
-                finalPosition = 'bottom';
-            } else if (fitsRight) {
-                finalPosition = 'right';
-            } else if (fitsLeft) {
-                finalPosition = 'left';
-            } else {
-                // If nothing fits, use position with most space
-                const maxSpace = Math.max(spaceTop, spaceBottom, spaceLeft, spaceRight);
-                if (maxSpace === spaceBottom) finalPosition = 'bottom';
-                else if (maxSpace === spaceTop) finalPosition = 'top';
-                else if (maxSpace === spaceRight) finalPosition = 'right';
-                else finalPosition = 'left';
+        // If preferred position doesn't fit, find the best alternative
+        if (!canFit[preferredPosition]) {
+            // Try positions in order of preference based on available space
+            const positionsBySpace = Object.keys(spaces).sort((a, b) => spaces[b] - spaces[a]);
+            
+            for (const pos of positionsBySpace) {
+                if (canFit[pos]) {
+                    finalPosition = pos;
+                    break;
+                }
             }
-        } else if (position === 'bottom' && !fitsBottom) {
-            if (fitsTop) {
-                finalPosition = 'top';
-            } else if (fitsRight) {
-                finalPosition = 'right';
-            } else if (fitsLeft) {
-                finalPosition = 'left';
-            } else {
-                const maxSpace = Math.max(spaceTop, spaceBottom, spaceLeft, spaceRight);
-                if (maxSpace === spaceTop) finalPosition = 'top';
-                else if (maxSpace === spaceBottom) finalPosition = 'bottom';
-                else if (maxSpace === spaceRight) finalPosition = 'right';
-                else finalPosition = 'left';
-            }
-        } else if (position === 'left' && !fitsLeft) {
-            if (fitsRight) {
-                finalPosition = 'right';
-            } else if (fitsBottom) {
-                finalPosition = 'bottom';
-            } else if (fitsTop) {
-                finalPosition = 'top';
-            }
-        } else if (position === 'right' && !fitsRight) {
-            if (fitsLeft) {
-                finalPosition = 'left';
-            } else if (fitsBottom) {
-                finalPosition = 'bottom';
-            } else if (fitsTop) {
-                finalPosition = 'top';
+            
+            // If nothing fits perfectly, use position with most space
+            if (!canFit[finalPosition]) {
+                finalPosition = positionsBySpace[0];
             }
         }
         
-        // Calculate position based on final position
+        // Calculate tooltip position
+        let left, top, transform;
+        
         switch (finalPosition) {
             case 'top':
                 left = targetRect.left + (targetRect.width / 2);
                 top = targetRect.top - spacing;
                 transform = 'translate(-50%, -100%)';
                 
-                // Ensure horizontally centered but within viewport
-                left = Math.max(tooltipRect.width / 2 + viewportPadding, 
-                               Math.min(window.innerWidth - tooltipRect.width / 2 - viewportPadding, left));
+                // Constrain horizontally to viewport
+                const maxLeftForTop = window.innerWidth - viewportPadding - (tooltipWidth / 2);
+                const minLeftForTop = viewportPadding + (tooltipWidth / 2);
+                left = Math.max(minLeftForTop, Math.min(maxLeftForTop, left));
                 break;
                 
             case 'bottom':
@@ -289,9 +280,10 @@ class DashboardTour {
                 top = targetRect.bottom + spacing;
                 transform = 'translateX(-50%)';
                 
-                // Ensure horizontally centered but within viewport
-                left = Math.max(tooltipRect.width / 2 + viewportPadding, 
-                               Math.min(window.innerWidth - tooltipRect.width / 2 - viewportPadding, left));
+                // Constrain horizontally to viewport
+                const maxLeftForBottom = window.innerWidth - viewportPadding - (tooltipWidth / 2);
+                const minLeftForBottom = viewportPadding + (tooltipWidth / 2);
+                left = Math.max(minLeftForBottom, Math.min(maxLeftForBottom, left));
                 break;
                 
             case 'left':
@@ -299,9 +291,10 @@ class DashboardTour {
                 top = targetRect.top + (targetRect.height / 2);
                 transform = 'translate(-100%, -50%)';
                 
-                // Ensure vertically centered but within viewport
-                top = Math.max(tooltipRect.height / 2 + viewportPadding, 
-                              Math.min(window.innerHeight - tooltipRect.height / 2 - viewportPadding, top));
+                // Constrain vertically to viewport
+                const maxTopForLeft = window.innerHeight - viewportPadding - (tooltipHeight / 2);
+                const minTopForLeft = viewportPadding + (tooltipHeight / 2);
+                top = Math.max(minTopForLeft, Math.min(maxTopForLeft, top));
                 break;
                 
             case 'right':
@@ -309,54 +302,54 @@ class DashboardTour {
                 top = targetRect.top + (targetRect.height / 2);
                 transform = 'translateY(-50%)';
                 
-                // Ensure vertically centered but within viewport
-                top = Math.max(tooltipRect.height / 2 + viewportPadding, 
-                              Math.min(window.innerHeight - tooltipRect.height / 2 - viewportPadding, top));
+                // Constrain vertically to viewport
+                const maxTopForRight = window.innerHeight - viewportPadding - (tooltipHeight / 2);
+                const minTopForRight = viewportPadding + (tooltipHeight / 2);
+                top = Math.max(minTopForRight, Math.min(maxTopForRight, top));
                 break;
                 
-            case 'center':
             default:
+                // Center fallback
                 left = window.innerWidth / 2;
                 top = window.innerHeight / 2;
                 transform = 'translate(-50%, -50%)';
                 finalPosition = 'center';
         }
         
-        // Apply positioning
+        // Apply calculated position
         this.tooltip.style.left = left + 'px';
         this.tooltip.style.top = top + 'px';
         this.tooltip.style.transform = transform;
         
-        // CRITICAL: Final boundary check to prevent any clipping
-        // Get actual tooltip dimensions after positioning
-        setTimeout(() => {
+        // Final safety check after transform is applied
+        requestAnimationFrame(() => {
             const finalRect = this.tooltip.getBoundingClientRect();
-            let adjustLeft = 0;
-            let adjustTop = 0;
+            let adjustX = 0;
+            let adjustY = 0;
             
-            // Check if tooltip is clipped on any edge
+            // Check and fix any remaining clipping
             if (finalRect.left < viewportPadding) {
-                adjustLeft = viewportPadding - finalRect.left;
+                adjustX = viewportPadding - finalRect.left;
             } else if (finalRect.right > window.innerWidth - viewportPadding) {
-                adjustLeft = (window.innerWidth - viewportPadding) - finalRect.right;
+                adjustX = (window.innerWidth - viewportPadding) - finalRect.right;
             }
             
             if (finalRect.top < viewportPadding) {
-                adjustTop = viewportPadding - finalRect.top;
+                adjustY = viewportPadding - finalRect.top;
             } else if (finalRect.bottom > window.innerHeight - viewportPadding) {
-                adjustTop = (window.innerHeight - viewportPadding) - finalRect.bottom;
+                adjustY = (window.innerHeight - viewportPadding) - finalRect.bottom;
             }
             
-            // Apply adjustments if needed
-            if (adjustLeft !== 0 || adjustTop !== 0) {
+            // Apply micro-adjustments if needed
+            if (adjustX !== 0 || adjustY !== 0) {
                 const currentLeft = parseFloat(this.tooltip.style.left);
                 const currentTop = parseFloat(this.tooltip.style.top);
-                this.tooltip.style.left = (currentLeft + adjustLeft) + 'px';
-                this.tooltip.style.top = (currentTop + adjustTop) + 'px';
+                this.tooltip.style.left = (currentLeft + adjustX) + 'px';
+                this.tooltip.style.top = (currentTop + adjustY) + 'px';
             }
-        }, 10);
+        });
         
-        // Update arrow position
+        // Update arrow direction
         this.tooltip.setAttribute('data-position', finalPosition);
     }
 

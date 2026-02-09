@@ -1,6 +1,6 @@
-/* Dashboard Product Tour Styles - Pure Glass Design */
+/* Dashboard Product Tour Styles - SVG Mask Approach */
 
-/* Overlay with Spotlight Effect - Separate layers for blur control */
+/* Overlay Container */
 .tour-overlay {
     position: fixed;
     top: 0;
@@ -11,19 +11,16 @@
     pointer-events: none;
 }
 
-.tour-backdrop {
+/* SVG Overlay with Mask - Creates clean cutout */
+.tour-overlay svg {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    animation: fadeIn 0.3s ease-out;
+    width: 100%;
+    height: 100%;
 }
 
-/* Spotlight Cutout for Target Element - No blur on highlighted area */
+/* Spotlight Border */
 .tour-spotlight {
     position: fixed;
     z-index: 10000;
@@ -31,26 +28,12 @@
     background: transparent;
     border: 3px solid rgba(59, 130, 246, 0.9);
     border-radius: 12px;
-    /* Remove box-shadow that creates the dark overlay */
     box-shadow: 
         0 0 0 4px rgba(59, 130, 246, 0.2),
         0 0 30px rgba(59, 130, 246, 0.6),
         0 0 60px rgba(59, 130, 246, 0.4);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     animation: pulse-border 2s ease-in-out infinite;
-}
-
-/* Create cutout effect using clip-path on backdrop */
-.tour-backdrop.has-spotlight {
-    /* The backdrop will be clipped by JavaScript to create cutout */
-    clip-path: polygon(
-        0% 0%, 0% 100%, 100% 100%, 100% 0%, 0% 0%,
-        var(--spotlight-x1, 0px) var(--spotlight-y1, 0px),
-        var(--spotlight-x1, 0px) var(--spotlight-y2, 0px),
-        var(--spotlight-x2, 0px) var(--spotlight-y2, 0px),
-        var(--spotlight-x2, 0px) var(--spotlight-y1, 0px),
-        var(--spotlight-x1, 0px) var(--spotlight-y1, 0px)
-    );
 }
 
 @keyframes pulse-border {
