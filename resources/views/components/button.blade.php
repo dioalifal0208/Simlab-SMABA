@@ -19,7 +19,7 @@
         'success' => 'bg-green-600 hover:bg-green-700 text-white shadow-sm',
         'danger' => 'bg-red-600 hover:bg-red-700 text-white shadow-sm',
         'warning' => 'bg-yellow-500 hover:bg-yellow-600 text-white shadow-sm',
-        'info' => 'bg-blue-500 hover:bg-blue-600 text-white shadow-sm',
+        'info' => 'bg-green-500 hover:bg-green-600 text-white shadow-sm',
         'outline' => 'bg-white border-2 border-smaba-dark-blue text-smaba-dark-blue hover:bg-smaba-dark-blue hover:text-white',
         'ghost' => 'bg-transparent hover:bg-gray-100 text-gray-700',
     ];

@@ -97,7 +97,7 @@
                                 <td class="py-3 px-4 text-sm">
                                     <span class="px-2 py-1 rounded-full text-xs font-semibold
                                         @if($log->action == 'created') bg-green-100 text-green-800
-                                        @elseif($log->action == 'updated') bg-blue-100 text-blue-800
+                                        @elseif($log->action == 'updated') bg-green-100 text-green-800
                                         @elseif($log->action == 'deleted') bg-red-100 text-red-800
                                         @elseif($log->action == 'login') bg-purple-100 text-purple-800
                                         @elseif($log->action == 'logout') bg-gray-100 text-gray-800

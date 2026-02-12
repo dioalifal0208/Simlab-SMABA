@@ -111,7 +111,7 @@
                 'bg-green-50 border-green-200 text-green-800': toast.type === 'success',
                 'bg-red-50 border-red-200 text-red-800': toast.type === 'error',
                 'bg-yellow-50 border-yellow-200 text-yellow-800': toast.type === 'warning',
-                'bg-blue-50 border-blue-200 text-blue-800': toast.type === 'info'
+                'bg-green-50 border-green-200 text-green-800': toast.type === 'info'
             }" class="flex items-center gap-3 p-4 rounded-lg border-2 shadow-lg">
                 <div class="flex-shrink-0">
                     <template x-if="toast.type === 'success'">
@@ -168,8 +168,8 @@
                 <div x-show="isOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md border border-gray-100">
                     
                     <div class="px-4 pb-4 pt-5 sm:p-6 sm:pb-4 text-center">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 mb-4 animate-pulse">
-                            <svg class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-50 mb-4 animate-pulse">
+                            <svg class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
@@ -182,13 +182,13 @@
                                 <label class="text-xs font-semibold text-gray-500 uppercase">User</label>
                                 <p class="font-medium text-gray-900">{{ Auth::user()->name }}</p>
                             </div>
-                            <input type="password" x-model="password" @keydown.enter="unlock" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Masukkan Password Anda...">
+                            <input type="password" x-model="password" @keydown.enter="unlock" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm" placeholder="Masukkan Password Anda...">
                             <p x-show="error" x-text="error" class="text-red-600 text-xs mt-2 text-left"></p>
                         </div>
                     </div>
 
                     <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                        <button type="button" @click="unlock" :disabled="isLoading" class="inline-flex w-full justify-center rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed">
+                        <button type="button" @click="unlock" :disabled="isLoading" class="inline-flex w-full justify-center rounded-lg bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed">
                             <span x-show="isLoading" class="mr-2 animate-spin"><i class="fas fa-spinner"></i></span>    
                             Buka Kunci
                         </button>

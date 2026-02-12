@@ -122,7 +122,7 @@
                                                 <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ __('loans.empty.title') }}</h3>
                                                 <p class="text-sm text-gray-500 mb-4">{{ __('loans.empty.description') }}</p>
                                                 @unless (auth()->user()->role == 'admin')
-                                                <a href="{{ route('loans.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                                                <a href="{{ route('loans.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-sm">
                                                     <i class="fas fa-plus"></i> Ajukan Peminjaman Baru
                                                 </a>
                                                 @endunless

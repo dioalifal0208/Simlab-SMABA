@@ -53,7 +53,7 @@
                                             @if($report->status == 'Dilaporkan')
                                                 <span class="px-3 py-1 text-xs font-bold leading-none text-yellow-800 bg-yellow-100 rounded-full">Dilaporkan</span>
                                             @elseif($report->status == 'Diverifikasi')
-                                                <span class="px-3 py-1 text-xs font-bold leading-none text-blue-800 bg-blue-100 rounded-full">Diverifikasi</span>
+                                                <span class="px-3 py-1 text-xs font-bold leading-none text-green-800 bg-green-100 rounded-full">Diverifikasi</span>
                                             @else
                                                 <span class="px-3 py-1 text-xs font-bold leading-none text-green-800 bg-green-100 rounded-full">Diperbaiki</span>
                                             @endif

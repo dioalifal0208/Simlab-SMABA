@@ -26,7 +26,7 @@
                             <p class="text-sm text-gray-600">Diajukan oleh {{ $itemRequest->user->name ?? '-' }} ({{ $itemRequest->user->email ?? '-' }})</p>
                         </div>
                         <div class="space-y-2 text-right">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold {{ $itemRequest->status === 'pending' ? 'bg-blue-100 text-blue-800' : ($itemRequest->status === 'approved' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800') }}">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold {{ $itemRequest->status === 'pending' ? 'bg-green-100 text-green-800' : ($itemRequest->status === 'approved' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800') }}">
                                 {{ ucfirst($itemRequest->status) }}
                             </span>
                             @if($itemRequest->urgensi === 'mendesak')

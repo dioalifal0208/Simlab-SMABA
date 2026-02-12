@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -48,7 +48,7 @@
         @vite(['resources/js/app.js'])
     </head>
 
-    <body class="landing-page antialiased bg-white text-gray-900 overflow-x-hidden selection:bg-blue-100 selection:text-blue-900"
+    <body class="landing-page antialiased bg-white text-gray-900 overflow-x-hidden selection:bg-green-100 selection:text-green-900"
           data-authenticated="{{ auth()->check() ? '1' : '0' }}"
           x-data="{ isModalOpen: false, showDemoModal: false, showFeatureModal: false, activeSlide: 0, activeFeature: 'inventory' }"
           @keydown.escape.window="isModalOpen = false; showDemoModal = false; showFeatureModal = false">
@@ -71,14 +71,14 @@
                 <div class="flex items-center gap-4">
                     {{-- Language Toggle --}}
                     <div class="flex items-center gap-2 text-sm">
-                        <a href="{{ route('lang.switch', 'id') }}" class="{{ app()->getLocale() == 'id' ? 'font-bold text-blue-700' : 'text-gray-500 hover:text-gray-700' }}">ID</a>
+                        <a href="{{ route('lang.switch', 'id') }}" class="{{ app()->getLocale() == 'id' ? 'font-bold text-green-700' : 'text-gray-500 hover:text-gray-700' }}">ID</a>
                         <span class="text-gray-300">|</span>
-                        <a href="{{ route('lang.switch', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'font-bold text-blue-700' : 'text-gray-500 hover:text-gray-700' }}">EN</a>
+                        <a href="{{ route('lang.switch', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'font-bold text-green-700' : 'text-gray-500 hover:text-gray-700' }}">EN</a>
                     </div>
                     
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="text-sm font-medium text-gray-600 hover:text-blue-700 transition-colors">{{ __('welcome.nav.dashboard') }}</a>
+                            <a href="{{ url('/dashboard') }}" class="text-sm font-medium text-gray-600 hover:text-green-700 transition-colors">{{ __('welcome.nav.dashboard') }}</a>
                         @else
                             <button @click="isModalOpen = true" class="text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-2 transition-colors">{{ __('welcome.nav.login') }}</button>
                         @endauth
@@ -91,13 +91,13 @@
             <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 {{-- HERO COPY --}}
                 <div class="max-w-2xl space-y-8" data-aos="fade-right">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold uppercase tracking-wide">
-                        <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 border border-green-100 text-green-700 text-xs font-semibold uppercase tracking-wide">
+                        <span class="w-2 h-2 rounded-full bg-green-600 animate-pulse"></span>
                         {{ __('welcome.hero.badge') }}
                     </div>
                     
                     <h1 class="text-5xl sm:text-6xl font-bold text-gray-900 tracking-tight leading-tight">
-                        {{ __('welcome.hero.title') }} <br/><span class="text-blue-700">{{ __('welcome.hero.title_highlight') }}</span>
+                        {{ __('welcome.hero.title') }} <br/><span class="text-green-700">{{ __('welcome.hero.title_highlight') }}</span>
                     </h1>
                     
                     <p class="text-lg text-gray-600 leading-relaxed">
@@ -105,7 +105,7 @@
                     </p>
                     
                     <div class="flex flex-wrap items-center gap-4 pt-2">
-                        <button @click="isModalOpen = true" class="px-8 py-3.5 bg-blue-700 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-800 hover:shadow transition-all duration-200">
+                        <button @click="isModalOpen = true" class="px-8 py-3.5 bg-green-700 text-white font-semibold rounded-lg shadow-sm hover:bg-green-800 hover:shadow transition-all duration-200">
                             {{ __('welcome.hero.cta_start') }}
                         </button>
                         <button @click="showDemoModal = true; activeSlide = 0" class="px-8 py-3.5 text-gray-700 bg-white border border-gray-200 font-semibold rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
@@ -157,9 +157,9 @@
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
-                                <div class="p-4 bg-blue-50/50 border border-blue-100 rounded-lg">
-                                    <p class="text-xs text-blue-600 font-medium uppercase">Total Peminjaman</p>
-                                    <p class="text-2xl font-bold text-blue-900 mt-1">24</p>
+                                <div class="p-4 bg-green-50/50 border border-green-100 rounded-lg">
+                                    <p class="text-xs text-green-600 font-medium uppercase">Total Peminjaman</p>
+                                    <p class="text-2xl font-bold text-green-900 mt-1">24</p>
                                 </div>
                                 <div class="p-4 bg-gray-50 border border-gray-100 rounded-lg">
                                     <p class="text-xs text-gray-600 font-medium uppercase">Item Maintenance</p>
@@ -172,7 +172,7 @@
                                 @if(isset($todayBookings) && $todayBookings->isNotEmpty())
                                     @foreach($todayBookings->take(2) as $booking)
                                     <div class="flex items-center gap-4 p-3 bg-white border border-gray-100 rounded-lg shadow-sm">
-                                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">
+                                        <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center font-bold text-xs">
                                             {{ substr($booking->laboratorium, 0, 1) }}
                                         </div>
                                         <div>
@@ -201,43 +201,43 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {{-- Feature 1 --}}
-                    <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-blue-600 transition-colors duration-300" data-aos="fade-up">
-                        <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-green-600 transition-colors duration-300" data-aos="fade-up">
+                        <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mb-4 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors">
                             <i class="fas fa-boxes-stacked text-xl"></i>
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Inventaris Digital</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">Database terpusat untuk semua alat dan bahan. Lacak kondisi dan lokasi dengan mudah.</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'inventory'" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
+                        <button @click="showFeatureModal = true; activeFeature = 'inventory'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
                     
                     {{-- Feature 2 --}}
-                    <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-blue-600 transition-colors duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-green-600 transition-colors duration-300" data-aos="fade-up" data-aos-delay="100">
                         <div class="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center mb-4 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                             <i class="fas fa-qrcode text-xl"></i>
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Validasi Digital (QR)</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">Surat peminjaman dilengkapi QR Code unik yang terverifikasi. Cek keaslian dokumen tanpa login.</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'validation'" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
+                        <button @click="showFeatureModal = true; activeFeature = 'validation'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
 
                     {{-- Feature 3 --}}
-                    <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-blue-600 transition-colors duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-green-600 transition-colors duration-300" data-aos="fade-up" data-aos-delay="200">
                         <div class="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center mb-4 text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-colors">
                             <i class="fas fa-calendar-alt text-xl"></i>
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Kalender Cerdas</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">Cegah bentrok jadwal antar guru mata pelajaran Fisika, Biologi, dan Bahasa.</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'calendar'" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
+                        <button @click="showFeatureModal = true; activeFeature = 'calendar'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
 
                     {{-- Feature 4 --}}
-                    <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-blue-600 transition-colors duration-300" data-aos="fade-up" data-aos-delay="300">
+                    <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-green-600 transition-colors duration-300" data-aos="fade-up" data-aos-delay="300">
                         <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
                             <i class="fas fa-file-excel text-xl"></i>
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Laporan & Export Excel</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">Pantau tren peminjaman dan download rekapitulasi laporan bulanan dalam format Excel otomatis.</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'report'" class="text-sm font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
+                        <button @click="showFeatureModal = true; activeFeature = 'report'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
                 </div>
             </div>
@@ -251,7 +251,7 @@
                         <h2 class="text-3xl font-bold text-gray-900 tracking-tight mb-6">Workflow Sederhana</h2>
                         <div class="space-y-8">
                             <div class="flex gap-4" data-aos="fade-up" data-aos-delay="100">
-                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm">1</div>
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-sm">1</div>
                                 <div>
                                     <h4 class="text-lg font-bold text-gray-900">Guru Mengajukan</h4>
                                     <p class="text-gray-600 text-sm mt-1">Pilih tanggal, alat, dan jam pelajaran melalui dashboard.</p>
@@ -282,9 +282,9 @@
                     </div>
                     <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm" data-aos="fade-left">
                         <div class="space-y-4">
-                            <div class="flex items-center gap-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
-                                <i class="fas fa-mobile-alt text-blue-600 w-5 text-center"></i>
-                                <span class="text-sm font-medium text-blue-900">Akses Multi-Device (HP/Laptop)</span>
+                            <div class="flex items-center gap-3 p-3 bg-green-50 border border-green-100 rounded-lg">
+                                <i class="fas fa-mobile-alt text-green-600 w-5 text-center"></i>
+                                <span class="text-sm font-medium text-green-900">Akses Multi-Device (HP/Laptop)</span>
                             </div>
                             <div class="flex items-center gap-3 p-3 bg-emerald-50 border border-emerald-100 rounded-lg">
                                 <i class="fas fa-leaf text-emerald-600 w-5 text-center"></i>
@@ -342,20 +342,20 @@
                         @csrf
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" type="email" name="email" required autofocus />
+                            <input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm" type="email" name="email" required autofocus />
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                            <input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" type="password" name="password" required />
+                            <input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm" type="password" name="password" required />
                         </div>
                         <div class="flex items-center justify-between">
                             <label class="flex items-center">
-                                <input type="checkbox" class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500" name="remember">
+                                <input type="checkbox" class="rounded border-gray-300 text-green-600 shadow-sm focus:ring-green-500" name="remember">
                                 <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
                             </label>
-                            <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Lupa password?</a>
+                            <a href="{{ route('password.request') }}" class="text-sm text-green-600 hover:text-green-800 font-medium">Lupa password?</a>
                         </div>
-                        <button type="submit" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">Masuk</button>
+                        <button type="submit" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all">Masuk</button>
                     </form>
                 </div>
 
@@ -376,33 +376,33 @@
                     </div>
                     
                     <div class="space-y-2 flex-1">
-                        <button @click="activeSlide = 0" :class="activeSlide === 0 ? 'bg-white shadow-sm border-blue-200 ring-1 ring-blue-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
-                            <div :class="activeSlide === 0 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">1</div>
+                        <button @click="activeSlide = 0" :class="activeSlide === 0 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
+                            <div :class="activeSlide === 0 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">1</div>
                             <div>
-                                <p :class="activeSlide === 0 ? 'text-blue-700' : 'text-gray-700'" class="font-semibold text-sm">Dashboard Realtime</p>
+                                <p :class="activeSlide === 0 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">Dashboard Realtime</p>
                                 <p class="text-xs text-gray-500 mt-1 line-clamp-2">Pantau stok, notifikasi, dan lab aktif dalam satu layar.</p>
                             </div>
                         </button>
 
-                        <button @click="activeSlide = 1" :class="activeSlide === 1 ? 'bg-white shadow-sm border-blue-200 ring-1 ring-blue-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
-                            <div :class="activeSlide === 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">2</div>
+                        <button @click="activeSlide = 1" :class="activeSlide === 1 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
+                            <div :class="activeSlide === 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">2</div>
                             <div>
-                                <p :class="activeSlide === 1 ? 'text-blue-700' : 'text-gray-700'" class="font-semibold text-sm">Peminjaman Mudah</p>
+                                <p :class="activeSlide === 1 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">Peminjaman Mudah</p>
                                 <p class="text-xs text-gray-500 mt-1 line-clamp-2">Cari barang, pilih tanggal, dan ajukan dalam 3 klik.</p>
                             </div>
                         </button>
 
-                        <button @click="activeSlide = 2" :class="activeSlide === 2 ? 'bg-white shadow-sm border-blue-200 ring-1 ring-blue-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
-                            <div :class="activeSlide === 2 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">3</div>
+                        <button @click="activeSlide = 2" :class="activeSlide === 2 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
+                            <div :class="activeSlide === 2 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">3</div>
                             <div>
-                                <p :class="activeSlide === 2 ? 'text-blue-700' : 'text-gray-700'" class="font-semibold text-sm">Approval Digital</p>
+                                <p :class="activeSlide === 2 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">Approval Digital</p>
                                 <p class="text-xs text-gray-500 mt-1 line-clamp-2">Validasi booking dari mana saja tanpa kertas.</p>
                             </div>
                         </button>
                     </div>
 
                     <div class="mt-4 pt-4 border-t border-gray-200">
-                        <button @click="isModalOpen = true; showDemoModal = false" class="w-full py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">Login Sekarang &rarr;</button>
+                        <button @click="isModalOpen = true; showDemoModal = false" class="w-full py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition">Login Sekarang &rarr;</button>
                     </div>
                 </div>
 
@@ -417,10 +417,10 @@
                         <div class="p-6">
                             <h4 class="font-bold text-gray-900 mb-4">Statistik Lab</h4>
                             <div class="flex gap-4 items-end h-32 pl-2 border-b border-l border-gray-200">
-                                <div class="w-1/4 bg-blue-200 rounded-t-lg h-0 animate-[grow_1s_ease-out_forwards]" style="--h: 60%"></div>
-                                <div class="w-1/4 bg-blue-300 rounded-t-lg h-0 animate-[grow_1s_ease-out_0.2s_forwards]" style="--h: 80%"></div>
-                                <div class="w-1/4 bg-blue-500 rounded-t-lg h-0 animate-[grow_1s_ease-out_0.4s_forwards]" style="--h: 40%"></div>
-                                <div class="w-1/4 bg-blue-700 rounded-t-lg h-0 animate-[grow_1s_ease-out_0.6s_forwards]" style="--h: 90%"></div>
+                                <div class="w-1/4 bg-green-200 rounded-t-lg h-0 animate-[grow_1s_ease-out_forwards]" style="--h: 60%"></div>
+                                <div class="w-1/4 bg-green-300 rounded-t-lg h-0 animate-[grow_1s_ease-out_0.2s_forwards]" style="--h: 80%"></div>
+                                <div class="w-1/4 bg-green-500 rounded-t-lg h-0 animate-[grow_1s_ease-out_0.4s_forwards]" style="--h: 40%"></div>
+                                <div class="w-1/4 bg-green-700 rounded-t-lg h-0 animate-[grow_1s_ease-out_0.6s_forwards]" style="--h: 90%"></div>
                             </div>
                             <style> @keyframes grow { to { height: var(--h); } } </style>
                             <div class="flex justify-between mt-4">
@@ -453,7 +453,7 @@
                                     <div class="h-10 w-full border border-gray-200 rounded-lg bg-gray-50"></div>
                                 </div>
                             </div>
-                            <button class="w-full py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold transform hover:scale-105 transition">Ajukan Peminjaman</button>
+                            <button class="w-full py-2 bg-green-600 text-white rounded-lg text-sm font-semibold transform hover:scale-105 transition">Ajukan Peminjaman</button>
                             
                             {{-- Cursor Animation --}}
                             <div class="absolute top-1/2 left-1/2 pointer-events-none transform -translate-x-1/2 -translate-y-1/2 animate-[moveCursor_3s_infinite]">
@@ -476,7 +476,7 @@
                             </div>
                         </div>
                         <div class="flex justify-center mt-4">
-                            <div class="bg-blue-900 text-white px-4 py-2 rounded-full text-sm shadow-lg flex items-center gap-2 animate-bounce">
+                            <div class="bg-green-900 text-white px-4 py-2 rounded-full text-sm shadow-lg flex items-center gap-2 animate-bounce">
                                 <i class="fas fa-check"></i> Disetujui Kepala Lab
                             </div>
                         </div>
@@ -521,7 +521,7 @@
                                 <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                                 <input disabled type="text" value="Mikroskop" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700">
                             </div>
-                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700"><i class="fas fa-plus mr-2"></i> Tambah Alat</button>
+                            <button class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700"><i class="fas fa-plus mr-2"></i> Tambah Alat</button>
                         </div>
                         <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                             <table class="w-full text-sm text-left">
@@ -529,17 +529,17 @@
                                     <tr><th class="px-6 py-3">Nama Alat</th><th class="px-6 py-3">Kondisi</th><th class="px-6 py-3">Stok</th></tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
-                                    <tr class="hover:bg-blue-50/50 transition">
+                                    <tr class="hover:bg-green-50/50 transition">
                                         <td class="px-6 py-4 font-medium text-gray-900">Mikroskop Binokuler X-200</td>
                                         <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold">Baik</span></td>
                                         <td class="px-6 py-4 text-gray-600">12 Unit</td>
                                     </tr>
-                                    <tr class="hover:bg-blue-50/50 transition">
+                                    <tr class="hover:bg-green-50/50 transition">
                                         <td class="px-6 py-4 font-medium text-gray-900">Gelas Ukur 100ml</td>
                                         <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold">Baik</span></td>
                                         <td class="px-6 py-4 text-gray-600">25 Unit</td>
                                     </tr>
-                                    <tr class="hover:bg-blue-50/50 transition">
+                                    <tr class="hover:bg-green-50/50 transition">
                                         <td class="px-6 py-4 font-medium text-gray-900">Tabung Reaksi Pyrex</td>
                                         <td class="px-6 py-4"><span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs font-bold">Perlu Cek</span></td>
                                         <td class="px-6 py-4 text-gray-600">48 Unit</td>
@@ -592,7 +592,7 @@
                              <div class="bg-white p-2 min-h-[100px] text-sm font-bold">1</div>
                              <div class="bg-white p-2 min-h-[100px]">
                                  <span class="text-sm font-bold">2</span>
-                                 <div class="mt-1 px-2 py-1 bg-blue-100 text-blue-700 text-[10px] rounded border border-blue-200 font-medium truncate">10:00 - Fisika XII</div>
+                                 <div class="mt-1 px-2 py-1 bg-green-100 text-green-700 text-[10px] rounded border border-green-200 font-medium truncate">10:00 - Fisika XII</div>
                              </div>
                              <div class="bg-white p-2 min-h-[100px] text-sm font-bold">3</div>
                              <div class="bg-white p-2 min-h-[100px] text-sm font-bold">4</div>
@@ -627,7 +627,7 @@
                              <div class="space-y-4">
                                  <div>
                                      <div class="flex justify-between text-xs mb-1"><span class="font-medium">Lab Fisika</span> <span class="text-gray-500">85%</span></div>
-                                     <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-blue-600 h-2 rounded-full" style="width: 85%"></div></div>
+                                     <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div></div>
                                  </div>
                                  <div>
                                      <div class="flex justify-between text-xs mb-1"><span class="font-medium">Lab Biologi</span> <span class="text-gray-500">62%</span></div>
@@ -649,7 +649,7 @@
                 
                 {{-- Footer --}}
                 <div class="bg-gray-50 p-4 border-t border-gray-200 text-center">
-                    <button @click="isModalOpen = true; showFeatureModal = false" class="text-blue-600 font-semibold text-sm hover:underline hover:text-blue-800">Coba Langsung di Dashboard &rarr;</button>
+                    <button @click="isModalOpen = true; showFeatureModal = false" class="text-green-600 font-semibold text-sm hover:underline hover:text-green-800">Coba Langsung di Dashboard &rarr;</button>
                 </div>
             </div>
             <style>

@@ -35,7 +35,7 @@
                         <div class="relative px-8 py-10 md:px-12 md:py-14">
                             {{-- Greeting --}}
                             <div class="mb-8" data-aos="fade-up" data-aos-once="true">
-                                <p class="text-blue-600 text-sm font-medium uppercase tracking-wider mb-2">{{ __('common.nav.dashboard') }} {{ __('common.roles.admin') }}</p>
+                                <p class="text-green-600 text-sm font-medium uppercase tracking-wider mb-2">{{ __('common.nav.dashboard') }} {{ __('common.roles.admin') }}</p>
                                 <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
                                     {{ __('dashboard.welcome.admin', ['name' => Auth::user()->name]) }} 👋
                                 </h1>
@@ -46,8 +46,8 @@
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                                 <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
                                     <div class="flex items-center gap-4">
-                                        <div class="p-3 bg-blue-100 rounded-lg">
-                                            <i class="fas fa-flask text-2xl text-blue-600"></i>
+                                        <div class="p-3 bg-green-100 rounded-lg">
+                                            <i class="fas fa-flask text-2xl text-green-600"></i>
                                         </div>
                                         <div>
                                             <p class="text-gray-500 text-xs font-medium uppercase tracking-wider">{{ __('dashboard.metrics.total_items') }}</p>
@@ -83,7 +83,7 @@
                             
                             {{-- Quick Actions --}}
                             <div class="mt-8 flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="400" data-aos-once="true">
-                                <a href="{{ route('items.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                                <a href="{{ route('items.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-sm">
                                     <i class="fas fa-plus"></i> {{ __('dashboard.quick_actions.add_item') }}
                                 </a>
                                 <a href="{{ route('loans.index', ['status' => 'pending']) }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors border border-gray-300">
@@ -138,9 +138,9 @@
                     {{-- ============================================== --}}
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" data-aos="fade-up" data-aos-delay="150" data-aos-once="true">
                         {{-- Pending Loans --}}
-                        <a href="{{ route('loans.index', ['status' => 'pending']) }}" class="group bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:border-blue-200 transition-all duration-300">
+                        <a href="{{ route('loans.index', ['status' => 'pending']) }}" class="group bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:border-green-200 transition-all duration-300">
                             <div class="flex items-center justify-between mb-4">
-                                <div class="p-3 bg-blue-50 rounded-xl text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                <div class="p-3 bg-green-50 rounded-xl text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors">
                                     <i class="fas fa-hourglass-half text-xl"></i>
                                 </div>
                                 <span class="text-3xl font-bold text-gray-900">{{ $pendingLoansCount ?? 0 }}</span>
@@ -216,8 +216,8 @@
                                             <i class="fas fa-flask text-green-600"></i>
                                         </div>
                                         @elseif ($activity instanceof \App\Models\Booking)
-                                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                                            <i class="fas fa-calendar text-blue-600"></i>
+                                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                                            <i class="fas fa-calendar text-green-600"></i>
                                         </div>
                                         @elseif ($activity instanceof \App\Models\AuditLog)
                                             @if ($activity->action === 'created')
@@ -262,11 +262,11 @@
                                     </div>
                                     <div class="flex-shrink-0">
                                         @if ($activity instanceof \App\Models\Loan)
-                                        <a href="{{ route('loans.show', $activity->id) }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">Lihat</a>
+                                        <a href="{{ route('loans.show', $activity->id) }}" class="text-sm font-medium text-green-600 hover:text-green-800">Lihat</a>
                                         @elseif ($activity instanceof \App\Models\Booking)
-                                        <a href="{{ route('bookings.show', $activity->id) }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">Lihat</a>
+                                        <a href="{{ route('bookings.show', $activity->id) }}" class="text-sm font-medium text-green-600 hover:text-green-800">Lihat</a>
                                         @elseif ($activity instanceof \App\Models\AuditLog)
-                                        <a href="{{ route('audit-logs.show', $activity->id) }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">Detail</a>
+                                        <a href="{{ route('audit-logs.show', $activity->id) }}" class="text-sm font-medium text-green-600 hover:text-green-800">Detail</a>
                                         @endif
                                     </div>
                                 </div>
@@ -293,7 +293,7 @@
                                 <div class="flex items-center gap-2">
                                     <template x-for="page in totalPages" :key="page">
                                         <button @click="currentPage = page"
-                                                :class="currentPage === page ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
+                                                :class="currentPage === page ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
                                                 class="w-8 h-8 rounded-lg text-sm font-medium transition-colors"
                                                 x-text="page">
                                         </button>
@@ -311,7 +311,7 @@
                             
                             @if(($recentActivities ?? collect())->count() > 0)
                             <div class="mt-4 pt-4 border-t border-gray-100 text-center">
-                                <a href="{{ route('audit-logs.index') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                                <a href="{{ route('audit-logs.index') }}" class="text-sm font-medium text-green-600 hover:text-green-800">
                                     Lihat Semua Aktivitas →
                                 </a>
                             </div>
@@ -369,8 +369,8 @@
                                 
                                 <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
                                     <div class="flex items-center gap-3">
-                                        <div class="p-2.5 bg-blue-100 rounded-lg">
-                                            <i class="fas fa-calendar-check text-lg text-blue-600"></i>
+                                        <div class="p-2.5 bg-green-100 rounded-lg">
+                                            <i class="fas fa-calendar-check text-lg text-green-600"></i>
                                         </div>
                                         <div>
                                             <p class="text-gray-500 text-xs font-medium">Booking Mendatang</p>
@@ -484,8 +484,8 @@
                             </div>
                             <div class="p-6">
                                 @if($nextBooking)
-                                <div class="flex items-start gap-4 p-4 rounded-lg bg-blue-50 border border-blue-100">
-                                    <div class="flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 rounded-lg bg-blue-600 text-white">
+                                <div class="flex items-start gap-4 p-4 rounded-lg bg-green-50 border border-green-100">
+                                    <div class="flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 rounded-lg bg-green-600 text-white">
                                         <span class="text-xs font-medium uppercase">{{ $nextBooking->waktu_mulai->format('M') }}</span>
                                         <span class="text-xl font-bold">{{ $nextBooking->waktu_mulai->format('d') }}</span>
                                     </div>
@@ -495,7 +495,7 @@
                                             <i class="fas fa-clock text-gray-400 mr-1"></i>
                                             {{ $nextBooking->waktu_mulai->format('H:i') }} - {{ $nextBooking->waktu_selesai->format('H:i') }}
                                         </p>
-                                        <a href="{{ route('bookings.show', $nextBooking->id) }}" class="text-sm font-medium text-blue-600 hover:text-blue-800 mt-2 inline-block">
+                                        <a href="{{ route('bookings.show', $nextBooking->id) }}" class="text-sm font-medium text-green-600 hover:text-green-800 mt-2 inline-block">
                                             Lihat Detail →
                                         </a>
                                     </div>
@@ -506,7 +506,7 @@
                                         <i class="fas fa-calendar-times text-2xl text-gray-400"></i>
                                     </div>
                                     <p class="text-gray-500 text-sm">Tidak ada jadwal booking mendatang.</p>
-                                    <a href="{{ route('bookings.create') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800 mt-2 inline-block">
+                                    <a href="{{ route('bookings.create') }}" class="text-sm font-medium text-green-600 hover:text-green-800 mt-2 inline-block">
                                         Buat Booking Baru →
                                     </a>
                                 </div>
@@ -553,7 +553,7 @@
                                             <i class="fas fa-inbox text-2xl text-gray-400"></i>
                                         </div>
                                         <p class="text-gray-500 text-sm">Belum ada riwayat peminjaman.</p>
-                                        <a href="{{ route('loans.create') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800 mt-2 inline-block">
+                                        <a href="{{ route('loans.create') }}" class="text-sm font-medium text-green-600 hover:text-green-800 mt-2 inline-block">
                                             Ajukan Peminjaman →
                                         </a>
                                     </div>
@@ -562,7 +562,7 @@
                                 
                                 @if(($recentUserLoans ?? collect())->count() > 0)
                                 <div class="mt-4 pt-4 border-t border-gray-100 text-center">
-                                    <a href="{{ route('loans.index') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                                    <a href="{{ route('loans.index') }}" class="text-sm font-medium text-green-600 hover:text-green-800">
                                         Lihat Semua Riwayat →
                                     </a>
                                 </div>
@@ -636,7 +636,7 @@
                                 {{-- Booking Stats --}}
                                 <div>
                                     <h3 class="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
-                                        <i class="fas fa-calendar-alt text-blue-600"></i> Status Booking Lab
+                                        <i class="fas fa-calendar-alt text-green-600"></i> Status Booking Lab
                                     </h3>
                                     <div class="space-y-3">
                                         <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -651,12 +651,12 @@
                                                 </div>
                                                 <span class="text-sm font-bold text-yellow-700">{{ $userBookingStats['pending'] ?? 0 }}</span>
                                             </div>
-                                            <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-100">
+                                            <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-100">
                                                 <div class="flex items-center gap-2">
-                                                    <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                                                    <div class="w-2 h-2 rounded-full bg-green-500"></div>
                                                     <span class="text-xs text-gray-600">Disetujui</span>
                                                 </div>
-                                                <span class="text-sm font-bold text-blue-700">{{ $userBookingStats['approved'] ?? 0 }}</span>
+                                                <span class="text-sm font-bold text-green-700">{{ $userBookingStats['approved'] ?? 0 }}</span>
                                             </div>
                                             <div class="flex items-center justify-between p-3 bg-gray-100 rounded-lg border border-gray-200">
                                                 <div class="flex items-center gap-2">
@@ -679,16 +679,16 @@
                             
                             {{-- Upcoming Week Indicator --}}
                             @if(($upcomingUserBookingsCount ?? 0) > 0)
-                            <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                            <div class="mt-6 p-4 bg-green-50 rounded-lg border border-green-100">
                                 <div class="flex items-center gap-3">
-                                    <div class="p-2 bg-blue-100 rounded-lg">
-                                        <i class="fas fa-calendar-week text-blue-600"></i>
+                                    <div class="p-2 bg-green-100 rounded-lg">
+                                        <i class="fas fa-calendar-week text-green-600"></i>
                                     </div>
                                     <div>
-                                        <p class="text-sm font-medium text-blue-800">
+                                        <p class="text-sm font-medium text-green-800">
                                             {{ $upcomingUserBookingsCount }} booking dalam 7 hari ke depan
                                         </p>
-                                        <a href="{{ route('calendar.index') }}" class="text-xs text-blue-600 hover:text-blue-800">Lihat Kalender →</a>
+                                        <a href="{{ route('calendar.index') }}" class="text-xs text-green-600 hover:text-green-800">Lihat Kalender →</a>
                                     </div>
                                 </div>
                             </div>
@@ -702,7 +702,7 @@
                     <div class="bg-white rounded-xl border border-gray-100 shadow-sm" data-aos="fade-up" data-aos-delay="400" data-aos-once="true">
                         <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
                             <h2 class="text-lg font-semibold text-gray-900">📄 Dokumen Terbaru</h2>
-                            <a href="{{ route('documents.index') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                            <a href="{{ route('documents.index') }}" class="text-sm font-medium text-green-600 hover:text-green-800">
                                 Lihat Semua →
                             </a>
                         </div>
@@ -710,19 +710,19 @@
                             @if(isset($recentDocuments) && $recentDocuments->count() > 0)
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 @foreach($recentDocuments as $doc)
-                                <div class="group p-4 rounded-lg border border-gray-100 hover:border-blue-200 hover:bg-blue-50/50 transition-colors cursor-pointer"
+                                <div class="group p-4 rounded-lg border border-gray-100 hover:border-green-200 hover:bg-green-50/50 transition-colors cursor-pointer"
                                      onclick="openModal('{{ Storage::url($doc->file_path) }}', '{{ $doc->title }}')">
                                     <div class="flex items-start gap-3">
                                         <div class="flex-shrink-0 p-2 rounded-lg 
                                             @if(Str::endsWith($doc->file_path, '.pdf')) bg-red-100
-                                            @elseif(Str::endsWith($doc->file_path, ['.doc', '.docx'])) bg-blue-100
+                                            @elseif(Str::endsWith($doc->file_path, ['.doc', '.docx'])) bg-green-100
                                             @elseif(Str::endsWith($doc->file_path, ['.xls', '.xlsx'])) bg-green-100
                                             @elseif(Str::endsWith($doc->file_path, ['.ppt', '.pptx'])) bg-orange-100
                                             @else bg-gray-100 @endif">
                                             @if(Str::endsWith($doc->file_path, '.pdf'))
                                             <i class="fas fa-file-pdf text-red-600"></i>
                                             @elseif(Str::endsWith($doc->file_path, ['.doc', '.docx']))
-                                            <i class="fas fa-file-word text-blue-600"></i>
+                                            <i class="fas fa-file-word text-green-600"></i>
                                             @elseif(Str::endsWith($doc->file_path, ['.xls', '.xlsx']))
                                             <i class="fas fa-file-excel text-green-600"></i>
                                             @elseif(Str::endsWith($doc->file_path, ['.ppt', '.pptx']))
@@ -732,7 +732,7 @@
                                             @endif
                                         </div>
                                         <div class="flex-grow min-w-0">
-                                            <p class="text-sm font-medium text-gray-900 truncate group-hover:text-blue-700">
+                                            <p class="text-sm font-medium text-gray-900 truncate group-hover:text-green-700">
                                                 {{ $doc->title }}
                                             </p>
                                             <p class="text-xs text-gray-500 mt-1">
@@ -754,7 +754,7 @@
                                     <i class="fas fa-file-alt text-2xl text-gray-400"></i>
                                 </div>
                                 <p class="text-gray-500 text-sm">Belum ada dokumen yang tersedia.</p>
-                                <a href="{{ route('documents.index') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800 mt-2 inline-block">
+                                <a href="{{ route('documents.index') }}" class="text-sm font-medium text-green-600 hover:text-green-800 mt-2 inline-block">
                                     Jelajahi Dokumen →
                                 </a>
                             </div>

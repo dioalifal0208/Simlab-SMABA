@@ -86,7 +86,7 @@
                                                 } }}
                                             </span>
                                             <p class="text-sm font-semibold text-smaba-dark-blue">{{ $booking->tujuan_kegiatan }}</p>
-                                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-blue-50 text-blue-700">
+                                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-50 text-green-700">
                                                 {{ $booking->laboratorium }}
                                             </span>
                                         </div>
@@ -121,7 +121,7 @@
                             </div>
                             <h3 class="text-lg font-semibold text-gray-900 mb-1">Tidak Ada Data Booking</h3>
                             <p class="text-sm text-gray-500 mb-4">Belum ada data booking yang cocok dengan filter Anda.</p>
-                            <a href="{{ route('bookings.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                            <a href="{{ route('bookings.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-sm">
                                 <i class="fas fa-plus"></i> Ajukan Booking Baru
                             </a>
                         </div>

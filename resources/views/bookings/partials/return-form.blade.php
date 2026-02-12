@@ -22,8 +22,8 @@
                 </div>
             </div>
         @else
-            <div class="mb-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
-                <p class="text-sm text-blue-700">
+            <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+                <p class="text-sm text-green-700">
                     <span class="font-bold block mb-1">Perhatian:</span>
                     Mohon isi checklist kondisi ruangan di bawah ini setelah kegiatan selesai. Data ini akan otomatis masuk ke Surat Peminjaman.
                 </p>
@@ -131,7 +131,7 @@
 
             @if($booking->status != 'completed' && !$booking->waktu_pengembalian)
                 <div class="mt-6 flex justify-end">
-                    <button type="submit" class="inline-flex items-center px-6 py-3 bg-smaba-dark-blue border border-transparent rounded-lg font-semibold text-white uppercase tracking-widest hover:bg-smaba-light-blue active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150 shadow-lg transform hover:-translate-y-0.5">
+                    <button type="submit" class="inline-flex items-center px-6 py-3 bg-smaba-dark-blue border border-transparent rounded-lg font-semibold text-white uppercase tracking-widest hover:bg-smaba-light-blue active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150 shadow-lg transform hover:-translate-y-0.5">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                         </svg>

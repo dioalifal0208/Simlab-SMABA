@@ -14,7 +14,7 @@
                     <input 
                         type="text" 
                         x-model="searchQuery" 
-                        class="w-full py-2 pl-10 pr-4 text-sm text-gray-700 bg-gray-100 border-none rounded-full focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors"
+                        class="w-full py-2 pl-10 pr-4 text-sm text-gray-700 bg-gray-100 border-none rounded-full focus:ring-2 focus:ring-green-500 focus:bg-white transition-colors"
                         placeholder="Cari pengguna..."
                     >
                 </div>
@@ -34,7 +34,7 @@
                     <div 
                         @click="selectChat(chat)"
                         class="relative px-4 py-4 cursor-pointer transition-colors duration-200 hover:bg-gray-50 border-b border-gray-50 group"
-                        :class="{'bg-blue-50 border-l-4 border-l-blue-600 border-b-transparent': activeConversation && activeConversation.id === chat.id, 'border-l-4 border-l-transparent': !activeConversation || activeConversation.id !== chat.id}"
+                        :class="{'bg-green-50 border-l-4 border-l-blue-600 border-b-transparent': activeConversation && activeConversation.id === chat.id, 'border-l-4 border-l-transparent': !activeConversation || activeConversation.id !== chat.id}"
                     >
                         <div class="flex justify-between items-start mb-1">
                             <span class="font-semibold text-sm text-gray-900 truncate" x-text="chat.user_name"></span>
@@ -45,7 +45,7 @@
                             
                             {{-- Status Badge (Optional) --}}
                             <template x-if="chat.status === 'open'">
-                                <span class="h-2 w-2 rounded-full bg-blue-500" title="Open"></span>
+                                <span class="h-2 w-2 rounded-full bg-green-500" title="Open"></span>
                             </template>
                         </div>
                     </div>
@@ -63,8 +63,8 @@
             
             {{-- Empty State --}}
             <div x-show="!activeConversation" class="hidden md:flex flex-col items-center justify-center h-full text-gray-400">
-                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4 text-blue-100">
-                    <i class="fas fa-comments text-4xl text-blue-300"></i>
+                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4 text-green-100">
+                    <i class="fas fa-comments text-4xl text-green-300"></i>
                 </div>
                 <p class="text-lg font-medium text-gray-500">Pilih percakapan untuk memulai</p>
                 <p class="text-sm text-gray-400">Anda dapat membalas pesan dari pengguna di sini.</p>
@@ -84,7 +84,7 @@
                             
                             {{-- User Info --}}
                             <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm mr-3">
+                                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-sm mr-3">
                                     <span x-text="getInitials(activeConversation.user_name)"></span>
                                 </div>
                                 <div>
@@ -96,7 +96,7 @@
 
                         {{-- Actions (Refresh) --}}
                         <div class="flex items-center space-x-2">
-                            <button @click="fetchMessages(activeConversation.id)" class="p-2 text-gray-400 hover:text-blue-600 transition-colors rounded-full" title="Refresh Chat">
+                            <button @click="fetchMessages(activeConversation.id)" class="p-2 text-gray-400 hover:text-green-600 transition-colors rounded-full" title="Refresh Chat">
                                 <i class="fas fa-sync-alt" :class="{'fa-spin': loadingMessages}"></i>
                             </button>
                         </div>
@@ -116,14 +116,14 @@
                                 <div 
                                     class="max-w-[80%] md:max-w-[60%] px-4 py-3 shadow-sm relative text-sm leading-relaxed"
                                     :class="msg.sender_type === 'admin' 
-                                        ? 'bg-blue-600 text-white rounded-2xl rounded-tr-sm' 
+                                        ? 'bg-green-600 text-white rounded-2xl rounded-tr-sm' 
                                         : 'bg-white text-gray-800 rounded-2xl rounded-tl-sm border border-gray-200'"
                                 >
                                     <p class="whitespace-pre-wrap" x-text="msg.body"></p>
                                     
                                     {{-- Time --}}
                                     <div class="mt-1 text-[10px] text-right opacity-70"
-                                         :class="msg.sender_type === 'admin' ? 'text-blue-100' : 'text-gray-400'">
+                                         :class="msg.sender_type === 'admin' ? 'text-green-100' : 'text-gray-400'">
                                         <span x-text="formatMessageTime(msg.created_at)"></span>
                                     </div>
                                 </div>
@@ -137,7 +137,7 @@
                             <div class="flex-1 relative">
                                 <textarea 
                                     x-model="newMessage" 
-                                    class="w-full border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 resize-none py-3 px-4 pr-10 text-sm max-h-32" 
+                                    class="w-full border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 resize-none py-3 px-4 pr-10 text-sm max-h-32" 
                                     rows="1" 
                                     placeholder="Ketik balasan..."
                                     @keydown.enter.prevent="if(!$event.shiftKey) sendMessage()"
@@ -145,7 +145,7 @@
                             </div>
                             <button 
                                 type="submit" 
-                                class="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+                                class="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
                                 :disabled="!newMessage.trim() || sending"
                             >
                                 <i x-show="!sending" class="fas fa-paper-plane"></i>

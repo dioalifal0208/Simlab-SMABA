@@ -49,14 +49,14 @@
         @endif
 
         @if (!empty($recoveryPlain))
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
-                <p class="font-semibold text-blue-800 mb-2">Recovery codes baru</p>
-                <div class="grid grid-cols-2 gap-2 font-mono text-xs text-blue-900">
+            <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-sm">
+                <p class="font-semibold text-green-800 mb-2">Recovery codes baru</p>
+                <div class="grid grid-cols-2 gap-2 font-mono text-xs text-green-900">
                     @foreach ($recoveryPlain as $code)
-                        <span class="px-2 py-1 bg-white rounded border border-blue-100">{{ $code }}</span>
+                        <span class="px-2 py-1 bg-white rounded border border-green-100">{{ $code }}</span>
                     @endforeach
                 </div>
-                <p class="mt-3 text-blue-700">Simpan kode ini di tempat yang hanya Anda yang dapat mengaksesnya.</p>
+                <p class="mt-3 text-green-700">Simpan kode ini di tempat yang hanya Anda yang dapat mengaksesnya.</p>
             </div>
         @endif
 

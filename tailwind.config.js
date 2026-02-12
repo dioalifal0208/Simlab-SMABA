@@ -13,11 +13,11 @@ export default {
 
     theme: {
         extend: {
-            // Penambahan Palet Warna Kustom
+            // Penambahan Palet Warna Kustom (Green Theme - SMABA Logo)
             colors: {
-              'smaba-dark-blue': '#1d4ed8',      // Blue 700 (Clean SaaS Primary)
-              'smaba-light-blue': '#3b82f6',     // Blue 500 (Clean SaaS Secondary)
-              'smaba-mint': '#eff6ff',           // Blue 50 (Very Light Background)
+              'smaba-dark-green': '#15803d',     // Green 700 (Primary Dark)
+              'smaba-light-green': '#22c55e',    // Green 500 (Primary Light)
+              'smaba-mint': '#f0fdf4',           // Green 50 (Very Light Background)
               'smaba-text': '#1e293b',           // Slate 800 (Modern Text)
             },
             fontFamily: {

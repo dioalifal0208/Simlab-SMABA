@@ -56,7 +56,7 @@
             <div class="grid gap-6 relative z-10">
                 
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-start gap-4">
-                    <div class="p-3 bg-blue-50 rounded-lg text-blue-600">
+                    <div class="p-3 bg-green-50 rounded-lg text-green-600">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                     </div>
                     <div>
@@ -89,7 +89,7 @@
         {{-- Footer --}}
         <div class="bg-slate-100 px-6 py-4 flex items-center justify-between text-xs text-slate-500">
              <span>&copy; {{ date('Y') }} Lab SMABA</span>
-             <a href="{{ url('/') }}" class="hover:text-blue-600 font-medium transition-colors">Ke Website Utama &rarr;</a>
+             <a href="{{ url('/') }}" class="hover:text-green-600 font-medium transition-colors">Ke Website Utama &rarr;</a>
         </div>
     </div>
 

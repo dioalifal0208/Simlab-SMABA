@@ -27,7 +27,7 @@
                 @keydown="handleKeydown($event)"
                 @blur="save()"
                 rows="2"
-                class="border border-blue-500 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                class="border border-green-500 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
             ></textarea>
         @else
             <input 
@@ -36,7 +36,7 @@
                 x-model="value"
                 @keydown="handleKeydown($event)"
                 @blur="save()"
-                class="border border-blue-500 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 w-32 text-sm"
+                class="border border-green-500 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-500 w-32 text-sm"
             >
         @endif
         

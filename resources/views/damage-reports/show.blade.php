@@ -55,7 +55,7 @@
                             <h3 class="text-lg font-bold text-smaba-text mb-4">Status Laporan</h3>
                              <div class="text-center">
                                 @if($report->status == 'Dilaporkan') <span class="px-4 py-2 text-sm font-bold leading-none text-yellow-800 bg-yellow-100 rounded-full">Dilaporkan</span>
-                                @elseif($report->status == 'Diverifikasi') <span class="px-4 py-2 text-sm font-bold leading-none text-blue-800 bg-blue-100 rounded-full">Diverifikasi</span>
+                                @elseif($report->status == 'Diverifikasi') <span class="px-4 py-2 text-sm font-bold leading-none text-green-800 bg-green-100 rounded-full">Diverifikasi</span>
                                 @else <span class="px-4 py-2 text-sm font-bold leading-none text-green-800 bg-green-100 rounded-full">Diperbaiki</span>
                                 @endif
                             </div>

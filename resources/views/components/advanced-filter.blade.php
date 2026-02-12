@@ -156,10 +156,10 @@
     {{-- Active Filter Chips --}}
     <div class="flex flex-wrap gap-2" x-show="Object.keys(activeFilters).length > 0 || searchQuery">
         <template x-if="searchQuery">
-            <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
                 <i class="fas fa-search text-xs"></i>
                 <span>Pencarian: <strong x-text="searchQuery"></strong></span>
-                <button @click="searchQuery = ''; liveSearch()" class="hover:text-blue-900">
+                <button @click="searchQuery = ''; liveSearch()" class="hover:text-green-900">
                     <i class="fas fa-times text-xs"></i>
                 </button>
             </div>

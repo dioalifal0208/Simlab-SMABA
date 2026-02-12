@@ -41,7 +41,7 @@
                     <div id="calendar"></div>
                     <div class="flex flex-wrap items-center gap-3 text-xs text-gray-600">
                         <span class="font-semibold">Legend:</span>
-                        <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#2563eb] border border-blue-500"></span>Biologi</span>
+                        <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#2563eb] border border-green-500"></span>Biologi</span>
                         <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#16a34a] border border-green-600"></span>Fisika</span>
                         <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#f59e0b] border border-amber-600"></span>Bahasa</span>
                         <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-red-500"></span>Libur Nasional</span>

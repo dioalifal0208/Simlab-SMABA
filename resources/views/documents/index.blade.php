@@ -85,7 +85,7 @@
                             if (in_array($extension, ['pdf'])) {
                                 $iconClass = 'fa-file-pdf'; $iconColor = 'text-red-500';
                             } elseif (in_array($extension, ['doc', 'docx'])) {
-                                $iconClass = 'fa-file-word'; $iconColor = 'text-blue-500';
+                                $iconClass = 'fa-file-word'; $iconColor = 'text-green-500';
                             } elseif (in_array($extension, ['ppt', 'pptx'])) {
                                 $iconClass = 'fa-file-powerpoint'; $iconColor = 'text-orange-500';
                             }

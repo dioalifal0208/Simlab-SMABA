@@ -16,7 +16,7 @@
         </thead>
         <tbody class="text-gray-700 divide-y divide-gray-200" id="item-list">
             @forelse ($items as $item)
-                <tr class="hover:bg-gray-50" :class="{'bg-blue-50': selectedItems.includes('{{ $item->id }}')}">
+                <tr class="hover:bg-gray-50" :class="{'bg-green-50': selectedItems.includes('{{ $item->id }}')}">
                     <td class="py-4 px-4">
                         <input type="checkbox" x-model="selectedItems" value="{{ $item->id }}" class="rounded border-gray-300 text-smaba-dark-blue shadow-sm focus:ring-smaba-light-blue">
                     </td>
@@ -74,11 +74,11 @@
                             <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ __('items.empty.title') }}</h3>
                             <p class="text-sm text-gray-500 mb-4">{{ __('items.empty.description') }}</p>
                             @can('is-admin')
-                            <a href="{{ route('items.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                            <a href="{{ route('items.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-sm">
                                 <i class="fas fa-plus"></i> {{ __('items.empty.action') }}
                             </a>
                             @else
-                            <a href="{{ route('item-requests.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                            <a href="{{ route('item-requests.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-sm">
                                 <i class="fas fa-plus"></i> Ajukan Item Baru
                             </a>
                             @endcan

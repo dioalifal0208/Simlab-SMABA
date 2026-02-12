@@ -21,7 +21,7 @@
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
-                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('loans.*') || request()->routeIs('bookings.*') || request()->routeIs('calendar.index')) ? 'border-blue-600 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium leading-5 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('loans.*') || request()->routeIs('bookings.*') || request()->routeIs('calendar.index')) ? 'border-green-600 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium leading-5 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
                                     <div>{{ __('common.nav.lab_services') }}</div>
                                     <div class="ms-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
                                 </button>
@@ -58,7 +58,7 @@
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
-                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('damage-reports.*') || request()->routeIs('users.*') || request()->routeIs('reports.*') || request()->routeIs('announcements.index')) ? 'border-blue-600 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium ...">
+                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('damage-reports.*') || request()->routeIs('users.*') || request()->routeIs('reports.*') || request()->routeIs('announcements.index')) ? 'border-green-600 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium ...">
                             <div>{{ __('common.nav.management') }}</div>
                                     <div class="ms-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
                                 </button>
@@ -95,7 +95,7 @@
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
-                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('documents.*') || request()->routeIs('practicum-modules.*')) ? 'border-blue-600 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium leading-5 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ (request()->routeIs('documents.*') || request()->routeIs('practicum-modules.*')) ? 'border-green-600 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium leading-5 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
                                     <div>{{ __('common.nav.resources') }}</div>
                                     <div class="ms-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
                                 </button>
@@ -118,7 +118,7 @@
                 
                 {{-- Dark Mode Toggle --}}
                 <button 
-                    class="dark-mode-toggle p-2 text-gray-400 hover:text-blue-600 transition-colors duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    class="dark-mode-toggle p-2 text-gray-400 hover:text-green-600 transition-colors duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                     aria-label="Toggle Dark Mode"
                 >
                     <i class="fas fa-moon text-lg"></i>
@@ -127,12 +127,12 @@
                 {{-- Language Toggle --}}
                 <div class="flex items-center gap-2 text-sm px-2">
                     <a href="{{ route('lang.switch', 'id') }}" 
-                       class="px-2 py-1 rounded {{ app()->getLocale() == 'id' ? 'font-bold text-blue-700 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }} transition-colors">
+                       class="px-2 py-1 rounded {{ app()->getLocale() == 'id' ? 'font-bold text-green-700 bg-green-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }} transition-colors">
                         ID
                     </a>
                     <span class="text-gray-300">|</span>
                     <a href="{{ route('lang.switch', 'en') }}" 
-                       class="px-2 py-1 rounded {{ app()->getLocale() == 'en' ? 'font-bold text-blue-700 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }} transition-colors">
+                       class="px-2 py-1 rounded {{ app()->getLocale() == 'en' ? 'font-bold text-green-700 bg-green-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }} transition-colors">
                         EN
                     </a>
                 </div>
@@ -140,7 +140,7 @@
                 {{-- Product Tour Button --}}
                 <button 
                     onclick="if(typeof window.startDashboardTour === 'function') { window.startDashboardTour(); } else { alert('Product tour hanya tersedia di halaman Dashboard'); }"
-                    class="p-2 text-gray-400 hover:text-blue-600 transition-colors duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    class="p-2 text-gray-400 hover:text-green-600 transition-colors duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                     aria-label="Start Product Tour"
                     title="Mulai Tour Panduan"
                 >
@@ -265,7 +265,7 @@
             <div class="px-4 mt-3 space-y-2">
                 <div class="flex gap-2">
                     <button 
-                        class="dark-mode-toggle flex-1 p-3 text-gray-600 hover:text-blue-600 bg-gray-100 hover:bg-blue-50 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                        class="dark-mode-toggle flex-1 p-3 text-gray-600 hover:text-green-600 bg-gray-100 hover:bg-green-50 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                         aria-label="Toggle Dark Mode"
                     >
                         <i class="fas fa-moon"></i>
@@ -274,7 +274,7 @@
                     
                     <button 
                         onclick="if(typeof window.startDashboardTour === 'function') { window.startDashboardTour(); } else { alert('Product tour hanya tersedia di halaman Dashboard'); }"
-                        class="flex-1 p-3 text-gray-600 hover:text-blue-600 bg-gray-100 hover:bg-blue-50 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                        class="flex-1 p-3 text-gray-600 hover:text-green-600 bg-gray-100 hover:bg-green-50 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                         aria-label="Start Product Tour"
                     >
                         <i class="fas fa-compass"></i>
@@ -286,11 +286,11 @@
                 <div class="flex items-center justify-center gap-3 p-3 bg-gray-100 rounded-lg">
                     <span class="text-sm text-gray-600 font-medium">Bahasa:</span>
                     <a href="{{ route('lang.switch', 'id') }}" 
-                       class="px-3 py-1.5 rounded {{ app()->getLocale() == 'id' ? 'font-bold text-white bg-blue-600' : 'text-gray-600 bg-white hover:bg-gray-50' }} transition-colors text-sm">
+                       class="px-3 py-1.5 rounded {{ app()->getLocale() == 'id' ? 'font-bold text-white bg-green-600' : 'text-gray-600 bg-white hover:bg-gray-50' }} transition-colors text-sm">
                         ID
                     </a>
                     <a href="{{ route('lang.switch', 'en') }}" 
-                       class="px-3 py-1.5 rounded {{ app()->getLocale() == 'en' ? 'font-bold text-white bg-blue-600' : 'text-gray-600 bg-white hover:bg-gray-50' }} transition-colors text-sm">
+                       class="px-3 py-1.5 rounded {{ app()->getLocale() == 'en' ? 'font-bold text-white bg-green-600' : 'text-gray-600 bg-white hover:bg-gray-50' }} transition-colors text-sm">
                         EN
                     </a>
                 </div>

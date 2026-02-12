@@ -134,7 +134,7 @@
                                         @if($user->role == 'admin')
                                             <span class="px-3 py-1 text-xs font-bold leading-none text-red-800 bg-red-100 rounded-full">Admin</span>
                                         @elseif($user->role == 'guru')
-                                            <span class="px-3 py-1 text-xs font-bold leading-none text-blue-800 bg-blue-100 rounded-full">Guru</span>
+                                            <span class="px-3 py-1 text-xs font-bold leading-none text-green-800 bg-green-100 rounded-full">Guru</span>
                                         @else
                                             <span class="px-3 py-1 text-xs font-bold leading-none text-gray-800 bg-gray-100 rounded-full">Peran lain</span>
                                         @endif

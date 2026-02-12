@@ -6,7 +6,7 @@
                 <h3 class="text-xl font-bold text-smaba-text">Ubah Kata Sandi</h3>
                 <p class="text-sm text-gray-500">Gunakan kata sandi unik dengan kombinasi huruf, angka, dan simbol untuk menjaga akun tetap aman.</p>
             </div>
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-50 text-green-700">
                 Tips: perbarui berkala
             </span>
         </div>

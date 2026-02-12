@@ -67,7 +67,7 @@
                                     <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Mata Pelajaran</label><p class="text-gray-700">{{ $booking->mata_pelajaran ?? '-' }}</p></div>
                                 </div>
                                 <div class="space-y-4">
-                                    <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Laboratorium</label><p class="font-semibold text-blue-600">{{ $booking->laboratorium }}</p></div>
+                                    <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Laboratorium</label><p class="font-semibold text-green-600">{{ $booking->laboratorium }}</p></div>
                                     <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">Waktu Pelaksanaan</label>
                                         <div class="flex items-center mt-1 text-gray-800">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
