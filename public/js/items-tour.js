@@ -52,18 +52,20 @@ document.addEventListener('DOMContentLoaded', () => {
         ],
         
         init() {
-            // Check if tour has been completed
+            // Auto-start tour on first visit
             if (!localStorage.getItem(STORAGE_KEY)) {
-                // Auto-start tour on first visit
                 setTimeout(() => this.start(), 1000);
             }
             
-            // Add manual trigger button listener
-            const tourButton = document.getElementById('start-items-tour');
-            if (tourButton) {
-                tourButton.addEventListener('click', () => {
-                    this.start();
-                });
+            // Listen for navbar tour button clicks (desktop and mobile)
+            const navButton = document.getElementById('navbar-tour-button');
+            const navButtonMobile = document.getElementById('navbar-tour-button-mobile');
+            
+            if (navButton) {
+                navButton.addEventListener('click', () => this.start());
+            }
+            if (navButtonMobile) {
+                navButtonMobile.addEventListener('click', () => this.start());
             }
         },
         

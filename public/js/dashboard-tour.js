@@ -46,8 +46,20 @@ class DashboardTour {
     }
 
     init() {
+        // Auto-start tour on first visit
         if (!this.hasSeenTour) {
             setTimeout(() => this.start(), 1000);
+        }
+        
+        // Listen for navbar tour button clicks (desktop and mobile)
+        const navButton = document.getElementById('navbar-tour-button');
+        const navButtonMobile = document.getElementById('navbar-tour-button-mobile');
+        
+        if (navButton) {
+            navButton.addEventListener('click', () => this.start());
+        }
+        if (navButtonMobile) {
+            navButtonMobile.addEventListener('click', () => this.start());
         }
     }
 

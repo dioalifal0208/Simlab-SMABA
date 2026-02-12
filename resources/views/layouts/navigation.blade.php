@@ -139,7 +139,7 @@
 
                 {{-- Product Tour Button --}}
                 <button 
-                    onclick="if(typeof window.startDashboardTour === 'function') { window.startDashboardTour(); } else { alert('Product tour hanya tersedia di halaman Dashboard'); }"
+                    id="navbar-tour-button"
                     class="p-2 text-gray-400 hover:text-green-600 transition-colors duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                     aria-label="Start Product Tour"
                     title="Mulai Tour Panduan"
@@ -273,7 +273,7 @@
                     </button>
                     
                     <button 
-                        onclick="if(typeof window.startDashboardTour === 'function') { window.startDashboardTour(); } else { alert('Product tour hanya tersedia di halaman Dashboard'); }"
+                        id="navbar-tour-button-mobile"
                         class="flex-1 p-3 text-gray-600 hover:text-green-600 bg-gray-100 hover:bg-green-50 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                         aria-label="Start Product Tour"
                     >
