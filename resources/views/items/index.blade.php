@@ -8,6 +8,11 @@
                 <p class="text-sm text-gray-500 mt-1">{{ __('items.subtitle') }}</p>
             </div>
             <div class="mt-3 sm:mt-0 flex items-center space-x-3">
+                {{-- Tombol Product Tour --}}
+                <button id="start-items-tour" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-semibold text-sm shadow-sm transition-colors" title="Mulai Tour">
+                    <i class="fas fa-compass mr-2"></i> Tour
+                </button>
+                
                 @can('is-admin')
                     {{-- Tombol Impor Item (membuka modal) --}}
                     <button @click="showImportModal = true" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-semibold text-sm shadow-sm transition-colors">
@@ -15,12 +20,12 @@
                     </button>
 
                     {{-- Tombol Tambah Item --}}
-                    <a href="{{ route('items.create') }}" class="inline-block px-4 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-md hover:bg-smaba-light-blue shadow-sm transition-colors">
+                    <a href="{{ route('items.create') }}" class="inline-block px-4 py-2 bg-smaba-dark-green text-white text-sm font-semibold rounded-md hover:bg-smaba-light-green shadow-sm transition-colors">
                         + {{ __('items.actions.add') }}
                     </a>
                 @else
                     {{-- Guru/Staf: Ajukan penambahan item --}}
-                    <a href="{{ route('item-requests.create') }}" class="inline-flex items-center px-4 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-md hover:bg-smaba-light-blue shadow-sm transition-colors">
+                    <a href="{{ route('item-requests.create') }}" class="inline-flex items-center px-4 py-2 bg-smaba-dark-green text-white text-sm font-semibold rounded-md hover:bg-smaba-light-green shadow-sm transition-colors">
                         <i class="fas fa-plus mr-2"></i> {{ __('items.actions.request_add') }}
                     </a>
                 @endcan
@@ -150,6 +155,10 @@
     {{-- ## PENAMBAHAN: SCRIPT UNTUK FILTER OTOMATIS & HAPUS MASSAL       ## --}}
     {{-- =================================================================== --}}
     @push('scripts')
+        {{-- Product Tour CSS & JS --}}
+        <link rel="stylesheet" href="{{ asset('css/dashboard-tour.css') }}">
+        <script src="{{ asset('js/items-tour.js') }}"></script>
+        
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 // --- Logika untuk Filter Otomatis ---
