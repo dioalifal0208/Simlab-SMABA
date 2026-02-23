@@ -23,7 +23,7 @@
             class="mt-1"
             x-data=""
             x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-        >{{ __('Delete Account') }}</x-danger-button>
+        ">Hapus Akun</x-danger-button>
 
         <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
             <form method="post" action="{{ route('profile.destroy') }}" class="p-6 space-y-4">
@@ -31,19 +31,19 @@
                 @method('delete')
 
                 <div class="space-y-2">
-                    <h2 class="text-lg font-semibold text-gray-900">{{ __('Are you sure you want to delete your account?') }}</h2>
-                    <p class="text-sm text-gray-600">{{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}</p>
+                    <h2 class="text-lg font-semibold text-gray-900">Apakah Anda yakin ingin menghapus akun ini?</h2>
+                    <p class="text-sm text-gray-600">Setelah akun dihapus, semua data dan riwayat terkait akan dihapus secara permanen. Masukkan kata sandi Anda untuk mengkonfirmasi.</p>
                 </div>
 
                 <div>
-                    <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
+                    <x-input-label for="password" value="Kata Sandi" class="sr-only" />
 
                     <x-text-input
                         id="password"
                         name="password"
                         type="password"
                         class="mt-1 block w-3/4"
-                        placeholder="{{ __('Password') }}"
+                        placeholder="Masukkan kata sandi..."
                     />
 
                     <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
@@ -51,11 +51,11 @@
 
                 <div class="flex justify-end gap-3 pt-2">
                     <x-secondary-button x-on:click="$dispatch('close')">
-                        {{ __('Cancel') }}
+                        Batalkan
                     </x-secondary-button>
 
                     <x-danger-button>
-                        {{ __('Delete Account') }}
+                        Hapus Akun Saya
                     </x-danger-button>
                 </div>
             </form>

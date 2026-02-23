@@ -27,7 +27,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="md:col-span-1">
-                    <label for="name" class="block text-sm font-medium text-gray-700">{{ __('Name') }}</label>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
                     <x-text-input
                         id="name"
                         name="name"
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="md:col-span-1">
-                    <label for="email" class="block text-sm font-medium text-gray-700">{{ __('Email') }}</label>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Alamat Email</label>
                     <x-text-input
                         id="email"
                         name="email"
@@ -60,7 +60,7 @@
                             <div class="text-sm text-amber-800 space-y-1">
                                 <p>Email Anda belum diverifikasi.</p>
                                 <button form="send-verification" class="text-sm font-semibold text-smaba-dark-blue hover:text-smaba-light-blue underline">
-                                    {{ __('Click here to re-send the verification email.') }}
+                                    Klik di sini untuk mengirim ulang email verifikasi.
                                 </button>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
 
                     @if (session('status') === 'verification-link-sent')
                         <div class="mt-3 rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-700">
-                            {{ __('A new verification link has been sent to your email address.') }}
+                            Tautan verifikasi baru telah dikirim ke alamat email Anda.
                         </div>
                     @endif
                 </div>
@@ -94,7 +94,7 @@
 
             <div class="flex items-center justify-end gap-4">
                 <button type="submit" class="px-5 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-lg shadow hover:bg-smaba-light-blue transition-colors">
-                    {{ __('Save') }}
+                    Simpan Perubahan
                 </button>
 
                 @if (session('status') === 'profile-updated')
@@ -104,7 +104,7 @@
                         x-transition
                         x-init="setTimeout(() => show = false, 2000)"
                         class="text-sm text-gray-600"
-                    >{{ __('Saved.') }}</p>
+                    >Tersimpan.</p>
                 @endif
             </div>
         </form>

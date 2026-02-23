@@ -17,7 +17,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="md:col-span-2">
-                    <label for="update_password_current_password" class="block text-sm font-medium text-gray-700">{{ __('Current Password') }}</label>
+                    <label for="update_password_current_password" class="block text-sm font-medium text-gray-700">Kata Sandi Saat Ini</label>
                     <x-text-input
                         id="update_password_current_password"
                         name="current_password"
@@ -29,7 +29,7 @@
                 </div>
 
                 <div>
-                    <label for="update_password_password" class="block text-sm font-medium text-gray-700">{{ __('New Password') }}</label>
+                    <label for="update_password_password" class="block text-sm font-medium text-gray-700">Kata Sandi Baru</label>
                     <x-text-input
                         id="update_password_password"
                         name="password"
@@ -41,7 +41,7 @@
                 </div>
 
                 <div>
-                    <label for="update_password_password_confirmation" class="block text-sm font-medium text-gray-700">{{ __('Confirm Password') }}</label>
+                    <label for="update_password_password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Kata Sandi Baru</label>
                     <x-text-input
                         id="update_password_password_confirmation"
                         name="password_confirmation"
@@ -55,7 +55,7 @@
 
             <div class="flex items-center justify-end gap-4">
                 <button type="submit" class="px-5 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-lg shadow hover:bg-smaba-light-blue transition-colors">
-                    {{ __('Save') }}
+                    Simpan Perubahan
                 </button>
 
                 @if (session('status') === 'password-updated')
@@ -65,7 +65,7 @@
                         x-transition
                         x-init="setTimeout(() => show = false, 2000)"
                         class="text-sm text-gray-600"
-                    >{{ __('Saved.') }}</p>
+                    >Tersimpan.</p>
                 @endif
             </div>
         </form>
