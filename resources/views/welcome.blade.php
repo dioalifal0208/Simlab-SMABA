@@ -156,7 +156,7 @@
                                     <p class="text-2xl font-bold text-green-900 mt-1">24</p>
                                 </div>
                                 <div class="p-4 bg-gray-50 border border-gray-100 rounded-lg">
-                                    <p class="text-xs text-gray-600 font-medium uppercase">Item Maintenance</p>
+                                    <p class="text-xs text-gray-600 font-medium uppercase">Pemeliharaan Alat</p>
                                     <p class="text-2xl font-bold text-gray-900 mt-1">3</p>
                                 </div>
                             </div>
@@ -199,8 +199,8 @@
                         <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mb-4 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors">
                             <i class="fas fa-boxes-stacked text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Inventaris Digital</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-4">Database terpusat untuk semua alat dan bahan. Lacak kondisi dan lokasi dengan mudah.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.features.inventory.title') }}</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ __('welcome.features.inventory.desc') }}</p>
                         <button @click="showFeatureModal = true; activeFeature = 'inventory'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
                     
@@ -209,8 +209,8 @@
                         <div class="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center mb-4 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                             <i class="fas fa-qrcode text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Validasi Digital (QR)</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-4">Surat peminjaman dilengkapi QR Code unik yang terverifikasi. Cek keaslian dokumen tanpa login.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.features.validation.title') }}</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ __('welcome.features.validation.desc') }}</p>
                         <button @click="showFeatureModal = true; activeFeature = 'validation'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
 
@@ -219,8 +219,8 @@
                         <div class="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center mb-4 text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-colors">
                             <i class="fas fa-calendar-alt text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Kalender Cerdas</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-4">Cegah bentrok jadwal antar guru mata pelajaran Fisika, Biologi, dan Bahasa.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.features.calendar.title') }}</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ __('welcome.features.calendar.desc') }}</p>
                         <button @click="showFeatureModal = true; activeFeature = 'calendar'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
 
@@ -229,8 +229,8 @@
                         <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
                             <i class="fas fa-file-excel text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Laporan & Export Excel</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-4">Pantau tren peminjaman dan download rekapitulasi laporan bulanan dalam format Excel otomatis.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.features.report.title') }}</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ __('welcome.features.report.desc') }}</p>
                         <button @click="showFeatureModal = true; activeFeature = 'report'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
                 </div>
@@ -242,34 +242,34 @@
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div data-aos="fade-right">
-                        <h2 class="text-3xl font-bold text-gray-900 tracking-tight mb-6">Workflow Sederhana</h2>
+                        <h2 class="text-3xl font-bold text-gray-900 tracking-tight mb-6">{{ __('welcome.workflow.title') }}</h2>
                         <div class="space-y-8">
                             <div class="flex gap-4" data-aos="fade-up" data-aos-delay="100">
                                 <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-sm">1</div>
                                 <div>
-                                    <h4 class="text-lg font-bold text-gray-900">Guru Mengajukan</h4>
-                                    <p class="text-gray-600 text-sm mt-1">Pilih tanggal, alat, dan jam pelajaran melalui dashboard.</p>
+                                    <h4 class="text-lg font-bold text-gray-900">{{ __('welcome.workflow.step1_title') }}</h4>
+                                    <p class="text-gray-600 text-sm mt-1">{{ __('welcome.workflow.step1_desc') }}</p>
                                 </div>
                             </div>
                             <div class="flex gap-4" data-aos="fade-up" data-aos-delay="200">
                                 <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm">2</div>
                                 <div>
-                                    <h4 class="text-lg font-bold text-gray-900">Validasi Digital</h4>
-                                    <p class="text-gray-600 text-sm mt-1">Kepala Lab menyetujui dan sistem menerbitkan QR Code otomatis pada surat peminjaman.</p>
+                                    <h4 class="text-lg font-bold text-gray-900">{{ __('welcome.workflow.step2_title') }}</h4>
+                                    <p class="text-gray-600 text-sm mt-1">{{ __('welcome.workflow.step2_desc') }}</p>
                                 </div>
                             </div>
                             <div class="flex gap-4" data-aos="fade-up" data-aos-delay="300">
                                 <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm">3</div>
                                 <div>
-                                    <h4 class="text-lg font-bold text-gray-900">Pelaksanaan</h4>
-                                    <p class="text-gray-600 text-sm mt-1">Praktikum berjalan, pengembalian alat dicatat kondisi akhirnya.</p>
+                                    <h4 class="text-lg font-bold text-gray-900">{{ __('welcome.workflow.step3_title') }}</h4>
+                                    <p class="text-gray-600 text-sm mt-1">{{ __('welcome.workflow.step3_desc') }}</p>
                                 </div>
                             </div>
                             <div class="flex gap-4" data-aos="fade-up" data-aos-delay="400">
                                 <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm">4</div>
                                 <div>
-                                    <h4 class="text-lg font-bold text-gray-900">Laporan Otomatis</h4>
-                                    <p class="text-gray-600 text-sm mt-1">Data tersimpan otomatis dan bisa diexport ke Excel untuk laporan bulanan.</p>
+                                    <h4 class="text-lg font-bold text-gray-900">{{ __('welcome.workflow.step4_title') }}</h4>
+                                    <p class="text-gray-600 text-sm mt-1">{{ __('welcome.workflow.step4_desc') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -313,9 +313,9 @@
                     <span class="text-sm font-semibold text-gray-500">LAB-SMABA</span>
                 </div>
                 <div class="flex gap-6 text-sm text-gray-500">
-                    <span class="cursor-not-allowed hover:text-gray-900">Kebijakan Privasi</span>
-                    <span class="cursor-not-allowed hover:text-gray-900">Syarat & Ketentuan</span>
-                    <a href="mailto:lab@smaba.sch.id" class="hover:text-gray-900">Hubungi Kami</a>
+                    <span class="cursor-not-allowed hover:text-gray-900">{{ __('welcome.footer.privacy') }}</span>
+                    <span class="cursor-not-allowed hover:text-gray-900">{{ __('welcome.footer.terms') }}</span>
+                    <a href="mailto:lab@smaba.sch.id" class="hover:text-gray-900">{{ __('welcome.footer.contact') }}</a>
                 </div>
                 <p class="text-sm text-gray-400">&copy; {{ date('Y') }} SMA Negeri 1 Babat.</p>
             </div>
@@ -325,7 +325,7 @@
         <div x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm p-4" style="display: none;">
             <div @click.outside="isModalOpen = false" x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" class="w-full max-w-md bg-white p-8 rounded-lg shadow-xl border border-gray-200 relative">
                 
-                <h2 class="text-xl font-bold text-gray-900 text-center mb-6">Selamat Datang</h2>
+                <h2 class="text-xl font-bold text-gray-900 text-center mb-6">{{ __('welcome.auth.welcome') }}</h2>
 
                 <div id="auth-error-message" class="hidden mb-4 bg-red-50 border border-red-200 text-red-600 p-3 text-sm rounded-md" role="alert"></div>
                 <div id="auth-success-message" class="hidden mb-4 bg-green-50 border border-green-200 text-green-600 p-3 text-sm rounded-md" role="alert"></div>
@@ -345,11 +345,11 @@
                         <div class="flex items-center justify-between">
                             <label class="flex items-center">
                                 <input type="checkbox" class="rounded border-gray-300 text-green-600 shadow-sm focus:ring-green-500" name="remember">
-                                <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
+                                <span class="ml-2 text-sm text-gray-600">{{ __('welcome.auth.remember') }}</span>
                             </label>
-                            <a href="{{ route('password.request') }}" class="text-sm text-green-600 hover:text-green-800 font-medium">Lupa password?</a>
+                            <a href="{{ route('password.request') }}" class="text-sm text-green-600 hover:text-green-800 font-medium">{{ __('welcome.auth.forgot_password') }}</a>
                         </div>
-                        <button type="submit" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all">Masuk</button>
+                        <button type="submit" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all">{{ __('welcome.auth.login_btn') }}</button>
                     </form>
                 </div>
 
@@ -466,7 +466,7 @@
                                     <h5 class="font-bold text-gray-800">Peminjaman #INV-2026</h5>
                                     <p class="text-sm text-gray-500">Pak Budi - Fisika</p>
                                 </div>
-                                <span class="badge px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded font-bold uppercase" id="status-badge">Pending</span>
+                                <span class="badge px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded font-bold uppercase" id="status-badge">Menunggu</span>
                             </div>
                         </div>
                         <div class="flex justify-center mt-4">
@@ -614,7 +614,7 @@
                              </div>
                              <h4 class="text-lg font-bold text-gray-900">Export Laporan Bulanan</h4>
                              <p class="text-sm text-gray-500">Unduh rekapitulasi peminjaman lengkap dengan detail alat dan penanggung jawab.</p>
-                             <button class="w-full py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition shadow-md"><i class="fas fa-download mr-2"></i> Download .XLSX</button>
+                             <button class="w-full py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition shadow-md"><i class="fas fa-download mr-2"></i> Unduh .XLSX</button>
                          </div>
                          <div class="flex-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                              <h5 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wide">Statistik Peminjaman</h5>
