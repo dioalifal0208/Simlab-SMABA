@@ -2,7 +2,6 @@
 //    File ini juga secara otomatis mengimpor dan menginisialisasi Alpine.js,
 //    yang merupakan mesin di balik fungsionalitas dropdown.
 import './bootstrap';
-import './personalization';
 import Chart from 'chart.js/auto';
 window.Chart = Chart;
 // Import CSS AOS

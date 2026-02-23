@@ -279,19 +279,18 @@ class ItemController extends Controller
         $itemIds = $request->input('item_ids');
 
         try {
-            // 3. Ambil semua item yang akan dihapus
-            $items = Item::whereIn('id', $itemIds)->get();
+            // 3. Ambil semua item beserta relasi images (sistem multi-foto)
+            $items = Item::with('images')->whereIn('id', $itemIds)->get();
 
-            // 4. Kumpulkan semua path foto yang valid (bukan null)
-            // Method filter() akan menghapus nilai null/kosong
-            $photoPaths = $items->pluck('photo')->filter()->all();
-
-            // 5. Hapus semua foto dari storage dalam satu perintah
-            if (!empty($photoPaths)) {
-                Storage::disk('public')->delete($photoPaths);
+            // 4. Kumpulkan semua path foto dari relasi item_images dan hapus dari storage
+            foreach ($items as $item) {
+                foreach ($item->images as $image) {
+                    Storage::disk('public')->delete($image->path);
+                }
             }
 
-            // 6. Hapus semua record dari database dalam satu query
+            // 5. Hapus semua record dari database dalam satu query
+            // (relasi item_images terhapus otomatis via onDelete cascade di migration)
             Item::whereIn('id', $itemIds)->delete();
             
             Log::info('Bulk delete success for admin. IDs: ' . implode(', ', $itemIds));
@@ -318,13 +317,37 @@ class ItemController extends Controller
         // Authorization dan validation sudah di-handle di ImportItemRequest
 
         try {
-            // Langsung jalankan impor dari file yang diunggah
-            Excel::import(new ItemImport, $request->file('file'));
+            // Buat instance ItemImport terlebih dahulu agar bisa diakses setelah import
+            $import = new ItemImport;
+            Excel::import($import, $request->file('file'));
 
-            // Jika berhasil, kirim respons sukses
+            $importedCount = $import->getImportedCount();
+            $failures      = $import->failures();
+            $failureCount  = $failures->count();
+
+            // Jika tidak ada satu pun baris yang berhasil, anggap gagal
+            if ($importedCount === 0 && $failureCount > 0) {
+                $errorMessages = [];
+                foreach ($failures as $failure) {
+                    $errorMessages[] = "Baris " . $failure->row() . ": " . implode(', ', $failure->errors())
+                        . " (Nilai: '" . ($failure->values()[$failure->attribute()] ?? '-') . "')";
+                }
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Import gagal. Semua baris tidak lolos validasi. Pastikan kolom <strong>tipe</strong> berisi "Alat" atau "Bahan Habis Pakai" dan kolom <strong>kondisi</strong> berisi "Baik", "Kurang Baik", atau "Rusak".',
+                    'errors'  => $errorMessages,
+                ], 422);
+            }
+
+            // Jika ada yang berhasil tapi ada juga yang gagal
+            $message = "{$importedCount} baris berhasil disimpan.";
+            if ($failureCount > 0) {
+                $message .= " {$failureCount} baris di-skip karena tidak lolos validasi.";
+            }
+
             return response()->json([
                 'success' => true,
-                'message' => 'Data item berhasil diimpor.'
+                'message' => $message,
             ]);
 
         } catch (ValidationException $e) {

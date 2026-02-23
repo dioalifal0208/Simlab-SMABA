@@ -223,6 +223,25 @@ public function show(Loan $loan)
 
     $loan->save(); // Simpan perubahan status
 
+    // --- UPDATE STOK ITEM ---
+    if ($request->status == 'approved') {
+        // Stok berkurang saat disetujui
+        foreach ($loan->items as $item) {
+            $item->decrement('jumlah', $item->pivot->jumlah);
+        }
+    } elseif ($request->status == 'completed') {
+        // Stok dikembalikan saat peminjaman selesai
+        foreach ($loan->items as $item) {
+            $item->increment('jumlah', $item->pivot->jumlah);
+        }
+    } elseif ($request->status == 'rejected' && $loan->getOriginal('status') == 'approved') {
+        // Jika sebelumnya approved tapi sekarang ditolak (dibatalkan), stok dikembalikan
+        foreach ($loan->items as $item) {
+            $item->increment('jumlah', $item->pivot->jumlah);
+        }
+    }
+    // ------------------------
+
     // --- PENAMBAHAN: KIRIM NOTIFIKASI & EMAIL KE PENGGUNA ---
     if ($request->status == 'approved' || $request->status == 'rejected') {
         try {

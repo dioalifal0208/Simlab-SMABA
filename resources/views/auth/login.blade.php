@@ -4,12 +4,7 @@
         
         {{-- Header Kartu --}}
         <div class="text-center mb-8">
-            {{-- Language Toggle --}}
-            <div class="flex justify-center gap-2 mb-4 text-sm">
-                <a href="{{ route('lang.switch', 'id') }}" class="{{ app()->getLocale() == 'id' ? 'font-bold text-smaba-dark-blue underline' : 'text-gray-500 hover:text-gray-700' }}">Indonesia</a>
-                <span class="text-gray-300">|</span>
-                <a href="{{ route('lang.switch', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'font-bold text-smaba-dark-blue underline' : 'text-gray-500 hover:text-gray-700' }}">English</a>
-            </div>
+
             
             <a href="/" class="lg:hidden mb-6 inline-block">
                 <img src="{{ asset('images/logo-smaba.webp') }}" alt="Logo Smaba" class="w-16 h-16">

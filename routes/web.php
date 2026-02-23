@@ -46,13 +46,6 @@ Route::get('/', function () {
     return view('welcome', compact('testimonials', 'todayBookings'));
 })->middleware('no.cache')->name('welcome');
 
-// Route untuk ganti bahasa
-Route::get('lang/{locale}', function ($locale) {
-    if (in_array($locale, ['en', 'id'])) {
-        session()->put('locale', $locale);
-    }
-    return back();
-})->name('lang.switch');
 
 Route::post('/testimonials', [TestimonialController::class, 'store'])->name('testimonials.store');
 Route::post('/contact-admin', [ContactAdminController::class, 'store'])->name('contact.admin.store');
@@ -154,7 +147,8 @@ Route::middleware(['auth', 'single.session'])->group(function () {
         
         // Laporan & Analitik
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-        Route::post('/reports/export', [ReportController::class, 'export'])->name('reports.export'); // <-- Export Route
+        Route::post('/reports/export', [ReportController::class, 'export'])->name('reports.export'); // Export Booking Lab
+        Route::post('/reports/export-loans', [ReportController::class, 'exportLoans'])->name('reports.export-loans'); // Export Peminjaman Alat
 
         // Lock Screen Unlock
         Route::post('/lock-screen/unlock', [\App\Http\Controllers\Auth\LockScreenController::class, 'unlock'])->name('lock-screen.unlock');

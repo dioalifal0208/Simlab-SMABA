@@ -23,9 +23,7 @@ class StoreLoanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            '
-
-tanggal_pinjam' => 'required|date|after:today',
+            'tanggal_pinjam' => 'required|date|after_or_equal:today',
             'tanggal_estimasi_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
             'items' => 'required|array|min:1',
             'items.*' => 'exists:items,id',
@@ -45,7 +43,7 @@ tanggal_pinjam' => 'required|date|after:today',
         return [
             'tanggal_pinjam.required' => 'Tanggal pinjam wajib diisi.',
             'tanggal_pinjam.date' => 'Tanggal pinjam harus berupa tanggal yang valid.',
-            'tanggal_pinjam.after' => 'Tanggal pinjam harus setelah hari ini.',
+            'tanggal_pinjam.after_or_equal' => 'Tanggal pinjam harus hari ini atau setelahnya.',
             
             'tanggal_estimasi_kembali.required' => 'Tanggal estimasi kembali wajib diisi.',
             'tanggal_estimasi_kembali.date' => 'Tanggal estimasi kembali harus berupa tanggal yang valid.',

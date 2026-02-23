@@ -28,7 +28,7 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => ['required', 'string', 'email', 'max:255', \Illuminate\Validation\Rule::unique('users')->ignore($user->id)],
             'role' => 'required|in:admin,guru',
             'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa',
         ]);
@@ -121,5 +121,20 @@ class UserController extends Controller
             'success' => true,
             'message' => 'Data pengguna berhasil diimpor.'
         ]);
+    }
+
+    /**
+     * Menghapus user dari database.
+     */
+    public function destroy(User $user)
+    {
+        // Jaga agar admin tidak bisa menghapus dirinya sendiri
+        if ($user->id === auth()->id()) {
+            return back()->withErrors(['message' => 'Anda tidak dapat menghapus akun Anda sendiri.']);
+        }
+
+        $user->delete();
+
+        return redirect()->route('users.index')->with('success', "Pengguna \"{$user->name}\" berhasil dihapus.");
     }
 }

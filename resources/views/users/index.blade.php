@@ -140,9 +140,18 @@
                                         @endif
                                     </td>
                                     <td class="py-4 px-6 text-center">
-                                        <a href="{{ route('users.edit', $user->id) }}" class="inline-flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded-lg shadow-sm text-xs transition-colors duration-300" title="Edit Peran">
+                                        <a href="{{ route('users.edit', $user->id) }}" class="inline-flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded-lg shadow-sm text-xs transition-colors duration-300 mr-1" title="Edit Peran">
                                             Edit
                                         </a>
+                                        @if(auth()->id() !== $user->id)
+                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus pengguna {{ addslashes($user->name) }}?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="inline-flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded-lg shadow-sm text-xs transition-colors duration-300" title="Hapus Pengguna">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty

@@ -14,6 +14,9 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
 {
     use SkipsFailures;
 
+    /** Counter untuk baris yang berhasil diimpor */
+    private int $importedCount = 0;
+
     /**
     * @param array $row
     *
@@ -41,11 +44,19 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
         // 3. Jika item sudah ada, update. Jika tidak, buat baru.
         if ($item) {
             $item->update($data);
+            $this->importedCount++;
             return $item;
         }
 
         // Saat membuat baru, kita gabungkan 'nama_alat' dengan data lainnya.
+        $this->importedCount++;
         return new Item(array_merge(['nama_alat' => $row['nama_alat']], $data));
+    }
+
+    /** Kembalikan jumlah baris yang berhasil diimpor */
+    public function getImportedCount(): int
+    {
+        return $this->importedCount;
     }
 
     /**
@@ -62,7 +73,7 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
             'satuan' => 'nullable|string|max:50',
             'kondisi' => 'required|in:Baik,Kurang Baik,Rusak',
             'lokasi_penyimpanan' => 'nullable|string|max:255',
-            'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa,Komputer,Kimia,Multimedia', // Validasi lab
+            'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa', // Hanya 3 lab yang didukung sistem
             'stok_minimum' => 'nullable|integer|min:0',
         ];
     }

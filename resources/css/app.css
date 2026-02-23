@@ -7,7 +7,6 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import 'aos/dist/aos.css';
-@import './dark-mode.css';
 
 /*
  * 2. Aturan CSS Kustom.

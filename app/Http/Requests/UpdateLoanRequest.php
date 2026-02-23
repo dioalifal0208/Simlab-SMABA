@@ -23,7 +23,7 @@ class UpdateLoanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|in:approved,rejected,completed',
+            'status' => 'required|in:approved,rejected,completed,Terlambat',
             'admin_notes' => 'nullable|string|max:1000',
         ];
     }
@@ -37,7 +37,7 @@ class UpdateLoanRequest extends FormRequest
     {
         return [
             'status.required' => 'Status wajib dipilih.',
-            'status.in' => 'Status harus berupa "approved", "rejected", atau "completed".',
+            'status.in' => 'Status harus berupa "approved", "rejected", "completed", atau "Terlambat".',
             
             'admin_notes.max' => 'Catatan admin tidak boleh lebih dari :max karakter.',
         ];

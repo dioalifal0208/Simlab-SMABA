@@ -91,7 +91,7 @@ class AuthenticatedSessionController extends Controller
                 'user_id' => Auth::id(),
                 'action' => 'login',
                 'model' => 'Auth',
-                'details' => ['method' => '2fa' ? 'password_2fa' : 'password'],
+                'details' => ['method' => 'password'],
                 'ip_address' => $request->ip(),
                 'user_agent' => $request->userAgent(),
             ]);

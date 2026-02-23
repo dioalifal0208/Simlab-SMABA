@@ -13,6 +13,9 @@ return new class extends Migration
     public function up(): void
     {
         // Mengubah kolom 'status' untuk menambahkan 'Terlambat' ke daftar ENUM
+        if (DB::getDriverName() === 'sqlite') {
+            return;
+        }
         DB::statement("ALTER TABLE loans MODIFY COLUMN status ENUM('pending', 'approved', 'rejected', 'completed', 'Terlambat') NOT NULL DEFAULT 'pending'");
     }
 

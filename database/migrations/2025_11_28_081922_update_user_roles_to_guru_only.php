@@ -16,6 +16,9 @@ return new class extends Migration
             ->update(['role' => 'guru']);
 
         // Perketat enum role hanya untuk admin dan guru, default guru.
+        if (DB::getDriverName() === 'sqlite') {
+            return;
+        }
         DB::statement("ALTER TABLE users MODIFY role ENUM('admin','guru') NOT NULL DEFAULT 'guru'");
     }
 

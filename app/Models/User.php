@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Item;
+use App\Models\Loan;
+use App\Models\Booking;
+use App\Models\MaintenanceLog;
+use App\Models\Document;
+use App\Models\DamageReport;
+use App\Models\Announcement;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Traits\Auditable;
 

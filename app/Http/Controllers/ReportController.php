@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 use App\Exports\BookingsExport;
+use App\Exports\LoansExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
@@ -66,6 +67,23 @@ class ReportController extends Controller
         $month = $request->month;
         $year = $request->year;
 
-        return Excel::download(new BookingsExport($month, $year), 'Laporan-Peminjaman-Lab-' . $month . '-' . $year . '.xlsx');
+        return Excel::download(new BookingsExport($month, $year), 'Laporan-Booking-Lab-' . $month . '-' . $year . '.xlsx');
+    }
+
+    /**
+     * Export data peminjaman alat (loans) ke Excel.
+     * Data ini sesuai dengan grafik di halaman Reports.
+     */
+    public function exportLoans(Request $request)
+    {
+        $request->validate([
+            'month' => 'required|numeric|min:1|max:12',
+            'year' => 'required|numeric|min:2020|max:' . (date('Y') + 1),
+        ]);
+
+        $month = $request->month;
+        $year = $request->year;
+
+        return Excel::download(new LoansExport($month, $year), 'Laporan-Peminjaman-Alat-' . $month . '-' . $year . '.xlsx');
     }
 }

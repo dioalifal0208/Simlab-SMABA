@@ -43,9 +43,14 @@ class LoanStatusUpdated extends Notification
             $statusText = 'telah DITOLAK';
         }
 
+        // Load relasi sekali ke memori (hindari N+1 query)
+        $this->loan->loadMissing('items');
+        $items = $this->loan->items;
+
         // Ambil nama item pertama untuk pesan yang lebih jelas
-        $itemName = $this->loan->items()->first()->nama_alat ?? 'peminjaman Anda';
-        if ($this->loan->items()->count() > 1) {
+        $firstItem = $items->first();
+        $itemName = $firstItem?->nama_alat ?? 'peminjaman Anda';
+        if ($items->count() > 1) {
             $itemName .= ' (dan lainnya)';
         }
 
