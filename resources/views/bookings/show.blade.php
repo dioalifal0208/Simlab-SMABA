@@ -118,7 +118,7 @@
                             @if($booking->status == 'pending') 
                                 <div class="inline-flex flex-col items-center justify-center bg-yellow-100 text-yellow-800 rounded-full h-32 w-32 mb-2 ring-4 ring-yellow-50">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                    <span class="font-bold text-lg">Pending</span>
+                                    <span class="font-bold text-lg">Menunggu</span>
                                 </div>
                                 <p class="text-sm text-gray-500 mt-2">Menunggu persetujuan Admin</p>
                             @elseif($booking->status == 'approved') 

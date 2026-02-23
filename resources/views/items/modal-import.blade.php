@@ -124,7 +124,7 @@
             },
 
             showFeedback(message, type) {
-                this.feedbackDiv.innerHTML = `<p class="font-bold">${type === 'success' ? 'Sukses' : 'Error'}</p><div>${message}</div>`;
+                this.feedbackDiv.innerHTML = `<p class="font-bold">${type === 'success' ? 'Sukses' : 'Gagal'}</p><div>${message}</div>`;
                 this.feedbackDiv.className = `mt-4 p-3 border-l-4 text-sm ${type === 'success' ? 'bg-green-50 border-green-400 text-green-700' : 'bg-red-50 border-red-400 text-red-700'}`;
             }
         }

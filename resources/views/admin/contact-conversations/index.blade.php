@@ -45,7 +45,7 @@
                             
                             {{-- Status Badge (Optional) --}}
                             <template x-if="chat.status === 'open'">
-                                <span class="h-2 w-2 rounded-full bg-green-500" title="Open"></span>
+                                <span class="h-2 w-2 rounded-full bg-green-500" title="Terbuka"></span>
                             </template>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
 
                         {{-- Actions (Refresh) --}}
                         <div class="flex items-center space-x-2">
-                            <button @click="fetchMessages(activeConversation.id)" class="p-2 text-gray-400 hover:text-green-600 transition-colors rounded-full" title="Refresh Chat">
+                            <button @click="fetchMessages(activeConversation.id)" class="p-2 text-gray-400 hover:text-green-600 transition-colors rounded-full" title="Perbarui Chat">
                                 <i class="fas fa-sync-alt" :class="{'fa-spin': loadingMessages}"></i>
                             </button>
                         </div>

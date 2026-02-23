@@ -692,7 +692,7 @@
                         event.preventDefault();
                         const submitButton = this.querySelector('button[type="submit"]');
                         const originalButtonText = submitButton.innerHTML;
-                        submitButton.innerHTML = 'Loading...';
+                        submitButton.innerHTML = 'Memproses...';
                         submitButton.disabled = true;
                         errorMessageDiv.classList.add('hidden');
                         successMessageDiv.classList.add('hidden');
@@ -704,9 +704,9 @@
                             });
                             if (response.redirected) { window.location.href = response.url; return; }
                             const data = await response.json();
-                            if (!response.ok) { showError(data.message || 'Error occurred.'); } 
+                            if (!response.ok) { showError(data.message || 'Terjadi kesalahan.'); } 
                             else { window.location.href = '{{ route('dashboard') }}'; }
-                        } catch (error) { showError('Network error.'); } 
+                        } catch (error) { showError('Koneksi gagal. Periksa jaringan Anda.'); } 
                         finally { submitButton.innerHTML = originalButtonText; submitButton.disabled = false; }
                     });
                 }

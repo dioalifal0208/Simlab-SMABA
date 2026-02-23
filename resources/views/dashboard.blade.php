@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('common.nav.dashboard') }}</h2>
         
         {{-- Product Tour CSS & JS --}}
         <link rel="stylesheet" href="{{ asset('css/dashboard-tour.css') }}?v={{ time() }}">
@@ -249,7 +249,7 @@
                                     </div>
                                     <div class="flex-grow min-w-0">
                                         <p class="text-sm text-gray-900">
-                                            <span class="font-semibold">{{ $activity->user->name ?? 'System' }}</span>
+                                            <span class="font-semibold">{{ $activity->user->name ?? 'Sistem' }}</span>
                                             @if ($activity instanceof \App\Models\Loan)
                                             mengajukan peminjaman alat
                                             @elseif ($activity instanceof \App\Models\Booking)

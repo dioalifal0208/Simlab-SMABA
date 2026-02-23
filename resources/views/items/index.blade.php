@@ -44,7 +44,7 @@
             @endif
             @if (session('error'))
                 <div class="mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg" role="alert">
-                    <p class="font-bold">Error</p>
+                    <p class="font-bold">Gagal</p>
                     <span>{{ session('error') }}</span>
                 </div>
             @endif
@@ -91,7 +91,7 @@
                                 @endunless
                             </div>
                             {{-- Tombol Reset --}}
-                            <a href="{{ route('items.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-semibold text-sm shadow-sm transition-colors" title="Reset Filter">
+                            <a href="{{ route('items.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-semibold text-sm shadow-sm transition-colors" title="Atur Ulang Filter">
                                 <i class="fas fa-sync-alt"></i>
                             </a>
                         </div>

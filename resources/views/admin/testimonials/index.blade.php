@@ -50,7 +50,7 @@
                                             @if($item->laboratorium) • {{ $item->laboratorium }} @endif
                                         </p>
                                     </div>
-                                    <span class="text-xs px-2 py-1 rounded-full bg-amber-50 text-amber-700">Pending</span>
+                                    <span class="text-xs px-2 py-1 rounded-full bg-amber-50 text-amber-700">Menunggu</span>
                                 </div>
                                 <p class="mt-3 text-sm text-gray-700">“{{ $item->pesan }}”</p>
                                 <div class="mt-4 flex items-center gap-2">
@@ -88,7 +88,7 @@
                                             @if($item->laboratorium) • {{ $item->laboratorium }} @endif
                                         </p>
                                     </div>
-                                    <span class="text-xs px-2 py-1 rounded-full bg-emerald-50 text-emerald-700">Approved</span>
+                                    <span class="text-xs px-2 py-1 rounded-full bg-emerald-50 text-emerald-700">Disetujui</span>
                                 </div>
                                 <p class="mt-3 text-sm text-gray-700">“{{ $item->pesan }}”</p>
                                 <div class="mt-4 flex items-center gap-2">

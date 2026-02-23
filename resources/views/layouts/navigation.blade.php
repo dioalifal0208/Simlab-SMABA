@@ -122,7 +122,7 @@
                 <button 
                     id="navbar-tour-button"
                     class="p-2 text-gray-400 hover:text-green-600 transition-colors duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                    aria-label="Start Product Tour"
+                    aria-label="Mulai Tour Panduan"
                     title="Mulai Tour Panduan"
                 >
                     <i class="fas fa-compass text-lg"></i>
@@ -248,10 +248,10 @@
                     <button 
                         id="navbar-tour-button-mobile"
                         class="flex-1 p-3 text-gray-600 hover:text-green-600 bg-gray-100 hover:bg-green-50 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-                        aria-label="Start Product Tour"
+                        aria-label="Mulai Tour Panduan"
                     >
                         <i class="fas fa-compass"></i>
-                        <span class="text-sm font-medium">Tour</span>
+                        <span class="text-sm font-medium">Tour Panduan</span>
                     </button>
                 </div>
                 
