@@ -134,7 +134,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     {{-- Modal Booking Baru --}}
     <div x-show="showModal" 
@@ -289,4 +288,5 @@
             });
         </script>
     @endpush
+    </div>
 </x-app-layout>

@@ -9,11 +9,11 @@
         @click="toggle()"
         x-show="!open"
         x-transition
-        class="relative flex items-center justify-center w-14 h-14 rounded-full shadow-lg bg-smaba-dark-blue text-white hover:bg-smaba-light-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-smaba-light-blue transition"
+        class="relative flex items-center justify-center w-14 h-14 rounded-full shadow-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition border-2 border-white"
         style="display: none;"
     >
-        <i class="fas fa-comments text-xl"></i>
-        <span x-show="unreadCount > 0" class="absolute -top-1 -right-1 inline-flex items-center justify-center h-5 min-w-[1.25rem] px-1 rounded-full bg-red-500 text-[11px] font-bold text-white" x-text="unreadCount"></span>
+        <i class="fas fa-comments text-2xl text-white"></i>
+        <span x-show="unreadCount > 0" class="absolute -top-1 -right-1 inline-flex items-center justify-center h-5 min-w-[1.25rem] px-1 rounded-full bg-red-500 text-[11px] font-bold text-white shadow-sm" x-text="unreadCount"></span>
     </button>
 
     <div
@@ -94,14 +94,14 @@
                 ></textarea>
                 <div class="flex items-center justify-between">
                     <p class="text-[11px] text-gray-400">Maks 500 karakter.</p>
-                    <button
-                        type="submit"
-                        :disabled="sending || !newMessage.trim()"
-                        class="px-4 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-lg shadow hover:bg-smaba-light-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-smaba-light-blue disabled:opacity-60"
-                    >
-                        <span x-show="!sending">Kirim</span>
-                        <span x-show="sending">Mengirim...</span>
-                    </button>
+                        <button
+                            type="submit"
+                            :disabled="sending || !newMessage.trim()"
+                            class="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-60 transition"
+                        >
+                            <span x-show="!sending">Kirim</span>
+                            <span x-show="sending">Mengirim...</span>
+                        </button>
                 </div>
             </form>
         </div>
