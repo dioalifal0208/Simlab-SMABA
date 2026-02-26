@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Sumber event #2: Data hari libur nasional Indonesia dari Google Calendar publik.
                 {
                     id: 'holidays', // <-- Beri ID
-                    googleCalendarId: 'en.indonesian#holiday@group.v.calendar.google.com',
+                    googleCalendarId: 'id.indonesian#holiday@group.v.calendar.google.com',
                     color: '#D32F2F', // Memberi warna merah untuk hari libur.
                     className: 'gcal-event' 
                 },
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Terapkan fungsi toggle ke filter Hari Libur
         toggleEventSource(filterHolidays, 'holidays', { 
             id: 'holidays', 
-            googleCalendarId: 'en.indonesian#holiday@group.v.calendar.google.com', 
+            googleCalendarId: 'id.indonesian#holiday@group.v.calendar.google.com', 
             color: '#D32F2F', 
             className: 'gcal-event' 
         });
