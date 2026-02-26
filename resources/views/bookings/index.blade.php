@@ -18,13 +18,13 @@
                 </p>
             </div>
             
-            <a href="{{ route('bookings.create') }}" class="mt-3 sm:mt-0 px-5 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors duration-300 ease-in-out transform hover:-translate-y-0.5">
+            <button @click="showModal = true" class="mt-3 sm:mt-0 px-5 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors duration-300 ease-in-out transform hover:-translate-y-0.5">
                 <i class="fas fa-plus mr-2"></i> {{ __('bookings.actions.create_new') }}
-            </a>
+            </button>
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12" x-data="{ showModal: {{ ($errors->any() || request('create')) ? 'true' : 'false' }} }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             @if (session('success'))
@@ -121,9 +121,9 @@
                             </div>
                             <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ __('bookings.empty.title') }}</h3>
                             <p class="text-sm text-gray-500 mb-4">{{ __('bookings.empty.description') }}</p>
-                            <a href="{{ route('bookings.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-sm">
+                            <button @click="showModal = true" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-sm">
                                 <i class="fas fa-plus"></i> {{ __('bookings.empty.action') }}
-                            </a>
+                            </button>
                         </div>
                     @endforelse
                 </div>
@@ -131,6 +131,136 @@
                 {{-- Paginasi --}}
                 <div class="mt-6">
                     {{ $bookings->withQueryString()->links() }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Booking Baru --}}
+    <div x-show="showModal" 
+         class="fixed inset-0 z-50 overflow-y-auto" 
+         x-cloak
+         @keydown.escape.window="showModal = false">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            {{-- Background Overlay --}}
+            <div x-show="showModal" 
+                 x-transition:enter="ease-out duration-300" 
+                 x-transition:enter-start="opacity-0" 
+                 x-transition:enter-end="opacity-100" 
+                 x-transition:leave="ease-in duration-200" 
+                 x-transition:leave-start="opacity-100" 
+                 x-transition:leave-end="opacity-0" 
+                 class="fixed inset-0 transition-opacity" 
+                 aria-hidden="true" 
+                 @click="showModal = false">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+
+            {{-- Centered Modal Content --}}
+            <span class="hidden sm:inline-block sm:align-middle sm:min-h-screen" aria-hidden="true">&#8203;</span>
+            <div x-show="showModal" 
+                 x-transition:enter="ease-out duration-300" 
+                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
+                 x-transition:leave="ease-in duration-200" 
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                 class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-xl leading-6 font-bold text-gray-900" id="modal-title">
+                                    {{ __('Formulir Pengajuan Booking Lab') }}
+                                </h3>
+                                <button @click="showModal = false" class="text-gray-400 hover:text-gray-500">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            
+                            @if ($errors->any())
+                                <div class="mb-6 bg-red-50 border-l-4 border-red-400 text-red-700 p-4 text-sm rounded-lg" role="alert">
+                                    <p class="font-bold">Oops! Terjadi kesalahan.</p>
+                                    <ul class="mt-2 list-disc list-inside">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+                            <form action="{{ route('bookings.store') }}" method="POST">
+                                @csrf
+                                <div class="space-y-4">
+                                    <div>
+                                        <label for="guru_pengampu" class="block font-medium text-sm text-gray-700">Nama Guru Pengampu</label>
+                                        <input type="text" name="guru_pengampu" id="guru_pengampu" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('guru_pengampu') }}" required>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="laboratorium_modal" class="block font-medium text-sm text-gray-700">Pilih Laboratorium</label>
+                                            <select name="laboratorium" id="laboratorium_modal" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required {{ auth()->user()->role === 'admin' ? '' : 'disabled' }}>
+                                                <option value="">-- Pilih Lab --</option>
+                                                <option value="Biologi" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Biologi')>Lab Biologi</option>
+                                                <option value="Fisika" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Fisika')>Lab Fisika</option>
+                                                <option value="Bahasa" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Bahasa')>Lab Bahasa</option>
+                                            </select>
+                                            @if(auth()->user()->role !== 'admin')
+                                                <input type="hidden" name="laboratorium" value="{{ old('laboratorium', $selectedLaboratorium) }}">
+                                            @endif
+                                        </div>
+                                        <div>
+                                            <label for="jumlah_peserta" class="block font-medium text-sm text-gray-700">Jumlah Peserta <span class="text-xs text-gray-400">(Opsional)</span></label>
+                                            <input type="number" name="jumlah_peserta" id="jumlah_peserta" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('jumlah_peserta') }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label for="nomor_induk" class="block font-medium text-sm text-gray-700">NIP</label>
+                                            <input type="text" name="nomor_induk" id="nomor_induk" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('nomor_induk', auth()->user()->nomor_induk) }}">
+                                        </div>
+                                        <div>
+                                            <label for="kelas" class="block font-medium text-sm text-gray-700">Kelas / Jabatan</label>
+                                            <input type="text" name="kelas" id="kelas" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('kelas', auth()->user()->kelas) }}">
+                                        </div>
+                                        <div>
+                                            <label for="phone_number" class="block font-medium text-sm text-gray-700">No. HP / WA</label>
+                                            <input type="text" name="phone_number" id="phone_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('phone_number', auth()->user()->phone_number) }}">
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="mata_pelajaran" class="block font-medium text-sm text-gray-700">Mata Pelajaran <span class="text-xs text-gray-400">(Opsional)</span></label>
+                                        <input type="text" name="mata_pelajaran" id="mata_pelajaran" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('mata_pelajaran') }}">
+                                    </div>
+
+                                    <div>
+                                        <label for="tujuan_kegiatan" class="block font-medium text-sm text-gray-700">Tujuan Kegiatan / Judul Praktikum</label>
+                                        <textarea name="tujuan_kegiatan" id="tujuan_kegiatan" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>{{ old('tujuan_kegiatan') }}</textarea>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="waktu_mulai" class="block font-medium text-sm text-gray-700">Waktu Mulai</label>
+                                            <input type="datetime-local" name="waktu_mulai" id="waktu_mulai" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('waktu_mulai') }}" required>
+                                        </div>
+                                        <div>
+                                            <label for="waktu_selesai" class="block font-medium text-sm text-gray-700">Waktu Selesai</label>
+                                            <input type="datetime-local" name="waktu_selesai" id="waktu_selesai" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('waktu_selesai') }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-8 flex justify-end space-x-3">
+                                    <button type="button" @click="showModal = false" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 font-semibold text-sm transition-colors">Batal</button>
+                                    <button type="submit" class="px-6 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors">Ajukan Booking</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

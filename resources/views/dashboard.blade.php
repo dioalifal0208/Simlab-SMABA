@@ -397,7 +397,7 @@
                                 <a href="{{ route('loans.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white text-sm font-semibold rounded-lg hover:bg-emerald-700 transition-colors shadow-sm">
                                     <i class="fas fa-flask"></i> Ajukan Peminjaman
                                 </a>
-                                <a href="{{ route('bookings.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors border border-gray-300">
+                                <a href="{{ route('bookings.index', ['create' => 'true']) }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors border border-gray-300">
                                     <i class="fas fa-calendar-alt"></i> Booking Lab
                                 </a>
                                 <a href="{{ route('item-requests.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors border border-gray-300">
@@ -506,7 +506,7 @@
                                         <i class="fas fa-calendar-times text-2xl text-gray-400"></i>
                                     </div>
                                     <p class="text-gray-500 text-sm">Tidak ada jadwal booking mendatang.</p>
-                                    <a href="{{ route('bookings.create') }}" class="text-sm font-medium text-green-600 hover:text-green-800 mt-2 inline-block">
+                                    <a href="{{ route('bookings.index', ['create' => 'true']) }}" class="text-sm font-medium text-green-600 hover:text-green-800 mt-2 inline-block">
                                         Buat Booking Baru →
                                     </a>
                                 </div>

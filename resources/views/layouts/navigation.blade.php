@@ -30,11 +30,8 @@
                                 <x-dropdown-link :href="route('loans.index')" :active="request()->routeIs('loans.*')">
                                     {{ __('common.nav.loans') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link :href="route('bookings.index')" :active="request()->routeIs('bookings.index') && !request('status')">
+                                <x-dropdown-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
                                     {{ __('common.nav.bookings') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link :href="route('bookings.index', ['status' => 'completed'])" :active="request('status') == 'completed'">
-                                    {{ __('common.nav.booking_archive') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')">
                                     {{ __('common.nav.calendar') }}
@@ -226,8 +223,7 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"> {{ __('common.nav.dashboard') }} </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('items.index')" :active="request()->routeIs('items.*')"> {{ __('common.nav.inventory') }} </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.*')"> {{ __('common.nav.loans') }} </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.index') && !request('status')"> {{ __('common.nav.bookings') }} </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('bookings.index', ['status' => 'completed'])" :active="request('status') == 'completed'"> {{ __('common.nav.booking_archive') }} </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')"> {{ __('common.nav.bookings') }} </x-responsive-nav-link>
             @cannot('is-admin')
                 <x-responsive-nav-link :href="route('item-requests.create')" :active="request()->routeIs('item-requests.create')"> {{ __('common.nav.item_requests') }} </x-responsive-nav-link>
             @endcannot

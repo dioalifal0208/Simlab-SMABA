@@ -53,7 +53,7 @@
             <span>Ajukan Peminjaman</span>
         </a>
         
-        <a href="{{ route('bookings.create') }}" class="fab-menu-item">
+        <a href="{{ route('bookings.index', ['create' => 'true']) }}" class="fab-menu-item">
             <i class="fas fa-calendar-plus"></i>
             <span>Booking Lab</span>
         </a>

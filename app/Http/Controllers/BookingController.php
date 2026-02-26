@@ -44,7 +44,12 @@ class BookingController extends Controller
         // Eksekusi query dengan paginasi.
         $bookings = $query->paginate(15);
 
-        return view('bookings.index', compact('bookings'));
+        // Data tambahan untuk modal booking (diambil dari logika create sebelumnya)
+        $selectedLaboratorium = Auth::user()->role === 'admin'
+            ? null
+            : (Auth::user()->laboratorium ?? 'Biologi');
+
+        return view('bookings.index', compact('bookings', 'selectedLaboratorium'));
     }
 
     /**
