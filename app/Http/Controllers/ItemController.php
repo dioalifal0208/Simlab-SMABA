@@ -334,7 +334,7 @@ class ItemController extends Controller
                 }
                 return response()->json([
                     'success' => false,
-                    'message' => 'Import gagal. Semua baris tidak lolos validasi. Pastikan kolom <strong>tipe</strong> berisi "Alat" atau "Bahan Habis Pakai" dan kolom <strong>kondisi</strong> berisi "Baik", "Kurang Baik", atau "Rusak".',
+                    'message' => 'Import gagal. Semua baris tidak lolos validasi. Pastikan data sudah sesuai dengan ketentuan (Tipe: Alat/Bahan, Lab: Biologi/Fisika/Bahasa, Kondisi: Baik/Kurang Baik/Rusak).',
                     'errors'  => $errorMessages,
                 ], 422);
             }

@@ -10,7 +10,9 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 
-class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFailure
+use Maatwebsite\Excel\Concerns\WithMapping;
+
+class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFailure, WithMapping
 {
     use SkipsFailures;
 
@@ -22,6 +24,44 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
+    /**
+     * Map data before validation and model creation.
+     */
+    public function map($row): array
+    {
+        // 1. Normalisasi Tipe
+        $tipe = $row['tipe'] ?? '';
+        if (stripos($tipe, 'Bahan') !== false) {
+            $row['tipe'] = 'Bahan Habis Pakai';
+        } else {
+            // Default ke 'Alat' jika mengandung kata 'Alat' atau lainnya
+            $row['tipe'] = 'Alat';
+        }
+
+        // 2. Normalisasi Laboratorium
+        $lab = $row['laboratorium'] ?? '';
+        if (stripos($lab, 'Biologi') !== false) {
+            $row['laboratorium'] = 'Biologi';
+        } elseif (stripos($lab, 'Fisika') !== false) {
+            $row['laboratorium'] = 'Fisika';
+        } elseif (stripos($lab, 'Bahasa') !== false) {
+            $row['laboratorium'] = 'Bahasa';
+        } else {
+            // Default sesuai user atau fallback ke Biologi
+            $row['laboratorium'] = Auth::user()->laboratorium ?? 'Biologi';
+        }
+
+        // 3. Bersihkan angka dari spasi atau karakter non-numerik jika ada
+        if (isset($row['jumlah'])) {
+            $row['jumlah'] = (int) preg_replace('/[^0-9]/', '', $row['jumlah']);
+        }
+        if (isset($row['stok_minimum'])) {
+            $row['stok_minimum'] = (int) preg_replace('/[^0-9]/', '', $row['stok_minimum']);
+        }
+
+        return $row;
+    }
+
     public function model(array $row)
     {
         // PERBAIKAN: Logika yang lebih aman untuk membuat atau memperbarui.
