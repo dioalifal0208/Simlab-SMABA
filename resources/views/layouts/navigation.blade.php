@@ -169,6 +169,18 @@
                     </x-dropdown>
                 </div>
 
+                {{-- Language Switcher --}}
+                <div class="ms-3 flex items-center bg-gray-100 rounded-lg p-0.5">
+                    <a href="{{ route('lang.switch', 'id') }}" 
+                       class="px-3 py-1 text-[10px] font-bold rounded-md transition-all duration-200 {{ app()->getLocale() == 'id' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-400 hover:text-gray-600' }}">
+                        ID
+                    </a>
+                    <a href="{{ route('lang.switch', 'en') }}" 
+                       class="px-3 py-1 text-[10px] font-bold rounded-md transition-all duration-200 {{ app()->getLocale() == 'en' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-400 hover:text-gray-600' }}">
+                        EN
+                    </a>
+                </div>
+
                 {{-- Dropdown Pengaturan Pengguna --}}
                 <div class="ms-3 relative"> {{-- Menggunakan ms-3 untuk jarak antar dropdown --}}
                     <x-dropdown align="right" width="48">

@@ -56,6 +56,8 @@ return [
     ],
     'auth' => [
         'welcome' => 'Selamat Datang',
+        'email' => 'Alamat Email',
+        'password' => 'Password',
         'remember' => 'Ingat saya',
         'forgot_password' => 'Lupa password?',
         'login_btn' => 'Masuk',

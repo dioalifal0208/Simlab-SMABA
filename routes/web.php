@@ -29,6 +29,10 @@ use App\Http\Controllers\AuditLogController;
 use Illuminate\Support\Facades\Route;
 
 
+// Pengaturan Bahasa
+Route::get('/lang/{locale}', [\App\Http\Controllers\LanguageController::class, 'switch'])->name('lang.switch');
+Route::get('/test-lang', function() { return view('test-lang'); });
+
 // Halaman Landing Page
 Route::get('/', function () {
     $testimonials = Testimonial::where('status', 'approved')

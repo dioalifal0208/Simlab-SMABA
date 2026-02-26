@@ -68,16 +68,27 @@
                     </a>
                 </div>
                 
-                <div class="flex items-center gap-4">
+                    {{-- Language Switcher --}}
+                    <div class="flex items-center bg-gray-100 rounded-lg p-0.5">
+                        <a href="{{ route('lang.switch', 'id') }}" 
+                           class="px-3 py-1 text-[10px] font-bold rounded-md transition-all duration-200 {{ app()->getLocale() == 'id' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-400 hover:text-gray-600' }}">
+                            ID
+                        </a>
+                        <a href="{{ route('lang.switch', 'en') }}" 
+                           class="px-3 py-1 text-[10px] font-bold rounded-md transition-all duration-200 {{ app()->getLocale() == 'en' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-400 hover:text-gray-600' }}">
+                            EN
+                        </a>
+                    </div>
 
-                    @if (Route::has('login'))
-                        @auth
-                            <a href="{{ url('/dashboard') }}" class="text-sm font-medium text-gray-600 hover:text-green-700 transition-colors">{{ __('welcome.nav.dashboard') }}</a>
-                        @else
-                            <button @click="isModalOpen = true" class="text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-2 transition-colors">{{ __('welcome.nav.login') }}</button>
-                        @endauth
-                    @endif
-                </div>
+                    <div class="flex items-center gap-4">
+                        @if (Route::has('login'))
+                            @auth
+                                <a href="{{ url('/dashboard') }}" class="text-sm font-medium text-gray-600 hover:text-green-700 transition-colors">{{ __('welcome.nav.dashboard') }}</a>
+                            @else
+                                <button @click="isModalOpen = true" class="text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-2 transition-colors">{{ __('welcome.nav.login') }}</button>
+                            @endauth
+                        @endif
+                    </div>
             </nav>
         </header>
 
@@ -335,11 +346,11 @@
                     <form id="login-form" method="POST" action="{{ route('login') }}" class="space-y-4">
                         @csrf
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('welcome.auth.email') }}</label>
                             <input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm" type="email" name="email" required autofocus />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('welcome.auth.password') }}</label>
                             <input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm" type="password" name="password" required />
                         </div>
                         <div class="flex items-center justify-between">
