@@ -38,13 +38,13 @@
             {{-- Pesan Sukses/Error --}}
             @if (session('success'))
                 <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg" role="alert">
-                    <p class="font-bold">Sukses</p>
+                    <p class="font-bold">{{ __('common.messages.success') }}</p>
                     <span>{{ session('success') }}</span>
                 </div>
             @endif
             @if (session('error'))
                 <div class="mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg" role="alert">
-                    <p class="font-bold">Gagal</p>
+                    <p class="font-bold">{{ __('common.messages.error') }}</p>
                     <span>{{ session('error') }}</span>
                 </div>
             @endif
@@ -81,17 +81,17 @@
                             <div class="flex items-center gap-2">
                                 <select name="laboratorium" id="laboratorium" class="w-auto rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm" {{ $isAdmin ? '' : 'disabled' }}>
                                     <option value="">{{ __('items.filters.all_labs') }}</option>
-                                    <option value="Biologi" @selected(request('laboratorium', $lockedLab) == 'Biologi')>Biologi</option>
-                                    <option value="Fisika" @selected(request('laboratorium', $lockedLab) == 'Fisika')>Fisika</option>
-                                    <option value="Bahasa" @selected(request('laboratorium', $lockedLab) == 'Bahasa')>Bahasa</option>
+                                    <option value="Biologi" @selected(request('laboratorium', $lockedLab) == 'Biologi')>{{ __('common.labs.biologi') }}</option>
+                                    <option value="Fisika" @selected(request('laboratorium', $lockedLab) == 'Fisika')>{{ __('common.labs.fisika') }}</option>
+                                    <option value="Bahasa" @selected(request('laboratorium', $lockedLab) == 'Bahasa')>{{ __('common.labs.bahasa') }}</option>
                                 </select>
                                 @unless($isAdmin)
                                     <input type="hidden" name="laboratorium" value="{{ request('laboratorium', $lockedLab) }}">
-                                    <span class="text-xs text-gray-500">Lab dikunci sesuai penugasan Anda.</span>
+                                    <span class="text-xs text-gray-500">{{ __('items.filters.locked_lab') }}</span>
                                 @endunless
                             </div>
                             {{-- Tombol Reset --}}
-                            <a href="{{ route('items.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-semibold text-sm shadow-sm transition-colors" title="Atur Ulang Filter">
+                            <a href="{{ route('items.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-semibold text-sm shadow-sm transition-colors" title="{{ __('items.actions.reset_filters') }}">
                                 <i class="fas fa-sync-alt"></i>
                             </a>
                         </div>
@@ -101,7 +101,7 @@
                 {{-- Tombol Aksi Hapus Massal (Muncul saat ada item terpilih) --}}
                 <div x-show="selectedItems.length > 0" x-transition class="mt-4 bg-white border border-red-300 rounded-lg p-3 flex justify-between items-center" style="display: none;">
                     <span class="text-sm font-semibold text-gray-700">
-                        <span x-text="selectedItems.length"></span> item terpilih
+                        <span x-text="selectedItems.length"></span> {{ __('items.status.selected_count', ['count' => '']) }}
                     </span>
                     <form id="bulk-delete-form" action="{{ route('items.delete-multiple') }}" method="POST">
                         @csrf
@@ -110,7 +110,7 @@
                             <input type="hidden" name="item_ids[]" :value="id">
                         </template>
                         <button type="button" @click="confirmBulkDelete(selectedItems)" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-semibold text-sm shadow-md transition-colors">
-                            <i class="fas fa-trash-alt mr-2"></i> Hapus Terpilih
+                            <i class="fas fa-trash-alt mr-2"></i> {{ __('items.actions.bulk_delete') }}
                         </button>
                     </form>
                 </div>
@@ -244,19 +244,19 @@
             function confirmBulkDelete(selectedItems) {
                 // Validasi: pastikan ada item yang dipilih
                 if (!selectedItems || selectedItems.length === 0) {
-                    Swal.fire('Tidak Ada Item', 'Silakan pilih item yang ingin dihapus.', 'info');
+                    Swal.fire("{{ __('items.messages.no_items_selected_title') }}", "{{ __('items.messages.no_items_selected_text') }}", 'info');
                     return;
                 }
 
                 Swal.fire({
-                    title: `Hapus ${selectedItems.length} item?`,
-                    text: "Tindakan ini tidak dapat dibatalkan!",
+                    title: `{{ __('items.messages.delete_bulk_title', ['count' => '${selectedItems.length}']) }}`,
+                    text: "{{ __('items.messages.delete_bulk_text') }}",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#6b7280',
-                    confirmButtonText: 'Ya, hapus semua!',
-                    cancelButtonText: 'Batal'
+                    confirmButtonText: "{{ __('items.messages.delete_bulk_confirm') }}",
+                    cancelButtonText: "{{ __('items.messages.delete_bulk_cancel') }}"
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Submit form hapus massal

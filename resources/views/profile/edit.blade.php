@@ -3,13 +3,13 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
                 <h2 class="font-bold text-2xl text-smaba-text leading-tight">
-                    {{ __('Pengaturan Profil') }}
+                    {{ __('profile.title') }}
                 </h2>
-                <p class="text-sm text-gray-500 mt-1">Kelola informasi dasar, keamanan, dan preferensi akun Anda.</p>
+                <p class="text-sm text-gray-500 mt-1">{{ __('profile.subtitle') }}</p>
             </div>
             <div class="mt-4 sm:mt-0 flex items-center gap-2 text-sm text-gray-600">
                 <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-50 text-green-700 font-semibold">
-                    <span class="w-2 h-2 mr-2 rounded-full bg-green-500"></span>Akun aktif
+                    <span class="w-2 h-2 mr-2 rounded-full bg-green-500"></span>{{ __('profile.status.active_account') }}
                 </span>
             </div>
         </div>
@@ -24,17 +24,17 @@
                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                         </div>
                         <div>
-                            <p class="text-xs uppercase tracking-wide text-white/80">Profil akun</p>
+                            <p class="text-xs uppercase tracking-wide text-white/80">{{ __('profile.sections.profile_card.badge') }}</p>
                             <h3 class="text-2xl font-semibold">{{ auth()->user()->name }}</h3>
                             <p class="text-white/80 text-sm">{{ auth()->user()->email }}</p>
                         </div>
                     </div>
                     <div class="flex flex-wrap gap-3 text-sm">
                         <span class="inline-flex items-center px-3 py-1 rounded-full bg-white/20 font-semibold">
-                            Role: {{ ucfirst(auth()->user()->role ?? 'Pengguna') }}
+                            {{ __('profile.sections.profile_card.role') }}: {{ auth()->user()->role ? __('common.roles.' . strtolower(auth()->user()->role)) : __('common.roles.student') }}
                         </span>
                         <span class="inline-flex items-center px-3 py-1 rounded-full bg-white/20 font-semibold">
-                            Diperbarui: {{ optional(auth()->user()->updated_at)->format('d M Y') ?? '-' }}
+                            {{ __('profile.sections.profile_card.updated_at') }}: {{ optional(auth()->user()->updated_at)->format('d M Y') ?? '-' }}
                         </span>
                     </div>
                 </div>

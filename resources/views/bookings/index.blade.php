@@ -4,22 +4,22 @@
             <div>
                 <h2 class="font-bold text-2xl text-smaba-text leading-tight">
                     @if (auth()->user()->role == 'admin')
-                        {{ __('Kelola Booking Lab') }}
+                        {{ __('bookings.title_admin') }}
                     @else
-                        {{ __('Riwayat Booking Lab Saya') }}
+                        {{ __('bookings.title_user') }}
                     @endif
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">
                     @if (auth()->user()->role == 'admin')
-                        Lihat dan proses semua pengajuan jadwal penggunaan lab.
+                        {{ __('bookings.subtitle_admin') }}
                     @else
-                        Ajukan jadwal dan lacak status booking lab Anda.
+                        {{ __('bookings.subtitle_user') }}
                     @endif
                 </p>
             </div>
             
             <a href="{{ route('bookings.create') }}" class="mt-3 sm:mt-0 px-5 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors duration-300 ease-in-out transform hover:-translate-y-0.5">
-                <i class="fas fa-plus mr-2"></i> Ajukan Booking Baru
+                <i class="fas fa-plus mr-2"></i> {{ __('bookings.actions.create_new') }}
             </a>
         </div>
     </x-slot>
@@ -29,7 +29,7 @@
 
             @if (session('success'))
                 <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg" role="alert">
-                    <p class="font-bold">Sukses</p>
+                    <p class="font-bold">{{ __('common.messages.success') }}</p>
                     <p>{{ session('success') }}</p>
                 </div>
             @endif
@@ -40,19 +40,19 @@
                     <form action="{{ route('bookings.index') }}" method="GET" class="p-4 sm:p-6 space-y-4" id="filter-form">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-6 space-y-4 sm:space-y-0">
                             <div class="flex items-center space-x-3">
-                                <label for="status" class="text-sm font-medium text-gray-700">Status:</label>
+                                <label for="status" class="text-sm font-medium text-gray-700">{{ __('common.labels.status') }}:</label>
                                 <select name="status" id="status" class="w-full sm:w-48 rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
-                                    <option value="">Semua</option>
-                                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu</option>
-                                    <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
-                                    <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
-                                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
+                                    <option value="">{{ __('bookings.filters.all') }}</option>
+                                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>{{ __('common.status.pending') }}</option>
+                                    <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>{{ __('common.status.approved') }}</option>
+                                    <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>{{ __('common.status.rejected') }}</option>
+                                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>{{ __('common.status.completed') }}</option>
                                 </select>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <label for="laboratorium" class="text-sm font-medium text-gray-700">Laboratorium:</label>
+                                <label for="laboratorium" class="text-sm font-medium text-gray-700">{{ __('common.nav.lab_services') }}:</label>
                                 <select name="laboratorium" id="laboratorium" class="w-full sm:w-48 rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
-                                    <option value="">Semua Lab</option>
+                                    <option value="">{{ __('bookings.filters.all_labs') }}</option>
                                     <option value="Biologi" {{ request('laboratorium') == 'Biologi' ? 'selected' : '' }}>Biologi</option>
                                     <option value="Fisika" {{ request('laboratorium') == 'Fisika' ? 'selected' : '' }}>Fisika</option>
                                     <option value="Bahasa" {{ request('laboratorium') == 'Bahasa' ? 'selected' : '' }}>Bahasa</option>
@@ -78,10 +78,10 @@
                                                 @elseif($booking->status == 'rejected') text-red-800 bg-red-100
                                                 @else text-gray-800 bg-gray-100 @endif">
                                                 {{ match($booking->status) {
-                                                    'pending' => 'Menunggu',
-                                                    'approved' => 'Disetujui',
-                                                    'rejected' => 'Ditolak',
-                                                    'completed' => 'Selesai',
+                                                    'pending' => __('common.status.pending'),
+                                                    'approved' => __('common.status.approved'),
+                                                    'rejected' => __('common.status.rejected'),
+                                                    'completed' => __('common.status.completed'),
                                                     default => ucfirst($booking->status)
                                                 } }}
                                             </span>
@@ -92,13 +92,13 @@
                                         </div>
                                         @if (auth()->user()->role == 'admin')
                                             <p class="mt-2 text-sm text-gray-600">
-                                                <i class="fas fa-user-circle fa-fw mr-1 text-gray-400"></i> Diajukan oleh: <span class="font-medium">{{ $booking->user->name }}</span>
+                                                <i class="fas fa-user-circle fa-fw mr-1 text-gray-400"></i> {{ __('bookings.labels.diajukan_oleh') }}: <span class="font-medium">{{ $booking->user->name }}</span>
                                             </p>
                                         @endif
                                     </div>
                                     <div class="mt-4 sm:mt-0 sm:ml-4 flex-shrink-0">
                                         <a href="{{ route('bookings.show', $booking->id) }}" class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-xs shadow-sm transition-colors duration-300">
-                                            <i class="fas fa-eye mr-2"></i> Lihat Detail
+                                            <i class="fas fa-eye mr-2"></i> {{ __('common.buttons.details') }}
                                         </a>
                                     </div>
                                 </div>
@@ -119,10 +119,10 @@
                             <div class="w-20 h-20 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-4">
                                 <i class="fas fa-calendar-times text-3xl text-gray-400"></i>
                             </div>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Tidak Ada Data Booking</h3>
-                            <p class="text-sm text-gray-500 mb-4">Belum ada data booking yang cocok dengan filter Anda.</p>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ __('bookings.empty.title') }}</h3>
+                            <p class="text-sm text-gray-500 mb-4">{{ __('bookings.empty.description') }}</p>
                             <a href="{{ route('bookings.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-sm">
-                                <i class="fas fa-plus"></i> Ajukan Booking Baru
+                                <i class="fas fa-plus"></i> {{ __('bookings.empty.action') }}
                             </a>
                         </div>
                     @endforelse

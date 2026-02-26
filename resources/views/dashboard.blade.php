@@ -12,7 +12,7 @@
 
             @if (session('success'))
                 <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg" role="alert">
-                    <p class="font-bold">Sukses</p>
+                    <p class="font-bold">{{ __('common.messages.success') }}</p>
                     <span>{{ session('success') }}</span>
                 </div>
             @endif
@@ -108,9 +108,9 @@
                                     <i class="fas fa-exclamation-triangle text-amber-600"></i>
                                 </div>
                                 <div>
-                                    <h3 class="font-semibold text-amber-800">Stok Menipis</h3>
-                                    <p class="text-sm text-amber-700 mt-1">{{ $lowStockItems->count() }} item memerlukan restok segera.</p>
-                                    <a href="{{ route('items.index') }}" class="text-sm font-medium text-amber-700 hover:text-amber-900 mt-2 inline-block">Lihat Detail →</a>
+                                    <h3 class="font-semibold text-amber-800">{{ __('dashboard.cards.low_stock_title', ['count' => $lowStockItems->count()]) }}</h3>
+                                    <p class="text-sm text-amber-700 mt-1">{{ __('dashboard.cards.low_stock_desc', ['count' => $lowStockItems->count()]) }}</p>
+                                    <a href="{{ route('items.index') }}" class="text-sm font-medium text-amber-700 hover:text-amber-900 mt-2 inline-block">{{ __('common.buttons.view_details') }} →</a>
                                 </div>
                             </div>
                         </div>
@@ -123,9 +123,9 @@
                                     <i class="fas fa-clock text-red-600"></i>
                                 </div>
                                 <div>
-                                    <h3 class="font-semibold text-red-800">Peminjaman Terlambat</h3>
-                                    <p class="text-sm text-red-700 mt-1">{{ $overdueLoansCount }} peminjaman melewati batas waktu.</p>
-                                    <a href="{{ route('loans.index', ['status' => 'Terlambat']) }}" class="text-sm font-medium text-red-700 hover:text-red-900 mt-2 inline-block">Tindak Lanjuti →</a>
+                                    <h3 class="font-semibold text-red-800">{{ __('dashboard.cards.overdue_loans_title') }}</h3>
+                                    <p class="text-sm text-red-700 mt-1">{{ __('dashboard.cards.overdue_loans_desc', ['count' => $overdueLoansCount]) }}</p>
+                                    <a href="{{ route('loans.index', ['status' => 'Terlambat']) }}" class="text-sm font-medium text-red-700 hover:text-red-900 mt-2 inline-block">{{ __('dashboard.cards.take_action') }} →</a>
                                 </div>
                             </div>
                         </div>
@@ -249,11 +249,11 @@
                                     </div>
                                     <div class="flex-grow min-w-0">
                                         <p class="text-sm text-gray-900">
-                                            <span class="font-semibold">{{ $activity->user->name ?? 'Sistem' }}</span>
+                                            <span class="font-semibold">{{ $activity->user->name ?? __('dashboard.activity.system') }}</span>
                                             @if ($activity instanceof \App\Models\Loan)
-                                            mengajukan peminjaman alat
+                                            {{ __('dashboard.activity.loan_created') }}
                                             @elseif ($activity instanceof \App\Models\Booking)
-                                            mengajukan booking lab untuk "{{ Str::limit($activity->tujuan_kegiatan, 40) }}"
+                                            {{ __('dashboard.activity.booking_created', ['purpose' => Str::limit($activity->tujuan_kegiatan, 40)]) }}
                                             @elseif ($activity instanceof \App\Models\AuditLog)
                                             {{ $activity->getActionLabel() }} {{ $activity->getModelName() }}
                                             @endif
@@ -262,11 +262,11 @@
                                     </div>
                                     <div class="flex-shrink-0">
                                         @if ($activity instanceof \App\Models\Loan)
-                                        <a href="{{ route('loans.show', $activity->id) }}" class="text-sm font-medium text-green-600 hover:text-green-800">Lihat</a>
+                                        <a href="{{ route('loans.show', $activity->id) }}" class="text-sm font-medium text-green-600 hover:text-green-800">{{ __('dashboard.activity.view') }}</a>
                                         @elseif ($activity instanceof \App\Models\Booking)
-                                        <a href="{{ route('bookings.show', $activity->id) }}" class="text-sm font-medium text-green-600 hover:text-green-800">Lihat</a>
+                                        <a href="{{ route('bookings.show', $activity->id) }}" class="text-sm font-medium text-green-600 hover:text-green-800">{{ __('dashboard.activity.view') }}</a>
                                         @elseif ($activity instanceof \App\Models\AuditLog)
-                                        <a href="{{ route('audit-logs.show', $activity->id) }}" class="text-sm font-medium text-green-600 hover:text-green-800">Detail</a>
+                                        <a href="{{ route('audit-logs.show', $activity->id) }}" class="text-sm font-medium text-green-600 hover:text-green-800">{{ __('dashboard.activity.detail') }}</a>
                                         @endif
                                     </div>
                                 </div>
@@ -275,7 +275,7 @@
                                     <div class="w-16 h-16 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-4">
                                         <i class="fas fa-inbox text-2xl text-gray-400"></i>
                                     </div>
-                                    <p class="text-gray-500">Belum ada aktivitas terbaru.</p>
+                                    <p class="text-gray-500">{{ __('dashboard.activity.no_activity') }}</p>
                                 </div>
                                 @endforelse
                             </div>
@@ -287,7 +287,7 @@
                                         :disabled="currentPage === 1"
                                         :class="currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:text-gray-900'"
                                         class="flex items-center gap-1 text-sm font-medium transition-colors">
-                                    <i class="fas fa-chevron-left text-xs"></i> Sebelumnya
+                                    <i class="fas fa-chevron-left text-xs"></i> {{ __('dashboard.recent_activity.previous') }}
                                 </button>
                                 
                                 <div class="flex items-center gap-2">
@@ -304,7 +304,7 @@
                                         :disabled="currentPage === totalPages"
                                         :class="currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:text-gray-900'"
                                         class="flex items-center gap-1 text-sm font-medium transition-colors">
-                                    Selanjutnya <i class="fas fa-chevron-right text-xs"></i>
+                                    {{ __('dashboard.recent_activity.next') }} <i class="fas fa-chevron-right text-xs"></i>
                                 </button>
                             </div>
                             @endif
@@ -312,7 +312,7 @@
                             @if(($recentActivities ?? collect())->count() > 0)
                             <div class="mt-4 pt-4 border-t border-gray-100 text-center">
                                 <a href="{{ route('audit-logs.index') }}" class="text-sm font-medium text-green-600 hover:text-green-800">
-                                    Lihat Semua Aktivitas →
+                                    {{ __('dashboard.activity.view_all') }} →
                                 </a>
                             </div>
                             @endif

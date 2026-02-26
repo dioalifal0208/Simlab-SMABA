@@ -144,25 +144,25 @@
                         <div class="p-6 space-y-6">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <h3 class="text-lg font-bold text-gray-900">Ringkasan Hari Ini</h3>
-                                    <p class="text-sm text-gray-500">Senin, 24 Januari 2026</p>
+                                    <h3 class="text-lg font-bold text-gray-900">{{ __('welcome.mockup.title') }}</h3>
+                                    <p class="text-sm text-gray-500">{{ __('welcome.mockup.date', ['day' => 'Senin', 'date' => '24 Januari 2026']) }}</p>
                                 </div>
-                                <span class="px-3 py-1 bg-green-50 text-green-700 text-xs font-semibold rounded-full border border-green-100">Lab Aktif</span>
+                                <span class="px-3 py-1 bg-green-50 text-green-700 text-xs font-semibold rounded-full border border-green-100">{{ __('welcome.mockup.lab_active') }}</span>
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="p-4 bg-green-50/50 border border-green-100 rounded-lg">
-                                    <p class="text-xs text-green-600 font-medium uppercase">Total Peminjaman</p>
+                                    <p class="text-xs text-green-600 font-medium uppercase">{{ __('welcome.mockup.total_loans') }}</p>
                                     <p class="text-2xl font-bold text-green-900 mt-1">24</p>
                                 </div>
                                 <div class="p-4 bg-gray-50 border border-gray-100 rounded-lg">
-                                    <p class="text-xs text-gray-600 font-medium uppercase">Pemeliharaan Alat</p>
+                                    <p class="text-xs text-gray-600 font-medium uppercase">{{ __('welcome.mockup.maintenance') }}</p>
                                     <p class="text-2xl font-bold text-gray-900 mt-1">3</p>
                                 </div>
                             </div>
 
                             <div class="space-y-3">
-                                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Jadwal Terkini</p>
+                                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">{{ __('welcome.mockup.recent_schedule') }}</p>
                                 @if(isset($todayBookings) && $todayBookings->isNotEmpty())
                                     @foreach($todayBookings->take(2) as $booking)
                                     <div class="flex items-center gap-4 p-3 bg-white border border-gray-100 rounded-lg shadow-sm">
@@ -176,7 +176,7 @@
                                     </div>
                                     @endforeach
                                 @else
-                                    <div class="p-4 text-center text-sm text-gray-500 border border-dashed border-gray-200 rounded-lg">Tidak ada jadwal aktif saat ini.</div>
+                                    <div class="p-4 text-center text-sm text-gray-500 border border-dashed border-gray-200 rounded-lg">{{ __('welcome.mockup.no_schedule') }}</div>
                                 @endif
                             </div>
                         </div>
@@ -201,7 +201,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.features.inventory.title') }}</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ __('welcome.features.inventory.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'inventory'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
+                        <button @click="showFeatureModal = true; activeFeature = 'inventory'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">{{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
                     
                     {{-- Feature 2 --}}
@@ -211,7 +211,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.features.validation.title') }}</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ __('welcome.features.validation.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'validation'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
+                        <button @click="showFeatureModal = true; activeFeature = 'validation'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">{{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
 
                     {{-- Feature 3 --}}
@@ -221,7 +221,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.features.calendar.title') }}</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ __('welcome.features.calendar.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'calendar'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
+                        <button @click="showFeatureModal = true; activeFeature = 'calendar'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">{{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
 
                     {{-- Feature 4 --}}
@@ -231,7 +231,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.features.report.title') }}</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ __('welcome.features.report.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'report'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">Lihat Detail <i class="fas fa-search-plus text-xs"></i></button>
+                        <button @click="showFeatureModal = true; activeFeature = 'report'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">{{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-search-plus text-xs"></i></button>
                     </div>
                 </div>
             </div>
@@ -278,15 +278,15 @@
                         <div class="space-y-4">
                             <div class="flex items-center gap-3 p-3 bg-green-50 border border-green-100 rounded-lg">
                                 <i class="fas fa-mobile-alt text-green-600 w-5 text-center"></i>
-                                <span class="text-sm font-medium text-green-900">Akses Multi-Device (HP/Laptop)</span>
+                                <span class="text-sm font-medium text-green-900">{{ __('welcome.benefits.multi_device') }}</span>
                             </div>
                             <div class="flex items-center gap-3 p-3 bg-emerald-50 border border-emerald-100 rounded-lg">
                                 <i class="fas fa-leaf text-emerald-600 w-5 text-center"></i>
-                                <span class="text-sm font-medium text-emerald-900">Paperless & Hemat Kertas</span>
+                                <span class="text-sm font-medium text-emerald-900">{{ __('welcome.benefits.paperless') }}</span>
                             </div>
                             <div class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
                                 <i class="fas fa-shield-alt text-gray-500 w-5 text-center"></i>
-                                <span class="text-sm font-medium text-gray-600">Keamanan Privasi (Auto-Lock)</span>
+                                <span class="text-sm font-medium text-gray-600">{{ __('welcome.benefits.privacy') }}</span>
                             </div>
                         </div>
                     </div>
@@ -297,10 +297,10 @@
         {{-- CTA BOTTOM --}}
         <section class="py-24 bg-white" data-aos="zoom-in">
             <div class="max-w-4xl mx-auto text-center px-6">
-                <h2 class="text-4xl font-bold text-gray-900 tracking-tight mb-4">Siap Digitalisasi Lab Anda?</h2>
-                <p class="text-lg text-gray-600 mb-8">Bergabung dengan ekosistem manajemen laboratorium yang terstruktur.</p>
+                <h2 class="text-4xl font-bold text-gray-900 tracking-tight mb-4">{{ __('welcome.cta_bottom.title') }}</h2>
+                <p class="text-lg text-gray-600 mb-8">{{ __('welcome.cta_bottom.subtitle') }}</p>
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <button @click="isModalOpen = true" class="px-8 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors">Login Admin</button>
+                    <button @click="isModalOpen = true" class="px-8 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors">{{ __('welcome.cta_bottom.admin_login') }}</button>
                 </div>
             </div>
         </section>
@@ -365,7 +365,7 @@
                 {{-- Sidebar Navigation --}}
                 <div class="w-full md:w-1/3 bg-gray-50 border-r border-gray-200 p-6 flex flex-col">
                     <div class="flex items-center justify-between mb-8">
-                        <h3 class="font-bold text-xl text-gray-900">Tur Fitur</h3>
+                        <h3 class="font-bold text-xl text-gray-900">{{ __('welcome.tour.title') }}</h3>
                         <button @click="showDemoModal = false" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xl"></i></button>
                     </div>
                     
@@ -373,30 +373,30 @@
                         <button @click="activeSlide = 0" :class="activeSlide === 0 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
                             <div :class="activeSlide === 0 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">1</div>
                             <div>
-                                <p :class="activeSlide === 0 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">Dashboard Realtime</p>
-                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">Pantau stok, notifikasi, dan lab aktif dalam satu layar.</p>
+                                <p :class="activeSlide === 0 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">{{ __('welcome.tour.step1_title') }}</p>
+                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ __('welcome.tour.step1_desc') }}</p>
                             </div>
                         </button>
 
                         <button @click="activeSlide = 1" :class="activeSlide === 1 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
                             <div :class="activeSlide === 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">2</div>
                             <div>
-                                <p :class="activeSlide === 1 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">Peminjaman Mudah</p>
-                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">Cari barang, pilih tanggal, dan ajukan dalam 3 klik.</p>
+                                <p :class="activeSlide === 1 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">{{ __('welcome.tour.step2_title') }}</p>
+                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ __('welcome.tour.step2_desc') }}</p>
                             </div>
                         </button>
 
                         <button @click="activeSlide = 2" :class="activeSlide === 2 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
                             <div :class="activeSlide === 2 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">3</div>
                             <div>
-                                <p :class="activeSlide === 2 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">Approval Digital</p>
-                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">Validasi booking dari mana saja tanpa kertas.</p>
+                                <p :class="activeSlide === 2 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">{{ __('welcome.tour.step3_title') }}</p>
+                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ __('welcome.tour.step3_desc') }}</p>
                             </div>
                         </button>
                     </div>
 
                     <div class="mt-4 pt-4 border-t border-gray-200">
-                        <button @click="isModalOpen = true; showDemoModal = false" class="w-full py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition">Login Sekarang &rarr;</button>
+                        <button @click="isModalOpen = true; showDemoModal = false" class="w-full py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition">{{ __('welcome.tour.cta_login') }}</button>
                     </div>
                 </div>
 
@@ -409,7 +409,7 @@
                             <div class="w-2 h-2 rounded-full bg-red-400"></div><div class="w-2 h-2 rounded-full bg-yellow-400"></div><div class="w-2 h-2 rounded-full bg-green-400"></div>
                         </div>
                         <div class="p-6">
-                            <h4 class="font-bold text-gray-900 mb-4">Statistik Lab</h4>
+                            <h4 class="font-bold text-gray-900 mb-4">{{ __('welcome.tour.mockup.stats_title') }}</h4>
                             <div class="flex gap-4 items-end h-32 pl-2 border-b border-l border-gray-200">
                                 <div class="w-1/4 bg-green-200 rounded-t-lg h-0 animate-[grow_1s_ease-out_forwards]" style="--h: 60%"></div>
                                 <div class="w-1/4 bg-green-300 rounded-t-lg h-0 animate-[grow_1s_ease-out_0.2s_forwards]" style="--h: 80%"></div>
@@ -420,7 +420,7 @@
                             <div class="flex justify-between mt-4">
                                 <div class="flex items-center gap-2 p-3 bg-red-50 rounded-lg w-full mr-2 transform hover:scale-105 transition duration-500 animate-[bounce_2s_infinite]">
                                     <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                                    <span class="text-xs font-semibold text-red-700">Stok Menipis!</span>
+                                    <span class="text-xs font-semibold text-red-700">{{ __('welcome.tour.mockup.low_stock') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -430,12 +430,12 @@
                     {{-- SLIDE 2: BOOKING FORM --}}
                     <div x-show="activeSlide === 1" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-10" x-transition:enter-end="opacity-100 translate-x-0" class="w-full max-w-lg bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
                         <div class="h-6 bg-gray-50 border-b flex items-center px-4 gap-2">
-                             <span class="text-xs text-gray-400 font-mono">Form Peminjaman</span>
+                             <span class="text-xs text-gray-400 font-mono">{{ __('welcome.tour.mockup.loan_form') }}</span>
                         </div>
                         <div class="p-6 space-y-4">
                             <div class="space-y-1">
                                 <div class="h-2 w-16 bg-gray-200 rounded"></div>
-                                <div class="h-10 w-full border border-gray-200 rounded-lg bg-gray-50 flex items-center px-3 text-sm text-gray-500 animate-pulse">Mikroskop Cahaya X-200</div>
+                                <div class="h-10 w-full border border-gray-200 rounded-lg bg-gray-50 flex items-center px-3 text-sm text-gray-500 animate-pulse">{{ __('welcome.tour.mockup.item_example') }}</div>
                             </div>
                             <div class="flex gap-4">
                                 <div class="flex-1 space-y-1">
@@ -447,7 +447,7 @@
                                     <div class="h-10 w-full border border-gray-200 rounded-lg bg-gray-50"></div>
                                 </div>
                             </div>
-                            <button class="w-full py-2 bg-green-600 text-white rounded-lg text-sm font-semibold transform hover:scale-105 transition">Ajukan Peminjaman</button>
+                            <button class="w-full py-2 bg-green-600 text-white rounded-lg text-sm font-semibold transform hover:scale-105 transition">{{ __('welcome.tour.mockup.submit_loan') }}</button>
                             
                             {{-- Cursor Animation --}}
                             <div class="absolute top-1/2 left-1/2 pointer-events-none transform -translate-x-1/2 -translate-y-1/2 animate-[moveCursor_3s_infinite]">
@@ -463,15 +463,15 @@
                         <div class="bg-white rounded-lg shadow-md mb-3 p-4 border border-l-4 border-l-yellow-400 animate-[approve_3s_infinite]">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <h5 class="font-bold text-gray-800">Peminjaman #INV-2026</h5>
-                                    <p class="text-sm text-gray-500">Pak Budi - Fisika</p>
+                                    <h5 class="font-bold text-gray-800">{{ __('welcome.tour.mockup.loan_code') }}</h5>
+                                    <p class="text-sm text-gray-500">{{ __('welcome.tour.mockup.user_example') }}</p>
                                 </div>
-                                <span class="badge px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded font-bold uppercase" id="status-badge">Menunggu</span>
+                                <span class="badge px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded font-bold uppercase" id="status-badge">{{ __('welcome.tour.mockup.waiting') }}</span>
                             </div>
                         </div>
                         <div class="flex justify-center mt-4">
                             <div class="bg-green-900 text-white px-4 py-2 rounded-full text-sm shadow-lg flex items-center gap-2 animate-bounce">
-                                <i class="fas fa-check"></i> Disetujui Kepala Lab
+                                <i class="fas fa-check"></i> {{ __('welcome.tour.mockup.approved') }}
                             </div>
                         </div>
                         <style> 
@@ -497,8 +497,8 @@
                 {{-- Header --}}
                 <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                     <div>
-                        <h3 class="text-2xl font-bold text-gray-900" x-text="activeFeature === 'inventory' ? 'Inventaris Digital' : (activeFeature === 'validation' ? 'Validasi Dokumen QR' : (activeFeature === 'calendar' ? 'Kalender Laboratorium' : 'Laporan & Analitik'))"></h3>
-                        <p class="text-gray-500 text-sm mt-1">Preview fitur unggulan SIMLAB SMABA</p>
+                        <h3 class="text-2xl font-bold text-gray-900" x-text="activeFeature === 'inventory' ? '{{ __('welcome.spotlight.inventory.title') }}' : (activeFeature === 'validation' ? '{{ __('welcome.spotlight.validation.title') }}' : (activeFeature === 'calendar' ? '{{ __('welcome.spotlight.calendar.title') }}' : '{{ __('welcome.spotlight.report.title') }}'))"></h3>
+                        <p class="text-gray-500 text-sm mt-1">{{ __('welcome.spotlight.subtitle') }}</p>
                     </div>
                     <button @click="showFeatureModal = false" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 transition-colors">
                         <i class="fas fa-times"></i>
@@ -513,30 +513,30 @@
                         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex gap-4">
                             <div class="flex-1 relative">
                                 <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                                <input disabled type="text" value="Mikroskop" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700">
+                                <input disabled type="text" value="{{ __('welcome.spotlight.inventory.search_placeholder') }}" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700">
                             </div>
-                            <button class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700"><i class="fas fa-plus mr-2"></i> Tambah Alat</button>
+                            <button class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700"><i class="fas fa-plus mr-2"></i> {{ __('welcome.spotlight.inventory.add_btn') }}</button>
                         </div>
                         <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                             <table class="w-full text-sm text-left">
                                 <thead class="bg-gray-50 text-gray-500 font-medium">
-                                    <tr><th class="px-6 py-3">Nama Alat</th><th class="px-6 py-3">Kondisi</th><th class="px-6 py-3">Stok</th></tr>
+                                    <tr><th class="px-6 py-3">{{ __('welcome.spotlight.inventory.table.name') }}</th><th class="px-6 py-3">{{ __('welcome.spotlight.inventory.table.condition') }}</th><th class="px-6 py-3">{{ __('welcome.spotlight.inventory.table.stock') }}</th></tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
                                     <tr class="hover:bg-green-50/50 transition">
-                                        <td class="px-6 py-4 font-medium text-gray-900">Mikroskop Binokuler X-200</td>
-                                        <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold">Baik</span></td>
-                                        <td class="px-6 py-4 text-gray-600">12 Unit</td>
+                                        <td class="px-6 py-4 font-medium text-gray-900">{{ __('welcome.tour.mockup.item_example') }}</td>
+                                        <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold">{{ __('welcome.spotlight.inventory.table.status_ok') }}</span></td>
+                                        <td class="px-6 py-4 text-gray-600">12 {{ __('welcome.spotlight.inventory.table.unit') }}</td>
                                     </tr>
                                     <tr class="hover:bg-green-50/50 transition">
                                         <td class="px-6 py-4 font-medium text-gray-900">Gelas Ukur 100ml</td>
-                                        <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold">Baik</span></td>
-                                        <td class="px-6 py-4 text-gray-600">25 Unit</td>
+                                        <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold">{{ __('welcome.spotlight.inventory.table.status_ok') }}</span></td>
+                                        <td class="px-6 py-4 text-gray-600">25 {{ __('welcome.spotlight.inventory.table.unit') }}</td>
                                     </tr>
                                     <tr class="hover:bg-green-50/50 transition">
                                         <td class="px-6 py-4 font-medium text-gray-900">Tabung Reaksi Pyrex</td>
-                                        <td class="px-6 py-4"><span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs font-bold">Perlu Cek</span></td>
-                                        <td class="px-6 py-4 text-gray-600">48 Unit</td>
+                                        <td class="px-6 py-4"><span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs font-bold">{{ __('welcome.spotlight.inventory.table.status_warn') }}</span></td>
+                                        <td class="px-6 py-4 text-gray-600">48 {{ __('welcome.spotlight.inventory.table.unit') }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -549,17 +549,17 @@
                         <div class="w-24 h-24 mx-auto bg-white p-2 rounded-lg border-2 border-dashed border-gray-300 mb-6">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Validasi-SMABA-Official" class="w-full h-full opacity-80">
                         </div>
-                        <h4 class="text-lg font-bold text-gray-900">Dokumen Valid</h4>
-                        <p class="text-sm text-gray-500 mb-6">Surat Peminjaman #BOOK-2026-001</p>
+                        <h4 class="text-lg font-bold text-gray-900">{{ __('welcome.spotlight.validation.heading') }}</h4>
+                        <p class="text-sm text-gray-500 mb-6">{{ __('welcome.spotlight.validation.doc_id') }}</p>
                         
                         <div class="space-y-3 text-left bg-gray-50 p-4 rounded-lg border border-gray-100">
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">Peminjam:</span>
-                                <span class="font-medium text-gray-900">Drs. Sutrisno</span>
+                                <span class="text-gray-500">{{ __('welcome.spotlight.validation.borrower') }}</span>
+                                <span class="font-medium text-gray-900">{{ __('welcome.spotlight.validation.user_example') }}</span>
                             </div>
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">Status:</span>
-                                <span class="text-emerald-600 font-bold flex items-center gap-1"><i class="fas fa-check-circle"></i> Disetujui</span>
+                                <span class="text-gray-500">{{ __('welcome.spotlight.validation.status') }}</span>
+                                <span class="text-emerald-600 font-bold flex items-center gap-1"><i class="fas fa-check-circle"></i> {{ __('welcome.spotlight.validation.approved') }}</span>
                             </div>
                         </div>
                         <div class="mt-6 flex justify-center">
@@ -570,14 +570,14 @@
                     {{-- 3. CALENDAR UI MOCKUP --}}
                     <div x-show="activeFeature === 'calendar'" class="w-full max-w-3xl bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="bg-white border-b border-gray-200 p-4 flex justify-between items-center">
-                            <h4 class="font-bold text-gray-800">Januari 2026</h4>
+                            <h4 class="font-bold text-gray-800">{{ __('welcome.spotlight.calendar.month') }}</h4>
                             <div class="flex gap-2">
-                                <button class="p-1 px-3 text-sm bg-gray-100 rounded hover:bg-gray-200">Bulan</button>
-                                <button class="p-1 px-3 text-sm text-gray-500 hover:bg-gray-50">Minggu</button>
+                                <button class="p-1 px-3 text-sm bg-gray-100 rounded hover:bg-gray-200">{{ __('welcome.spotlight.calendar.view_month') }}</button>
+                                <button class="p-1 px-3 text-sm text-gray-500 hover:bg-gray-50">{{ __('welcome.spotlight.calendar.view_week') }}</button>
                             </div>
                         </div>
                         <div class="grid grid-cols-7 gap-px bg-gray-200 border-b border-gray-200 text-center text-xs font-semibold text-gray-500 bg-gray-50">
-                            <div class="py-2">Sen</div><div class="py-2">Sel</div><div class="py-2">Rab</div><div class="py-2">Kam</div><div class="py-2">Jum</div><div class="py-2">Sab</div><div class="py-2 text-red-500">Mig</div>
+                            <div class="py-2">{{ __('welcome.spotlight.calendar.days.mon') }}</div><div class="py-2">{{ __('welcome.spotlight.calendar.days.tue') }}</div><div class="py-2">{{ __('welcome.spotlight.calendar.days.wed') }}</div><div class="py-2">{{ __('welcome.spotlight.calendar.days.thu') }}</div><div class="py-2">{{ __('welcome.spotlight.calendar.days.fri') }}</div><div class="py-2">{{ __('welcome.spotlight.calendar.days.sat') }}</div><div class="py-2 text-red-500">{{ __('welcome.spotlight.calendar.days.sun') }}</div>
                         </div>
                         <div class="grid grid-cols-7 grid-rows-2 h-64 gap-px bg-gray-200">
                              {{-- Dummy Calendar Cells --}}
@@ -612,27 +612,27 @@
                              <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-2">
                                  <i class="fas fa-file-excel text-3xl"></i>
                              </div>
-                             <h4 class="text-lg font-bold text-gray-900">Export Laporan Bulanan</h4>
-                             <p class="text-sm text-gray-500">Unduh rekapitulasi peminjaman lengkap dengan detail alat dan penanggung jawab.</p>
-                             <button class="w-full py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition shadow-md"><i class="fas fa-download mr-2"></i> Unduh .XLSX</button>
+                             <h4 class="text-lg font-bold text-gray-900">{{ __('welcome.spotlight.report.export_title') }}</h4>
+                             <p class="text-sm text-gray-500">{{ __('welcome.spotlight.report.export_desc') }}</p>
+                             <button class="w-full py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition shadow-md"><i class="fas fa-download mr-2"></i> {{ __('welcome.spotlight.report.export_btn') }}</button>
                          </div>
                          <div class="flex-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                             <h5 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wide">Statistik Peminjaman</h5>
+                             <h5 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wide">{{ __('welcome.spotlight.report.stats_title') }}</h5>
                              <div class="space-y-4">
                                  <div>
-                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">Lab Fisika</span> <span class="text-gray-500">85%</span></div>
+                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">{{ __('welcome.spotlight.report.lab_fisika') }}</span> <span class="text-gray-500">85%</span></div>
                                      <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div></div>
                                  </div>
                                  <div>
-                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">Lab Biologi</span> <span class="text-gray-500">62%</span></div>
+                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">{{ __('welcome.spotlight.report.lab_biologi') }}</span> <span class="text-gray-500">62%</span></div>
                                      <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-emerald-500 h-2 rounded-full" style="width: 62%"></div></div>
                                  </div>
                                  <div>
-                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">Lab Kimia</span> <span class="text-gray-500">45%</span></div>
+                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">{{ __('welcome.spotlight.report.lab_kimia') }}</span> <span class="text-gray-500">45%</span></div>
                                      <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-amber-500 h-2 rounded-full" style="width: 45%"></div></div>
                                  </div>
                                   <div>
-                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">Lab Komputer</span> <span class="text-gray-500">92%</span></div>
+                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">{{ __('welcome.spotlight.report.lab_komputer') }}</span> <span class="text-gray-500">92%</span></div>
                                      <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-purple-600 h-2 rounded-full" style="width: 92%"></div></div>
                                  </div>
                              </div>
@@ -643,7 +643,7 @@
                 
                 {{-- Footer --}}
                 <div class="bg-gray-50 p-4 border-t border-gray-200 text-center">
-                    <button @click="isModalOpen = true; showFeatureModal = false" class="text-green-600 font-semibold text-sm hover:underline hover:text-green-800">Coba Langsung di Dashboard &rarr;</button>
+                    <button @click="isModalOpen = true; showFeatureModal = false" class="text-green-600 font-semibold text-sm hover:underline hover:text-green-800">{{ __('welcome.spotlight.footer_cta') }}</button>
                 </div>
             </div>
             <style>
@@ -692,7 +692,7 @@
                         event.preventDefault();
                         const submitButton = this.querySelector('button[type="submit"]');
                         const originalButtonText = submitButton.innerHTML;
-                        submitButton.innerHTML = 'Memproses...';
+                        submitButton.innerHTML = "{{ __('welcome.js.processing') }}";
                         submitButton.disabled = true;
                         errorMessageDiv.classList.add('hidden');
                         successMessageDiv.classList.add('hidden');
@@ -704,9 +704,9 @@
                             });
                             if (response.redirected) { window.location.href = response.url; return; }
                             const data = await response.json();
-                            if (!response.ok) { showError(data.message || 'Terjadi kesalahan.'); } 
+                            if (!response.ok) { showError(data.message || "{{ __('welcome.js.error_generic') }}"); } 
                             else { window.location.href = '{{ route('dashboard') }}'; }
-                        } catch (error) { showError('Koneksi gagal. Periksa jaringan Anda.'); } 
+                        } catch (error) { showError("{{ __('welcome.js.error_connection') }}"); } 
                         finally { submitButton.innerHTML = originalButtonText; submitButton.disabled = false; }
                     });
                 }

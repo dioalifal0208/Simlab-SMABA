@@ -3,9 +3,9 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
                 <h2 class="font-bold text-2xl text-smaba-text leading-tight">
-                    {{ __('Kalender Jadwal Laboratorium') }}
+                    {{ __('calendar.title') }}
                 </h2>
-                <p class="text-sm text-gray-500 mt-1">Lihat jadwal penggunaan lab dalam tampilan kalender.</p>
+                <p class="text-sm text-gray-500 mt-1">{{ __('calendar.subtitle') }}</p>
             </div>
         </div>
     </x-slot>
@@ -18,17 +18,17 @@
                     <div class="flex items-center space-x-4">
                         <label for="filter-lab" class="flex items-center cursor-pointer">
                             <input type="checkbox" id="filter-lab" class="rounded border-gray-300 text-smaba-dark-blue shadow-sm focus:ring-smaba-light-blue" checked>
-                            <span class="ml-2 text-sm text-gray-600">Jadwal Lab</span>
+                            <span class="ml-2 text-sm text-gray-600">{{ __('calendar.filters.lab_schedule') }}</span>
                         </label>
                         <label for="filter-holidays" class="flex items-center cursor-pointer">
                             <input type="checkbox" id="filter-holidays" class="rounded border-gray-300 text-red-600 shadow-sm focus:ring-red-500" checked>
-                            <span class="ml-2 text-sm text-gray-600">Hari Libur Nasional</span>
+                            <span class="ml-2 text-sm text-gray-600">{{ __('calendar.filters.national_holidays') }}</span>
                         </label>
                     </div>
                     <div class="flex items-center gap-3">
-                        <label for="lab-selector" class="text-sm font-semibold text-gray-700">Pilih Lab:</label>
+                        <label for="lab-selector" class="text-sm font-semibold text-gray-700">{{ __('calendar.filters.select_lab') }}:</label>
                         <select id="lab-selector" class="rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
-                            <option value="">Semua Lab</option>
+                            <option value="">{{ __('calendar.filters.all_labs') }}</option>
                             <option value="Biologi">Biologi</option>
                             <option value="Fisika">Fisika</option>
                             <option value="Bahasa">Bahasa</option>
@@ -40,11 +40,11 @@
                     {{-- Kalender akan ditampilkan di dalam div ini --}}
                     <div id="calendar"></div>
                     <div class="flex flex-wrap items-center gap-3 text-xs text-gray-600">
-                        <span class="font-semibold">Legend:</span>
+                        <span class="font-semibold">{{ __('calendar.legend.title') }}</span>
                         <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#2563eb] border border-green-500"></span>Biologi</span>
                         <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#16a34a] border border-green-600"></span>Fisika</span>
                         <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#f59e0b] border border-amber-600"></span>Bahasa</span>
-                        <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-red-500"></span>Libur Nasional</span>
+                        <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-red-500"></span>{{ __('calendar.legend.national_holiday') }}</span>
                     </div>
                 </div>
             </div>

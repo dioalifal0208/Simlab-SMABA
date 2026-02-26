@@ -6,7 +6,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                 </svg>
             </div>
-            <h3 class="text-xl font-bold text-smaba-text">Laporan Pengembalian</h3>
+            <h3 class="text-xl font-bold text-smaba-text">{{ __('bookings.report.title') }}</h3>
         </div>
         
         @if($booking->waktu_pengembalian)
@@ -15,17 +15,17 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <div>
-                    <h4 class="font-bold text-green-800">Laporan Telah Disimpan</h4>
+                    <h4 class="font-bold text-green-800">{{ __('bookings.report.saved_title') }}</h4>
                     <p class="text-sm text-green-700 mt-1">
-                        Dikembalikan pada: <span class="font-semibold">{{ $booking->waktu_pengembalian->format('d M Y, H:i') }}</span>
+                        {{ __('bookings.report.returned_at') }}: <span class="font-semibold">{{ $booking->waktu_pengembalian->format('d M Y, H:i') }}</span>
                     </p>
                 </div>
             </div>
         @else
             <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
                 <p class="text-sm text-green-700">
-                    <span class="font-bold block mb-1">Perhatian:</span>
-                    Mohon isi checklist kondisi ruangan di bawah ini setelah kegiatan selesai. Data ini akan otomatis masuk ke Surat Peminjaman.
+                    <span class="font-bold block mb-1">{{ __('bookings.report.attention_title') }}:</span>
+                    {{ __('bookings.report.attention_text') }}
                 </p>
             </div>
         @endif
@@ -48,7 +48,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
-                            <span class="font-semibold text-gray-700 peer-checked:text-green-900">Bersih dan Rapi</span>
+                            <span class="font-semibold text-gray-700 peer-checked:text-green-900">{{ __('bookings.report.conditions.clean') }}</span>
                         </div>
                         <div class="absolute top-3 right-3 opacity-0 peer-checked:opacity-100 transition-opacity text-green-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -71,7 +71,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
                             </div>
-                            <span class="font-semibold text-gray-700 peer-checked:text-orange-900">Ada Sampah</span>
+                            <span class="font-semibold text-gray-700 peer-checked:text-orange-900">{{ __('bookings.report.conditions.trash') }}</span>
                         </div>
                         <div class="absolute top-3 right-3 opacity-0 peer-checked:opacity-100 transition-opacity text-orange-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -95,7 +95,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
-                            <span class="font-semibold text-gray-700 peer-checked:text-yellow-900">Alat Berantakan</span>
+                            <span class="font-semibold text-gray-700 peer-checked:text-yellow-900">{{ __('bookings.report.conditions.messy') }}</span>
                         </div>
                         <div class="absolute top-3 right-3 opacity-0 peer-checked:opacity-100 transition-opacity text-yellow-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -118,7 +118,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                 </svg>
                             </div>
-                            <span class="font-semibold text-gray-700 peer-checked:text-red-900">Ada Kerusakan</span>
+                            <span class="font-semibold text-gray-700 peer-checked:text-red-900">{{ __('bookings.report.conditions.damaged') }}</span>
                         </div>
                         <div class="absolute top-3 right-3 opacity-0 peer-checked:opacity-100 transition-opacity text-red-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -135,7 +135,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                         </svg>
-                        Simpan Laporan
+                        {{ __('bookings.report.save') }}
                     </button>
                 </div>
             @endif

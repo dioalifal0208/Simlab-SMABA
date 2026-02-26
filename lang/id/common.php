@@ -24,6 +24,8 @@ return [
         'booking_archive' => 'Arsip Peminjaman',
         'profile' => 'Profil',
         'logout' => 'Keluar',
+        'notifications' => 'Notifikasi',
+        'product_tour' => 'Tour Panduan',
     ],
 
     // Tombol Umum
@@ -56,7 +58,9 @@ return [
     // Pesan Umum
     'messages' => [
         'success' => 'Berhasil!',
+        'success_title' => 'Sukses',
         'error' => 'Error!',
+        'error_title' => 'Oops! Ada yang salah',
         'warning' => 'Peringatan!',
         'info' => 'Informasi',
         'confirm_delete' => 'Apakah Anda yakin ingin menghapus item ini?',
@@ -66,6 +70,9 @@ return [
         'updated' => 'Data berhasil diperbarui',
         'deleted' => 'Data berhasil dihapus',
         'created' => 'Data berhasil dibuat',
+        'no_notifications' => 'Tidak ada notifikasi baru.',
+        'view_all_notifications' => 'Lihat Semua Notifikasi',
+        'start_tour' => 'Mulai Tour Panduan',
     ],
 
     // Label Umum
@@ -126,5 +133,15 @@ return [
         'search' => 'Cari...',
         'filter' => 'Filter',
         'reset' => 'Reset',
+    ],
+
+    // Laboratorium
+    'labs' => [
+        'biologi' => 'Biologi',
+        'fisika' => 'Fisika',
+        'bahasa' => 'Bahasa',
+        'lab_biologi' => 'Lab Biologi',
+        'lab_fisika' => 'Lab Fisika',
+        'lab_bahasa' => 'Lab Bahasa',
     ],
 ];

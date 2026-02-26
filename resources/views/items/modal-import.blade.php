@@ -1,7 +1,7 @@
 <button @click="showImportModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
             
-<h2 class="text-2xl font-bold text-smaba-text text-center">Import Data Item</h2>
-<p class="text-center text-sm text-gray-500 mt-2">Upload file Excel (.xlsx) atau CSV untuk menambahkan banyak item sekaligus.</p>
+<h2 class="text-2xl font-bold text-smaba-text text-center">{{ __('items.import.title') }}</h2>
+<p class="text-center text-sm text-gray-500 mt-2">{{ __('items.import.subtitle') }}</p>
 
 {{-- Area Notifikasi Error/Sukses di dalam Modal --}}
 <div id="import-feedback" class="hidden mt-4 text-sm"></div>
@@ -17,17 +17,17 @@
                 </svg>
                 <div class="mt-4 flex text-sm leading-6 text-gray-600">
                     <label for="import-file" class="relative cursor-pointer rounded-md bg-white font-semibold text-smaba-dark-blue focus-within:outline-none focus-within:ring-2 focus-within:ring-smaba-light-blue focus-within:ring-offset-2 hover:text-smaba-light-blue">
-                        <span>Upload sebuah file</span>
+                        <span>{{ __('items.import.upload_label') }}</span>
                         <input id="import-file" name="file" type="file" class="sr-only" @change="handleFileSelect" x-ref="fileInput" required>
                     </label>
-                    <p class="pl-1">atau tarik dan lepas</p>
+                    <p class="pl-1">{{ __('items.import.drag_drop') }}</p>
                 </div>
-                <p class="text-xs leading-5 text-gray-600">XLSX, XLS, CSV hingga 10MB</p>
+                <p class="text-xs leading-5 text-gray-600">{{ __('items.import.file_types') }}</p>
             </div>
             <div class="text-center" x-show="fileName">
                 <i class="fas fa-file-excel text-4xl text-green-500"></i>
                 <p class="mt-2 text-sm font-semibold text-gray-700" x-text="fileName"></p>
-                <button type="button" @click="removeFile" class="mt-2 text-xs text-red-500 hover:underline">Hapus file</button>
+                <button type="button" @click="removeFile" class="mt-2 text-xs text-red-500 hover:underline">{{ __('items.import.remove_file') }}</button>
             </div>
         </div>
     </div>
@@ -36,13 +36,13 @@
             {{-- Tampilkan spinner jika isLoading true --}}
             <i x-show="isLoading" class="fas fa-spinner fa-spin mr-2"></i>
             {{-- Tampilkan teks asli jika isLoading false --}}
-            <span x-show="!isLoading"><i class="fas fa-upload mr-2"></i> Upload dan Import</span>
+            <span x-show="!isLoading"><i class="fas fa-upload mr-2"></i> {{ __('items.import.submit') }}</span>
         </button>
     </div>
 </form>
 <div class="mt-4 text-center">
     <a href="{{ route('items.template.export') }}" class="text-sm text-smaba-light-blue hover:underline">
-        <i class="fas fa-download mr-1"></i> Unduh Template Excel
+        <i class="fas fa-download mr-1"></i> {{ __('items.import.download_template') }}
     </a>
 </div>
 
@@ -92,7 +92,7 @@
 
             async submitForm() {
                 if (!this.file) {
-                    this.showFeedback('Pilih file terlebih dahulu.', 'error');
+                    this.showFeedback("{{ __('items.import.select_file_first') }}", 'error');
                     return;
                 }
 
@@ -111,20 +111,20 @@
                         this.showFeedback(data.message + (data.errors ? '<ul class="mt-2 list-disc list-inside"><li>' + data.errors.join('</li><li>') + '</li></ul>' : ''), 'error');
                     } else {
                         // PERBAIKAN: Hapus event Livewire dan langsung reload halaman
-                        this.showFeedback(data.message + ' Halaman akan dimuat ulang secara otomatis.', 'success');
+                        this.showFeedback(data.message + ' ' + "{{ __('items.import.success_reload') }}", 'success');
                         setTimeout(() => {
                             window.location.reload(); // Muat ulang halaman untuk menampilkan data baru
                         }, 2000); // Beri waktu 2 detik agar pengguna bisa membaca pesan sukses
                     }
                 } catch (error) {
-                    this.showFeedback('Tidak dapat terhubung ke server. Periksa koneksi Anda.', 'error');
+                    this.showFeedback("{{ __('items.import.server_error') }}", 'error');
                 } finally {
                     this.isLoading = false;
                 }
             },
 
             showFeedback(message, type) {
-                this.feedbackDiv.innerHTML = `<p class="font-bold">${type === 'success' ? 'Sukses' : 'Gagal'}</p><div>${message}</div>`;
+                this.feedbackDiv.innerHTML = `<p class="font-bold">${type === 'success' ? "{{ __('common.messages.success') }}" : "{{ __('common.messages.error') }}"}</p><div>${message}</div>`;
                 this.feedbackDiv.className = `mt-4 p-3 border-l-4 text-sm ${type === 'success' ? 'bg-green-50 border-green-400 text-green-700' : 'bg-red-50 border-red-400 text-red-700'}`;
             }
         }

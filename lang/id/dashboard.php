@@ -3,7 +3,7 @@
 return [
     // Bagian Selamat Datang
     'welcome' => [
-        'admin' => 'Selamat datang, Admin Lab SMABA!',
+        'admin' => 'Selamat datang, :name!',
         'user' => 'Selamat datang, :name!',
         'subtitle' => 'Ringkasan aktivitas laboratorium hari ini.',
     ],
@@ -38,6 +38,11 @@ return [
         'scheduled_practicum' => 'Praktikum terjadwal',
         'view_all' => 'Lihat Semua',
         'no_data' => 'Tidak ada data',
+        'low_stock_title' => 'Stok Menipis',
+        'low_stock_desc' => ':count item memerlukan restok segera.',
+        'overdue_loans_title' => 'Peminjaman Terlambat',
+        'overdue_loans_desc' => ':count peminjaman melewati batas waktu.',
+        'take_action' => 'Tindak Lanjuti',
     ],
 
     // Aktivitas Terbaru
@@ -48,14 +53,21 @@ return [
         'of' => 'dari',
         'no_activity' => 'Tidak ada aktivitas terbaru',
         'view_more' => 'Lihat Lebih Banyak',
+        'previous' => 'Sebelumnya',
+        'next' => 'Selanjutnya',
     ],
 
     // Jenis Aktivitas
     'activity' => [
-        'loan_created' => 'Peminjaman baru dibuat',
-        'booking_created' => 'Booking baru dibuat',
-        'item_added' => 'Item baru ditambahkan',
-        'item_updated' => 'Item diperbarui',
-        'user_login' => 'Pengguna login',
+        'loan_created' => 'mengajukan peminjaman alat',
+        'booking_created' => 'mengajukan booking lab untuk ":purpose"',
+        'item_added' => 'menambahkan item baru',
+        'item_updated' => 'memperbarui item',
+        'user_login' => 'login ke sistem',
+        'no_activity' => 'Belum ada aktivitas terbaru.',
+        'view_all' => 'Lihat Semua Aktivitas',
+        'view' => 'Lihat',
+        'detail' => 'Detail',
+        'system' => 'Sistem',
     ],
 ];

@@ -31,7 +31,7 @@
 
             @if (session('success'))
                 <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg" role="alert">
-                    <p class="font-bold">Sukses</p>
+                    <p class="font-bold">{{ __('common.messages.success') }}</p>
                     <span>{{ session('success') }}</span>
                 </div>
             @endif
@@ -42,20 +42,20 @@
                     <form action="{{ route('loans.index') }}" method="GET" class="p-4 sm:p-6" id="filter-form">
                         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:space-x-4">
                             <div class="flex items-center space-x-2">
-                                <label for="status" class="text-sm font-medium text-gray-700">Status:</label>
+                                <label for="status" class="text-sm font-medium text-gray-700">{{ __('common.labels.status') }}:</label>
                                 <select name="status" id="status" class="w-full sm:w-auto rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
-                                    <option value="">Semua Status</option>
-                                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu Persetujuan</option>
-                                    <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
-                                    <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
-                                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
-                                    <option value="Terlambat" @selected(request('status') == 'Terlambat')>Terlambat</option>
+                                    <option value="">{{ __('loans.filters.all_status') }}</option>
+                                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>{{ __('common.status.pending') }}</option>
+                                    <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>{{ __('common.status.approved') }}</option>
+                                    <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>{{ __('common.status.rejected') }}</option>
+                                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>{{ __('common.status.completed') }}</option>
+                                    <option value="Terlambat" @selected(request('status') == 'Terlambat')>{{ __('loans.status.overdue') }}</option>
                                 </select>
                             </div>
                             <div class="flex items-center space-x-2">
-                                <label for="laboratorium" class="text-sm font-medium text-gray-700">Lab:</label>
+                                <label for="laboratorium" class="text-sm font-medium text-gray-700">{{ __('common.nav.lab_services') }}:</label>
                                 <select name="laboratorium" id="laboratorium" class="w-full sm:w-auto rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
-                                    <option value="">Semua Lab</option>
+                                    <option value="">{{ __('loans.filters.all_labs') }}</option>
                                     <option value="Biologi" @selected(request('laboratorium') === 'Biologi')>Biologi</option>
                                     <option value="Fisika" @selected(request('laboratorium') === 'Fisika')>Fisika</option>
                                     <option value="Bahasa" @selected(request('laboratorium') === 'Bahasa')>Bahasa</option>
@@ -91,24 +91,24 @@
                                             <td class="py-4 px-6 text-sm font-semibold text-gray-900">{{ $loan->user->name }}</td>
                                         @endif
                                         <td class="py-4 px-6 text-sm">{{ \Carbon\Carbon::parse($loan->tanggal_pinjam)->format('d M Y') }}</td>
-                                        <td class="py-4 px-6 text-sm hidden sm:table-cell">{{ $loan->items->count() }} item</td>
+                                        <td class="py-4 px-6 text-sm hidden sm:table-cell">{{ $loan->items->count() }} {{ __('loans.units.item') }}</td>
                                         <td class="py-4 px-6 text-sm font-semibold text-gray-800">{{ $loan->laboratorium }}</td>
                                         <td class="py-4 px-6 text-center">
                                             @if($loan->status == 'pending')
-                                                <span class="px-3 py-1 text-xs font-bold leading-none text-yellow-800 bg-yellow-100 rounded-full">Menunggu</span>
+                                                <span class="px-3 py-1 text-xs font-bold leading-none text-yellow-800 bg-yellow-100 rounded-full">{{ __('common.status.pending') }}</span>
                                             @elseif($loan->status == 'approved')
-                                                <span class="px-3 py-1 text-xs font-bold leading-none text-green-800 bg-green-100 rounded-full">Disetujui</span>
+                                                <span class="px-3 py-1 text-xs font-bold leading-none text-green-800 bg-green-100 rounded-full">{{ __('common.status.approved') }}</span>
                                             @elseif($loan->status == 'rejected')
-                                                <span class="px-3 py-1 text-xs font-bold leading-none text-red-800 bg-red-100 rounded-full">Ditolak</span>
+                                                <span class="px-3 py-1 text-xs font-bold leading-none text-red-800 bg-red-100 rounded-full">{{ __('common.status.rejected') }}</span>
                                             @elseif($loan->status == 'completed')
-                                                <span class="px-3 py-1 text-xs font-bold leading-none text-gray-800 bg-gray-100 rounded-full">Selesai</span>
+                                                <span class="px-3 py-1 text-xs font-bold leading-none text-gray-800 bg-gray-100 rounded-full">{{ __('common.status.completed') }}</span>
                                             @elseif($loan->status == 'Terlambat')
-                                                <span class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-200 rounded-full">Terlambat</span>
+                                                <span class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-200 rounded-full">{{ __('loans.status.overdue') }}</span>
                                             @endif
                                         </td>
                                         <td class="py-4 px-6 text-center">
                                             <a href="{{ route('loans.show', $loan->id) }}" class="px-4 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-xs shadow-sm transition-colors duration-300">
-                                                Lihat Detail
+                                                {{ __('common.buttons.details') }}
                                             </a>
                                         </td>
                                     </tr>
@@ -123,7 +123,7 @@
                                                 <p class="text-sm text-gray-500 mb-4">{{ __('loans.empty.description') }}</p>
                                                 @unless (auth()->user()->role == 'admin')
                                                 <a href="{{ route('loans.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-sm">
-                                                    <i class="fas fa-plus"></i> Ajukan Peminjaman Baru
+                                                    <i class="fas fa-plus"></i> {{ __('loans.empty.action') }}
                                                 </a>
                                                 @endunless
                                             </div>

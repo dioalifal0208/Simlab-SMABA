@@ -18,18 +18,18 @@
     <div class="p-6 md:p-8 space-y-6">
         <div class="flex items-start justify-between gap-4">
             <div>
-                <p class="text-xs font-semibold text-smaba-dark-blue uppercase tracking-wide">Keamanan lanjutan</p>
-                <h3 class="text-xl font-bold text-smaba-text">Autentikasi Dua Faktor (TOTP)</h3>
-                <p class="text-sm text-gray-500">Tambahkan lapisan keamanan dengan aplikasi Google/Microsoft Authenticator.</p>
+                <p class="text-xs font-semibold text-smaba-dark-blue uppercase tracking-wide">{{ __('profile.sections.two_factor.badge') }}</p>
+                <h3 class="text-xl font-bold text-smaba-text">{{ __('profile.sections.two_factor.title') }}</h3>
+                <p class="text-sm text-gray-500">{{ __('profile.sections.two_factor.subtitle') }}</p>
             </div>
             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold @if($twoFactorStatus === 'active') bg-green-100 text-green-700 @elseif($twoFactorStatus === 'pending') bg-amber-100 text-amber-700 @else bg-gray-100 text-gray-600 @endif">
                 <span class="w-2 h-2 mr-2 rounded-full @if($twoFactorStatus === 'active') bg-green-600 @elseif($twoFactorStatus === 'pending') bg-amber-500 @else bg-gray-400 @endif"></span>
                 @if($twoFactorStatus === 'active')
-                    2FA aktif
+                    {{ __('profile.sections.two_factor.status_active') }}
                 @elseif($twoFactorStatus === 'pending')
-                    Menunggu konfirmasi
+                    {{ __('profile.sections.two_factor.status_pending') }}
                 @else
-                    Belum diaktifkan
+                    {{ __('profile.sections.two_factor.status_inactive') }}
                 @endif
             </span>
         </div>
@@ -50,25 +50,25 @@
 
         @if (!empty($recoveryPlain))
             <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-sm">
-                <p class="font-semibold text-green-800 mb-2">Recovery codes baru</p>
+                <p class="font-semibold text-green-800 mb-2">{{ __('profile.messages.recovery_codes_title') }}</p>
                 <div class="grid grid-cols-2 gap-2 font-mono text-xs text-green-900">
                     @foreach ($recoveryPlain as $code)
                         <span class="px-2 py-1 bg-white rounded border border-green-100">{{ $code }}</span>
                     @endforeach
                 </div>
-                <p class="mt-3 text-green-700">Simpan kode ini di tempat yang hanya Anda yang dapat mengaksesnya.</p>
+                <p class="mt-3 text-green-700">{{ __('profile.messages.recovery_codes_desc') }}</p>
             </div>
         @endif
 
         <div class="flex flex-wrap items-center justify-between gap-3">
             <div class="text-sm text-gray-600">
                 <p class="font-semibold text-gray-800">
-                    Status: {{ $user->two_factor_enabled ? 'Aktif dan terproteksi' : 'Belum aktif' }}
+                    {{ __('profile.labels.two_factor_status', ['status' => $user->two_factor_enabled ? __('profile.labels.two_factor_active') : __('profile.labels.two_factor_inactive')]) }}
                 </p>
                 @if ($setupSecret && !$user->two_factor_enabled)
-                    <p class="text-amber-700">QR sudah dibuat, selesaikan konfirmasi untuk mengaktifkan.</p>
+                    <p class="text-amber-700">{{ __('profile.messages.two_factor_pending') }}</p>
                 @elseif(! $user->two_factor_enabled)
-                    <p class="text-gray-500">Kami sarankan mengaktifkan 2FA untuk semua akun pengelola.</p>
+                    <p class="text-gray-500">{{ __('profile.messages.two_factor_suggestion') }}</p>
                 @endif
             </div>
 
@@ -77,7 +77,7 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="text-sm font-semibold text-red-600 hover:text-red-700">
-                        {{ $user->two_factor_enabled ? 'Matikan 2FA' : 'Batalkan setup' }}
+                        {{ $user->two_factor_enabled ? __('profile.buttons.disable_2fa') : __('profile.buttons.cancel_setup') }}
                     </button>
                 </form>
             @endif
@@ -87,22 +87,22 @@
             <form method="POST" action="{{ route('two-factor.start') }}" class="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg p-4">
                 @csrf
                 <div class="text-sm text-gray-700">
-                    <p class="font-semibold text-gray-800">Aktifkan 2FA sekarang</p>
-                    <p class="text-gray-500">Buat kode QR untuk dipindai di aplikasi authenticator.</p>
+                    <p class="font-semibold text-gray-800">{{ __('profile.messages.two_factor_qr_instruction') }}</p>
+                    <p class="text-gray-500">{{ __('profile.messages.two_factor_qr_subtitle') }}</p>
                 </div>
                 <button type="submit" class="px-4 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-lg shadow hover:bg-smaba-light-blue transition-colors">
-                    Mulai
+                    {{ __('profile.buttons.start') }}
                 </button>
             </form>
         @endif
 
         @if ($setupSecret)
             <div class="border border-gray-200 rounded-lg p-4 space-y-3 bg-gray-50">
-                <p class="text-sm font-semibold text-gray-800">Langkah aktivasi</p>
+                <p class="text-sm font-semibold text-gray-800">{{ __('profile.messages.two_factor_steps_title') }}</p>
                 <ol class="list-decimal list-inside text-sm text-gray-600 space-y-1">
-                    <li>Buka Google/Microsoft Authenticator.</li>
-                    <li>Scan QR di bawah atau masukkan secret manual.</li>
-                    <li>Masukkan kode 6 digit lalu klik konfirmasi.</li>
+                    <li>{{ __('profile.messages.two_factor_steps.step1') }}</li>
+                    <li>{{ __('profile.messages.two_factor_steps.step2') }}</li>
+                    <li>{{ __('profile.messages.two_factor_steps.step3') }}</li>
                 </ol>
 
                 @if ($qr)
@@ -117,7 +117,7 @@
 
                 <form method="POST" action="{{ route('two-factor.confirm') }}" class="space-y-2">
                     @csrf
-                    <label class="block text-sm font-medium text-gray-700" for="code">Kode 6 digit</label>
+                    <label class="block text-sm font-medium text-gray-700" for="code">{{ __('profile.labels.code_6_digit') }}</label>
                     <input
                         id="code"
                         name="code"
@@ -128,7 +128,7 @@
                         class="block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue"
                     >
                     <button type="submit" class="mt-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors">
-                        Konfirmasi & Aktifkan
+                        {{ __('profile.buttons.confirm_activate') }}
                     </button>
                 </form>
             </div>
@@ -138,11 +138,11 @@
             <form method="POST" action="{{ route('two-factor.recovery') }}" class="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg p-4">
                 @csrf
                 <div>
-                    <p class="text-sm font-semibold text-gray-800">Recovery codes</p>
-                    <p class="text-xs text-gray-500">Gunakan saat kehilangan akses ke aplikasi authenticator.</p>
+                    <p class="text-sm font-semibold text-gray-800">{{ __('profile.messages.recovery_codes_label') }}</p>
+                    <p class="text-xs text-gray-500">{{ __('profile.messages.recovery_codes_usage') }}</p>
                 </div>
                 <button type="submit" class="px-4 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-lg shadow hover:bg-smaba-light-blue transition-colors">
-                    Buat ulang
+                    {{ __('profile.buttons.regenerate_recovery') }}
                 </button>
             </form>
         @endif
