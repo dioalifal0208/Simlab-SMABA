@@ -24,7 +24,10 @@
         </div>
     </x-slot>
 
-    <div class="py-12" x-data="{ showModal: {{ ($errors->any() || request('create')) ? 'true' : 'false' }} }" @open-booking-modal.window="showModal = true">
+    <div class="py-12" 
+         x-data="{ showModal: {{ ($errors->any() || request('create')) ? 'true' : 'false' }} }" 
+         @open-booking-modal.window="showModal = true; $dispatch('modal-state-changed', {open: true})"
+         x-init="$watch('showModal', value => $dispatch('modal-state-changed', {open: value}))">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             @if (session('success'))
@@ -164,7 +167,7 @@
                  x-transition:leave="ease-in duration-200" 
                  x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
                  x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
-                 class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                 class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full border border-gray-100">
                 
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
@@ -191,16 +194,16 @@
 
                             <form action="{{ route('bookings.store') }}" method="POST">
                                 @csrf
-                                <div class="space-y-4">
+                                <div class="space-y-5">
                                     <div>
-                                        <label for="guru_pengampu" class="block font-medium text-sm text-gray-700">Nama Guru Pengampu</label>
-                                        <input type="text" name="guru_pengampu" id="guru_pengampu" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('guru_pengampu') }}" required>
+                                        <label for="guru_pengampu" class="block font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">Nama Guru Pengampu</label>
+                                        <input type="text" name="guru_pengampu" id="guru_pengampu" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" value="{{ old('guru_pengampu') }}" placeholder="Contoh: Budi Santoso, S.Pd." required>
                                     </div>
 
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                         <div>
-                                            <label for="laboratorium_modal" class="block font-medium text-sm text-gray-700">Pilih Laboratorium</label>
-                                            <select name="laboratorium" id="laboratorium_modal" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required {{ auth()->user()->role === 'admin' ? '' : 'disabled' }}>
+                                            <label for="laboratorium_modal" class="block font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">Laboratorium</label>
+                                            <select name="laboratorium" id="laboratorium_modal" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" required {{ auth()->user()->role === 'admin' ? '' : 'disabled' }}>
                                                 <option value="">-- Pilih Lab --</option>
                                                 <option value="Biologi" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Biologi')>Lab Biologi</option>
                                                 <option value="Fisika" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Fisika')>Lab Fisika</option>
@@ -211,51 +214,51 @@
                                             @endif
                                         </div>
                                         <div>
-                                            <label for="jumlah_peserta" class="block font-medium text-sm text-gray-700">Jumlah Peserta <span class="text-xs text-gray-400">(Opsional)</span></label>
-                                            <input type="number" name="jumlah_peserta" id="jumlah_peserta" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('jumlah_peserta') }}">
+                                            <label for="jumlah_peserta" class="block font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">Jumlah Peserta <span class="text-[10px] lowercase italic font-normal text-gray-400">(opsional)</span></label>
+                                            <input type="number" name="jumlah_peserta" id="jumlah_peserta" min="1" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" value="{{ old('jumlah_peserta') }}" placeholder="Contoh: 30">
                                         </div>
                                     </div>
 
-                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                                         <div>
-                                            <label for="nomor_induk" class="block font-medium text-sm text-gray-700">NIP</label>
-                                            <input type="text" name="nomor_induk" id="nomor_induk" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('nomor_induk', auth()->user()->nomor_induk) }}">
+                                            <label for="nomor_induk" class="block font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">NIP/Nomor Induk</label>
+                                            <input type="text" name="nomor_induk" id="nomor_induk" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" value="{{ old('nomor_induk', auth()->user()->nomor_induk) }}" placeholder="Nomor Induk Pegawai">
                                         </div>
                                         <div>
-                                            <label for="kelas" class="block font-medium text-sm text-gray-700">Kelas / Jabatan</label>
-                                            <input type="text" name="kelas" id="kelas" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('kelas', auth()->user()->kelas) }}">
+                                            <label for="kelas" class="block font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">Kelas / Jabatan</label>
+                                            <input type="text" name="kelas" id="kelas" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" value="{{ old('kelas', auth()->user()->kelas) }}" placeholder="Contoh: XI IPA 1 / Guru Mapel">
                                         </div>
                                         <div>
-                                            <label for="phone_number" class="block font-medium text-sm text-gray-700">No. HP / WA</label>
-                                            <input type="text" name="phone_number" id="phone_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('phone_number', auth()->user()->phone_number) }}">
+                                            <label for="phone_number" class="block font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">No. HP / WA</label>
+                                            <input type="text" name="phone_number" id="phone_number" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" value="{{ old('phone_number', auth()->user()->phone_number) }}" placeholder="0812xxxxxx">
                                         </div>
                                     </div>
                                     
                                     <div>
-                                        <label for="mata_pelajaran" class="block font-medium text-sm text-gray-700">Mata Pelajaran <span class="text-xs text-gray-400">(Opsional)</span></label>
-                                        <input type="text" name="mata_pelajaran" id="mata_pelajaran" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('mata_pelajaran') }}">
+                                        <label for="mata_pelajaran" class="block font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">Mata Pelajaran <span class="text-[10px] lowercase italic font-normal text-gray-400">(opsional)</span></label>
+                                        <input type="text" name="mata_pelajaran" id="mata_pelajaran" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" value="{{ old('mata_pelajaran') }}" placeholder="Contoh: Biologi Reproduksi">
                                     </div>
 
                                     <div>
-                                        <label for="tujuan_kegiatan" class="block font-medium text-sm text-gray-700">Tujuan Kegiatan / Judul Praktikum</label>
-                                        <textarea name="tujuan_kegiatan" id="tujuan_kegiatan" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>{{ old('tujuan_kegiatan') }}</textarea>
+                                        <label for="tujuan_kegiatan" class="block font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">Tujuan Kegiatan / Judul Praktikum</label>
+                                        <textarea name="tujuan_kegiatan" id="tujuan_kegiatan" rows="2" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Jelaskan secara ringkas kegiatan yang akan dilakukan..." required>{{ old('tujuan_kegiatan') }}</textarea>
                                     </div>
 
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                         <div>
-                                            <label for="waktu_mulai" class="block font-medium text-sm text-gray-700">Waktu Mulai</label>
-                                            <input type="datetime-local" name="waktu_mulai" id="waktu_mulai" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('waktu_mulai') }}" required>
+                                            <label for="waktu_mulai" class="block font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">Waktu Mulai</label>
+                                            <input type="datetime-local" name="waktu_mulai" id="waktu_mulai" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" value="{{ old('waktu_mulai') }}" required>
                                         </div>
                                         <div>
-                                            <label for="waktu_selesai" class="block font-medium text-sm text-gray-700">Waktu Selesai</label>
-                                            <input type="datetime-local" name="waktu_selesai" id="waktu_selesai" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('waktu_selesai') }}" required>
+                                            <label for="waktu_selesai" class="block font-semibold text-xs text-gray-500 uppercase tracking-wider mb-1">Waktu Selesai</label>
+                                            <input type="datetime-local" name="waktu_selesai" id="waktu_selesai" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" value="{{ old('waktu_selesai') }}" required>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="mt-8 flex justify-end space-x-3">
-                                    <button type="button" @click="showModal = false" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 font-semibold text-sm transition-colors">Batal</button>
-                                    <button type="submit" class="px-6 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors">Ajukan Booking</button>
+                                <div class="mt-8 flex justify-end gap-3 pt-5 border-t border-gray-100">
+                                    <button type="button" @click="showModal = false" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-bold text-sm transition-all">Batal</button>
+                                    <button type="submit" class="px-7 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold text-sm shadow-md shadow-blue-200 transition-all">Kirim Pengajuan</button>
                                 </div>
                             </form>
                         </div>

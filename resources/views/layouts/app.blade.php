@@ -30,8 +30,11 @@
           x-data="{ 
               showAnnouncement: true, 
               showImportModal: false,
+              isModalOpen: false,
               toast: { visible: false, message: '', type: 'success' }
           }"
+          x-init="$watch('showImportModal', value => isModalOpen = value)"
+          @modal-state-changed.window="isModalOpen = $event.detail.open"
           @show-toast.window="toast.visible = true; toast.message = $event.detail.message; toast.type = $event.detail.type; setTimeout(() => toast.visible = false, 3000)">
           
         <div class="min-h-screen bg-gray-50 flex flex-col">

@@ -7,7 +7,7 @@
 >
     <button
         @click="toggle()"
-        x-show="!open"
+        x-show="!open && !isModalOpen"
         x-transition
         class="relative flex items-center justify-center w-14 h-14 rounded-full shadow-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition border-2 border-white"
         style="display: none;"

@@ -795,6 +795,7 @@
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             document.body.style.overflow = 'hidden';
+            window.dispatchEvent(new CustomEvent('modal-state-changed', {detail: {open: true}}));
         }
         function closeModal() {
             const modal = document.getElementById('documentModal');
@@ -803,6 +804,7 @@
             modal.classList.remove('flex');
             document.getElementById('documentFrame').src = '';
             document.body.style.overflow = '';
+            window.dispatchEvent(new CustomEvent('modal-state-changed', {detail: {open: false}}));
         }
 
         document.addEventListener('DOMContentLoaded', function () {
