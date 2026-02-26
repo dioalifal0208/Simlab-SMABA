@@ -70,9 +70,9 @@
                             </select>
                             <select name="kondisi" id="kondisi" class="w-auto rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
                                 <option value="">{{ __('items.filters.condition') }}</option>
-                                <option value="Baik" @selected(request('kondisi') == 'Baik')>{{ __('items.conditions.baik') }}</option>
-                                <option value="Kurang Baik" @selected(request('kondisi') == 'Kurang Baik')>{{ __('items.conditions.rusak_ringan') }}</option>
-                                <option value="Rusak" @selected(request('kondisi') == 'Rusak')>{{ __('items.conditions.rusak_berat') }}</option>
+                                <option value="baik" @selected(request('kondisi') == 'baik')>{{ __('items.conditions.baik') }}</option>
+                                <option value="kurang baik" @selected(request('kondisi') == 'kurang baik')>{{ __('items.conditions.kurang_baik') }}</option>
+                                <option value="Rusak" @selected(request('kondisi') == 'Rusak')>{{ __('items.conditions.rusak') }}</option>
                             </select>
                             @php
                                 $isAdmin = auth()->user()?->role === 'admin';

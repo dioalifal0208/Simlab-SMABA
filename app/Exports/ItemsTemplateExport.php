@@ -8,8 +8,42 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ItemsTemplateExport implements WithHeadings, WithTitle, ShouldAutoSize, WithStyles
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Support\Collection;
+
+class ItemsTemplateExport implements WithHeadings, WithTitle, ShouldAutoSize, WithStyles, FromCollection
 {
+    /**
+     * @return Collection
+     */
+    public function collection()
+    {
+        return collect([
+            [
+                'Erlenmeyer 250 ml',
+                'Alat',
+                20,
+                'Pcs',
+                'baik',
+                'Lemari A1',
+                'Biologi',
+                5,
+                'Alat kaca untuk mencampur bahan kimia.',
+            ],
+            [
+                'HCL 0.1M',
+                'Bahan Habis Pakai',
+                1000,
+                'ml',
+                'baik',
+                'Gudang Bahan B',
+                'Kimia', // This will be mapped to Biologi/Fisika/etc or handled by default
+                100,
+                'Larutan asam klorida.',
+            ],
+        ]);
+    }
+
     /**
      * @return array
      */

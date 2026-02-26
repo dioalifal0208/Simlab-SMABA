@@ -28,7 +28,7 @@ class UpdateItemRequest extends FormRequest
             'jumlah' => 'required|integer|min:0',
             'stok_minimum' => 'nullable|integer|min:0',
             'satuan' => 'required|string|max:50',
-            'kondisi' => 'required|in:Baik,Kurang Baik,Rusak',
+            'kondisi' => 'required|in:baik,kurang baik,Rusak',
             'lokasi_penyimpanan' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
@@ -62,7 +62,7 @@ class UpdateItemRequest extends FormRequest
             'satuan.max' => 'Satuan tidak boleh lebih dari :max karakter.',
             
             'kondisi.required' => 'Kondisi alat wajib dipilih.',
-            'kondisi.in' => 'Kondisi harus berupa "Baik", "Kurang Baik", atau "Rusak".',
+            'kondisi.in' => 'Kondisi harus berupa "baik", "kurang baik", atau "Rusak".',
             
             'lokasi_penyimpanan.required' => 'Lokasi penyimpanan wajib diisi.',
             'lokasi_penyimpanan.max' => 'Lokasi penyimpanan tidak boleh lebih dari :max karakter.',

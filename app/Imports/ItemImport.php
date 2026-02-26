@@ -51,7 +51,19 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
             $row['laboratorium'] = Auth::user()->laboratorium ?? 'Biologi';
         }
 
-        // 3. Bersihkan angka dari spasi atau karakter non-numerik jika ada
+        // 3. Normalisasi Kondisi
+        $kondisi = (string) ($row['kondisi'] ?? '');
+        if ($kondisi === '1' || stripos($kondisi, 'Baik') !== false || stripos($kondisi, 'Good') !== false) {
+            $row['kondisi'] = 'baik';
+        } elseif ($kondisi === '2' || stripos($kondisi, 'Kurang') !== false || stripos($kondisi, 'Fair') !== false) {
+            $row['kondisi'] = 'kurang baik';
+        } elseif ($kondisi === '3' || stripos($kondisi, 'Rusak') !== false || stripos($kondisi, 'Broken') !== false) {
+            $row['kondisi'] = 'Rusak';
+        } else {
+            $row['kondisi'] = 'baik'; // Default
+        }
+
+        // 4. Bersihkan angka dari spasi atau karakter non-numerik jika ada
         if (isset($row['jumlah'])) {
             $row['jumlah'] = (int) preg_replace('/[^0-9]/', '', $row['jumlah']);
         }
@@ -101,6 +113,7 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
 
     /**
      * Aturan validasi untuk setiap baris.
+     * Harus sinkron dengan StoreItemRequest.php
      *
      * @return array
      */
@@ -108,13 +121,14 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
     {
         return [
             'nama_alat' => 'required|string|max:255',
-            'tipe' => 'required|in:Alat,Bahan Habis Pakai', // PERBAIKAN: Validasi lebih ketat
+            'tipe' => 'required|in:Alat,Bahan Habis Pakai',
             'jumlah' => 'required|integer|min:0',
-            'satuan' => 'nullable|string|max:50',
-            'kondisi' => 'required|in:Baik,Kurang Baik,Rusak',
-            'lokasi_penyimpanan' => 'nullable|string|max:255',
-            'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa', // Hanya 3 lab yang didukung sistem
+            'satuan' => 'required|string|max:50', // Sinkron dengan manual
+            'kondisi' => 'required|in:baik,kurang baik,Rusak',
+            'lokasi_penyimpanan' => 'required|string|max:255', // Sinkron dengan manual
+            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa', // Sinkron dengan manual
             'stok_minimum' => 'nullable|integer|min:0',
+            'deskripsi' => 'nullable|string',
         ];
     }
 }

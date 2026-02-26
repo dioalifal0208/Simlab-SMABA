@@ -67,8 +67,8 @@
                             <div>
                                 <label for="kondisi" class="block text-sm font-medium text-gray-700">{{ __('items.form.condition') }}</label>
                                 <select name="kondisi" id="kondisi" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>
-                                    <option value="Baik" @selected(old('kondisi', $item->kondisi) == 'Baik')>{{ __('items.status.good') }}</option>
-                                    <option value="Kurang Baik" @selected(old('kondisi', $item->kondisi) == 'Kurang Baik')>{{ __('items.status.fair') }}</option>
+                                    <option value="baik" @selected(old('kondisi', $item->kondisi) == 'baik')>{{ __('items.status.good') }}</option>
+                                    <option value="kurang baik" @selected(old('kondisi', $item->kondisi) == 'kurang baik')>{{ __('items.status.fair') }}</option>
                                     <option value="Rusak" @selected(old('kondisi', $item->kondisi) == 'Rusak')>{{ __('items.status.broken') }}</option>
                                 </select>
                             </div>

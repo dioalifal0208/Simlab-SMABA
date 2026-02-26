@@ -66,9 +66,9 @@ return [
 
     // Kondisi
     'conditions' => [
-        'baik' => 'Baik',
-        'rusak_ringan' => 'Rusak Ringan',
-        'rusak_berat' => 'Rusak Berat',
+        'baik' => 'baik',
+        'kurang_baik' => 'kurang baik',
+        'rusak' => 'Rusak',
     ],
 
     // Satuan
@@ -125,8 +125,8 @@ return [
         'urgent' => 'Mendesak',
         'available' => 'Tersedia',
         'unavailable' => 'Item Tidak Tersedia',
-        'good' => 'Baik',
-        'fair' => 'Kurang Baik',
+        'good' => 'baik',
+        'fair' => 'kurang baik',
         'broken' => 'Rusak',
     ],
 

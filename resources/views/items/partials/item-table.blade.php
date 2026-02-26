@@ -50,12 +50,12 @@
                         @endif
                     </td>
                     <td class="py-4 px-6 text-center hidden sm:table-cell">
-                        @if($item->kondisi == 'Baik')
+                        @if($item->kondisi == 'baik')
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{{ __('items.conditions.baik') }}</span>
-                        @elseif($item->kondisi == 'Kurang Baik')
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('items.conditions.rusak_ringan') }}</span>
+                        @elseif($item->kondisi == 'kurang baik')
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('items.conditions.kurang_baik') }}</span>
                         @else
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('items.conditions.rusak_berat') }}</span>
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('items.conditions.rusak') }}</span>
                         @endif
                     </td>
                     <td class="py-4 px-6 text-center">
