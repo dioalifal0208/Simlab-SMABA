@@ -75,19 +75,6 @@ return [
         'action' => 'Ajukan Booking Baru',
     ],
 
-    // Aksi
-    'actions' => [
-        'create' => 'Buat Booking',
-        'approve' => 'Setujui',
-        'reject' => 'Tolak',
-        'complete' => 'Tandai Selesai',
-        'cancel' => 'Batalkan',
-        'view' => 'Lihat Detail',
-        'edit' => 'Edit',
-        'delete' => 'Hapus',
-        'print_letter' => 'Cetak Surat',
-    ],
-
     // Pesan
     'messages' => [
         'created' => 'Booking berhasil dibuat',

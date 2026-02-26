@@ -18,13 +18,13 @@
                 </p>
             </div>
             
-            <button @click="showModal = true" class="mt-3 sm:mt-0 px-5 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors duration-300 ease-in-out transform hover:-translate-y-0.5">
+            <button @click="$dispatch('open-booking-modal')" class="mt-3 sm:mt-0 px-5 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors duration-300 ease-in-out transform hover:-translate-y-0.5">
                 <i class="fas fa-plus mr-2"></i> {{ __('bookings.actions.create_new') }}
             </button>
         </div>
     </x-slot>
 
-    <div class="py-12" x-data="{ showModal: {{ ($errors->any() || request('create')) ? 'true' : 'false' }} }">
+    <div class="py-12" x-data="{ showModal: {{ ($errors->any() || request('create')) ? 'true' : 'false' }} }" @open-booking-modal.window="showModal = true">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             @if (session('success'))
