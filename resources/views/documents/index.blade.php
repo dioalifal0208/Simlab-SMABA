@@ -29,13 +29,13 @@
                         @csrf
                         <div>
                             <label for="title" class="block text-sm font-medium text-gray-700">Judul Dokumen</label>
-                            <input type="text" name="title" id="title" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                            <input type="text" name="title" id="title" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             @error('title') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
                         </div>
                         @if (auth()->user()->role === 'admin')
                             <div>
                                 <label for="target_user_id" class="block text-sm font-medium text-gray-700">Ditujukan untuk Guru</label>
-                                <select name="target_user_id" id="target_user_id" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                <select name="target_user_id" id="target_user_id" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                     <option value="" disabled {{ old('target_user_id') ? '' : 'selected' }}>Pilih guru tujuan</option>
                                     @foreach ($targetUsers as $targetUser)
                                         <option value="{{ $targetUser->id }}" {{ old('target_user_id') == $targetUser->id ? 'selected' : '' }}>{{ $targetUser->name }}</option>
@@ -49,10 +49,10 @@
                         @endif
                         <div>
                             <label for="file" class="block text-sm font-medium text-gray-700">Pilih File (pdf, doc, docx, ppt, pptx)</label>
-                            <input type="file" name="file" id="file" required class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-smaba-mint file:text-smaba-dark-blue hover:file:bg-smaba-light-blue hover:file:text-white">
+                            <input type="file" name="file" id="file" required class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 transition-colors">
                             @error('file') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
                         </div>
-                        <button type="submit" class="inline-flex items-center px-6 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-lg hover:bg-smaba-light-blue shadow-md transition-colors duration-300">
+                        <button type="submit" class="inline-flex items-center px-6 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 shadow-md transition-colors duration-300">
                             Unggah Dokumen
                         </button>
                     </form>
@@ -69,7 +69,7 @@
                                 <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
                             </div>
                             <input type="text" name="search" id="search" placeholder="Ketik untuk mencari judul dokumen..." 
-                                   class="w-full pl-10 pr-4 py-2 rounded-xl border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" 
+                                   class="w-full pl-10 pr-4 py-2 rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" 
                                    value="{{ request('search') }}">
                         </div>
                     </form>
@@ -95,7 +95,7 @@
                                 <div class="flex items-start space-x-4">
                                     <i class="fas {{ $iconClass }} {{ $iconColor }} text-4xl mt-1"></i>
                                     <div>
-                                        <h3 class="font-bold text-lg text-smaba-text leading-tight group-hover:text-smaba-light-blue transition-colors duration-300">{{ $document->title }}</h3>
+                                        <h3 class="font-bold text-lg text-smaba-text leading-tight group-hover:text-indigo-600 transition-colors duration-300">{{ $document->title }}</h3>
                                         <p class="text-xs text-gray-500 mt-2">Diunggah oleh {{ $document->user->name ?? '-' }}</p>
                                         @if ($document->targetUser)
                                             <p class="text-xs text-gray-500">Ditujukan untuk {{ $document->targetUser->name }}</p>
@@ -107,8 +107,8 @@
                                 </div>
                             </div>
                             <div class="bg-gray-50 p-3 border-t flex items-center justify-end space-x-2">
-                                <a href="#" onclick="openDocModal('{{ route('documents.preview', $document) }}', '{{ e($document->title) }}'); return false;" class="px-3 py-1 bg-gray-200 text-gray-700 text-xs font-semibold rounded-full hover:bg-gray-300 transition-colors">Lihat</a>
-                                <a href="{{ route('documents.download', $document) }}" class="px-3 py-1 bg-smaba-dark-blue text-white text-xs font-semibold rounded-full hover:bg-smaba-light-blue transition-colors">Unduh</a>
+                                <a href="#" onclick="openDocModal('{{ route('documents.preview', $document) }}', '{{ addslashes($document->title) }}'); return false;" class="px-3 py-1 bg-gray-200 text-gray-700 text-xs font-semibold rounded-full hover:bg-gray-300 transition-colors">Lihat</a>
+                                <a href="{{ route('documents.download', $document) }}" class="px-3 py-1 bg-indigo-600 text-white text-xs font-semibold rounded-full hover:bg-indigo-700 transition-colors">Unduh</a>
                                 @can('manage-documents')
                                     @if (auth()->user()->role === 'admin' || $document->user_id === auth()->id())
                                     <form action="{{ route('documents.destroy', $document) }}" method="POST" class="delete-form">

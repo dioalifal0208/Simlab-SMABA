@@ -9,7 +9,7 @@
             </div>
             {{-- Tombol Tambah Modul Baru (Hanya Admin/Guru) --}}
             @can('manage-documents') {{-- Menggunakan gate yang sama dengan Pustaka Digital --}}
-                <a href="{{ route('practicum-modules.create') }}" class="mt-3 sm:mt-0 px-5 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors duration-300 ease-in-out transform hover:-translate-y-0.5">
+                <a href="{{ route('practicum-modules.create') }}" class="mt-3 sm:mt-0 px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-semibold text-sm shadow-md transition-colors duration-300 ease-in-out transform hover:-translate-y-0.5">
                     <i class="fas fa-plus mr-2"></i> Buat Modul Baru
                 </a>
             @endcan
@@ -44,13 +44,13 @@
                                     <td class="py-4 px-6 text-sm">{{ $module->created_at->format('d M Y') }}</td>
                                     <td class="py-4 px-6 text-center">
                                     <div class="flex items-center justify-center space-x-2">
-                                        <a href="{{ route('practicum-modules.show', $module->id) }}" class="px-3 py-1 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-xs shadow-sm transition-colors duration-300">
+                                        <a href="{{ route('practicum-modules.show', $module->id) }}" class="px-3 py-1 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 font-semibold text-xs shadow-sm transition-colors duration-300">
                                             Detail
                                         </a>
 
                                         @can('manage-documents') {{-- Asumsi gate yang sama --}}
                                             {{-- TOMBOL EDIT BARU --}}
-                                            <a href="{{ route('practicum-modules.edit', $module->id) }}" class="p-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 shadow-sm transition-colors duration-300" title="Edit">
+                                            <a href="{{ route('practicum-modules.edit', $module->id) }}" class="p-1 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 shadow-sm transition-colors duration-300" title="Edit">
                                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg>
                                             </a>
                                             

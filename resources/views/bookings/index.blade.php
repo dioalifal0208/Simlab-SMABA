@@ -67,7 +67,7 @@
                 <div class="space-y-4">
                     @forelse ($bookings as $booking)
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl border border-gray-100 border-l-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-md 
-                            @if($booking->status == 'approved') border-l-green-500 @elseif($booking->status == 'pending') border-l-yellow-500 @elseif($booking->status == 'rejected') border-l-red-500 @else border-l-gray-400 @endif">
+                            @if($booking->status == 'approved') border-l-green-500 @elseif($booking->status == 'pending') border-l-yellow-500 @elseif($booking->status == 'rejected') border-l-red-500 @else border-l-indigo-400 @endif">
                             <div class="p-4 sm:p-6">
                                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                                     <div class="flex-grow">
@@ -85,7 +85,7 @@
                                                     default => ucfirst($booking->status)
                                                 } }}
                                             </span>
-                                            <p class="text-sm font-semibold text-smaba-dark-blue">{{ $booking->tujuan_kegiatan }}</p>
+                                            <p class="text-sm font-semibold text-indigo-700">{{ $booking->tujuan_kegiatan }}</p>
                                             <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-50 text-green-700">
                                                 {{ $booking->laboratorium }}
                                             </span>
@@ -97,7 +97,7 @@
                                         @endif
                                     </div>
                                     <div class="mt-4 sm:mt-0 sm:ml-4 flex-shrink-0">
-                                        <a href="{{ route('bookings.show', $booking->id) }}" class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-xs shadow-sm transition-colors duration-300">
+                                        <a href="{{ route('bookings.show', $booking->id) }}" class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 font-semibold text-xs shadow-sm transition-colors duration-300">
                                             <i class="fas fa-eye mr-2"></i> {{ __('common.buttons.details') }}
                                         </a>
                                     </div>

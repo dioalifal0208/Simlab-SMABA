@@ -45,7 +45,7 @@
                                 <textarea name="message" id="message" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>{{ old('message') }}</textarea>
                             </div>
                             <div class="flex justify-end">
-                                <button type="submit" class="px-6 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors">
+                                <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 font-semibold text-sm shadow-md transition-colors">
                                     Simpan & Publikasikan
                                 </button>
                             </div>

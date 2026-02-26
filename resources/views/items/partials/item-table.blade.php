@@ -59,7 +59,7 @@
                         @endif
                     </td>
                     <td class="py-4 px-6 text-center">
-                        <a href="{{ route('items.show', $item->id) }}" class="px-4 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-xs shadow-sm transition-colors duration-300">
+                        <a href="{{ route('items.show', $item->id) }}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 font-semibold text-xs shadow-sm transition-colors duration-300">
                             {{ __('common.buttons.details') }}
                         </a>
                     </td>

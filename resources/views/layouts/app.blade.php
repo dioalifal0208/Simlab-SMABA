@@ -56,7 +56,7 @@
                         <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
                             <div class="flex items-center justify-between flex-wrap">
                                 <div class="w-0 flex-1 flex items-center">
-                                    <span class="flex-shrink-0 flex p-2 rounded-lg bg-smaba-light-blue">
+                                    <span class="flex-shrink-0 flex p-2 rounded-lg bg-indigo-500">
                                         <i class="fas fa-bullhorn text-white"></i>
                                     </span>
                                     <div class="marquee-container ms-3">
@@ -66,7 +66,7 @@
                                     </div>
                                 </div>
                                 <div class="order-2 flex-shrink-0 sm:order-3 sm:ms-3">
-                                    <button @click="showAnnouncement = false" type="button" class="-mr-1 flex p-2 rounded-md hover:bg-smaba-light-blue focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2">
+                                    <button @click="showAnnouncement = false" type="button" class="-mr-1 flex p-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2">
                                         <span class="sr-only">Tutup</span>
                                         <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                                     </button>
