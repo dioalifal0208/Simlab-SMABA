@@ -3,6 +3,10 @@
 return [
     // Page Titles
     'title' => 'Lab Booking',
+    'title_admin' => 'Manage Lab Booking',
+    'title_user' => 'My Lab Booking History',
+    'subtitle_admin' => 'View and process all lab usage schedule requests.',
+    'subtitle_user' => 'Apply for a schedule and track your lab booking status.',
     'create_booking' => 'Create Booking',
     'edit_booking' => 'Edit Booking',
     'booking_details' => 'Booking Details',
@@ -42,6 +46,7 @@ return [
     // Actions
     'actions' => [
         'create' => 'Create Booking',
+        'create_new' => 'Apply New Booking',
         'approve' => 'Approve',
         'reject' => 'Reject',
         'complete' => 'Mark as Completed',
@@ -50,6 +55,13 @@ return [
         'edit' => 'Edit',
         'delete' => 'Delete',
         'print_letter' => 'Print Letter',
+    ],
+
+    // Empty
+    'empty' => [
+        'title' => 'No Booking Data',
+        'description' => 'No booking data matches your filter.',
+        'action' => 'Apply New Booking',
     ],
 
     // Messages

@@ -14,7 +14,7 @@
     $class = $class ?? '';
     
     $variants = [
-        'primary' => 'bg-smaba-dark-blue hover:bg-smaba-light-blue text-white shadow-sm',
+        'primary' => 'bg-blue-700 hover:bg-blue-800 text-white shadow-sm border border-blue-800',
         'secondary' => 'bg-gray-200 hover:bg-gray-300 text-gray-800 shadow-sm',
         'success' => 'bg-green-600 hover:bg-green-700 text-white shadow-sm',
         'danger' => 'bg-red-600 hover:bg-red-700 text-white shadow-sm',

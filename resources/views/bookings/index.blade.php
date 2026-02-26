@@ -18,8 +18,8 @@
                 </p>
             </div>
             
-            <button @click="$dispatch('open-booking-modal')" class="mt-3 sm:mt-0 px-5 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors duration-300 ease-in-out transform hover:-translate-y-0.5">
-                <i class="fas fa-plus mr-2"></i> {{ __('bookings.actions.create_new') }}
+            <button @click="$dispatch('open-booking-modal')" class="mt-3 sm:mt-0 px-6 py-2.5 bg-green-700 text-white rounded-lg hover:bg-green-800 font-bold text-sm shadow-lg transition-all border-2 border-green-800 flex items-center gap-2">
+                <i class="fas fa-plus"></i> {{ __('bookings.actions.create_new') }}
             </button>
         </div>
     </x-slot>

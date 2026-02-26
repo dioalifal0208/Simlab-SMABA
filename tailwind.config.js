@@ -17,8 +17,8 @@ export default {
             colors: {
               'smaba-dark-green': '#15803d',     // Green 700
               'smaba-light-green': '#22c55e',    // Green 500
-              'smaba-dark-blue': '#003366',      // Custom Professional Dark Blue
-              'smaba-light-blue': '#0056b3',     // Custom Professional Light Blue
+              'smaba-dark-blue': '#1d4ed8',      // Blue 700
+              'smaba-light-blue': '#1e40af',     // Blue 800
               'smaba-gold': '#ffb700',           // Custom Gold Accent
               'smaba-mint': '#f0fdf4',           // Green 50
               'smaba-text': '#1e293b',           // Slate 800
