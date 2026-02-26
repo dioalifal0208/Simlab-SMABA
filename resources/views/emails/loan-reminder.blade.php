@@ -50,3 +50,4 @@
         Terima kasih atas kerjasama Anda dalam menjaga fasilitas laboratorium!
     </p>
 @endsection
+

@@ -20,7 +20,7 @@
         'danger' => 'bg-red-600 hover:bg-red-700 text-white shadow-sm',
         'warning' => 'bg-yellow-500 hover:bg-yellow-600 text-white shadow-sm',
         'info' => 'bg-green-500 hover:bg-green-600 text-white shadow-sm',
-        'outline' => 'bg-white border-2 border-smaba-dark-blue text-smaba-dark-blue hover:bg-smaba-dark-blue hover:text-white',
+        'outline' => 'bg-white border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white',
         'ghost' => 'bg-transparent hover:bg-gray-100 text-gray-700',
     ];
     
@@ -37,7 +37,7 @@
     $widthClass = $fullWidth ? 'w-full justify-center' : '';
     $disabledClass = $disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : '';
     
-    $baseClasses = "inline-flex items-center gap-2 font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-smaba-light-blue";
+    $baseClasses = "inline-flex items-center gap-2 font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500";
     $finalClasses = trim("$baseClasses $variantClass $sizeClass $widthClass $disabledClass $class");
 @endphp
 
@@ -62,3 +62,4 @@
         @endif
     </button>
 @endif
+

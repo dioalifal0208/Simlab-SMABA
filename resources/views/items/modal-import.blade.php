@@ -1,6 +1,6 @@
 <button @click="showImportModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
             
-<h2 class="text-2xl font-bold text-smaba-text text-center">{{ __('items.import.title') }}</h2>
+<h2 class="text-2xl font-bold text-gray-900 text-center">{{ __('items.import.title') }}</h2>
 <p class="text-center text-sm text-gray-500 mt-2">{{ __('items.import.subtitle') }}</p>
 
 {{-- Area Notifikasi Error/Sukses di dalam Modal --}}
@@ -10,13 +10,13 @@
     @csrf
     <div>
         {{-- PERBAIKAN: Mengubah tampilan input file menjadi area dropzone --}}
-        <div x-ref="dropzone" class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10" :class="{ 'border-smaba-dark-blue bg-green-50': isDragging }">
+        <div x-ref="dropzone" class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10" :class="{ 'border-indigo-600 bg-green-50': isDragging }">
             <div class="text-center" x-show="!fileName">
                 <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
                 </svg>
                 <div class="mt-4 flex text-sm leading-6 text-gray-600">
-                    <label for="import-file" class="relative cursor-pointer rounded-md bg-white font-semibold text-smaba-dark-green focus-within:outline-none focus-within:ring-2 focus-within:ring-smaba-light-green focus-within:ring-offset-2 hover:text-smaba-light-green">
+                    <label for="import-file" class="relative cursor-pointer rounded-md bg-white font-semibold text-green-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-green-500 focus-within:ring-offset-2 hover:text-green-500">
                         <span>{{ __('items.import.upload_label') }}</span>
                         <input id="import-file" name="file" type="file" class="sr-only" @change="handleFileSelect" x-ref="fileInput" required>
                     </label>
@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="pt-2">
-        <button type="submit" :disabled="isLoading" class="w-full flex items-center justify-center py-3 px-4 bg-smaba-dark-green text-white font-semibold rounded-lg shadow-md hover:bg-smaba-light-green transition-all duration-300 disabled:bg-gray-400">
+        <button type="submit" :disabled="isLoading" class="w-full flex items-center justify-center py-3 px-4 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-500 transition-all duration-300 disabled:bg-gray-400">
             {{-- Tampilkan spinner jika isLoading true --}}
             <i x-show="isLoading" class="fas fa-spinner fa-spin mr-2"></i>
             {{-- Tampilkan teks asli jika isLoading false --}}
@@ -41,7 +41,7 @@
     </div>
 </form>
 <div class="mt-4 text-center">
-    <a href="{{ route('items.template.export') }}" class="text-sm text-smaba-dark-green hover:underline">
+    <a href="{{ route('items.template.export') }}" class="text-sm text-green-600 hover:underline">
         <i class="fas fa-download mr-1"></i> {{ __('items.import.download_template') }}
     </a>
 </div>

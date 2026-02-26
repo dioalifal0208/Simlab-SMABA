@@ -60,9 +60,10 @@
     
     @if($action && $finalActionText)
         <div class="mt-6">
-            <a href="{{ $action }}" class="inline-flex items-center px-4 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-lg hover:bg-smaba-light-blue shadow-sm transition-colors">
+            <a href="{{ $action }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-500 shadow-sm transition-colors">
                 {{ $finalActionText }}
             </a>
         </div>
     @endif
 </div>
+

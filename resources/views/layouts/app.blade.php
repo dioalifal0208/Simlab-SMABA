@@ -44,7 +44,7 @@
                 {{-- BANNER PENGUMUMAN GLOBAL --}}
                 @if(isset($activeAnnouncement))
                     {{-- PERBAIKAN 3: Menggunakan 'showAnnouncement' dari global x-data --}}
-                    <div class="bg-smaba-dark-blue text-white" 
+                    <div class="bg-indigo-600 text-white" 
                         x-show="showAnnouncement" 
                         x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 -translate-y-full"
@@ -208,3 +208,4 @@
         @livewireScripts
     </body>
 </html>
+

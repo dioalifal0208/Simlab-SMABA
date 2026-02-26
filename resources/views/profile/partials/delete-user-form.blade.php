@@ -6,7 +6,7 @@
             </div>
             <div>
                 <p class="text-xs font-semibold text-red-600 uppercase tracking-wide">{{ __('profile.sections.delete.badge') }}</p>
-                <h3 class="text-xl font-bold text-smaba-text">{{ __('profile.sections.delete.title') }}</h3>
+                <h3 class="text-xl font-bold text-gray-900">{{ __('profile.sections.delete.title') }}</h3>
                 <p class="text-sm text-gray-600">{{ __('profile.sections.delete.subtitle') }}</p>
             </div>
         </div>
@@ -62,3 +62,4 @@
         </x-modal>
     </div>
 </section>
+

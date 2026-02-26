@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">Detail Permintaan Item</h2>
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">Detail Permintaan Item</h2>
                 <p class="text-sm text-gray-600 mt-1">Tinjau detail, lalu setujui untuk membuat item atau tolak dengan catatan.</p>
             </div>
-            <a href="{{ route('admin.item-requests.index') }}" class="text-sm text-smaba-dark-blue hover:underline">← Kembali</a>
+            <a href="{{ route('admin.item-requests.index') }}" class="text-sm text-indigo-600 hover:underline">← Kembali</a>
         </div>
     </x-slot>
 
@@ -81,12 +81,12 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Jumlah</label>
-                                    <input type="number" name="jumlah" min="1" value="{{ old('jumlah', $itemRequest->jumlah) }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <input type="number" name="jumlah" min="1" value="{{ old('jumlah', $itemRequest->jumlah) }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                     <x-input-error :messages="$errors->get('jumlah')" class="mt-2" />
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Stok minimum (opsional)</label>
-                                    <input type="number" name="stok_minimum" min="0" value="{{ old('stok_minimum') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <input type="number" name="stok_minimum" min="0" value="{{ old('stok_minimum') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                     <x-input-error :messages="$errors->get('stok_minimum')" class="mt-2" />
                                 </div>
                             </div>
@@ -94,12 +94,12 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Satuan</label>
-                                    <input name="satuan" value="{{ old('satuan', $itemRequest->satuan) }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <input name="satuan" value="{{ old('satuan', $itemRequest->satuan) }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                     <x-input-error :messages="$errors->get('satuan')" class="mt-2" />
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Tipe (opsional)</label>
-                                    <input name="tipe" value="{{ old('tipe', $itemRequest->tipe) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <input name="tipe" value="{{ old('tipe', $itemRequest->tipe) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                     <x-input-error :messages="$errors->get('tipe')" class="mt-2" />
                                 </div>
                             </div>
@@ -107,7 +107,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Kondisi</label>
-                                    <select name="kondisi" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <select name="kondisi" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                         <option value="Baik">Baik</option>
                                         <option value="Kurang Baik">Kurang Baik</option>
                                         <option value="Rusak">Rusak</option>
@@ -116,14 +116,14 @@
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Lokasi penyimpanan</label>
-                                    <input name="lokasi_penyimpanan" value="{{ old('lokasi_penyimpanan') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <input name="lokasi_penyimpanan" value="{{ old('lokasi_penyimpanan') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                     <x-input-error :messages="$errors->get('lokasi_penyimpanan')" class="mt-2" />
                                 </div>
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Catatan admin (opsional)</label>
-                                <textarea name="admin_note" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">{{ old('admin_note') }}</textarea>
+                                <textarea name="admin_note" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">{{ old('admin_note') }}</textarea>
                                 <x-input-error :messages="$errors->get('admin_note')" class="mt-2" />
                             </div>
 
@@ -156,3 +156,4 @@
         </div>
     </div>
 </x-app-layout>
+

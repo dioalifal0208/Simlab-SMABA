@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     {{ __('calendar.title') }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">{{ __('calendar.subtitle') }}</p>
@@ -17,7 +17,7 @@
                 <div class="p-4 border-b border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div class="flex items-center space-x-4">
                         <label for="filter-lab" class="flex items-center cursor-pointer">
-                            <input type="checkbox" id="filter-lab" class="rounded border-gray-300 text-smaba-dark-blue shadow-sm focus:ring-smaba-light-blue" checked>
+                            <input type="checkbox" id="filter-lab" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" checked>
                             <span class="ml-2 text-sm text-gray-600">{{ __('calendar.filters.lab_schedule') }}</span>
                         </label>
                         <label for="filter-holidays" class="flex items-center cursor-pointer">
@@ -27,7 +27,7 @@
                     </div>
                     <div class="flex items-center gap-3">
                         <label for="lab-selector" class="text-sm font-semibold text-gray-700">{{ __('calendar.filters.select_lab') }}:</label>
-                        <select id="lab-selector" class="rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                        <select id="lab-selector" class="rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                             <option value="">{{ __('calendar.filters.all_labs') }}</option>
                             <option value="Biologi">Biologi</option>
                             <option value="Fisika">Fisika</option>
@@ -56,3 +56,4 @@
     // Mengirim API Key dari backend Laravel ke JavaScript di frontend
     window.googleCalendarApiKey = "{{ config('services.google.calendar_api_key') }}";
 </script>
+

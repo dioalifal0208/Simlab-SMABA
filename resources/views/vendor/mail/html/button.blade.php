@@ -7,7 +7,7 @@
 {{-- 
     PENAMBAHAN: 
     Blok <style> ini akan menimpa warna default Laravel (biru) 
-    dengan warna smaba-dark-blue Anda.
+    dengan warna indigo-600 Anda.
 --}}
 <style>
     .button-primary {

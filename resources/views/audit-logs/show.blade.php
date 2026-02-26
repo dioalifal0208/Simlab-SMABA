@@ -8,13 +8,13 @@
 <div class="py-12">
     <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
         <div class="mb-6">
-            <a href="{{ route('audit-logs.index') }}" class="text-sm font-semibold text-smaba-light-blue hover:text-smaba-dark-blue transition-colors">
+            <a href="{{ route('audit-logs.index') }}" class="text-sm font-semibold text-indigo-500 hover:text-indigo-600 transition-colors">
                 &larr; Kembali ke Daftar Log
             </a>
         </div>
 
         <div class="bg-white rounded-lg shadow-sm overflow-hidden p-6">
-            <h2 class="font-bold text-xl text-smaba-text mb-6">Detail Audit Log #{{ $auditLog->id }}</h2>
+            <h2 class="font-bold text-xl text-gray-900 mb-6">Detail Audit Log #{{ $auditLog->id }}</h2>
 
             <div class="space-y-4">
                 <div class="grid grid-cols-2 gap-4">
@@ -90,3 +90,4 @@
     </div>
 </div>
 </x-app-layout>
+

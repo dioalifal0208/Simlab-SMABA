@@ -2,7 +2,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+            <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                 {{ __('Laporkan Kerusakan Alat') }}
             </h2>
             <p class="text-sm text-gray-500 mt-1">Anda melaporkan kerusakan untuk: <span class="font-semibold">{{ $item->nama_alat }}</span></p>
@@ -19,7 +19,7 @@
                             {{-- Deskripsi Kerusakan --}}
                             <div>
                                 <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi Kerusakan</label>
-                                <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>{{ old('description') }}</textarea>
+                                <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>{{ old('description') }}</textarea>
                                 <p class="mt-2 text-xs text-gray-500">Jelaskan sedetail mungkin kerusakan yang Anda temukan.</p>
                                 @error('description') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
                             </div>

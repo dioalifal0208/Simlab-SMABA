@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     {{ __('bookings.details.title') }} #{{ $booking->id }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">{{ __('bookings.labels.diajukan_oleh') }}: <span class="font-semibold">{{ $booking->user->name }}</span></p>
@@ -21,7 +21,7 @@
                     {{-- Hidden link for direct download if needed --}}
                 @endif
 
-                <a href="{{ route('bookings.index') }}" class="text-sm font-semibold text-smaba-light-blue hover:text-smaba-dark-blue transition-colors">
+                <a href="{{ route('bookings.index') }}" class="text-sm font-semibold text-indigo-500 hover:text-indigo-600 transition-colors">
                     &larr; {{ __('common.buttons.back') }}
                 </a>
             </div>
@@ -54,7 +54,7 @@
                 <div class="lg:col-span-2 space-y-6">
                     <div class="bg-white overflow-hidden shadow-sm border border-gray-100 sm:rounded-xl">
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-smaba-text mb-6 flex items-center">
+                            <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
@@ -304,3 +304,4 @@
     </script>
     @endpush
 </x-app-layout>
+

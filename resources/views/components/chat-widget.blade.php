@@ -41,7 +41,7 @@
                         <select
                             x-model="activeConversationId"
                             @change="switchConversation"
-                            class="w-full text-sm rounded-md border-gray-300 focus:border-smaba-dark-blue focus:ring-smaba-dark-blue"
+                            class="w-full text-sm rounded-md border-gray-300 focus:border-indigo-600 focus:ring-indigo-600"
                         >
                             <template x-if="conversations.length === 0">
                                 <option value="">Tidak ada percakapan</option>
@@ -73,7 +73,7 @@
             <template x-for="msg in messages" :key="msg.id">
                 <div :class="isOwnMessage(msg) ? 'flex justify-end' : 'flex justify-start'">
                     <div :class="isOwnMessage(msg)
-                        ? 'max-w-[75%] px-3 py-2 rounded-lg bg-smaba-light-blue/10 border border-smaba-dark-blue/30'
+                        ? 'max-w-[75%] px-3 py-2 rounded-lg bg-indigo-500/10 border border-indigo-600/30'
                         : 'max-w-[75%] px-3 py-2 rounded-lg bg-gray-50 border border-gray-100'">
                         <p class="text-sm text-gray-900" x-text="msg.body"></p>
                         <p class="text-[10px] text-gray-500 mt-1" x-text="formatTime(msg.created_at)"></p>
@@ -87,7 +87,7 @@
                 <textarea
                     x-model="newMessage"
                     rows="2"
-                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm"
+                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm"
                     placeholder="Tulis pesan..."
                     maxlength="500"
                     required
@@ -281,3 +281,4 @@
 @endpush
 @endunless
 @endauth
+

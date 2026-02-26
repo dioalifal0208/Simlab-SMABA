@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+            <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                 {{ __('Laporan & Analitik') }}
             </h2>
             <p class="text-sm text-gray-500 mt-1">Visualisasi data untuk wawasan operasional laboratorium.</p>
@@ -15,19 +15,19 @@
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl p-6 md:p-8" data-aos="fade-up" data-aos-once="true">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
-                        <h3 class="text-xl font-bold text-smaba-text">Download Laporan Peminjaman Alat</h3>
+                        <h3 class="text-xl font-bold text-gray-900">Download Laporan Peminjaman Alat</h3>
                         <p class="text-sm text-gray-500 mt-1">Rekapitulasi data peminjaman alat & bahan (sesuai grafik di atas).</p>
                     </div>
                     <form action="{{ route('reports.export-loans') }}" method="POST" class="flex flex-col sm:flex-row gap-3">
                         @csrf
-                        <select name="month" class="rounded-lg border-gray-300 focus:border-smaba-dark-blue focus:ring-smaba-dark-blue shadow-sm text-sm">
+                        <select name="month" class="rounded-lg border-gray-300 focus:border-indigo-600 focus:ring-indigo-600 shadow-sm text-sm">
                             @foreach(range(1, 12) as $m)
                                 <option value="{{ $m }}" {{ date('n') == $m ? 'selected' : '' }}>
                                     {{ date('F', mktime(0, 0, 0, $m, 10)) }}
                                 </option>
                             @endforeach
                         </select>
-                        <select name="year" class="rounded-lg border-gray-300 focus:border-smaba-dark-blue focus:ring-smaba-dark-blue shadow-sm text-sm">
+                        <select name="year" class="rounded-lg border-gray-300 focus:border-indigo-600 focus:ring-indigo-600 shadow-sm text-sm">
                             @foreach(range(date('Y')-1, date('Y')+1) as $y)
                                 <option value="{{ $y }}" {{ date('Y') == $y ? 'selected' : '' }}>{{ $y }}</option>
                             @endforeach
@@ -43,19 +43,19 @@
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl p-6 md:p-8" data-aos="fade-up" data-aos-once="true">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
-                        <h3 class="text-xl font-bold text-smaba-text">Download Laporan Booking Ruang Lab</h3>
+                        <h3 class="text-xl font-bold text-gray-900">Download Laporan Booking Ruang Lab</h3>
                         <p class="text-sm text-gray-500 mt-1">Rekapitulasi data peminjaman ruang laboratorium.</p>
                     </div>
                     <form action="{{ route('reports.export') }}" method="POST" class="flex flex-col sm:flex-row gap-3">
                         @csrf
-                        <select name="month" class="rounded-lg border-gray-300 focus:border-smaba-dark-blue focus:ring-smaba-dark-blue shadow-sm text-sm">
+                        <select name="month" class="rounded-lg border-gray-300 focus:border-indigo-600 focus:ring-indigo-600 shadow-sm text-sm">
                             @foreach(range(1, 12) as $m)
                                 <option value="{{ $m }}" {{ date('n') == $m ? 'selected' : '' }}>
                                     {{ date('F', mktime(0, 0, 0, $m, 10)) }}
                                 </option>
                             @endforeach
                         </select>
-                        <select name="year" class="rounded-lg border-gray-300 focus:border-smaba-dark-blue focus:ring-smaba-dark-blue shadow-sm text-sm">
+                        <select name="year" class="rounded-lg border-gray-300 focus:border-indigo-600 focus:ring-indigo-600 shadow-sm text-sm">
                             @foreach(range(date('Y')-1, date('Y')+1) as $y)
                                 <option value="{{ $y }}" {{ date('Y') == $y ? 'selected' : '' }}>{{ $y }}</option>
                             @endforeach
@@ -70,7 +70,7 @@
             {{-- Grafik Tren Peminjaman --}}
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
                 <div class="p-6 md:p-8">
-                    <h3 class="text-xl font-bold text-smaba-text mb-4">Tren Peminjaman Bulanan (Tahun {{ date('Y') }})</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Tren Peminjaman Bulanan (Tahun {{ date('Y') }})</h3>
                     <div class="h-80">
                         <canvas id="monthlyLoansChart"></canvas>
                     </div>
@@ -80,7 +80,7 @@
             {{-- Grafik Item Terpopuler --}}
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
                 <div class="p-6 md:p-8">
-                    <h3 class="text-xl font-bold text-smaba-text mb-4">Top 10 Item Paling Sering Dipinjam</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Top 10 Item Paling Sering Dipinjam</h3>
                     <div class="h-96">
                         <canvas id="topItemsChart"></canvas>
                     </div>

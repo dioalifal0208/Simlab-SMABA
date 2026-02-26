@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">Permintaan Item dari Guru</h2>
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">Permintaan Item dari Guru</h2>
                 <p class="text-sm text-gray-600 mt-1">Tinjau permintaan penambahan item, setujui untuk membuat item, atau tolak dengan catatan.</p>
             </div>
         </div>
@@ -71,7 +71,7 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <a href="{{ route('admin.item-requests.show', $req) }}" class="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-white bg-smaba-dark-blue rounded-md shadow hover:bg-smaba-light-blue transition">
+                                        <a href="{{ route('admin.item-requests.show', $req) }}" class="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded-md shadow hover:bg-indigo-500 transition">
                                             Lihat
                                         </a>
                                     </td>
@@ -94,3 +94,4 @@
         </div>
     </div>
 </x-app-layout>
+

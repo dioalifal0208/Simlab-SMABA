@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     {{ __('Pustaka Digital') }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Jelajahi, pratinjau, dan unduh materi pembelajaran digital.</p>
@@ -24,7 +24,7 @@
             @can('manage-documents')
             <div class="bg-white border border-gray-100 shadow-sm sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
                 <div class="p-6">
-                    <h3 class="text-xl font-bold text-smaba-text mb-4">Unggah Dokumen Baru</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Unggah Dokumen Baru</h3>
                     <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                         @csrf
                         <div>
@@ -95,7 +95,7 @@
                                 <div class="flex items-start space-x-4">
                                     <i class="fas {{ $iconClass }} {{ $iconColor }} text-4xl mt-1"></i>
                                     <div>
-                                        <h3 class="font-bold text-lg text-smaba-text leading-tight group-hover:text-indigo-600 transition-colors duration-300">{{ $document->title }}</h3>
+                                        <h3 class="font-bold text-lg text-gray-900 leading-tight group-hover:text-indigo-600 transition-colors duration-300">{{ $document->title }}</h3>
                                         <p class="text-xs text-gray-500 mt-2">Diunggah oleh {{ $document->user->name ?? '-' }}</p>
                                         @if ($document->targetUser)
                                             <p class="text-xs text-gray-500">Ditujukan untuk {{ $document->targetUser->name }}</p>
@@ -227,3 +227,4 @@
         </script>
     @endpush
 </x-app-layout>
+

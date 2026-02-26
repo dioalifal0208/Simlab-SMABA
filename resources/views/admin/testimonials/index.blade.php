@@ -18,7 +18,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">Moderasi Testimoni</h2>
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">Moderasi Testimoni</h2>
                 <p class="text-sm text-gray-500 mt-1">Setujui atau tolak testimoni sebelum ditampilkan di landing page.</p>
             </div>
         </div>
@@ -41,7 +41,7 @@
                     </div>
                     <div class="p-5 space-y-4">
                         @forelse($pending as $item)
-                            <div class="p-4 rounded-lg border border-gray-100 bg-gray-50 hover:shadow-md hover:border-smaba-dark-blue/30 transition-all" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
+                            <div class="p-4 rounded-lg border border-gray-100 bg-gray-50 hover:shadow-md hover:border-indigo-600/30 transition-all" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                                 <div class="flex items-start justify-between gap-3">
                                     <div>
                                         <p class="font-semibold text-gray-900">{{ $item->nama }}</p>
@@ -79,7 +79,7 @@
                     </div>
                     <div class="p-5 space-y-4">
                         @forelse($approved as $item)
-                            <div class="p-4 rounded-lg border border-gray-100 hover:shadow-md hover:border-smaba-dark-blue/30 transition-all" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
+                            <div class="p-4 rounded-lg border border-gray-100 hover:shadow-md hover:border-indigo-600/30 transition-all" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                                 <div class="flex items-start justify-between gap-3">
                                     <div>
                                         <p class="font-semibold text-gray-900">{{ $item->nama }}</p>
@@ -108,3 +108,4 @@
         </div>
     </div>
 </x-app-layout>
+

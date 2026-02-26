@@ -4,7 +4,7 @@
             <tr>
                 {{-- Checkbox "Pilih Semua" --}}
                 <th class="py-4 px-4">
-                    <input type="checkbox" @click="selectedItems = $event.target.checked ? Array.from(document.querySelectorAll('#item-list input[type=\'checkbox\']')).map(cb => cb.value) : []" class="rounded border-gray-300 text-smaba-dark-blue shadow-sm focus:ring-smaba-light-blue">
+                    <input type="checkbox" @click="selectedItems = $event.target.checked ? Array.from(document.querySelectorAll('#item-list input[type=\'checkbox\']')).map(cb => cb.value) : []" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
                 </th>
                 <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('items.table.name') }}</th>
                 <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">{{ __('items.table.type') }}</th>
@@ -18,7 +18,7 @@
             @forelse ($items as $item)
                 <tr class="hover:bg-gray-50" :class="{'bg-green-50': selectedItems.includes('{{ $item->id }}')}">
                     <td class="py-4 px-4">
-                        <input type="checkbox" x-model="selectedItems" value="{{ $item->id }}" class="rounded border-gray-300 text-smaba-dark-blue shadow-sm focus:ring-smaba-light-blue">
+                        <input type="checkbox" x-model="selectedItems" value="{{ $item->id }}" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
                     </td>
                     <td class="py-4 px-6">
                         <div class="flex items-center space-x-4">
@@ -93,3 +93,4 @@
 <div class="p-4 border-t border-gray-200">
     {{ $items->withQueryString()->links() }}
 </div>
+

@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     @if (auth()->user()->role == 'admin')
                         {{ __('loans.title_admin') }}
                     @else
@@ -19,7 +19,7 @@
             </div>
             
             @unless (auth()->user()->role == 'admin')
-                <a href="{{ route('loans.create') }}" class="mt-3 sm:mt-0 px-5 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors duration-300 ease-in-out transform hover:-translate-y-0.5">
+                <a href="{{ route('loans.create') }}" class="mt-3 sm:mt-0 px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 font-semibold text-sm shadow-md transition-colors duration-300 ease-in-out transform hover:-translate-y-0.5">
                     <i class="fas fa-plus mr-2"></i> {{ __('loans.actions.create_new') }}
                 </a>
             @endunless
@@ -43,7 +43,7 @@
                         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:space-x-4">
                             <div class="flex items-center space-x-2">
                                 <label for="status" class="text-sm font-medium text-gray-700">{{ __('common.labels.status') }}:</label>
-                                <select name="status" id="status" class="w-full sm:w-auto rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                                <select name="status" id="status" class="w-full sm:w-auto rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                                     <option value="">{{ __('loans.filters.all_status') }}</option>
                                     <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>{{ __('common.status.pending') }}</option>
                                     <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>{{ __('common.status.approved') }}</option>
@@ -54,7 +54,7 @@
                             </div>
                             <div class="flex items-center space-x-2">
                                 <label for="laboratorium" class="text-sm font-medium text-gray-700">{{ __('common.nav.lab_services') }}:</label>
-                                <select name="laboratorium" id="laboratorium" class="w-full sm:w-auto rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                                <select name="laboratorium" id="laboratorium" class="w-full sm:w-auto rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                                     <option value="">{{ __('loans.filters.all_labs') }}</option>
                                     <option value="Biologi" @selected(request('laboratorium') === 'Biologi')>Biologi</option>
                                     <option value="Fisika" @selected(request('laboratorium') === 'Fisika')>Fisika</option>
@@ -107,7 +107,7 @@
                                             @endif
                                         </td>
                                         <td class="py-4 px-6 text-center">
-                                            <a href="{{ route('loans.show', $loan->id) }}" class="px-4 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-xs shadow-sm transition-colors duration-300">
+                                            <a href="{{ route('loans.show', $loan->id) }}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold text-xs shadow-sm transition-colors duration-300">
                                                 {{ __('common.buttons.details') }}
                                             </a>
                                         </td>
@@ -158,3 +158,4 @@
         </script>
     @endpush
 </x-app-layout>
+

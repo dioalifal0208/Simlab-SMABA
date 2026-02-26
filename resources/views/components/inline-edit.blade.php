@@ -67,3 +67,4 @@
     {{-- Error Message --}}
     <div x-show="error" x-text="error" class="text-xs text-red-600 mt-1"></div>
 </div>
+

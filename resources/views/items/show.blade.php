@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     {{ __('items.details.title') }}: {{ $item->nama_alat }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">{{ __('items.details.subtitle') }}</p>
             </div>
-            <a href="{{ route('items.index') }}" class="mt-3 sm:mt-0 text-sm font-semibold text-smaba-light-blue hover:text-smaba-dark-blue transition-colors">
+            <a href="{{ route('items.index') }}" class="mt-3 sm:mt-0 text-sm font-semibold text-indigo-500 hover:text-indigo-600 transition-colors">
                 &larr; {{ __('items.details.back_to_list') }}
             </a>
         </div>
@@ -67,7 +67,7 @@
                                     src="{{ asset('storage/item-photos/thumbnails/small/' . basename($image->path)) }}" 
                                     alt="Thumbnail" 
                                     class="w-full h-12 object-cover rounded-md cursor-pointer border-2 transition-all"
-                                    :class="{ 'border-smaba-light-blue': activeImage === '{{ asset('storage/item-photos/thumbnails/medium/' . basename($image->path)) }}', 'border-transparent': activeImage !== '{{ asset('storage/item-photos/thumbnails/medium/' . basename($image->path)) }}' }"
+                                    :class="{ 'border-indigo-500': activeImage === '{{ asset('storage/item-photos/thumbnails/medium/' . basename($image->path)) }}', 'border-transparent': activeImage !== '{{ asset('storage/item-photos/thumbnails/medium/' . basename($image->path)) }}' }"
                                     loading="lazy"
                                 >
                                 @endforeach
@@ -78,7 +78,7 @@
                         </div>
 
                         <span class="px-3 py-1 text-xs font-semibold text-indigo-800 bg-indigo-100 rounded-full">{{ $item->tipe }}</span>
-                        <h1 class="text-2xl font-bold text-smaba-text mt-2">{{ $item->nama_alat }}</h1>
+                        <h1 class="text-2xl font-bold text-gray-900 mt-2">{{ $item->nama_alat }}</h1>
                         
                         <div class="mt-4 space-y-3 text-sm">
                             <div class="flex justify-between items-center"><span class="text-gray-500">{{ __('items.table.condition') }}</span> <span class="font-semibold">@if($item->kondisi == 'Baik')<span class="text-green-600">{{ __('items.status.good') }}</span>@elseif($item->kondisi == 'Kurang Baik')<span class="text-yellow-600">{{ __('items.status.fair') }}</span>@else<span class="text-red-600">{{ __('items.status.broken') }}</span>@endif</span></div>
@@ -120,10 +120,10 @@
 
                     <!-- Kartu Aksi Pengguna -->
                     <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl p-6" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
-                        <h3 class="text-base font-bold text-smaba-text mb-4">{{ __('items.details.user_actions') }}</h3>
+                        <h3 class="text-base font-bold text-gray-900 mb-4">{{ __('items.details.user_actions') }}</h3>
                         <div class="space-y-3">
                             @if($item->jumlah > 0)
-                                <a href="{{ route('loans.create', ['item_id' => $item->id]) }}" class="w-full flex items-center justify-center px-4 py-3 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors">
+                                <a href="{{ route('loans.create', ['item_id' => $item->id]) }}" class="w-full flex items-center justify-center px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 font-semibold text-sm shadow-md transition-colors">
                                     <i class="fas fa-hand-holding mr-2"></i> {{ __('items.actions.request_loan') }}
                                 </a>
                             @elseif($item->tipe == 'Bahan Habis Pakai')
@@ -140,7 +140,7 @@
                     <!-- Kartu Aksi Admin -->
                     @can('is-admin')
                     <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl p-6" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
-                        <h3 class="text-base font-bold text-smaba-text mb-4">{{ __('items.details.admin_actions') }}</h3>
+                        <h3 class="text-base font-bold text-gray-900 mb-4">{{ __('items.details.admin_actions') }}</h3>
                         <div class="space-y-3">
                             <a href="{{ route('items.edit', $item->id) }}" class="w-full flex items-center justify-center py-2 px-3 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg shadow-md transition-colors text-sm">{{ __('items.actions.edit') }}</a>
                             <a href="{{ route('maintenance.index', $item->id) }}" class="w-full flex items-center justify-center py-2 px-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg shadow-md transition-colors text-sm">{{ __('items.actions.maintenance_log') }}</a>
@@ -159,7 +159,7 @@
                     <!-- Kartu Deskripsi & Spesifikasi -->
                     <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-smaba-text">{{ __('items.details.specs_title') }}</h3>
+                            <h3 class="text-xl font-bold text-gray-900">{{ __('items.details.specs_title') }}</h3>
                             <p class="mt-4 text-md text-gray-700 whitespace-pre-wrap">{{ $item->deskripsi ?? __('items.details.no_description') }}</p>
                             
                             <div class="border-t mt-6 pt-6">
@@ -177,7 +177,7 @@
                     <!-- Kartu Riwayat Peminjaman -->
                     <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
                         <div class="p-6 max-h-96 overflow-y-auto">
-                            <h3 class="text-xl font-bold text-smaba-text mb-4">{{ __('items.details.loan_history') }}</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">{{ __('items.details.loan_history') }}</h3>
                             <p class="text-sm text-center text-gray-500 py-8">{{ __('items.details.loan_history_soon') }}</p>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                     <!-- Kartu Riwayat Perawatan -->
                     <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
                         <div class="p-6 max-h-96 overflow-y-auto">
-                            <h3 class="text-xl font-bold text-smaba-text mb-4">{{ __('items.details.maintenance_history') }}</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">{{ __('items.details.maintenance_history') }}</h3>
                             @forelse($item->maintenanceLogs as $log)
                                 <div class="p-3 rounded-lg bg-gray-50 border mb-3"><p class="text-sm font-semibold text-gray-800">{{ $log->activity }}</p><p class="text-xs text-gray-500">{{ __('items.details.done_by', ['name' => $log->user->name, 'date' => $log->created_at->format('d M Y')]) }}</p>@if($log->notes)<p class="text-sm text-gray-600 mt-1 italic">"{{ $log->notes }}"</p>@endif</div>
                             @empty
@@ -197,10 +197,10 @@
                     <!-- Kartu Modul Terkait -->
                     <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="300" data-aos-once="true">
                         <div class="p-6 max-h-96 overflow-y-auto">
-                            <h3 class="text-xl font-bold text-smaba-text mb-4">{{ __('items.details.usage_modules') }}</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">{{ __('items.details.usage_modules') }}</h3>
                             @forelse($item->practicumModules as $module)
                                 <a href="{{ route('practicum-modules.show', $module->id) }}" class="block p-3 rounded-lg hover:bg-gray-50 transition-colors mb-2">
-                                    <p class="text-sm font-semibold text-smaba-dark-blue hover:underline">{{ $module->title }}</p>
+                                    <p class="text-sm font-semibold text-indigo-600 hover:underline">{{ $module->title }}</p>
                                     <p class="text-xs text-gray-500">{{ __('items.details.created_by') }} {{ $module->user->name ?? 'N/A' }}</p>
                                 </a>
                             @empty
@@ -213,3 +213,4 @@
         </div>
     </div>
 </x-app-layout>
+

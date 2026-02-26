@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">Percakapan dengan Admin</h2>
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">Percakapan dengan Admin</h2>
                 <p class="text-sm text-gray-500 mt-1">Kirim pertanyaan atau laporan kepada petugas lab.</p>
             </div>
         </div>
@@ -28,7 +28,7 @@
                 <div class="p-5 space-y-4 max-h-[60vh] overflow-y-auto">
                     @forelse($messages as $message)
                         <div class="flex {{ $message->sender_type === 'admin' ? 'justify-end' : 'justify-start' }}">
-                            <div class="max-w-xl px-4 py-3 rounded-lg border {{ $message->sender_type === 'admin' ? 'bg-smaba-light-blue/10 border-smaba-dark-blue/30' : 'bg-gray-50 border-gray-100' }}">
+                            <div class="max-w-xl px-4 py-3 rounded-lg border {{ $message->sender_type === 'admin' ? 'bg-indigo-500/10 border-indigo-600/30' : 'bg-gray-50 border-gray-100' }}">
                                 <p class="text-sm text-gray-900">{{ $message->body }}</p>
                                 <p class="text-[11px] text-gray-500 mt-1">
                                     {{ $message->sender_type === 'admin' ? 'Admin' : 'Saya' }}
@@ -46,13 +46,13 @@
                         @csrf
                         <div>
                             <label for="pesan" class="block text-sm font-medium text-gray-700">Pesan</label>
-                            <textarea id="pesan" name="pesan" rows="3" required maxlength="500" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">{{ old('pesan') }}</textarea>
+                            <textarea id="pesan" name="pesan" rows="3" required maxlength="500" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">{{ old('pesan') }}</textarea>
                             @error('pesan')
                                 <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                             @enderror
                         </div>
                         <div class="flex justify-end">
-                            <button type="submit" class="px-5 py-2 text-sm font-semibold text-white bg-smaba-dark-blue rounded-lg shadow hover:bg-smaba-light-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-smaba-light-blue">Kirim</button>
+                            <button type="submit" class="px-5 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg shadow hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Kirim</button>
                         </div>
                     </form>
                 </div>
@@ -60,3 +60,4 @@
         </div>
     </div>
 </x-app-layout>
+

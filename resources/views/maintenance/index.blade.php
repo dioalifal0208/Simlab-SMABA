@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     Riwayat Perawatan: {{ $item->nama_alat }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Catat dan lihat semua riwayat perbaikan dan perawatan untuk item ini.</p>
             </div>
-            <a href="{{ route('items.show', $item->id) }}" class="mt-3 sm:mt-0 text-sm font-semibold text-smaba-light-blue hover:text-smaba-dark-blue transition-colors">
+            <a href="{{ route('items.show', $item->id) }}" class="mt-3 sm:mt-0 text-sm font-semibold text-indigo-500 hover:text-indigo-600 transition-colors">
                 &larr; Kembali ke Detail Item
             </a>
         </div>
@@ -33,25 +33,25 @@
 
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
                 <div class="p-6 md:p-8 text-gray-900">
-                    <h3 class="text-xl font-bold text-smaba-text mb-4">Tambah Catatan Perawatan Baru</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Tambah Catatan Perawatan Baru</h3>
                     <form action="{{ route('maintenance.store', $item->id) }}" method="POST">
                         @csrf
                         <div class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div><label for="tanggal_perawatan" class="block font-medium text-sm text-gray-700">Tanggal Perawatan</label><input type="date" name="tanggal_perawatan" id="tanggal_perawatan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('tanggal_perawatan', date('Y-m-d')) }}" required></div>
-                                <div><label for="hasil" class="block font-medium text-sm text-gray-700">Hasil Perawatan</label><input type="text" name="hasil" id="hasil" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('hasil') }}" placeholder="Contoh: Selesai dibersihkan, Komponen diganti" required></div>
+                                <div><label for="tanggal_perawatan" class="block font-medium text-sm text-gray-700">Tanggal Perawatan</label><input type="date" name="tanggal_perawatan" id="tanggal_perawatan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" value="{{ old('tanggal_perawatan', date('Y-m-d')) }}" required></div>
+                                <div><label for="hasil" class="block font-medium text-sm text-gray-700">Hasil Perawatan</label><input type="text" name="hasil" id="hasil" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" value="{{ old('hasil') }}" placeholder="Contoh: Selesai dibersihkan, Komponen diganti" required></div>
                             </div>
-                            <div><label for="masalah_ditemukan" class="block font-medium text-sm text-gray-700">Masalah Ditemukan</label><textarea name="masalah_ditemukan" id="masalah_ditemukan" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>{{ old('masalah_ditemukan') }}</textarea></div>
-                            <div><label for="tindakan_perbaikan" class="block font-medium text-sm text-gray-700">Tindakan Perbaikan</label><textarea name="tindakan_perbaikan" id="tindakan_perbaikan" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>{{ old('tindakan_perbaikan') }}</textarea></div>
-                            <div><label for="biaya" class="block font-medium text-sm text-gray-700">Biaya (Rp) <span class="text-xs text-gray-400">(Opsional)</span></label><input type="number" name="biaya" id="biaya" min="0" placeholder="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('biaya') }}"></div>
+                            <div><label for="masalah_ditemukan" class="block font-medium text-sm text-gray-700">Masalah Ditemukan</label><textarea name="masalah_ditemukan" id="masalah_ditemukan" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>{{ old('masalah_ditemukan') }}</textarea></div>
+                            <div><label for="tindakan_perbaikan" class="block font-medium text-sm text-gray-700">Tindakan Perbaikan</label><textarea name="tindakan_perbaikan" id="tindakan_perbaikan" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>{{ old('tindakan_perbaikan') }}</textarea></div>
+                            <div><label for="biaya" class="block font-medium text-sm text-gray-700">Biaya (Rp) <span class="text-xs text-gray-400">(Opsional)</span></label><input type="number" name="biaya" id="biaya" min="0" placeholder="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" value="{{ old('biaya') }}"></div>
                         </div>
-                        <div class="mt-8 flex justify-end"><button type="submit" class="px-6 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors">Simpan Log</button></div>
+                        <div class="mt-8 flex justify-end"><button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold text-sm shadow-md transition-colors">Simpan Log</button></div>
                     </form>
                 </div>
             </div>
 
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
-                <div class="p-6"><h3 class="text-xl font-bold text-smaba-text">Daftar Riwayat</h3></div>
+                <div class="p-6"><h3 class="text-xl font-bold text-gray-900">Daftar Riwayat</h3></div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white">
                         <thead class="bg-gray-50">

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+        <h2 class="font-bold text-2xl text-gray-900 leading-tight">
             {{ __('Audit Trail') }}
         </h2>
     </x-slot>
@@ -9,7 +9,7 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     Audit Trail / Log Aktivitas
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Riwayat semua aktivitas dan perubahan di sistem</p>
@@ -26,7 +26,7 @@
             <form action="{{ route('audit-logs.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">User</label>
-                    <select name="user_id" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                    <select name="user_id" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                         <option value="">Semua User</option>
                         @foreach($users as $user)
                             <option value="{{ $user->id }}" @selected(request('user_id') == $user->id)>
@@ -38,7 +38,7 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Aksi</label>
-                    <select name="action" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                    <select name="action" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                         <option value="">Semua Aksi</option>
                         @foreach($actions as $action)
                             <option value="{{ $action }}" @selected(request('action') == $action)>
@@ -50,21 +50,21 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Model</label>
-                    <input type="text" name="model" value="{{ request('model') }}" placeholder="Cari model..." class="w-full rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                    <input type="text" name="model" value="{{ request('model') }}" placeholder="Cari model..." class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Dari Tanggal</label>
-                    <input type="date" name="date_from" value="{{ request('date_from') }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                    <input type="date" name="date_from" value="{{ request('date_from') }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Sampai Tanggal</label>
-                    <input type="date" name="date_to" value="{{ request('date_to') }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                    <input type="date" name="date_to" value="{{ request('date_to') }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                 </div>
 
                 <div class="md:col-span-5 flex gap-2">
-                    <button type="submit" class="px-4 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-sm transition-colors">
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 font-semibold text-sm shadow-sm transition-colors">
                         <i class="fas fa-filter mr-2"></i> Filter
                     </button>
                     <a href="{{ route('audit-logs.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-semibold text-sm shadow-sm transition-colors">
@@ -111,7 +111,7 @@
                                 <td class="py-3 px-4 text-sm text-gray-500">{{ $log->ip_address ?? '-' }}</td>
                                 <td class="py-3 px-4 text-sm text-gray-500">{{ $log->created_at->format('d M Y H:i') }}</td>
                                 <td class="py-3 px-4 text-center">
-                                    <a href="{{ route('audit-logs.show', $log) }}" class="text-smaba-dark-blue hover:text-smaba-light-blue font-semibold text-sm">
+                                    <a href="{{ route('audit-logs.show', $log) }}" class="text-indigo-600 hover:text-indigo-500 font-semibold text-sm">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                 </td>
@@ -141,3 +141,4 @@
     </div>
 </div>
 </x-app-layout>
+

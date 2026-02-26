@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     {{ __('loans.details.title') }} #{{ $loan->id }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">{{ __('loans.labels.diajukan_oleh') ?? __('bookings.labels.diajukan_oleh') }}: <span class="font-semibold">{{ $loan->user->name }}</span></p>
             </div>
-            <a href="{{ route('loans.index') }}" class="mt-3 sm:mt-0 text-sm font-semibold text-smaba-light-blue hover:text-smaba-dark-blue transition-colors">
+            <a href="{{ route('loans.index') }}" class="mt-3 sm:mt-0 text-sm font-semibold text-indigo-500 hover:text-indigo-600 transition-colors">
                 &larr; {{ __('loans.details.back_to_list') }}
             </a>
         </div>
@@ -39,7 +39,7 @@
                 <div class="lg:col-span-3 space-y-6">
                     <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl">
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-smaba-text mb-4">{{ __('loans.details.info') }}</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">{{ __('loans.details.info') }}</h3>
                             <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
                                 <div><dt class="font-medium text-gray-500">{{ __('loans.details.applicant') }}</dt><dd class="mt-1 font-semibold text-gray-800">{{ $loan->user->name }}</dd></div>
                                 <div><dt class="font-medium text-gray-500">{{ __('loans.details.submission_date') }}</dt><dd class="mt-1 font-semibold text-gray-800">{{ $loan->created_at->format('d F Y, H:i') }}</dd></div>
@@ -58,7 +58,7 @@
                     
                     <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl">
                          <div class="p-6">
-                            <h3 class="text-xl font-bold text-smaba-text mb-4">{{ __('loans.details.requested_items') }}</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">{{ __('loans.details.requested_items') }}</h3>
                             <div class="overflow-x-auto">
                                 <table class="min-w-full">
                                     <thead class="bg-gray-50">
@@ -85,7 +85,7 @@
                 <div class="lg:col-span-2 space-y-6">
                     <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
                         <div class="p-6">
-                            <h3 class="text-lg font-bold text-smaba-text mb-4">{{ __('loans.details.submission_status') }}</h3>
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">{{ __('loans.details.submission_status') }}</h3>
                              <div class="text-center">
                                 @if($loan->status == 'pending') <span class="px-4 py-2 text-sm font-bold leading-none text-yellow-800 bg-yellow-100 rounded-full">{{ __('loans.messages.waiting_approval') }}</span>
                                 @elseif($loan->status == 'approved') <span class="px-4 py-2 text-sm font-bold leading-none text-green-800 bg-green-100 rounded-full">{{ __('common.status.approved') }}</span>
@@ -101,7 +101,7 @@
                                     <form action="{{ route('loans.update', $loan->id) }}" method="POST" class="mt-6 border-t pt-6 space-y-4">
                                         @csrf @method('PATCH')
                                         <h4 class="font-semibold text-gray-700">{{ __('loans.details.follow_up') }}</h4>
-                                        <div><label for="admin_notes" class="block text-sm font-medium text-gray-700">{{ __('loans.details.optional_notes') }}</label><textarea name="admin_notes" id="admin_notes" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" placeholder="{{ __('loans.details.notes_placeholder') }}"></textarea></div>
+                                        <div><label for="admin_notes" class="block text-sm font-medium text-gray-700">{{ __('loans.details.optional_notes') }}</label><textarea name="admin_notes" id="admin_notes" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" placeholder="{{ __('loans.details.notes_placeholder') }}"></textarea></div>
                                         <div class="flex space-x-3">
                                             <button type="submit" name="status" value="approved" class="w-full py-2 px-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 shadow-md transition-colors">{{ __('loans.actions.approve') }}</button>
                                             <button type="submit" name="status" value="rejected" class="w-full py-2 px-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 shadow-md transition-colors">{{ __('loans.actions.reject') }}</button>
@@ -111,7 +111,7 @@
                                     <form action="{{ route('loans.update', $loan->id) }}" method="POST" class="mt-6 border-t pt-6">
                                         @csrf @method('PATCH')
                                         <h4 class="font-semibold text-gray-700 mb-2">{{ __('loans.details.return_actions') }}</h4>
-                                        <button type="submit" name="status" value="completed" class="w-full py-3 px-4 bg-smaba-dark-blue text-white font-semibold rounded-lg hover:bg-smaba-light-blue shadow-md transition-colors">{{ __('loans.details.mark_as_returned') }}</button>
+                                        <button type="submit" name="status" value="completed" class="w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-500 shadow-md transition-colors">{{ __('loans.details.mark_as_returned') }}</button>
                                     </form>
                                 @endif
                             @endcan
@@ -122,7 +122,7 @@
                     @can('is-admin')
                     <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
                         <div class="p-6">
-                            <h3 class="text-lg font-bold text-smaba-text mb-4">{{ __('loans.details.other_actions') }}</h3>
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">{{ __('loans.details.other_actions') }}</h3>
                             <div class="flex space-x-2 mt-4">
                                 {{-- Tombol Edit (jika ada route 'items.edit') --}}
                                 {{-- <a href="{{ route('items.edit', $item->id) }}" class="flex-1 text-center py-2 px-3 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg shadow-md transition-colors text-sm">Edit</a> --}}
@@ -147,3 +147,4 @@
         </div>
     </div>
 </x-app-layout>
+

@@ -83,7 +83,7 @@
     <div 
         x-show="selectedIds.length > 0" 
         x-transition
-        class="bg-smaba-dark-blue text-white rounded-lg p-4 flex items-center justify-between"
+        class="bg-indigo-600 text-white rounded-lg p-4 flex items-center justify-between"
     >
         <div class="flex items-center gap-3">
             <span class="font-semibold" x-text="selectedIds.length + ' item dipilih'"></span>
@@ -96,7 +96,7 @@
             @foreach($actions as $action)
                 <button 
                     @click="performBulkAction({{ json_encode($action) }})"
-                    class="px-4 py-2 {{ $action['class'] ?? 'bg-white text-smaba-dark-blue' }} rounded-lg hover:opacity-90 transition-opacity font-semibold text-sm"
+                    class="px-4 py-2 {{ $action['class'] ?? 'bg-white text-indigo-600' }} rounded-lg hover:opacity-90 transition-opacity font-semibold text-sm"
                 >
                     @if(isset($action['icon']))
                         <i class="fas {{ $action['icon'] }} mr-2"></i>
@@ -117,7 +117,7 @@
                             type="checkbox" 
                             x-model="selectAll"
                             @change="toggleAll()"
-                            class="rounded border-gray-300 text-smaba-dark-blue focus:ring-smaba-dark-blue"
+                            class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         >
                     </th>
                     {{ $tableHeaders ?? '' }}
@@ -131,7 +131,7 @@
                                 type="checkbox" 
                                 :checked="isSelected({{ $item->id }})"
                                 @change="toggleItem({{ $item->id }})"
-                                class="rounded border-gray-300 text-smaba-dark-blue focus:ring-smaba-dark-blue"
+                                class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                             >
                         </td>
                         {{ $tableRow ?? '' }}
@@ -141,3 +141,4 @@
         </table>
     </div>
 </div>
+

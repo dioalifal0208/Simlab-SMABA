@@ -158,7 +158,7 @@
                                 @endforelse
                             </div>
                             @if($unreadCount > 5)
-                                <a href="#" class="block text-center text-sm py-2 bg-gray-50 hover:bg-gray-100 rounded-b-lg text-smaba-dark-blue font-semibold">
+                                <a href="#" class="block text-center text-sm py-2 bg-gray-50 hover:bg-gray-100 rounded-b-lg text-indigo-600 font-semibold">
                                     {{ __('common.messages.view_all_notifications') }}
                                 </a>
                             @endif
@@ -182,7 +182,7 @@
                 <div class="ms-3 relative"> {{-- Menggunakan ms-3 untuk jarak antar dropdown --}}
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                             <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:text-smaba-dark-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-smaba-light-blue transition ease-in-out duration-150">
+                             <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition ease-in-out duration-150">
                                 <div>{{ Auth::user()->name }}</div>
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
@@ -280,3 +280,4 @@
         </div>
     </div>
 </nav>
+

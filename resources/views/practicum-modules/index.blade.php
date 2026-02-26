@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     {{ __('Modul Praktikum & SOP') }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Daftar panduan praktikum dan standar operasional prosedur laboratorium.</p>

@@ -2,8 +2,8 @@
     <div class="p-6 md:p-8 space-y-6">
         <div class="flex items-start justify-between gap-4">
             <div>
-                <p class="text-xs font-semibold text-smaba-dark-blue uppercase tracking-wide">{{ __('profile.sections.password.badge') }}</p>
-                <h3 class="text-xl font-bold text-smaba-text">{{ __('profile.sections.password.title') }}</h3>
+                <p class="text-xs font-semibold text-indigo-600 uppercase tracking-wide">{{ __('profile.sections.password.badge') }}</p>
+                <h3 class="text-xl font-bold text-gray-900">{{ __('profile.sections.password.title') }}</h3>
                 <p class="text-sm text-gray-500">{{ __('profile.sections.password.subtitle') }}</p>
             </div>
             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-50 text-green-700">
@@ -22,7 +22,7 @@
                         id="update_password_current_password"
                         name="current_password"
                         type="password"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600"
                         autocomplete="current-password"
                     />
                     <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
@@ -34,7 +34,7 @@
                         id="update_password_password"
                         name="password"
                         type="password"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600"
                         autocomplete="new-password"
                     />
                     <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
@@ -46,7 +46,7 @@
                         id="update_password_password_confirmation"
                         name="password_confirmation"
                         type="password"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600"
                         autocomplete="new-password"
                     />
                     <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
@@ -54,7 +54,7 @@
             </div>
 
             <div class="flex items-center justify-end gap-4">
-                <button type="submit" class="px-5 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-lg shadow hover:bg-smaba-light-blue transition-colors">
+                <button type="submit" class="px-5 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-indigo-500 transition-colors">
                     {{ __('profile.buttons.save') }}
                 </button>
 
@@ -71,3 +71,4 @@
         </form>
     </div>
 </section>
+

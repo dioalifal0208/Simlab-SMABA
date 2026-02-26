@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     {{ __('Formulir Pengajuan Booking Lab') }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Silakan isi formulir di bawah ini untuk mengajukan peminjaman laboratorium.</p>
@@ -135,3 +135,4 @@
         </div>
     </div>
 </x-app-layout>
+

@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     {{ __('Manajemen Pengumuman Global') }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Buat pengumuman baru untuk ditampilkan di banner atas semua halaman.</p>
@@ -33,7 +33,7 @@
             {{-- Form Buat Pengumuman Baru --}}
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
                 <div class="p-6 md:p-8 text-gray-900">
-                    <h3 class="text-xl font-bold text-smaba-text mb-4">Buat Pengumuman Baru</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Buat Pengumuman Baru</h3>
                     <p class="text-sm text-gray-600 mb-4">
                         Menyimpan pengumuman baru akan secara otomatis menggantikan dan menonaktifkan pengumuman lama yang sedang aktif.
                     </p>
@@ -42,7 +42,7 @@
                         <div class="space-y-4">
                             <div>
                                 <label for="message" class="block font-medium text-sm text-gray-700">Isi Pengumuman</label>
-                                <textarea name="message" id="message" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>{{ old('message') }}</textarea>
+                                <textarea name="message" id="message" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>{{ old('message') }}</textarea>
                             </div>
                             <div class="flex justify-end">
                                 <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 font-semibold text-sm shadow-md transition-colors">
@@ -57,7 +57,7 @@
             {{-- Daftar Riwayat Pengumuman --}}
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
                 <div class="p-6">
-                    <h3 class="text-xl font-bold text-smaba-text mb-4">Riwayat Pengumuman</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Riwayat Pengumuman</h3>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white">

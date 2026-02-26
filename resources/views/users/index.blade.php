@@ -3,7 +3,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     {{ __('Manajemen Pengguna') }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Kelola akun pengguna dan peran (role) mereka.</p>
@@ -17,7 +17,7 @@
                     </button>
 
                     {{-- Tombol Tambah Pengguna Baru (Manual) --}}
-                    <button @click="showCreateUserModal = true" class="px-5 py-2 bg-smaba-dark-blue text-white rounded-lg hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors">
+                    <button @click="showCreateUserModal = true" class="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 font-semibold text-sm shadow-md transition-colors">
                         <i class="fas fa-plus mr-2"></i> Tambah Pengguna
                     </button>
 
@@ -47,32 +47,32 @@
                                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                             </button>
 
-                            <h2 class="text-2xl font-bold text-smaba-text mb-6">Tambah Pengguna Baru</h2>
+                            <h2 class="text-2xl font-bold text-gray-900 mb-6">Tambah Pengguna Baru</h2>
 
                             <form action="{{ route('users.store') }}" method="POST" class="space-y-4">
                                 @csrf
                                 {{-- Nama --}}
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                                    <input type="text" name="name" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <input type="text" name="name" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                 </div>
 
                                 {{-- Email --}}
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                                    <input type="email" name="email" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <input type="email" name="email" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                 </div>
 
                                 {{-- Password --}}
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                                    <input type="password" name="password" required minlength="8" class="w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <input type="password" name="password" required minlength="8" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                 </div>
 
                                 {{-- Role --}}
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Peran (Role)</label>
-                                    <select name="role" x-model="role" class="w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <select name="role" x-model="role" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                         <option value="guru">Guru</option>
                                         <option value="admin">Admin</option>
                                     </select>
@@ -81,7 +81,7 @@
                                 {{-- Laboratorium (Hanya jika Guru) --}}
                                 <div x-show="role === 'guru'" x-transition>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Laboratorium</label>
-                                    <select name="laboratorium" class="w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <select name="laboratorium" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                         <option value="">Pilih Laboratorium</option>
                                         <option value="Biologi">Biologi</option>
                                         <option value="Fisika">Fisika</option>
@@ -92,7 +92,7 @@
 
                                 <div class="pt-4 flex justify-end">
                                     <button type="button" @click="showCreateUserModal = false" class="mr-3 px-4 py-2 text-gray-700 hover:text-gray-900 font-medium">Batal</button>
-                                    <button type="submit" class="px-6 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold shadow-md transition-colors">Simpan</button>
+                                    <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold shadow-md transition-colors">Simpan</button>
                                 </div>
                             </form>
                         </div>
@@ -202,7 +202,7 @@
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
 
-            <h2 class="text-2xl font-bold text-smaba-text text-center">Impor Data Pengguna</h2>
+            <h2 class="text-2xl font-bold text-gray-900 text-center">Impor Data Pengguna</h2>
             <p class="text-sm text-gray-500 text-center mt-2 mb-4">Unggah file .csv atau .xlsx Anda.</p>
 
             {{-- Area Pesan Error/Sukses --}}
@@ -218,7 +218,7 @@
                     @dragover.prevent="isDragging = true"
                     @dragleave.prevent="isDragging = false"
                     @drop.prevent="handleDrop"
-                    :class="{ 'border-smaba-dark-blue bg-gray-100': isDragging }"
+                    :class="{ 'border-indigo-600 bg-gray-100': isDragging }"
                     class="relative flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
                     
                     <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center">
@@ -226,7 +226,7 @@
                         <p class="mb-2 text-sm text-gray-500" x-show="!fileName">
                             <span class="font-semibold">Klik untuk memilih file</span> atau tarik dan lepas (drag & drop)
                         </p>
-                        <p class="text-sm font-semibold text-smaba-dark-blue" x-show="fileName" x-text="fileName"></p>
+                        <p class="text-sm font-semibold text-indigo-600" x-show="fileName" x-text="fileName"></p>
                         <p class="text-xs text-gray-500">CSV, XLS, atau XLSX (Maks. 5MB)</p>
                     </div>
                     <input id="file-upload" name="file" type="file" class="hidden" @change="handleFileSelect" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
@@ -243,7 +243,7 @@
                     <button type="submit" 
                             :disabled="isLoading"
                             :class="{ 'opacity-50 cursor-not-allowed': isLoading }"
-                            class="px-6 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors">
+                            class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold text-sm shadow-md transition-colors">
                         <span x-show="!isLoading">Mulai Impor Data</span>
                         <span x-show="isLoading">Memproses...</span>
                     </button>
@@ -349,3 +349,4 @@
         </script>
     @endpush
 </x-app-layout>
+

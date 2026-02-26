@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     {{ __('Formulir Pengajuan Peminjaman') }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Isi detail dan pilih item yang ingin Anda pinjam.</p>
@@ -32,7 +32,7 @@
                             {{-- Pilih Laboratorium --}}
                             <div>
                                 <label for="laboratorium" class="block font-medium text-sm text-gray-700">Laboratorium</label>
-                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required {{ auth()->user()->role === 'admin' ? '' : 'disabled' }}>
+                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required {{ auth()->user()->role === 'admin' ? '' : 'disabled' }}>
                                     <option value="Biologi" @selected(old('laboratorium', $selectedLaboratorium ?? 'Biologi') === 'Biologi')>Lab Biologi</option>
                                     <option value="Fisika" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Fisika')>Lab Fisika</option>
                                     <option value="Bahasa" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Bahasa')>Lab Bahasa</option>
@@ -49,12 +49,12 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label for="tanggal_pinjam" class="block font-medium text-sm text-gray-700">Tanggal Rencana Peminjaman</label>
-                                    <input type="date" name="tanggal_pinjam" id="tanggal_pinjam" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('tanggal_pinjam') }}" required>
+                                    <input type="date" name="tanggal_pinjam" id="tanggal_pinjam" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" value="{{ old('tanggal_pinjam') }}" required>
                                     <p class="text-xs text-amber-600 mt-1">Pengajuan maksimal H-1 dari tanggal pinjam (tidak bisa hari ini).</p>
                                 </div>
                                 <div>
                                     <label for="tanggal_estimasi_kembali" class="block font-medium text-sm text-gray-700">Estimasi Tanggal Kembali</label>
-                                    <input type="date" name="tanggal_estimasi_kembali" id="tanggal_estimasi_kembali" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" value="{{ old('tanggal_estimasi_kembali') }}" required>
+                                    <input type="date" name="tanggal_estimasi_kembali" id="tanggal_estimasi_kembali" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" value="{{ old('tanggal_estimasi_kembali') }}" required>
                                 </div>
                             </div>
 
@@ -64,7 +64,7 @@
                                 <div class="border rounded-lg p-4 bg-gray-50">
                                     {{-- Input untuk Live Search --}}
                                     <div class="relative mb-4">
-                                        <input type="text" id="item-search" placeholder="Ketik untuk mencari item..." class="w-full pl-10 pr-4 py-2 rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                                        <input type="text" id="item-search" placeholder="Ketik untuk mencari item..." class="w-full pl-10 pr-4 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
                                         </div>
@@ -77,7 +77,7 @@
                                                 <div class="flex items-center justify-between">
                                                     <div class="flex items-center">
                                                         <input type="checkbox" name="items[]" value="{{ $item->id }}" id="item_{{ $item->id }}" 
-                                                        class="h-4 w-4 rounded border-gray-300 text-smaba-dark-blue focus:ring-smaba-light-blue"
+                                                        class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                                         {{-- PERBAIKAN DI SINI: Pastikan variabel $selectedItemIds sudah di-define --}}
                                                         {{ isset($selectedItemIds) && in_array($item->id, $selectedItemIds) ? 'checked' : '' }}>
                                                         <div class="ms-3">
@@ -87,7 +87,7 @@
                                                     </div>
                                                     <div>
                                                         <label for="jumlah_{{ $item->id }}" class="sr-only">Jumlah</label>
-                                                        <input type="number" name="jumlah[{{ $item->id }}]" id="jumlah_{{ $item->id }}" min="1" max="{{ $item->jumlah }}" placeholder="Jml" class="w-20 text-sm rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                                        <input type="number" name="jumlah[{{ $item->id }}]" id="jumlah_{{ $item->id }}" min="1" max="{{ $item->jumlah }}" placeholder="Jml" class="w-20 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                                     </div>
                                                 </div>
                                             </div>
@@ -101,13 +101,13 @@
                             {{-- Catatan --}}
                             <div>
                                 <label for="catatan" class="block font-medium text-sm text-gray-700">Catatan (Opsional)</label>
-                                <textarea name="catatan" id="catatan" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" placeholder="Contoh: Untuk praktikum kelas XI IPA 1">{{ old('catatan') }}</textarea>
+                                <textarea name="catatan" id="catatan" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" placeholder="Contoh: Untuk praktikum kelas XI IPA 1">{{ old('catatan') }}</textarea>
                             </div>
                         </div>
 
                         <div class="mt-8 flex justify-end space-x-3">
                             <button type="button" onclick="window.history.back();" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 font-semibold text-sm transition-colors">Batal</button>
-                            <button type="submit" class="px-6 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors">Ajukan Peminjaman</button>
+                            <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold text-sm shadow-md transition-colors">Ajukan Peminjaman</button>
                         </div>
                     </form>
                 </div>
@@ -176,3 +176,4 @@
         </script>
     @endpush
 </x-app-layout>
+

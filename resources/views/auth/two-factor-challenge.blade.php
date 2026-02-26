@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-lg" data-aos="fade-up">
         <div class="text-center mb-6">
-            <h2 class="text-2xl font-bold text-smaba-text">Verifikasi Google Authenticator</h2>
+            <h2 class="text-2xl font-bold text-gray-900">Verifikasi Google Authenticator</h2>
             <p class="text-sm text-gray-500 mt-1">Masukkan kode 6 digit dari aplikasi authenticator atau recovery code.</p>
         </div>
 
@@ -26,12 +26,12 @@
             <div>
                 <label for="otp" class="block text-sm font-medium text-gray-700">Kode</label>
                 <input id="otp" name="code" inputmode="numeric" maxlength="16" required autofocus
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue tracking-widest text-center text-lg">
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 tracking-widest text-center text-lg">
                 <p class="text-xs text-gray-500 mt-1">Bisa pakai TOTP 6 digit atau recovery code.</p>
             </div>
 
             <div class="flex items-center justify-between">
-                <button type="submit" class="px-4 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-lg shadow-md hover:bg-smaba-light-blue transition-colors">
+                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-indigo-500 transition-colors">
                     Verifikasi & Masuk
                 </button>
             </div>
@@ -42,3 +42,4 @@
         </div>
     </div>
 </x-guest-layout>
+

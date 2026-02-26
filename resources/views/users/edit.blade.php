@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     Edit Pengguna: {{ $user->name }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Perbarui informasi dan peran pengguna.</p>
             </div>
-            <a href="{{ route('users.index') }}" class="mt-3 sm:mt-0 text-sm font-semibold text-smaba-light-blue hover:text-smaba-dark-blue transition-colors">
+            <a href="{{ route('users.index') }}" class="mt-3 sm:mt-0 text-sm font-semibold text-indigo-500 hover:text-indigo-600 transition-colors">
                 &larr; Kembali ke Daftar Pengguna
             </a>
         </div>
@@ -37,19 +37,19 @@
                             {{-- Nama Pengguna --}}
                             <div>
                                 <label for="name" class="block font-medium text-sm text-gray-700">Nama Lengkap</label>
-                                <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>
+                                <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
                             </div>
 
                             {{-- Alamat Email --}}
                             <div>
                                 <label for="email" class="block font-medium text-sm text-gray-700">Alamat Email</label>
-                                <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>
+                                <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
                             </div>
 
                             {{-- Peran (Role) --}}
                             <div>
                                 <label for="role" class="block font-medium text-sm text-gray-700">Peran (Role)</label>
-                                <select name="role" id="role" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>
+                                <select name="role" id="role" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
                                     <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
                                     <option value="guru" {{ old('role', $user->role) == 'guru' ? 'selected' : '' }}>Guru</option>
                                 </select>
@@ -58,7 +58,7 @@
                             {{-- Laboratorium (untuk Guru) --}}
                             <div>
                                 <label for="laboratorium" class="block font-medium text-sm text-gray-700">Laboratorium (khusus Guru)</label>
-                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                     <option value="">-- Pilih Lab --</option>
                                     <option value="Biologi" @selected(old('laboratorium', $user->laboratorium) === 'Biologi')>Biologi</option>
                                     <option value="Fisika" @selected(old('laboratorium', $user->laboratorium) === 'Fisika')>Fisika</option>
@@ -70,7 +70,7 @@
 
                         <div class="mt-8 flex justify-end space-x-3">
                             <a href="{{ route('users.index') }}" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 font-semibold text-sm transition-colors">Batal</a>
-                            <button type="submit" class="px-6 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors">Simpan Perubahan</button>
+                            <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold text-sm shadow-md transition-colors">Simpan Perubahan</button>
                         </div>
                     </form>
                 </div>
@@ -78,3 +78,4 @@
         </div>
     </div>
 </x-app-layout>
+

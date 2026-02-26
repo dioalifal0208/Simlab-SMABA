@@ -18,7 +18,7 @@
     <body class="font-sans text-gray-900 antialiased overflow-x-hidden">
         <div class="h-screen lg:grid lg:grid-cols-2 overflow-hidden">
             
-            <div class="hidden lg:flex flex-col items-center justify-center bg-smaba-dark-blue p-12 text-white h-full" data-aos="fade-right">
+            <div class="hidden lg:flex flex-col items-center justify-center bg-indigo-600 p-12 text-white h-full" data-aos="fade-right">
                 <a href="/">
                     {{-- Logo diperbesar --}}
                     <img src="{{ asset('images/logo-smaba.webp') }}" alt="Logo Smaba" class="w-40 h-40">
@@ -27,7 +27,7 @@
                 <h1 class="text-3xl font-bold mt-6 text-center">
                     Sistem Informasi Laboratorium
                 </h1>
-                <p class="text-lg text-smaba-light-blue mt-2">
+                <p class="text-lg text-indigo-500 mt-2">
                     SMA Negeri 1 Babat
                 </p>
             </div>

@@ -2,7 +2,7 @@
     <x-slot name="header">
         {{-- Header Halaman Didesain Ulang --}}
         <div>
-            <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+            <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                 {{ __('items.edit_item') }}
             </h2>
             <p class="text-sm text-gray-500 mt-1">{!! __('items.edit_subtitle_param', ['name' => '<span class="font-semibold">' . $item->nama_alat . '</span>']) !!}</p>
@@ -35,13 +35,13 @@
                             {{-- Nama Alat --}}
                             <div class="md:col-span-2">
                                 <label for="nama_alat" class="block text-sm font-medium text-gray-700">{{ __('items.form.name_label') }}</label>
-                                <input id="nama_alat" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" type="text" name="nama_alat" value="{{ old('nama_alat', $item->nama_alat) }}" required autofocus />
+                                <input id="nama_alat" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" type="text" name="nama_alat" value="{{ old('nama_alat', $item->nama_alat) }}" required autofocus />
                             </div>
 
                             {{-- Field untuk Tipe Item --}}
                             <div class="md:col-span-2">
                                 <label for="tipe" class="block text-sm font-medium text-gray-700">{{ __('items.form.type') }}</label>
-                                <select name="tipe" id="tipe" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                <select name="tipe" id="tipe" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                     <option value="Alat" @selected(old('tipe', $item->tipe) == 'Alat')>{{ __('items.types.alat') }}</option>
                                     <option value="Bahan Habis Pakai" @selected(old('tipe', $item->tipe) == 'Bahan Habis Pakai')>{{ __('items.types.bahan') }}</option>
                                 </select>
@@ -51,22 +51,22 @@
                             <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div>
                                     <label for="jumlah" class="block text-sm font-medium text-gray-700">{{ __('items.form.stock_label') }}</label>
-                                    <input type="number" name="jumlah" id="jumlah" value="{{ old('jumlah', $item->jumlah) }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <input type="number" name="jumlah" id="jumlah" value="{{ old('jumlah', $item->jumlah) }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                 </div>
                                 <div>
                                     <label for="stok_minimum" class="block text-sm font-medium text-gray-700">{{ __('items.form.min_stock') }} <span class="text-xs text-gray-400">{{ __('items.form.optional') }}</span></label>
-                                    <input type="number" name="stok_minimum" id="stok_minimum" value="{{ old('stok_minimum', $item->stok_minimum) }}" placeholder="{{ __('items.form.min_stock_placeholder') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <input type="number" name="stok_minimum" id="stok_minimum" value="{{ old('stok_minimum', $item->stok_minimum) }}" placeholder="{{ __('items.form.min_stock_placeholder') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                 </div>
                                 <div>
                                     <label for="satuan" class="block text-sm font-medium text-gray-700">{{ __('items.form.unit') }}</label>
-                                    <input type="text" name="satuan" id="satuan" value="{{ old('satuan', $item->satuan) }}" placeholder="{{ __('items.form.unit_placeholder') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">
+                                    <input type="text" name="satuan" id="satuan" value="{{ old('satuan', $item->satuan) }}" placeholder="{{ __('items.form.unit_placeholder') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                 </div>
                             </div>
                             
                             {{-- Kondisi --}}
                             <div>
                                 <label for="kondisi" class="block text-sm font-medium text-gray-700">{{ __('items.form.condition') }}</label>
-                                <select name="kondisi" id="kondisi" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>
+                                <select name="kondisi" id="kondisi" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
                                     <option value="baik" @selected(old('kondisi', $item->kondisi) == 'baik')>{{ __('items.status.good') }}</option>
                                     <option value="kurang baik" @selected(old('kondisi', $item->kondisi) == 'kurang baik')>{{ __('items.status.fair') }}</option>
                                     <option value="Rusak" @selected(old('kondisi', $item->kondisi) == 'Rusak')>{{ __('items.status.broken') }}</option>
@@ -76,13 +76,13 @@
                             {{-- Lokasi Penyimpanan --}}
                             <div>
                                 <label for="lokasi_penyimpanan" class="block text-sm font-medium text-gray-700">{{ __('items.form.location') }}</label>
-                                <input id="lokasi_penyimpanan" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" type="text" name="lokasi_penyimpanan" value="{{ old('lokasi_penyimpanan', $item->lokasi_penyimpanan) }}" required />
+                                <input id="lokasi_penyimpanan" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" type="text" name="lokasi_penyimpanan" value="{{ old('lokasi_penyimpanan', $item->lokasi_penyimpanan) }}" required />
                             </div>
 
                             {{-- Laboratorium --}}
                             <div>
                                 <label for="laboratorium" class="block text-sm font-medium text-gray-700">{{ __('items.form.lab') }}</label>
-                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue" required>
+                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
                                     <option value="Biologi" @selected(old('laboratorium', $item->laboratorium) === 'Biologi')>{{ __('items.form.lab_prefix') }} Biologi</option>
                                     <option value="Fisika" @selected(old('laboratorium', $item->laboratorium) === 'Fisika')>{{ __('items.form.lab_prefix') }} Fisika</option>
                                     <option value="Bahasa" @selected(old('laboratorium', $item->laboratorium) === 'Bahasa')>{{ __('items.form.lab_prefix') }} Bahasa</option>
@@ -105,13 +105,13 @@
                             {{-- Deskripsi (Keterangan) --}}
                             <div class="md:col-span-2">
                                 <label for="deskripsi" class="block text-sm font-medium text-gray-700">{{ __('items.form.description_optional') }}</label>
-                                <textarea name="deskripsi" id="deskripsi" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue">{{ old('deskripsi', $item->deskripsi) }}</textarea>
+                                <textarea name="deskripsi" id="deskripsi" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">{{ old('deskripsi', $item->deskripsi) }}</textarea>
                             </div>
                         </div>
 
                         <div class="mt-8 flex justify-end space-x-3">
                             <a href="{{ route('items.index') }}" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 font-semibold text-sm transition-colors">{{ __('common.buttons.cancel') }}</a>
-                            <button type="submit" class="ms-4 px-6 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-sm shadow-md transition-colors">{{ __('common.buttons.update') }}</button>
+                            <button type="submit" class="ms-4 px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold text-sm shadow-md transition-colors">{{ __('common.buttons.update') }}</button>
                         </div>
                     </form>
                 </div>
@@ -119,3 +119,4 @@
         </div>
     </div>
 </x-app-layout>
+

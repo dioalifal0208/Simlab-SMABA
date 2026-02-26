@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     {{ __('Kelola Laporan Kerusakan') }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Lihat dan kelola semua laporan kerusakan alat & bahan.</p>
@@ -18,7 +18,7 @@
                     <form action="{{ route('damage-reports.index') }}" method="GET" class="p-4 sm:p-6" id="filter-form">
                         <div class="flex items-center space-x-4">
                             <label for="status" class="text-sm font-medium text-gray-700">Filter Status:</label>
-                            <select name="status" id="status" class="w-full sm:w-auto rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue text-sm">
+                            <select name="status" id="status" class="w-full sm:w-auto rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                                 <option value="">Semua Status</option>
                                 <option value="Dilaporkan" @selected(request('status') == 'Dilaporkan')>Dilaporkan</option>
                                 <option value="Diverifikasi" @selected(request('status') == 'Diverifikasi')>Diverifikasi</option>
@@ -59,7 +59,7 @@
                                             @endif
                                         </td>
                                         <td class="py-4 px-6 text-center">
-                                            <a href="{{ route('damage-reports.show', $report->id) }}" class="px-4 py-2 bg-smaba-dark-blue text-white rounded-md hover:bg-smaba-light-blue font-semibold text-xs shadow-sm transition-colors duration-300">
+                                            <a href="{{ route('damage-reports.show', $report->id) }}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold text-xs shadow-sm transition-colors duration-300">
                                                 Lihat Detail
                                             </a>
                                         </td>

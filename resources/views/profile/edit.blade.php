@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-smaba-text leading-tight">
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
                     {{ __('profile.title') }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">{{ __('profile.subtitle') }}</p>
@@ -17,7 +17,7 @@
 
     <div class="py-10">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
-            <div class="bg-gradient-to-r from-smaba-dark-blue to-smaba-light-blue text-white rounded-2xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-once="true">
+            <div class="bg-gradient-to-r from-indigo-600 to-indigo-500 text-white rounded-2xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-once="true">
                 <div class="p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                     <div class="flex items-center gap-4">
                         <div class="h-14 w-14 rounded-full bg-white/20 flex items-center justify-center text-2xl font-bold">
@@ -54,3 +54,4 @@
         </div>
     </div>
 </x-app-layout>
+

@@ -18,8 +18,8 @@
     <div class="p-6 md:p-8 space-y-6">
         <div class="flex items-start justify-between gap-4">
             <div>
-                <p class="text-xs font-semibold text-smaba-dark-blue uppercase tracking-wide">{{ __('profile.sections.two_factor.badge') }}</p>
-                <h3 class="text-xl font-bold text-smaba-text">{{ __('profile.sections.two_factor.title') }}</h3>
+                <p class="text-xs font-semibold text-indigo-600 uppercase tracking-wide">{{ __('profile.sections.two_factor.badge') }}</p>
+                <h3 class="text-xl font-bold text-gray-900">{{ __('profile.sections.two_factor.title') }}</h3>
                 <p class="text-sm text-gray-500">{{ __('profile.sections.two_factor.subtitle') }}</p>
             </div>
             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold @if($twoFactorStatus === 'active') bg-green-100 text-green-700 @elseif($twoFactorStatus === 'pending') bg-amber-100 text-amber-700 @else bg-gray-100 text-gray-600 @endif">
@@ -90,7 +90,7 @@
                     <p class="font-semibold text-gray-800">{{ __('profile.messages.two_factor_qr_instruction') }}</p>
                     <p class="text-gray-500">{{ __('profile.messages.two_factor_qr_subtitle') }}</p>
                 </div>
-                <button type="submit" class="px-4 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-lg shadow hover:bg-smaba-light-blue transition-colors">
+                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-indigo-500 transition-colors">
                     {{ __('profile.buttons.start') }}
                 </button>
             </form>
@@ -125,7 +125,7 @@
                         pattern="[0-9]{6}"
                         maxlength="6"
                         required
-                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-smaba-dark-blue focus:ring-smaba-dark-blue"
+                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600"
                     >
                     <button type="submit" class="mt-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors">
                         {{ __('profile.buttons.confirm_activate') }}
@@ -141,10 +141,11 @@
                     <p class="text-sm font-semibold text-gray-800">{{ __('profile.messages.recovery_codes_label') }}</p>
                     <p class="text-xs text-gray-500">{{ __('profile.messages.recovery_codes_usage') }}</p>
                 </div>
-                <button type="submit" class="px-4 py-2 bg-smaba-dark-blue text-white text-sm font-semibold rounded-lg shadow hover:bg-smaba-light-blue transition-colors">
+                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-indigo-500 transition-colors">
                     {{ __('profile.buttons.regenerate_recovery') }}
                 </button>
             </form>
         @endif
     </div>
 </section>
+
