@@ -128,11 +128,11 @@
             badgeStorageKey: '',
             hasShownBadge: false,
             routes: {
-                listUser: '{{ route('contact.conversations.messages') }}',
-                sendUser: '{{ route('contact.conversations.store') }}',
-                listAdmin: '{{ route('admin.contact-conversations.json') }}',
-                messagesAdmin: (id) => '{{ url('/admin/contact-conversations') }}/' + id + '/messages-json',
-                sendAdmin: (id) => '{{ url('/admin/contact-conversations') }}/' + id + '/reply',
+                listUser: "{{ route('contact.conversations.messages') }}",
+                sendUser: "{{ route('contact.conversations.store') }}",
+                listAdmin: "{{ route('admin.contact-conversations.json') }}",
+                messagesAdmin: (id) => "{{ url('/admin/contact-conversations') }}/" + id + "/messages-json",
+                sendAdmin: (id) => "{{ url('/admin/contact-conversations') }}/" + id + "/reply",
             },
             init() {
                 this.badgeStorageKey = `chatBadgeShown:${this.userId}`;
