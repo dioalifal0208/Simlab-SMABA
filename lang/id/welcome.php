@@ -89,7 +89,7 @@ return [
         'step2_desc' => 'Cari barang, pilih tanggal, dan ajukan dalam 3 klik.',
         'step3_title' => 'Approval Digital',
         'step3_desc' => 'Validasi booking dari mana saja tanpa kertas.',
-        'cta_login' => 'Login Sekarang &rarr;',
+        'cta_login' => 'Login Sekarang →',
         'mockup' => [
             'stats_title' => 'Statistik Lab',
             'low_stock' => 'Stok Menipis!',
@@ -146,7 +146,7 @@ return [
             'lab_kimia' => 'Lab Kimia',
             'lab_komputer' => 'Lab Komputer',
         ],
-        'footer_cta' => 'Coba Langsung di Dashboard &rarr;',
+        'footer_cta' => 'Coba Langsung di Dashboard →',
     ],
     'js' => [
         'processing' => 'Memproses...',

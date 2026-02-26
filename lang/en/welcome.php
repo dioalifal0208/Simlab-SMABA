@@ -89,7 +89,7 @@ return [
         'step2_desc' => 'Search items, pick dates, and submit in 3 clicks.',
         'step3_title' => 'Digital Approval',
         'step3_desc' => 'Validate bookings from anywhere without paper.',
-        'cta_login' => 'Login Now &rarr;',
+        'cta_login' => 'Login Now →',
         'mockup' => [
             'stats_title' => 'Lab Stats',
             'low_stock' => 'Low Stock!',
@@ -146,7 +146,7 @@ return [
             'lab_kimia' => 'Chemistry Lab',
             'lab_komputer' => 'Computer Lab',
         ],
-        'footer_cta' => 'Try Direct on Dashboard &rarr;',
+        'footer_cta' => 'Try Direct on Dashboard →',
     ],
     'js' => [
         'processing' => 'Processing...',
