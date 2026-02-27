@@ -31,100 +31,82 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ini sangat penting untuk mencegah error di halaman lain (seperti Dashboard, Inventaris, dll.).
     if (calendarEl) {
         const labFilterSelect = document.getElementById('lab-selector');
+        
+        // Konfigurasi sumber event Lab & Loans
         const labEventSourceConfig = {
             id: 'lab-schedules',
             url: '/calendar/events',
             extraParams: () => ({
+                type: 'lab',
                 laboratorium: labFilterSelect?.value || ''
             }),
         };
 
+        // Konfigurasi sumber event Hari Libur (Internal API)
+        const holidayEventSourceConfig = {
+            id: 'holidays',
+            url: '/calendar/events',
+            extraParams: () => ({
+                type: 'holiday'
+            }),
+            color: '#D32F2F'
+        };
+
         // Buat instance kalender baru.
         var calendar = new Calendar(calendarEl, {
-            // Muat semua plugin yang sudah kita impor.
-            plugins: [dayGridPlugin, timeGridPlugin, listPlugin, googleCalendarPlugin],
+            // Muat plugin dasar (tanpa google-calendar)
+            plugins: [dayGridPlugin, timeGridPlugin, listPlugin],
             
-            // Tampilan default saat kalender pertama kali dibuka adalah bulanan.
             initialView: 'dayGridMonth', 
-            
-            // Konfigurasi header kalender (tombol-tombol navigasi dan judul).
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,listWeek' // Tombol untuk ganti tampilan (bulan, minggu, daftar).
+                right: 'dayGridMonth,timeGridWeek,listWeek'
             },
-            
-            // Opsi untuk membuat tinggi kalender menyesuaikan kontennya secara otomatis.
             height: 'auto',
 
-            // Mengambil Google Calendar API Key yang sudah kita kirim dari backend.
-            googleCalendarApiKey: window.googleCalendarApiKey,
-
-            // Menggabungkan beberapa sumber event.
             eventSources: [
-                // Sumber event #1: Data dari aplikasi kita sendiri (peminjaman dan booking).
                 labEventSourceConfig,
-                // Sumber event #2: Data hari libur nasional Indonesia dari Google Calendar publik.
+                holidayEventSourceConfig,
+                // Saturday & Sunday background
                 {
-                    id: 'holidays', // <-- Beri ID
-                    googleCalendarId: 'id.indonesian#holiday@group.v.calendar.google.com',
-                    color: '#D32F2F', // Memberi warna merah untuk hari libur.
-                    className: 'gcal-event' 
-                },
-                // Sumber event #3: Untuk menandai Sabtu & Minggu
-                {
-                    id: 'weekends', // <-- Beri ID
-                    daysOfWeek: [ 0, 6 ], // 0 untuk Minggu, 6 untuk Sabtu
+                    id: 'weekends',
+                    daysOfWeek: [ 0, 6 ],
                     display: 'background',
                     color: '#FFEBEE' 
                 }
             ],
 
-            // Fungsi yang akan dijalankan saat sebuah event di kalender di-klik.
             eventClick: function(info) {
-                // Mencegah browser membuka link secara normal.
                 info.jsEvent.preventDefault(); 
-                
-                // Jika event tersebut memiliki URL, buka URL tersebut di tab yang sama.
                 if (info.event.url) {
                     window.open(info.event.url, "_self"); 
                 }
             }
         });
 
-        // "Gambar" atau render kalender di dalam div 'calendar'.
+        // Tampilkan kalender
         calendar.render();
 
-        // --- PENYEMPURNAAN: Logika untuk Filter ---
+        // Logic Filter
         const filterLab = document.getElementById('filter-lab');
         const filterHolidays = document.getElementById('filter-holidays');
 
-        // Fungsi generik untuk menangani toggle event source
         const toggleEventSource = (checkbox, sourceId, sourceConfig) => {
-            if (!checkbox) return; // Keluar jika elemen checkbox tidak ditemukan
+            if (!checkbox) return;
 
             checkbox.addEventListener('change', function() {
                 const source = calendar.getEventSourceById(sourceId);
                 if (this.checked && !source) {
-                    // Jika dicentang dan source belum ada, tambahkan.
                     calendar.addEventSource(sourceConfig);
                 } else if (!this.checked && source) {
-                    // Jika tidak dicentang dan source ada, hapus.
                     source.remove();
                 }
             });
         };
 
-        // Terapkan fungsi toggle ke filter Jadwal Lab
         toggleEventSource(filterLab, 'lab-schedules', labEventSourceConfig);
-
-        // Terapkan fungsi toggle ke filter Hari Libur
-        toggleEventSource(filterHolidays, 'holidays', { 
-            id: 'holidays', 
-            googleCalendarId: 'id.indonesian#holiday@group.v.calendar.google.com', 
-            color: '#D32F2F', 
-            className: 'gcal-event' 
-        });
+        toggleEventSource(filterHolidays, 'holidays', holidayEventSourceConfig);
 
         if (labFilterSelect) {
             labFilterSelect.addEventListener('change', () => {

@@ -26,6 +26,14 @@
     {{-- Right side icons group — dengan spacing dan dividers --}}
     <div class="flex items-center gap-1">
 
+        {{-- Tour Panduan --}}
+        <button id="topbar-tour-button"
+                class="p-2.5 text-gray-400 hover:text-green-600 hover:bg-gray-100 rounded-lg transition-colors"
+                title="Tour Panduan"
+                onclick="document.getElementById('navbar-tour-button')?.click()">
+            <i class="fas fa-compass text-sm"></i>
+        </button>
+
         {{-- Notifications --}}
         <div class="relative">
             <x-dropdown align="right" width="72">
@@ -71,9 +79,9 @@
         {{-- Language Switcher --}}
         <div class="flex items-center bg-gray-100 rounded-lg p-0.5">
             <a href="{{ route('lang.switch', 'id') }}"
-               class="px-2.5 py-1 text-[10px] font-bold rounded-md transition-all {{ app()->getLocale() == 'id' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-400 hover:text-gray-600' }}">ID</a>
+               class="px-3 py-1.5 text-xs font-bold rounded-md transition-all {{ app()->getLocale() == 'id' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-400 hover:text-gray-600' }}">ID</a>
             <a href="{{ route('lang.switch', 'en') }}"
-               class="px-2.5 py-1 text-[10px] font-bold rounded-md transition-all {{ app()->getLocale() == 'en' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-400 hover:text-gray-600' }}">EN</a>
+               class="px-3 py-1.5 text-xs font-bold rounded-md transition-all {{ app()->getLocale() == 'en' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-400 hover:text-gray-600' }}">EN</a>
         </div>
 
         {{-- Divider --}}
@@ -293,7 +301,7 @@
     </nav>
 
     {{-- ── Sidebar Footer ── --}}
-    <div class="border-t border-gray-100 p-3 flex-shrink-0 space-y-0.5">
+    <div class="border-t border-gray-100 p-3 flex-shrink-0 space-y-0.5" x-show="!sidebarCollapsed" x-transition>
         {{-- User info --}}
         <div class="sidebar-item group text-gray-600 rounded-lg bg-gray-50 cursor-default">
             <div class="w-7 h-7 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
