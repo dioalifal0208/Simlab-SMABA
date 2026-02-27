@@ -1,7 +1,9 @@
 {{-- ================================================================
      TOPBAR — h-14, dimulai setelah sidebar di desktop
      ================================================================ --}}
-<div class="fixed top-0 left-0 lg:left-[260px] right-0 h-14 bg-white border-b border-gray-200 z-30 flex items-center px-4 gap-3">
+<div id="top-navbar"
+     class="fixed top-0 right-0 h-14 bg-white border-b border-gray-200 z-30 flex items-center px-4 lg:px-6 gap-3"
+     :style="'left:' + (window.innerWidth >= 1024 ? (sidebarCollapsed ? '64px' : '260px') : '0') ">
 
     {{-- Mobile: hamburger --}}
     <button @click="sidebarOpen = !sidebarOpen"
@@ -21,13 +23,16 @@
         <kbd class="hidden sm:inline-flex items-center gap-1 text-[10px] text-gray-400 bg-white border border-gray-200 rounded-md px-1.5 py-0.5 font-mono flex-shrink-0">Ctrl+K</kbd>
     </button>
 
+    {{-- Right side icons group — dengan spacing dan dividers --}}
+    <div class="flex items-center gap-1">
+
         {{-- Notifications --}}
         <div class="relative">
             <x-dropdown align="right" width="72">
                 <x-slot name="trigger">
                     <button id="notification-bell"
                             data-unread="{{ $unreadCount ?? 0 }}"
-                            class="relative p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                            class="relative p-2.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
                         <i class="fas fa-bell text-sm"></i>
                         @if(($unreadCount ?? 0) > 0)
                             <span data-role="notification-dot"
@@ -60,16 +65,22 @@
             </x-dropdown>
         </div>
 
+        {{-- Divider --}}
+        <div class="w-px h-6 bg-gray-200 mx-1.5 hidden sm:block"></div>
+
         {{-- Language Switcher --}}
-        <div class="flex items-center bg-gray-100 rounded-lg p-0.5 ml-1">
+        <div class="flex items-center bg-gray-100 rounded-lg p-0.5">
             <a href="{{ route('lang.switch', 'id') }}"
                class="px-2.5 py-1 text-[10px] font-bold rounded-md transition-all {{ app()->getLocale() == 'id' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-400 hover:text-gray-600' }}">ID</a>
             <a href="{{ route('lang.switch', 'en') }}"
                class="px-2.5 py-1 text-[10px] font-bold rounded-md transition-all {{ app()->getLocale() == 'en' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-400 hover:text-gray-600' }}">EN</a>
         </div>
 
+        {{-- Divider --}}
+        <div class="w-px h-6 bg-gray-200 mx-1.5 hidden sm:block"></div>
+
         {{-- User Dropdown --}}
-        <div class="ml-1">
+        <div>
             <x-dropdown align="right" width="52">
                 <x-slot name="trigger">
                     <button class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200">
@@ -104,7 +115,8 @@
             </x-dropdown>
         </div>
 
-    </div>
+    </div>{{-- /right side icons --}}
+
 </div>
 
 {{-- ================================================================
@@ -130,14 +142,28 @@
        :class="{
            'translate-x-0 shadow-xl lg:shadow-none': sidebarOpen
        }"
-       style="position:fixed; top:0; left:0; height:100vh; width:260px; background:white; border-right:1px solid #e5e7eb; z-index:40; display:flex; flex-direction:column;">
+       :style="'position:fixed; top:0; left:0; height:100vh; width:' + (sidebarCollapsed && window.innerWidth >= 1024 ? '64px' : '260px') + '; background:white; border-right:1px solid #e5e7eb; z-index:40; display:flex; flex-direction:column;'">
 
     {{-- ── Sidebar Header ── --}}
-    <div class="h-14 flex items-center px-4 border-b border-gray-100 gap-3 flex-shrink-0">
-        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 min-w-0">
+    <div class="h-14 flex items-center border-b border-gray-100 flex-shrink-0"
+         :class="sidebarCollapsed ? 'px-2 justify-center' : 'px-4 gap-3'">
+        {{-- Logo + Brand --}}
+        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 min-w-0" x-show="!sidebarCollapsed">
             <img src="{{ asset('images/logo-smaba.webp') }}" alt="Logo" class="w-8 h-8 rounded-lg flex-shrink-0 object-contain">
             <span class="font-bold text-gray-900 text-sm truncate sidebar-label">LAB SMABA</span>
         </a>
+        {{-- Logo only (collapsed) --}}
+        <a href="{{ route('dashboard') }}" x-show="sidebarCollapsed" class="flex-shrink-0">
+            <img src="{{ asset('images/logo-smaba.webp') }}" alt="Logo" class="w-8 h-8 rounded-lg object-contain">
+        </a>
+
+        {{-- Toggle collapse button (desktop only) --}}
+        <button @click="sidebarCollapsed = !sidebarCollapsed; localStorage.setItem('sidebarCollapsed', sidebarCollapsed); document.body.classList.toggle('sidebar-collapsed', sidebarCollapsed)"
+                class="hidden lg:flex ml-auto p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors flex-shrink-0"
+                :class="sidebarCollapsed ? 'ml-0' : 'ml-auto'"
+                title="Toggle Sidebar">
+            <i class="fas text-xs" :class="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+        </button>
 
         {{-- Mobile close button --}}
         <button @click="sidebarOpen = false" class="ml-auto p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 lg:hidden">
@@ -164,23 +190,28 @@
         {{-- === UTAMA === --}}
         <div class="sidebar-section">
             <p class="sidebar-section-label">Utama</p>
-            <a href="{{ route('dashboard') }}" class="sidebar-item group {{ $active('dashboard') }}">
+            <a href="{{ route('dashboard') }}" title="Dashboard" class="sidebar-item group {{ $active('dashboard') }}">
                 <i class="fas fa-gauge-high sidebar-icon {{ $activeIcon('dashboard') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.dashboard') }}</span>
                 @if(request()->routeIs('dashboard'))
                     <span class="sidebar-active-dot"></span>
                 @endif
             </a>
+            <button id="navbar-tour-button" title="Tour Panduan"
+                    class="sidebar-item group text-gray-600 hover:bg-gray-50 hover:text-gray-900 w-full text-left">
+                <i class="fas fa-compass sidebar-icon text-gray-400 group-hover:text-gray-600"></i>
+                <span class="sidebar-label">Tour Panduan</span>
+            </button>
         </div>
 
         {{-- === INVENTARIS === --}}
         <div class="sidebar-section">
             <p class="sidebar-section-label">Inventaris</p>
-            <a href="{{ route('items.index') }}" class="sidebar-item group {{ $active('items.*') }}">
+            <a href="{{ route('items.index') }}" title="Inventaris" class="sidebar-item group {{ $active('items.*') }}">
                 <i class="fas fa-boxes-stacked sidebar-icon {{ $activeIcon('items.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.inventory') }}</span>
             </a>
-            <a href="{{ route('calendar.index') }}" class="sidebar-item group {{ $active('calendar.index') }}">
+            <a href="{{ route('calendar.index') }}" title="Kalender" class="sidebar-item group {{ $active('calendar.index') }}">
                 <i class="fas fa-calendar-days sidebar-icon {{ $activeIcon('calendar.index') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.calendar') }}</span>
             </a>
@@ -189,11 +220,11 @@
         {{-- === LAYANAN LAB === --}}
         <div class="sidebar-section">
             <p class="sidebar-section-label">Layanan Lab</p>
-            <a href="{{ route('bookings.index') }}" class="sidebar-item group {{ $active('bookings.*') }}">
+            <a href="{{ route('bookings.index') }}" title="Booking Lab" class="sidebar-item group {{ $active('bookings.*') }}">
                 <i class="fas fa-calendar-check sidebar-icon {{ $activeIcon('bookings.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.bookings') }}</span>
             </a>
-            <a href="{{ route('loans.index') }}" class="sidebar-item group {{ $active('loans.*') }}">
+            <a href="{{ route('loans.index') }}" title="Peminjaman" class="sidebar-item group {{ $active('loans.*') }}">
                 <i class="fas fa-hand-holding sidebar-icon {{ $activeIcon('loans.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.loans') }}</span>
             </a>
@@ -214,11 +245,11 @@
         {{-- === SUMBER DAYA === --}}
         <div class="sidebar-section">
             <p class="sidebar-section-label">Sumber Daya</p>
-            <a href="{{ route('documents.index') }}" class="sidebar-item group {{ $active('documents.*') }}">
+            <a href="{{ route('documents.index') }}" title="Pustaka Digital" class="sidebar-item group {{ $active('documents.*') }}">
                 <i class="fas fa-file-lines sidebar-icon {{ $activeIcon('documents.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.documents') }}</span>
             </a>
-            <a href="{{ route('practicum-modules.index') }}" class="sidebar-item group {{ $active('practicum-modules.*') }}">
+            <a href="{{ route('practicum-modules.index') }}" title="Modul Praktikum" class="sidebar-item group {{ $active('practicum-modules.*') }}">
                 <i class="fas fa-flask sidebar-icon {{ $activeIcon('practicum-modules.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.practicum_modules') }}</span>
             </a>
@@ -228,31 +259,31 @@
         @if($isAdmin)
         <div class="sidebar-section">
             <p class="sidebar-section-label">Manajemen</p>
-            <a href="{{ route('users.index') }}" class="sidebar-item group {{ $active('users.*') }}">
+            <a href="{{ route('users.index') }}" title="Manajemen User" class="sidebar-item group {{ $active('users.*') }}">
                 <i class="fas fa-users-gear sidebar-icon {{ $activeIcon('users.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.users') }}</span>
             </a>
-            <a href="{{ route('admin.item-requests.index') }}" class="sidebar-item group {{ $active('admin.item-requests.*') }}">
+            <a href="{{ route('admin.item-requests.index') }}" title="Permintaan Item" class="sidebar-item group {{ $active('admin.item-requests.*') }}">
                 <i class="fas fa-inbox sidebar-icon {{ $activeIcon('admin.item-requests.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.item_requests') }}</span>
             </a>
-            <a href="{{ route('reports.index') }}" class="sidebar-item group {{ $active('reports.*') }}">
+            <a href="{{ route('reports.index') }}" title="Laporan" class="sidebar-item group {{ $active('reports.*') }}">
                 <i class="fas fa-chart-bar sidebar-icon {{ $activeIcon('reports.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.reports') }}</span>
             </a>
-            <a href="{{ route('damage-reports.index') }}" class="sidebar-item group {{ $active('damage-reports.*') }}">
+            <a href="{{ route('damage-reports.index') }}" title="Laporan Kerusakan" class="sidebar-item group {{ $active('damage-reports.*') }}">
                 <i class="fas fa-triangle-exclamation sidebar-icon {{ $activeIcon('damage-reports.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.damage_reports') }}</span>
             </a>
-            <a href="{{ route('announcements.index') }}" class="sidebar-item group {{ $active('announcements.index') }}">
+            <a href="{{ route('announcements.index') }}" title="Pengumuman" class="sidebar-item group {{ $active('announcements.index') }}">
                 <i class="fas fa-bullhorn sidebar-icon {{ $activeIcon('announcements.index') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.announcements') }}</span>
             </a>
-            <a href="{{ route('admin.contact-conversations.index') }}" class="sidebar-item group {{ $active('admin.contact-conversations.*') }}">
+            <a href="{{ route('admin.contact-conversations.index') }}" title="Pesan" class="sidebar-item group {{ $active('admin.contact-conversations.*') }}">
                 <i class="fas fa-envelope sidebar-icon {{ $activeIcon('admin.contact-conversations.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.messages') }}</span>
             </a>
-            <a href="{{ route('audit-logs.index') }}" class="sidebar-item group {{ $active('audit-logs.*') }}">
+            <a href="{{ route('audit-logs.index') }}" title="Audit Log" class="sidebar-item group {{ $active('audit-logs.*') }}">
                 <i class="fas fa-shield-halved sidebar-icon {{ $activeIcon('audit-logs.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.audit_logs') }}</span>
             </a>
@@ -263,15 +294,8 @@
 
     {{-- ── Sidebar Footer ── --}}
     <div class="border-t border-gray-100 p-3 flex-shrink-0 space-y-0.5">
-        {{-- Tour --}}
-        <button id="navbar-tour-button"
-                class="sidebar-item group text-gray-600 hover:bg-gray-50 hover:text-gray-900 w-full text-left">
-            <i class="fas fa-compass sidebar-icon text-gray-400 group-hover:text-gray-600"></i>
-            <span class="sidebar-label">Tour Panduan</span>
-        </button>
-
         {{-- User info --}}
-        <div class="sidebar-item group text-gray-600 rounded-lg bg-gray-50 mt-2 cursor-default">
+        <div class="sidebar-item group text-gray-600 rounded-lg bg-gray-50 cursor-default">
             <div class="w-7 h-7 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
             </div>
@@ -333,9 +357,6 @@
 
 /* Collapsed sidebar: hide labels */
 @media (min-width: 1024px) {
-    body.sidebar-collapsed #main-sidebar {
-        width: 64px !important;
-    }
     body.sidebar-collapsed .sidebar-label,
     body.sidebar-collapsed .sidebar-section-label,
     body.sidebar-collapsed .sidebar-active-dot {
@@ -344,12 +365,33 @@
     body.sidebar-collapsed .sidebar-item {
         justify-content: center;
         padding: 10px;
+        gap: 0;
     }
     body.sidebar-collapsed .sidebar-icon {
         width: auto;
+        font-size: 16px;
     }
-    body.sidebar-collapsed #main-wrapper {
-        padding-left: 64px;
+    body.sidebar-collapsed .sidebar-section {
+        margin-bottom: 2px;
+    }
+    /* Tooltip on hover when collapsed */
+    body.sidebar-collapsed .sidebar-item {
+        position: relative;
+    }
+    body.sidebar-collapsed .sidebar-item:hover::after {
+        content: attr(title);
+        position: absolute;
+        left: calc(100% + 8px);
+        top: 50%;
+        transform: translateY(-50%);
+        background: #1e293b;
+        color: white;
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 6px;
+        white-space: nowrap;
+        z-index: 999;
+        pointer-events: none;
     }
 }
 
@@ -359,33 +401,11 @@
 #sidebar-nav::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
 </style>
 
-{{-- Sidebar collapse via class on body --}}
+{{-- Sidebar collapse: restore state from localStorage --}}
 <script>
 (function () {
-    // Restore collapsed state from localStorage
-    const collapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    var collapsed = localStorage.getItem('sidebarCollapsed') === 'true';
     if (collapsed) document.body.classList.add('sidebar-collapsed');
-
-    // Watch Alpine sidebarCollapsed and sync to body class + localStorage
-    document.addEventListener('alpine:init', () => {
-        // Alpine data is on body, watch for changes
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-        // Sync collapse toggle button with body class
-        document.body.addEventListener('click', (e) => {
-            const btn = e.target.closest('[\\@click*="sidebarCollapsed"]');
-            if (btn) {
-                const isCollapsed = document.body.classList.toggle('sidebar-collapsed');
-                localStorage.setItem('sidebarCollapsed', isCollapsed);
-                // Update Alpine state
-                const wrapper = document.getElementById('main-wrapper');
-                if (wrapper) {
-                    wrapper.style.paddingLeft = isCollapsed ? '64px' : '260px';
-                }
-            }
-        });
-    });
 })();
 </script>
 

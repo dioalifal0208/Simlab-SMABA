@@ -16,28 +16,37 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        {{-- ============================================================
-             FIX FINAL: Konten tidak boleh pernah tersembunyi
-             ============================================================
-             MASALAH: AOS CSS default menyembunyikan [data-aos] dengan 
-             opacity:0 → konten tidak terlihat → user harus scroll
-             
-             SOLUSI: Override SEMUA opacity AOS menjadi 1 (selalu visible).
-             Elemen hanya boleh BERGESER (transform), TIDAK boleh HILANG.
-             ============================================================ --}}
-        <style>
-            /* PALING PENTING: Semua elemen SELALU terlihat, tidak peduli status AOS */
-            [data-aos] {
-                opacity: 1 !important;
-            }
-        </style>
-
         {{-- AOS CSS + JS via CDN --}}
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                AOS.init({ once: true, duration: 500, offset: 0, easing: 'ease-out' });
+                // Init AOS
+                AOS.init({
+                    once: true,
+                    duration: 600,
+                    offset: 50,
+                    easing: 'ease-out-cubic',
+                    disable: false
+                });
+
+                // PENTING: Karena #main-wrapper sekarang position:fixed + overflow-y:auto,
+                // scroll terjadi di DALAM #main-wrapper, bukan di window.
+                // AOS secara default mendengarkan scroll di window — jadi kita harus
+                // manual trigger AOS.refresh() saat #main-wrapper di-scroll.
+                var mainWrapper = document.getElementById('main-wrapper');
+                if (mainWrapper) {
+                    // Debounce agar tidak terlalu sering refresh
+                    var scrollTimeout;
+                    mainWrapper.addEventListener('scroll', function () {
+                        clearTimeout(scrollTimeout);
+                        scrollTimeout = setTimeout(function () {
+                            AOS.refresh();
+                        }, 50);
+                    });
+                    // Initial refresh untuk elemen yang sudah di viewport
+                    AOS.refresh();
+                }
             });
         </script>
         
@@ -86,7 +95,7 @@
               showImportModal: false,
               isModalOpen: false,
               sidebarOpen: false,
-              sidebarCollapsed: false,
+              sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
               toast: { visible: false, message: '', type: 'success' }
           }"
           x-init="$watch('showImportModal', value => isModalOpen = value)"
@@ -98,8 +107,9 @@
                 @include('layouts.navigation')
             @endunless
 
-            {{-- MAIN WRAPPER: margin-top=56px (topbar), margin-left=260px lg (sidebar) via style tag --}}
-            <div id="main-wrapper" class="transition-all duration-300">
+            {{-- MAIN WRAPPER: position:fixed, left mengikuti sidebar width --}}
+            <div id="main-wrapper" class="transition-all duration-300"
+                 :style="window.innerWidth >= 1024 ? 'left:' + (sidebarCollapsed ? '64px' : '260px') : ''">
 
                 {{-- BANNER PENGUMUMAN GLOBAL --}}
                 @if(isset($activeAnnouncement))

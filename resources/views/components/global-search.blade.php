@@ -61,12 +61,20 @@
 }
 #gs-input {
     flex: 1;
-    border: none;
+    border: 1px solid #e2e8f0;
     outline: none;
-    background: transparent;
+    background: #f8fafc;
     font-size: 14px;
     color: #1e293b;
     font-family: inherit;
+    padding: 8px 14px;
+    border-radius: 12px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+#gs-input:focus {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+    background: #fff;
 }
 #gs-input::placeholder { color: #94a3b8; }
 .gs-esc-kbd {
@@ -382,6 +390,25 @@
         }
     }
 
+    // ── Hardcoded quick navigation (fallback & default) ──
+    const defaultNav = [
+        { title: 'Dashboard',        subtitle: 'Halaman utama',              icon: 'fa-gauge-high',      url: '{{ route("dashboard") }}' },
+        { title: 'Inventaris',       subtitle: 'Daftar alat & bahan lab',    icon: 'fa-boxes-stacked',   url: '{{ route("items.index") }}' },
+        { title: 'Peminjaman Alat',  subtitle: 'Ajukan atau lihat pinjaman', icon: 'fa-hand-holding',    url: '{{ route("loans.index") }}' },
+        { title: 'Booking Lab',      subtitle: 'Jadwal penggunaan lab',      icon: 'fa-calendar-check',  url: '{{ route("bookings.index") }}' },
+        { title: 'Kalender',         subtitle: 'Jadwal lab sebulan penuh',   icon: 'fa-calendar-days',   url: '{{ route("calendar.index") }}' },
+        { title: 'Dokumen Digital',   subtitle: 'Pustaka & file lab',         icon: 'fa-folder-open',     url: '{{ route("documents.index") }}' },
+        { title: 'Modul Praktikum',  subtitle: 'Panduan kegiatan lab',       icon: 'fa-flask',           url: '{{ route("practicum-modules.index") }}' },
+        { title: 'Profil Saya',      subtitle: 'Pengaturan akun',            icon: 'fa-circle-user',     url: '{{ route("profile.edit") }}' },
+    ];
+
+    // Tampilkan navigasi cepat hardcoded (tanpa fetch)
+    function showDefaultNav() {
+        setLoading(false);
+        resetGroups();
+        renderGroup('gs-group-nav', defaultNav, 'nav');
+    }
+
     // ── Open ──────────────────────────────────────────────
     function open() {
         if (isOpen) return;
@@ -389,10 +416,8 @@
         palette.classList.add('gs-open');
         input.value = '';
         input.focus();
-        // Reset & load navigasi cepat default
-        setLoading(false);
-        resetGroups();
-        doSearch('');
+        // Langsung tampilkan navigasi cepat dari data hardcoded
+        showDefaultNav();
     }
 
     // ── Close ─────────────────────────────────────────────
@@ -412,7 +437,8 @@
         const q = input.value.trim();
         clearTimeout(debounce);
 
-        if (q.length === 0)  { resetGroups(); doSearch(''); return; }
+        // Jika input kosong, tampilkan navigasi cepat hardcoded
+        if (q.length === 0)  { showDefaultNav(); return; }
         if (q.length < 2)    { return; }
 
         setLoading(true);
