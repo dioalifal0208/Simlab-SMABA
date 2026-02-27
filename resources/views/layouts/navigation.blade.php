@@ -126,15 +126,11 @@
      SIDEBAR — fixed left
      ================================================================ --}}
 <aside id="main-sidebar"
-       class="fixed top-0 left-0 h-screen bg-white border-r border-gray-200 z-30 flex flex-col
-              transition-all duration-300 ease-in-out
-              -translate-x-full lg:translate-x-0"
+       class="-translate-x-full lg:translate-x-0 transition-all duration-300 ease-in-out"
        :class="{
-           'translate-x-0 shadow-xl lg:shadow-none': sidebarOpen,
-           'lg:w-[260px]': !sidebarCollapsed,
-           'lg:w-16': sidebarCollapsed
+           'translate-x-0 shadow-xl lg:shadow-none': sidebarOpen
        }"
-       style="width: 260px">
+       style="position:fixed; top:0; left:0; height:100vh; width:260px; background:white; border-right:1px solid #e5e7eb; z-index:40; display:flex; flex-direction:column;">
 
     {{-- ── Sidebar Header ── --}}
     <div class="h-14 flex items-center px-4 border-b border-gray-100 gap-3 flex-shrink-0">
@@ -269,10 +265,9 @@
     <div class="border-t border-gray-100 p-3 flex-shrink-0 space-y-0.5">
         {{-- Tour --}}
         <button id="navbar-tour-button"
-                id="navbar-tour-button-mobile"
                 class="sidebar-item group text-gray-600 hover:bg-gray-50 hover:text-gray-900 w-full text-left">
             <i class="fas fa-compass sidebar-icon text-gray-400 group-hover:text-gray-600"></i>
-            <span class="sidebar-label">{{ __('common.nav.product_tour') }}</span>
+            <span class="sidebar-label">Tour Panduan</span>
         </button>
 
         {{-- User info --}}

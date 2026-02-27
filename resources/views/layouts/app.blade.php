@@ -95,11 +95,10 @@
                 @endif
 
                 @if (isset($header))
-                    <header class="bg-white shadow">
-                        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                            {{ $header }}
-                        </div>
-                    </header>
+                    {{-- Slim page header — cocok untuk sidebar layout --}}
+                    <div class="bg-white border-b border-gray-100 px-6 py-3">
+                        {{ $header }}
+                    </div>
                 @endif
 
                 <main class="flex-grow">
