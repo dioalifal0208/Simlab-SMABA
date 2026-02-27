@@ -40,7 +40,8 @@
                 <x-slot name="trigger">
                     <button id="notification-bell"
                             data-unread="{{ $unreadCount ?? 0 }}"
-                            class="relative p-2.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                            class="relative p-2.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                            title="{{ __('common.nav.notifications') }}">
                         <i class="fas fa-bell text-sm"></i>
                         @if(($unreadCount ?? 0) > 0)
                             <span data-role="notification-dot"
@@ -154,7 +155,7 @@
 
     {{-- ── Sidebar Header ── --}}
     <div class="h-14 flex items-center border-b border-gray-100 flex-shrink-0"
-         :class="sidebarCollapsed ? 'px-2 justify-center' : 'px-4 gap-3'">
+         :class="sidebarCollapsed ? 'px-2 justify-center' : 'px-4 gap-4'">
         {{-- Logo + Brand --}}
         <a href="{{ route('dashboard') }}" class="flex items-center gap-3 min-w-0" x-show="!sidebarCollapsed">
             <img src="{{ asset('images/logo-smaba.webp') }}" alt="Logo" class="w-8 h-8 rounded-lg flex-shrink-0 object-contain">
@@ -167,10 +168,10 @@
 
         {{-- Toggle collapse button (desktop only) --}}
         <button @click="sidebarCollapsed = !sidebarCollapsed; localStorage.setItem('sidebarCollapsed', sidebarCollapsed); document.body.classList.toggle('sidebar-collapsed', sidebarCollapsed)"
-                class="hidden lg:flex ml-auto p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors flex-shrink-0"
+                class="hidden lg:flex ml-auto p-2.5 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors flex-shrink-0"
                 :class="sidebarCollapsed ? 'ml-0' : 'ml-auto'"
                 title="Toggle Sidebar">
-            <i class="fas text-xs" :class="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+            <i class="fas text-sm" :class="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
         </button>
 
         {{-- Mobile close button --}}

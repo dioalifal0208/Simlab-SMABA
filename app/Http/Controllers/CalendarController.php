@@ -98,15 +98,16 @@ class CalendarController extends Controller
 
             if (!empty($holidays)) {
                 foreach ($holidays as $holiday) {
-                    if (isset($holiday['is_holiday']) && $holiday['is_holiday']) {
+                    // API Format: [tanggal] => YYYY-MM-DD, [keterangan] => Nama Hari Libur
+                    if (isset($holiday['tanggal'])) {
                         $events[] = [
-                            'id' => 'holiday-' . \Illuminate\Support\Str::slug($holiday['holiday_name'] . $holiday['holiday_date']),
-                            'title' => 'Hari Libur: ' . $holiday['holiday_name'],
-                            'start' => $holiday['holiday_date'],
+                            'id' => 'holiday-' . \Illuminate\Support\Str::slug(($holiday['keterangan'] ?? 'Libur') . $holiday['tanggal']),
+                            'title' => 'Libur: ' . ($holiday['keterangan'] ?? 'Hari Libur Nasional'),
+                            'start' => $holiday['tanggal'],
                             'allDay' => true,
                             'color' => '#D32F2F',
                             'display' => 'block',
-                            'extendedProps' => ['type' => 'holiday']
+                            'extendedProps' => ['type' => 'holiday', 'is_cuti' => $holiday['is_cuti'] ?? false]
                         ];
                     }
                 }
