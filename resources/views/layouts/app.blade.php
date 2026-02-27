@@ -17,55 +17,26 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         {{-- ============================================================
-             SOLUSI DEFINITIF: AOS - Konten tidak tampil tanpa scroll
+             FIX FINAL: Konten tidak boleh pernah tersembunyi
              ============================================================
-             STRATEGI CSS:
-             1. Inline <style> ini dimuat pertama (sebelum AOS CSS) 
-                → override semua penyembunyian AOS
-             2. [data-aos] selalu visible (!important) sampai AOS siap
-             3. Setelah AOS ready (.aos-initialized), hanya elemen yang 
-                BELUM dianimasikan (tidak punya .aos-animate) yang tersembunyi
-             4. AOS CDN tanpa defer → load segera, lalu langsung init
+             MASALAH: AOS CSS default menyembunyikan [data-aos] dengan 
+             opacity:0 → konten tidak terlihat → user harus scroll
+             
+             SOLUSI: Override SEMUA opacity AOS menjadi 1 (selalu visible).
+             Elemen hanya boleh BERGESER (transform), TIDAK boleh HILANG.
              ============================================================ --}}
         <style>
-            /* ===== STEP 1: Sebelum AOS init — tampilkan semua elemen ===== */
-            /* Override ini berlaku selama html belum punya class 'aos-initialized' */
+            /* PALING PENTING: Semua elemen SELALU terlihat, tidak peduli status AOS */
             [data-aos] {
                 opacity: 1 !important;
-                transform: none !important;
-                transition-property: none !important;
-            }
-
-            /* ===== STEP 2: Setelah AOS init — izinkan AOS mengontrol animasi ===== */
-            /* Sembunyikan HANYA elemen yang sudah di-track AOS tapi belum masuk viewport */
-            .aos-initialized [data-aos]:not(.aos-animate) {
-                opacity: 0;
-                transition-property: opacity, transform;
-            }
-            /* Restore transform awal untuk setiap tipe animasi */
-            .aos-initialized [data-aos='fade-up']:not(.aos-animate)    { transform: translate3d(0, 60px, 0); }
-            .aos-initialized [data-aos='fade-down']:not(.aos-animate)  { transform: translate3d(0, -60px, 0); }
-            .aos-initialized [data-aos='fade-right']:not(.aos-animate) { transform: translate3d(-60px, 0, 0); }
-            .aos-initialized [data-aos='fade-left']:not(.aos-animate)  { transform: translate3d(60px, 0, 0); }
-            .aos-initialized [data-aos='zoom-in']:not(.aos-animate)    { opacity: 0; transform: scale(0.8); }
-
-            /* ===== STEP 3: Elemen sudah ter-animasi — tampilkan dengan smooth ===== */
-            .aos-initialized [data-aos].aos-animate {
-                opacity: 1;
-                transform: translate3d(0, 0, 0);
-                transition: opacity 0.5s ease, transform 0.5s ease;
             }
         </style>
 
-        {{-- AOS CSS + JS via CDN (tanpa defer/async = load & execute segera) --}}
+        {{-- AOS CSS + JS via CDN --}}
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <script>
-            // AOS.init() dipanggil segera setelah script di atas selesai load.
-            // Karena script ini ada di <head> tanpa defer, ia berjalan:
-            // SEBELUM body di-parse → kita perlu DOMContentLoaded
             document.addEventListener('DOMContentLoaded', function () {
-                // Init AOS: offset:0 agar langsung trigger di viewport
                 AOS.init({ once: true, duration: 500, offset: 0, easing: 'ease-out' });
             });
         </script>
