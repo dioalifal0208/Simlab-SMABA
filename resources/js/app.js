@@ -325,24 +325,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ========================================================================
-// ## PERBAIKAN AOS: Konten dashboard tidak terlihat saat pertama login ##
-// Inisialisasi AOS menggunakan DOMContentLoaded dan offset: 0
-// agar elemen yang sudah ada di viewport langsung ter-animasi
-// tanpa perlu scroll terlebih dahulu.
-// ========================================================================
-document.addEventListener('DOMContentLoaded', () => {
-    AOS.init({
-        duration: 600,       // Durasi animasi lebih cepat
-        once: true,          // Animasi hanya berjalan sekali
-        offset: 0,           // Trigger animasi begitu elemen muncul di viewport (tanpa offset)
-        startEvent: 'DOMContentLoaded', // Langsung trigger saat DOM siap
-        anchorPlacement: 'top-bottom',  // Trigger saat bagian atas elemen menyentuh bagian bawah viewport
-        disable: false,
-    });
-    // Refresh AOS setelah semua aset dimuat untuk memastikan tidak ada yang terlewat
-    window.addEventListener('load', () => AOS.refresh());
-});
+// AOS diinisialisasi via inline script di layouts/app.blade.php
+// agar berjalan lebih awal (sebelum bundle JS ini ter-load)
+// Lihat: resources/views/layouts/app.blade.php
+
 
 // Menambahkan listener untuk event Livewire
 document.addEventListener('livewire:load', function () {

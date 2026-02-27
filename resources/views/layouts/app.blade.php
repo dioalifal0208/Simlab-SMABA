@@ -15,6 +15,19 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        {{-- AOS: Dimuat LEBIH AWAL via CDN dan diinit inline agar konten langsung
+             terlihat tanpa scroll. Sama seperti cara welcome.blade.php. --}}
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script>
+            // Init AOS segera setelah library dimuat — tanpa menunggu DOMContentLoaded
+            // offset: 0 = trigger animasi begitu elemen masuk viewport (atas ke bawah)
+            // once: true = animasi hanya 1x
+            document.addEventListener('DOMContentLoaded', function() {
+                AOS.init({ once: true, duration: 500, offset: 0, easing: 'ease-out' });
+            });
+        </script>
         
         {{-- TAMBAHAN 1: Memuat style yang dibutuhkan oleh Livewire --}}
         @livewireStyles

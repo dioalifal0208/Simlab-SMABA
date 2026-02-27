@@ -10,16 +10,22 @@
 
 /*
 |--------------------------------------------------------------------------
-| FIX: AOS Flash of Invisible Content (FOIC)
+| FIX: AOS Flash of Invisible Content (FOIC) — Solusi Komprehensif
 |--------------------------------------------------------------------------
-| AOS CSS menyembunyikan semua elemen [data-aos] dengan opacity: 0 segera
-| saat stylesheet dimuat, JAUH sebelum JavaScript AOS berjalan.
-| Ini menyebabkan halaman terlihat PUTIH/KOSONG sampai user scroll.
+| MASALAH: AOS CSS menyembunyikan elemen [data-aos] dengan opacity:0 dan
+| transform:translate3d(0,100px,0) segera saat stylesheet dimuat.
+| AOS hanya trigger animasi saat SCROLL terjadi — sehingga elemen di
+| viewport pada awal halaman TIDAK PERNAH terlihat sampai user scroll.
 |
-| Override ini memastikan elemen tetap TERLIHAT selama AOS belum siap.
-| Setelah AOS menginisialisasi (menambah class 'aos-initialized' ke <html>),
-| animasi berjalan normal.
+| SOLUSI BERLAPIS:
+| Layer 1: Sebelum AOS init (tidak ada class .aos-initialized) 
+|          → tampilkan semua elemen
+| Layer 2: Setelah AOS init, elemen di viewport segera mendapat .aos-animate
+|          dari AOS.refresh() yang dipanggil di app.js
+| Layer 3: Fallback — pastikan elemen yang sudah .aos-animate tetap visible
 */
+
+/* Layer 1: Sebelum AOS siap — semua elemen terlihat */
 html:not(.aos-initialized) [data-aos],
 body:not(.aos-initialized) [data-aos] {
     opacity: 1 !important;
