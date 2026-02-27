@@ -9,6 +9,26 @@
 @import 'aos/dist/aos.css';
 
 /*
+|--------------------------------------------------------------------------
+| FIX: AOS Flash of Invisible Content (FOIC)
+|--------------------------------------------------------------------------
+| AOS CSS menyembunyikan semua elemen [data-aos] dengan opacity: 0 segera
+| saat stylesheet dimuat, JAUH sebelum JavaScript AOS berjalan.
+| Ini menyebabkan halaman terlihat PUTIH/KOSONG sampai user scroll.
+|
+| Override ini memastikan elemen tetap TERLIHAT selama AOS belum siap.
+| Setelah AOS menginisialisasi (menambah class 'aos-initialized' ke <html>),
+| animasi berjalan normal.
+*/
+html:not(.aos-initialized) [data-aos],
+body:not(.aos-initialized) [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    pointer-events: auto !important;
+}
+
+/*
  * 2. Aturan CSS Kustom.
  * Kita menambahkan ini untuk memberi warna latar pada akhir pekan di FullCalendar.
  */

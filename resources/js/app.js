@@ -326,16 +326,22 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ========================================================================
-// ## PERBAIKAN UNTUK ANIMASI AOS PATAH-PATAH ##
-// Inisialisasi AOS dipindahkan ke event 'window.load'.
-// Event ini berjalan SETELAH semua aset (gambar, script, css) selesai dimuat,
-// sehingga tidak akan mengganggu render animasi.
+// ## PERBAIKAN AOS: Konten dashboard tidak terlihat saat pertama login ##
+// Inisialisasi AOS menggunakan DOMContentLoaded dan offset: 0
+// agar elemen yang sudah ada di viewport langsung ter-animasi
+// tanpa perlu scroll terlebih dahulu.
 // ========================================================================
-window.addEventListener('load', () => {
+document.addEventListener('DOMContentLoaded', () => {
     AOS.init({
-        duration: 800, // Durasi animasi dalam milidetik
-        once: true,    // Apakah animasi hanya berjalan sekali
+        duration: 600,       // Durasi animasi lebih cepat
+        once: true,          // Animasi hanya berjalan sekali
+        offset: 0,           // Trigger animasi begitu elemen muncul di viewport (tanpa offset)
+        startEvent: 'DOMContentLoaded', // Langsung trigger saat DOM siap
+        anchorPlacement: 'top-bottom',  // Trigger saat bagian atas elemen menyentuh bagian bawah viewport
+        disable: false,
     });
+    // Refresh AOS setelah semua aset dimuat untuk memastikan tidak ada yang terlewat
+    window.addEventListener('load', () => AOS.refresh());
 });
 
 // Menambahkan listener untuk event Livewire
