@@ -715,7 +715,11 @@
                             });
                             if (response.redirected) { window.location.href = response.url; return; }
                             const data = await response.json();
-                            if (!response.ok) { showError(data.message || "{{ __('welcome.js.error_generic') }}"); } 
+                            if (!response.ok) { showError(data.message || "{{ __('welcome.js.error_generic') }}"); }
+                            else if (data.status === 'otp_required') {
+                                // Redirect ke halaman input kode 2FA
+                                window.location.href = '{{ route('two-factor.index') }}';
+                            }
                             else { window.location.href = '{{ route('dashboard') }}'; }
                         } catch (error) { showError("{{ __('welcome.js.error_connection') }}"); } 
                         finally { submitButton.innerHTML = originalButtonText; submitButton.disabled = false; }

@@ -38,7 +38,7 @@
         </form>
 
         <div class="mt-4 flex items-center justify-end">
-            <a href="{{ route('login.create') }}" class="text-xs text-gray-500 hover:text-gray-700">Ganti akun</a>
+            <a href="{{ route('login') }}" class="text-xs text-gray-500 hover:text-gray-700">Ganti akun</a>
         </div>
     </div>
 </x-guest-layout>
