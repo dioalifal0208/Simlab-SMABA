@@ -19,6 +19,23 @@
         {{-- TAMBAHAN 1: Memuat style yang dibutuhkan oleh Livewire --}}
         @livewireStyles
 
+        {{-- Sidebar layout offset — tidak bergantung Tailwind JIT --}}
+        <style>
+            /* Sidebar width: 260px — offset untuk topbar dan main content */
+            #main-wrapper {
+                padding-top: 56px; /* h-14 = 56px */
+            }
+            @media (min-width: 1024px) {
+                #main-wrapper {
+                    padding-left: 260px;
+                }
+                /* Saat sidebar collapsed */
+                body.sidebar-collapsed #main-wrapper {
+                    padding-left: 64px;
+                }
+            }
+        </style>
+
         {{-- PERBAIKAN 1: Menambahkan script Alpine.js di <head> --}}
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
@@ -44,8 +61,8 @@
                 @include('layouts.navigation')
             @endunless
 
-            {{-- MAIN WRAPPER: offset untuk topbar (pt-14) dan sidebar desktop (lg:pl-[260px]) --}}
-            <div id="main-wrapper" class="flex flex-col flex-grow pt-14 lg:pl-[260px] transition-all duration-300">
+            {{-- MAIN WRAPPER: offset diatur via <style> di head, bukan Tailwind arbitrary --}}
+            <div id="main-wrapper" class="flex flex-col flex-grow transition-all duration-300">
 
                 {{-- BANNER PENGUMUMAN GLOBAL --}}
                 @if(isset($activeAnnouncement))
