@@ -6,33 +6,11 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import 'aos/dist/aos.css';
-
 /*
-|--------------------------------------------------------------------------
-| FIX: AOS Flash of Invisible Content (FOIC) — Solusi Komprehensif
-|--------------------------------------------------------------------------
-| MASALAH: AOS CSS menyembunyikan elemen [data-aos] dengan opacity:0 dan
-| transform:translate3d(0,100px,0) segera saat stylesheet dimuat.
-| AOS hanya trigger animasi saat SCROLL terjadi — sehingga elemen di
-| viewport pada awal halaman TIDAK PERNAH terlihat sampai user scroll.
-|
-| SOLUSI BERLAPIS:
-| Layer 1: Sebelum AOS init (tidak ada class .aos-initialized) 
-|          → tampilkan semua elemen
-| Layer 2: Setelah AOS init, elemen di viewport segera mendapat .aos-animate
-|          dari AOS.refresh() yang dipanggil di app.js
-| Layer 3: Fallback — pastikan elemen yang sudah .aos-animate tetap visible
-*/
-
-/* Layer 1: Sebelum AOS siap — semua elemen terlihat */
-html:not(.aos-initialized) [data-aos],
-body:not(.aos-initialized) [data-aos] {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-    pointer-events: auto !important;
-}
+ * AOS CSS TIDAK di-bundle di sini lagi.
+ * AOS dimuat via CDN di layouts/app.blade.php dengan override inline
+ * yang lebih powerful dan tidak bergantung pada loading order bundle.
+ */
 
 /*
  * 2. Aturan CSS Kustom.

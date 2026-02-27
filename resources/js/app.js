@@ -4,11 +4,10 @@
 import './bootstrap';
 import Chart from 'chart.js/auto';
 window.Chart = Chart;
-// Import CSS AOS
-import 'aos/dist/aos.css';
-// PENAMBAHAN: Impor JavaScript AOS
-import AOS from 'aos';
+// AOS dikelola via CDN langsung di layouts/app.blade.php
+// (bukan di bundle ini, agar timing lebih terkontrol)
 import './lock-screen'; // Import Lock Screen Logic
+
 
 // 2. Impor SweetAlert2 untuk popup konfirmasi modern.
 //    Kita juga mendaftarkannya ke objek `window` agar bisa diakses dari mana saja.
