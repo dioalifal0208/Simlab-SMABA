@@ -44,24 +44,31 @@
         {{-- TAMBAHAN 1: Memuat style yang dibutuhkan oleh Livewire --}}
         @livewireStyles
 
-        {{-- Sidebar layout offset — padding approach mencegah margin collapse --}}
+        {{-- Layout: Main content area sebagai fixed scrollable container --}}
         <style>
             /*
-             * PENTING: Menggunakan padding-top bukan margin-top
-             * margin-top BISA COLLAPSE dengan parent element yang tidak punya
-             * padding/border (menyebabkan konten terdorong jauh ke bawah).
-             * padding-top TIDAK PERNAH collapse.
+             * SOLUSI LAYOUT DEFINITIF:
+             * #main-wrapper menggunakan position:fixed — sama seperti sidebar & topbar.
+             * Ini menjamin konten SELALU terpasang di viewport dengan posisi yang tepat.
+             * overflow-y:auto membuat area ini scrollable secara independen.
+             *
+             * Tidak lagi terpengaruh margin collapse, parent min-height, atau CSS lainnya.
              */
             #main-wrapper {
-                padding-top: 56px;  /* tinggi topbar h-14 = 56px */
-                min-height: 100vh;
+                position: fixed;
+                top: 56px;      /* tepat di bawah topbar (h-14 = 56px) */
+                left: 0;
+                right: 0;
+                bottom: 0;
+                overflow-y: auto;
+                background-color: #f9fafb; /* bg-gray-50 */
             }
             @media (min-width: 1024px) {
                 #main-wrapper {
-                    margin-left: 260px; /* lebar sidebar = 260px */
+                    left: 260px; /* tepat di samping kanan sidebar (w-[260px]) */
                 }
                 body.sidebar-collapsed #main-wrapper {
-                    margin-left: 64px;
+                    left: 64px;
                 }
             }
         </style>
