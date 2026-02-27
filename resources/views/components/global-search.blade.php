@@ -2,364 +2,455 @@
     Global Search Command Palette
     Trigger: tombol di navbar, atau keyboard shortcut Ctrl+K / Cmd+K
 --}}
-<div id="global-search-palette"
-     class="fixed inset-0 z-[200] flex items-start justify-center pt-[8vh] sm:pt-[12vh] px-4 hidden"
-     role="dialog" aria-modal="true" aria-label="Pencarian Global">
+
+<style>
+/* ── Palette overlay ──────────────────────────────────── */
+#global-search-palette {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+#global-search-palette.gs-open {
+    display: flex;
+}
+
+/* ── Backdrop ─────────────────────────────────────────── */
+#gs-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    animation: gs-fade-in 0.18s ease;
+}
+
+/* ── Palette box ──────────────────────────────────────── */
+#gs-box {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 560px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.22), 0 4px 16px rgba(0,0,0,0.08);
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    animation: gs-slide-in 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.05);
+}
+
+/* ── Input row ────────────────────────────────────────── */
+#gs-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    flex-shrink: 0;
+}
+#gs-input-row .gs-icon {
+    color: #94a3b8;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+#gs-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: #1e293b;
+    font-family: inherit;
+}
+#gs-input::placeholder { color: #94a3b8; }
+.gs-esc-kbd {
+    font-size: 10px;
+    color: #94a3b8;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    padding: 2px 6px;
+    font-family: monospace;
+    flex-shrink: 0;
+}
+
+/* ── Results area ─────────────────────────────────────── */
+#gs-results {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    flex: 1;
+    min-height: 0;
+}
+
+/* ── Section label ────────────────────────────────────── */
+.gs-section-label {
+    padding: 12px 16px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #94a3b8;
+}
+
+/* ── Result item ──────────────────────────────────────── */
+.gs-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    margin: 0 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    list-style: none;
+}
+.gs-item:hover, .gs-item.gs-active {
+    background: #f0fdf4;
+}
+.gs-item:hover .gs-item-title, .gs-item.gs-active .gs-item-title {
+    color: #16a34a;
+}
+.gs-item-icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    flex-shrink: 0;
+    font-size: 13px;
+}
+.gs-icon-items     { background: #f0fdf4; color: #16a34a; }
+.gs-icon-documents { background: #eff6ff; color: #2563eb; }
+.gs-icon-bookings  { background: #faf5ff; color: #7c3aed; }
+.gs-icon-loans     { background: #fff7ed; color: #ea580c; }
+.gs-icon-nav       { background: #f8fafc; color: #475569; }
+
+.gs-item-text { flex: 1; min-width: 0; }
+.gs-item-title {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #1e293b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.12s;
+}
+.gs-item-sub {
+    font-size: 11.5px;
+    color: #94a3b8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.gs-item-arrow { font-size: 10px; color: #cbd5e1; transition: color 0.12s, transform 0.12s; }
+.gs-item:hover .gs-item-arrow { color: #16a34a; transform: translateX(2px); }
+
+/* ── States ───────────────────────────────────────────── */
+#gs-loading, #gs-no-results {
+    display: none;
+    padding: 32px 16px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 14px;
+}
+#gs-loading i { font-size: 24px; color: #22c55e; display: block; margin-bottom: 8px; }
+#gs-no-results i { font-size: 28px; color: #e2e8f0; display: block; margin-bottom: 8px; }
+
+/* ── Footer ───────────────────────────────────────────── */
+#gs-footer {
+    padding: 8px 16px;
+    border-top: 1px solid #f1f5f9;
+    background: #f8fafc;
+    display: flex;
+    gap: 16px;
+    flex-shrink: 0;
+}
+#gs-footer span { font-size: 10px; color: #94a3b8; }
+.gs-kbd {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-family: monospace;
+    font-size: 9px;
+    color: #64748b;
+    margin-right: 2px;
+}
+
+/* ── Animations ───────────────────────────────────────── */
+@keyframes gs-fade-in  { from { opacity: 0 } to { opacity: 1 } }
+@keyframes gs-slide-in { from { opacity: 0; transform: translateY(-10px) scale(0.97) } to { opacity: 1; transform: translateY(0) scale(1) } }
+</style>
+
+{{-- ==================== MARKUP ==================== --}}
+<div id="global-search-palette" role="dialog" aria-modal="true" aria-label="Pencarian Global">
 
     {{-- Backdrop --}}
-    <div id="gs-backdrop"
-         class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity duration-200 opacity-0"></div>
+    <div id="gs-backdrop"></div>
 
     {{-- Palette Box --}}
-    <div id="gs-box"
-         class="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden
-                transition-all duration-200 scale-95 opacity-0"
-         style="max-height: 80vh;">
+    <div id="gs-box">
 
-        {{-- Search Input Row --}}
-        <div class="flex items-center gap-3 px-4 py-3.5 border-b border-gray-100">
-            <i class="fas fa-magnifying-glass text-gray-400 text-base flex-shrink-0"></i>
+        {{-- Input Row --}}
+        <div id="gs-input-row">
+            <i class="fas fa-magnifying-glass gs-icon"></i>
             <input
                 id="gs-input"
                 type="search"
                 autocomplete="off"
                 spellcheck="false"
                 placeholder="Cari alat, dokumen, fitur..."
-                class="flex-1 bg-transparent text-gray-900 text-sm placeholder-gray-400 outline-none border-none focus:ring-0"
             >
-            <kbd class="hidden sm:inline-flex items-center gap-1 text-[10px] text-gray-400 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5 font-mono select-none">
-                Esc
-            </kbd>
+            <span class="gs-esc-kbd">Esc</span>
         </div>
 
         {{-- Results Area --}}
-        <div id="gs-results"
-             class="overflow-y-auto overscroll-contain"
-             style="max-height: calc(80vh - 58px);">
+        <div id="gs-results">
 
-            {{-- Empty / Default State (tampil saat kosong) --}}
-            <div id="gs-empty-state" class="py-3">
-                <p class="px-4 pt-1 pb-2 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Navigasi Cepat</p>
-                <ul id="gs-nav-list" class="gs-group"></ul>
-            </div>
-
-            {{-- Loading State --}}
-            <div id="gs-loading" class="hidden py-8 flex flex-col items-center gap-3 text-gray-400">
-                <i class="fas fa-spinner fa-spin text-2xl text-green-500"></i>
-                <span class="text-sm">Mencari...</span>
+            {{-- Loading --}}
+            <div id="gs-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                Mencari...
             </div>
 
             {{-- No Results --}}
-            <div id="gs-no-results" class="hidden py-8 text-center text-gray-400">
-                <i class="fas fa-face-meh text-3xl mb-2 text-gray-300"></i>
-                <p class="text-sm">Tidak ditemukan hasil untuk kueri ini.</p>
+            <div id="gs-no-results">
+                <i class="fas fa-face-meh"></i>
+                Tidak ditemukan hasil. Coba kata kunci lain.
             </div>
 
-            {{-- Search Results (diisi via JS) --}}
-            <div id="gs-search-results" class="hidden py-2 space-y-0.5">
-                {{-- Item Alat/Bahan --}}
-                <div id="gs-group-items" class="hidden">
-                    <p class="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Alat & Bahan</p>
-                    <ul class="gs-group"></ul>
-                </div>
-                {{-- Dokumen --}}
-                <div id="gs-group-documents" class="hidden">
-                    <p class="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Dokumen Digital</p>
-                    <ul class="gs-group"></ul>
-                </div>
-                {{-- Booking --}}
-                <div id="gs-group-bookings" class="hidden">
-                    <p class="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Booking Lab</p>
-                    <ul class="gs-group"></ul>
-                </div>
-                {{-- Loan --}}
-                <div id="gs-group-loans" class="hidden">
-                    <p class="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Peminjaman Alat</p>
-                    <ul class="gs-group"></ul>
-                </div>
-                {{-- Navigasi --}}
-                <div id="gs-group-nav" class="hidden">
-                    <p class="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Navigasi</p>
-                    <ul class="gs-group"></ul>
-                </div>
+            {{-- Groups --}}
+            <div id="gs-groups">
+                <div id="gs-group-nav"       class="gs-group-wrap"><p class="gs-section-label">Navigasi Cepat</p><ul></ul></div>
+                <div id="gs-group-items"     class="gs-group-wrap"><p class="gs-section-label">Alat &amp; Bahan</p><ul></ul></div>
+                <div id="gs-group-documents" class="gs-group-wrap"><p class="gs-section-label">Dokumen Digital</p><ul></ul></div>
+                <div id="gs-group-bookings"  class="gs-group-wrap"><p class="gs-section-label">Booking Lab</p><ul></ul></div>
+                <div id="gs-group-loans"     class="gs-group-wrap"><p class="gs-section-label">Peminjaman Alat</p><ul></ul></div>
             </div>
 
-        </div>{{-- /results --}}
-
-        {{-- Footer hint --}}
-        <div class="border-t border-gray-100 px-4 py-2 flex items-center gap-4 text-[10px] text-gray-400 bg-gray-50">
-            <span><kbd class="bg-white border border-gray-200 rounded px-1 mr-0.5">↑</kbd><kbd class="bg-white border border-gray-200 rounded px-1">↓</kbd> navigasi</span>
-            <span><kbd class="bg-white border border-gray-200 rounded px-1">Enter</kbd> buka</span>
-            <span><kbd class="bg-white border border-gray-200 rounded px-1">Esc</kbd> tutup</span>
         </div>
 
-    </div>{{-- /gs-box --}}
-</div>
+        {{-- Footer --}}
+        <div id="gs-footer">
+            <span><span class="gs-kbd">↑</span><span class="gs-kbd">↓</span> navigasi</span>
+            <span><span class="gs-kbd">Enter</span> buka</span>
+            <span><span class="gs-kbd">Esc</span> tutup</span>
+        </div>
 
-{{-- ==================== ICON CONFIGS ==================== --}}
-@php
-$iconColors = [
-    'items'     => 'text-green-600 bg-green-50',
-    'documents' => 'text-blue-600 bg-blue-50',
-    'bookings'  => 'text-purple-600 bg-purple-50',
-    'loans'     => 'text-orange-600 bg-orange-50',
-    'nav'       => 'text-gray-600 bg-gray-100',
-];
-@endphp
+    </div>
+</div>
 
 {{-- ==================== JAVASCRIPT ==================== --}}
 <script>
 (function () {
     const SEARCH_URL = '{{ route("search.global") }}';
-    const CSRF       = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
 
-    const palette    = document.getElementById('global-search-palette');
-    const backdrop   = document.getElementById('gs-backdrop');
-    const box        = document.getElementById('gs-box');
-    const input      = document.getElementById('gs-input');
-    const emptyState = document.getElementById('gs-empty-state');
-    const loading    = document.getElementById('gs-loading');
-    const noResults  = document.getElementById('gs-no-results');
-    const searchRes  = document.getElementById('gs-search-results');
+    const palette   = document.getElementById('global-search-palette');
+    const backdrop  = document.getElementById('gs-backdrop');
+    const input     = document.getElementById('gs-input');
+    const loading   = document.getElementById('gs-loading');
+    const noResults = document.getElementById('gs-no-results');
+    const groups    = document.getElementById('gs-groups');
 
-    // State
-    let isOpen     = false;
-    let debounce   = null;
-    let allItems   = [];   // flat list of all result <li> for keyboard nav
-    let activeIdx  = -1;
+    let isOpen    = false;
+    let debounce  = null;
+    let allItems  = [];
+    let activeIdx = -1;
 
-    // ── Icon color map by category ──────────────────────────────
-    const catColors = {
-        items:     'text-green-600 bg-green-50',
-        documents: 'text-blue-600 bg-blue-50',
-        bookings:  'text-purple-600 bg-purple-50',
-        loans:     'text-orange-600 bg-orange-50',
-        nav:       'text-gray-600 bg-gray-100',
+    // ── Icon class map ───────────────────────────────────
+    const iconClass = {
+        items:     'gs-icon-items',
+        documents: 'gs-icon-documents',
+        bookings:  'gs-icon-bookings',
+        loans:     'gs-icon-loans',
+        nav:       'gs-icon-nav',
     };
 
-    // ── Build a result <li> element ─────────────────────────────
-    function buildItem(result) {
-        const li = document.createElement('li');
-        li.className = 'gs-item flex items-center gap-3 px-4 py-2.5 cursor-pointer hover:bg-gray-50 rounded-lg mx-1 transition-colors group';
-        li.dataset.url = result.url;
-
-        const color = catColors[result.category] || catColors.nav;
+    // ── Build result <li> ────────────────────────────────
+    function buildItem(r) {
+        const li       = document.createElement('li');
+        li.className   = 'gs-item';
+        li.dataset.url = r.url;
+        const ic       = iconClass[r.category] || 'gs-icon-nav';
         li.innerHTML = `
-            <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg ${color} text-sm">
-                <i class="fas ${result.icon}"></i>
+            <span class="gs-item-icon ${ic}"><i class="fas ${r.icon}"></i></span>
+            <span class="gs-item-text">
+                <span class="gs-item-title">${esc(r.title)}</span>
+                <span class="gs-item-sub">${esc(r.subtitle || '')}</span>
             </span>
-            <span class="flex-1 min-w-0">
-                <span class="block text-sm font-medium text-gray-800 truncate group-hover:text-green-700 transition-colors">${escHtml(result.title)}</span>
-                <span class="block text-xs text-gray-400 truncate">${escHtml(result.subtitle || '')}</span>
-            </span>
-            <i class="fas fa-arrow-right text-[10px] text-gray-300 group-hover:text-green-500 transition-all group-hover:translate-x-0.5"></i>
-        `;
-        li.addEventListener('click', () => navigate(result.url));
+            <i class="fas fa-arrow-right gs-item-arrow"></i>`;
+        li.addEventListener('click', () => navigate(r.url));
         return li;
     }
 
-    function escHtml(str) {
-        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    function esc(s) {
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
 
-    // ── Render group ────────────────────────────────────────────
-    function renderGroup(groupId, results) {
-        const container = document.getElementById(groupId);
-        if (!container) return;
-        const ul = container.querySelector('ul');
+    // ── Render a group ────────────────────────────────────
+    function renderGroup(id, results, category) {
+        const wrap = document.getElementById(id);
+        const ul   = wrap.querySelector('ul');
         ul.innerHTML = '';
 
         if (!results || results.length === 0) {
-            container.classList.add('hidden');
+            wrap.style.display = 'none';
             return;
         }
 
-        container.classList.remove('hidden');
+        wrap.style.display = 'block';
         results.forEach(r => {
-            const li = buildItem(r);
+            const li = buildItem({ ...r, category });
             ul.appendChild(li);
             allItems.push(li);
         });
     }
 
-    // ── Show/hide states ─────────────────────────────────────────
-    function showEmptyState(data) {
-        emptyState.classList.remove('hidden');
-        loading.classList.add('hidden');
-        noResults.classList.add('hidden');
-        searchRes.classList.add('hidden');
-
-        // Render nav cepat
-        const navList = document.getElementById('gs-nav-list');
-        navList.innerHTML = '';
-        allItems = [];
-        (data?.nav || []).forEach(r => {
-            const li = buildItem({...r, category: 'nav'});
-            navList.appendChild(li);
-            allItems.push(li);
-        });
+    // ── State helpers ─────────────────────────────────────
+    function setLoading(show) {
+        loading.style.display  = show ? 'block' : 'none';
+        noResults.style.display = 'none';
+        groups.style.display    = show ? 'none' : 'block';
     }
 
-    function showLoading() {
-        emptyState.classList.add('hidden');
-        loading.classList.remove('hidden');
-        noResults.classList.add('hidden');
-        searchRes.classList.add('hidden');
+    function setNoResults() {
+        loading.style.display   = 'none';
+        noResults.style.display = 'block';
+        groups.style.display    = 'none';
     }
 
-    function showNoResults() {
-        emptyState.classList.add('hidden');
-        loading.classList.add('hidden');
-        noResults.classList.remove('hidden');
-        searchRes.classList.add('hidden');
-    }
-
-    function showResults(data) {
-        allItems = [];
-        emptyState.classList.add('hidden');
-        loading.classList.add('hidden');
-        noResults.classList.add('hidden');
-        searchRes.classList.remove('hidden');
-
-        renderGroup('gs-group-items',     data.items);
-        renderGroup('gs-group-documents', data.documents);
-        renderGroup('gs-group-bookings',  data.bookings);
-        renderGroup('gs-group-loans',     data.loans);
-        renderGroup('gs-group-nav',       data.nav);
-
-        const hasAny = allItems.length > 0;
-        if (!hasAny) showNoResults();
+    function resetGroups() {
+        allItems  = [];
         activeIdx = -1;
+        ['gs-group-nav','gs-group-items','gs-group-documents','gs-group-bookings','gs-group-loans']
+            .forEach(id => {
+                const w = document.getElementById(id);
+                w.style.display = 'none';
+                w.querySelector('ul').innerHTML = '';
+            });
     }
 
-    // ── Keyboard navigation ──────────────────────────────────────
+    // ── Keyboard navigation ───────────────────────────────
     function setActive(idx) {
-        allItems.forEach((el, i) => {
-            el.classList.toggle('bg-green-50', i === idx);
-            el.classList.toggle('text-green-700', i === idx);
-            if (i === idx) el.scrollIntoView({ block: 'nearest' });
-        });
+        allItems.forEach((el, i) => el.classList.toggle('gs-active', i === idx));
+        if (allItems[idx]) allItems[idx].scrollIntoView({ block: 'nearest' });
         activeIdx = idx;
     }
 
-    // ── Fetch & render results ───────────────────────────────────
+    // ── Fetch ─────────────────────────────────────────────
     async function doSearch(q) {
         try {
             const res  = await fetch(`${SEARCH_URL}?q=${encodeURIComponent(q)}`, {
-                headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF, 'X-Requested-With': 'XMLHttpRequest' }
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') || {}).content || ''
+                }
             });
+
+            if (!res.ok) { setNoResults(); return; }
             const data = await res.json();
 
-            if (data.empty || !q || q.length < 2) {
-                showEmptyState(data);
+            setLoading(false);
+            resetGroups();
+
+            // Untuk q kosong → tampilkan semua nav cepat
+            if (!q || q.length < 2) {
+                renderGroup('gs-group-nav', data.nav, 'nav');
             } else {
-                showResults(data);
+                renderGroup('gs-group-items',     data.items,     'items');
+                renderGroup('gs-group-documents', data.documents, 'documents');
+                renderGroup('gs-group-bookings',  data.bookings,  'bookings');
+                renderGroup('gs-group-loans',     data.loans,     'loans');
+                renderGroup('gs-group-nav',       data.nav,       'nav');
             }
+
+            const hasAny = allItems.length > 0;
+            if (!hasAny) setNoResults();
+
         } catch (e) {
-            showNoResults();
+            console.error('[GlobalSearch] Error:', e);
+            setNoResults();
         }
     }
 
-    // ── Open / Close ─────────────────────────────────────────────
+    // ── Open ──────────────────────────────────────────────
     function open() {
         if (isOpen) return;
         isOpen = true;
-        palette.classList.remove('hidden');
-        // Trickery: force reflow untuk trigger transition
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                backdrop.classList.remove('opacity-0');
-                box.classList.remove('scale-95', 'opacity-0');
-                box.classList.add('scale-100', 'opacity-100');
-            });
-        });
+        palette.classList.add('gs-open');
         input.value = '';
         input.focus();
-        // Load navigasi cepat default
+        // Reset & load navigasi cepat default
+        setLoading(false);
+        resetGroups();
         doSearch('');
     }
 
+    // ── Close ─────────────────────────────────────────────
     function close() {
         if (!isOpen) return;
         isOpen = false;
-        backdrop.classList.add('opacity-0');
-        box.classList.add('scale-95', 'opacity-0');
-        box.classList.remove('scale-100', 'opacity-100');
-        setTimeout(() => {
-            palette.classList.add('hidden');
-            input.value = '';
-        }, 180);
+        palette.classList.remove('gs-open');
     }
 
     function navigate(url) {
         close();
-        setTimeout(() => { window.location.href = url; }, 100);
+        window.location.href = url;
     }
 
-    // ── Event Listeners ──────────────────────────────────────────
-    // Input
+    // ── Input handler ─────────────────────────────────────
     input.addEventListener('input', () => {
         const q = input.value.trim();
         clearTimeout(debounce);
-        if (q.length === 0) { doSearch(''); return; }
-        if (q.length < 2)   { return; }
-        showLoading();
+
+        if (q.length === 0)  { resetGroups(); doSearch(''); return; }
+        if (q.length < 2)    { return; }
+
+        setLoading(true);
         debounce = setTimeout(() => doSearch(q), 300);
     });
 
-    // Keyboard shortcut
-    document.addEventListener('keydown', (e) => {
-        // Ctrl+K atau Cmd+K
+    // ── Keyboard ──────────────────────────────────────────
+    document.addEventListener('keydown', e => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
             e.preventDefault();
             isOpen ? close() : open();
             return;
         }
-
         if (!isOpen) return;
 
-        if (e.key === 'Escape') {
+        if (e.key === 'Escape')    { e.preventDefault(); close(); }
+        else if (e.key === 'ArrowDown') { e.preventDefault(); setActive(Math.min(activeIdx + 1, allItems.length - 1)); }
+        else if (e.key === 'ArrowUp')   { e.preventDefault(); setActive(Math.max(activeIdx - 1, 0)); }
+        else if (e.key === 'Enter') {
             e.preventDefault();
-            close();
-            return;
-        }
-
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            setActive(Math.min(activeIdx + 1, allItems.length - 1));
-            return;
-        }
-        if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            setActive(Math.max(activeIdx - 1, 0));
-            return;
-        }
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            if (activeIdx >= 0 && allItems[activeIdx]) {
-                navigate(allItems[activeIdx].dataset.url);
-            }
-            return;
+            if (activeIdx >= 0 && allItems[activeIdx]) navigate(allItems[activeIdx].dataset.url);
         }
     });
 
-    // Backdrop click
+    // ── Backdrop click ────────────────────────────────────
     backdrop.addEventListener('click', close);
 
-    // Trigger buttons (ditetapkan setelah DOM siap)
-    function attachTrigger(id) {
-        const btn = document.getElementById(id);
-        if (btn) btn.addEventListener('click', open);
+    // ── Bind trigger buttons ──────────────────────────────
+    function bindBtn(id) {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', open);
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            attachTrigger('global-search-trigger');
-            attachTrigger('global-search-trigger-mobile');
-        });
+        document.addEventListener('DOMContentLoaded', () => { bindBtn('global-search-trigger'); bindBtn('global-search-trigger-mobile'); });
     } else {
-        attachTrigger('global-search-trigger');
-        attachTrigger('global-search-trigger-mobile');
+        bindBtn('global-search-trigger');
+        bindBtn('global-search-trigger-mobile');
     }
 
 })();
