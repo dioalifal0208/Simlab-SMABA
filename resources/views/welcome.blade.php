@@ -50,8 +50,9 @@
 
     <body class="landing-page antialiased bg-white text-gray-900 overflow-x-hidden selection:bg-green-100 selection:text-green-900"
           data-authenticated="{{ auth()->check() ? '1' : '0' }}"
-          x-data="{ isModalOpen: false, showDemoModal: false, showFeatureModal: false, activeSlide: 0, activeFeature: 'inventory' }"
-          @keydown.escape.window="isModalOpen = false; showDemoModal = false; showFeatureModal = false">
+          x-data="{ isModalOpen: false, showDemoModal: false, showFeatureModal: false, activeSlide: 0, activeFeature: 'inventory', otpStep: false }"
+          @keydown.escape.window="isModalOpen = false; showDemoModal = false; showFeatureModal = false; otpStep = false"
+          @show-otp-step.window="otpStep = true">
 
         {{-- BACKGROUND GRID (SPOTLIGHT) --}}
         <div class="fixed inset-0 z-0 pointer-events-none bg-grid-pattern"></div>
@@ -332,17 +333,17 @@
             </div>
         </footer>
 
-        {{-- MODAL LOGIN/REGISTER/FORGOT (RESTYLED SHARP) --}}
+        {{-- MODAL LOGIN + 2FA (2-STEP) --}}
         <div x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm p-4" style="display: none;">
-            <div @click.outside="isModalOpen = false" x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" class="w-full max-w-md bg-white p-8 rounded-lg shadow-xl border border-gray-200 relative">
-                
-                <h2 class="text-xl font-bold text-gray-900 text-center mb-6">{{ __('welcome.auth.welcome') }}</h2>
+            <div @click.outside="isModalOpen = false; otpStep = false" x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" class="w-full max-w-md bg-white p-8 rounded-lg shadow-xl border border-gray-200 relative overflow-hidden">
 
-                <div id="auth-error-message" class="hidden mb-4 bg-red-50 border border-red-200 text-red-600 p-3 text-sm rounded-md" role="alert"></div>
-                <div id="auth-success-message" class="hidden mb-4 bg-green-50 border border-green-200 text-green-600 p-3 text-sm rounded-md" role="alert"></div>
+                {{-- ===== STEP 1: Form Login ===== --}}
+                <div x-show="!otpStep" x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                    <h2 class="text-xl font-bold text-gray-900 text-center mb-6">{{ __('welcome.auth.welcome') }}</h2>
 
-                {{-- Form Login --}}
-                <div>
+                    <div id="auth-error-message" class="hidden mb-4 bg-red-50 border border-red-200 text-red-600 p-3 text-sm rounded-md" role="alert"></div>
+                    <div id="auth-success-message" class="hidden mb-4 bg-green-50 border border-green-200 text-green-600 p-3 text-sm rounded-md" role="alert"></div>
+
                     <form id="login-form" method="POST" action="{{ route('login') }}" class="space-y-4">
                         @csrf
                         <div>
@@ -364,6 +365,61 @@
                     </form>
                 </div>
 
+                {{-- ===== STEP 2: 2FA OTP Input ===== --}}
+                <div x-show="otpStep" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-6" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" style="display:none">
+
+                    {{-- Indikator langkah --}}
+                    <div class="flex items-center justify-center gap-2 mb-6">
+                        <div class="flex items-center gap-1.5 text-xs text-gray-400">
+                            <span class="w-5 h-5 rounded-full bg-green-600 flex items-center justify-center text-white font-bold"><i class="fas fa-check text-[8px]"></i></span>
+                            <span class="font-medium text-green-700">Login</span>
+                        </div>
+                        <div class="w-8 h-px bg-gray-300"></div>
+                        <div class="flex items-center gap-1.5 text-xs">
+                            <span class="w-5 h-5 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-[10px]">2</span>
+                            <span class="font-semibold text-gray-800">Verifikasi</span>
+                        </div>
+                    </div>
+
+                    {{-- Ikon dan judul --}}
+                    <div class="text-center mb-6">
+                        <div class="w-14 h-14 mx-auto mb-4 bg-green-50 border-2 border-green-100 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-2xl text-green-600"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-gray-900">Verifikasi 2 Langkah</h2>
+                        <p class="text-sm text-gray-500 mt-1">Masukkan kode 6 digit dari<br><span class="font-semibold text-gray-700">Google Authenticator</span></p>
+                    </div>
+
+                    <div id="otp-error-message" class="hidden mb-4 bg-red-50 border border-red-200 text-red-600 p-3 text-sm rounded-md" role="alert"></div>
+
+                    <form id="otp-form" class="space-y-5">
+                        @csrf
+                        <div>
+                            <input
+                                id="otp-code-input"
+                                name="code"
+                                type="text"
+                                inputmode="numeric"
+                                maxlength="8"
+                                required
+                                placeholder="000000"
+                                autocomplete="one-time-code"
+                                class="block w-full rounded-lg border-2 border-gray-200 shadow-sm focus:border-green-500 focus:ring-green-500 text-center text-3xl tracking-[0.55em] font-mono py-3.5 placeholder:text-gray-300 placeholder:tracking-[0.55em] transition-colors"
+                                @show-otp-step.window="$nextTick(() => $el.focus()); $el.value = ''"
+                            />
+                            <p class="text-xs text-gray-400 mt-2 text-center">Atau masukkan <em>recovery code</em> Anda jika tidak memiliki akses ke aplikasi.</p>
+                        </div>
+                        <button type="submit" id="otp-submit-btn" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all">
+                            <i class="fas fa-unlock-alt"></i> Verifikasi &amp; Masuk
+                        </button>
+                    </form>
+
+                    <div class="mt-5 pt-4 border-t border-gray-100 text-center">
+                        <button @click="otpStep = false; document.getElementById('otp-error-message').classList.add('hidden')" class="text-xs text-gray-400 hover:text-gray-600 transition-colors inline-flex items-center gap-1.5">
+                            <i class="fas fa-arrow-left"></i> Ganti akun / kembali ke login
+                        </button>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -683,27 +739,21 @@
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 const errorMessageDiv = document.getElementById('auth-error-message');
                 const successMessageDiv = document.getElementById('auth-success-message');
-                const isAuthenticated = document.body.dataset.authenticated === '1';
 
-                function showError(message) {
+                function showLoginError(message) {
                     successMessageDiv.classList.add('hidden');
                     errorMessageDiv.classList.remove('hidden');
                     errorMessageDiv.innerHTML = message;
                 }
 
-                function showSuccess(message) {
-                    errorMessageDiv.classList.add('hidden');
-                    successMessageDiv.classList.remove('hidden');
-                    successMessageDiv.innerHTML = message;
-                }
-
+                // ===== STEP 1: Login Form =====
                 const loginForm = document.getElementById('login-form');
                 if (loginForm) {
                     loginForm.addEventListener('submit', async function (event) {
                         event.preventDefault();
                         const submitButton = this.querySelector('button[type="submit"]');
                         const originalButtonText = submitButton.innerHTML;
-                        submitButton.innerHTML = "{{ __('welcome.js.processing') }}";
+                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> {{ __("welcome.js.processing") }}';
                         submitButton.disabled = true;
                         errorMessageDiv.classList.add('hidden');
                         successMessageDiv.classList.add('hidden');
@@ -715,17 +765,60 @@
                             });
                             if (response.redirected) { window.location.href = response.url; return; }
                             const data = await response.json();
-                            if (!response.ok) { showError(data.message || "{{ __('welcome.js.error_generic') }}"); }
+                            if (!response.ok) { showLoginError(data.message || '{{ __("welcome.js.error_generic") }}'); }
                             else if (data.status === 'otp_required') {
-                                // Redirect ke halaman input kode 2FA
-                                window.location.href = '{{ route('two-factor.index') }}';
+                                // Tampilkan OTP step di dalam modal yang sama
+                                window.dispatchEvent(new CustomEvent('show-otp-step'));
                             }
                             else { window.location.href = '{{ route('dashboard') }}'; }
-                        } catch (error) { showError("{{ __('welcome.js.error_connection') }}"); } 
+                        } catch (error) { showLoginError('{{ __("welcome.js.error_connection") }}'); }
                         finally { submitButton.innerHTML = originalButtonText; submitButton.disabled = false; }
                     });
                 }
 
+                // ===== STEP 2: OTP Form =====
+                const otpForm = document.getElementById('otp-form');
+                if (otpForm) {
+                    otpForm.addEventListener('submit', async function (event) {
+                        event.preventDefault();
+                        const submitButton = document.getElementById('otp-submit-btn');
+                        const originalButtonText = submitButton.innerHTML;
+                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Memverifikasi...';
+                        submitButton.disabled = true;
+                        const otpErrorDiv = document.getElementById('otp-error-message');
+                        otpErrorDiv.classList.add('hidden');
+                        try {
+                            const formData = new FormData(this);
+                            const response = await fetch('{{ route('two-factor.store') }}', {
+                                method: 'POST', body: formData, credentials: 'include',
+                                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': csrfToken }
+                            });
+                            // Jika server redirect (sukses login), ikuti redirect-nya
+                            if (response.redirected) { window.location.href = response.url; return; }
+                            const data = await response.json();
+                            if (!response.ok) {
+                                // Tampilkan pesan error (kode salah)
+                                otpErrorDiv.classList.remove('hidden');
+                                otpErrorDiv.innerHTML = (data.errors && data.errors.code && data.errors.code[0])
+                                    ? data.errors.code[0]
+                                    : (data.message || 'Kode tidak valid. Silakan coba lagi.');
+                                // Kosongkan input dan fokus ulang
+                                const otpInput = document.getElementById('otp-code-input');
+                                if (otpInput) { otpInput.value = ''; otpInput.focus(); }
+                            } else if (data.redirect) {
+                                window.location.href = data.redirect;
+                            } else {
+                                window.location.href = '{{ route('dashboard') }}';
+                            }
+                        } catch (error) {
+                            otpErrorDiv.classList.remove('hidden');
+                            otpErrorDiv.innerHTML = 'Terjadi kesalahan koneksi. Silakan coba lagi.';
+                        } finally {
+                            submitButton.innerHTML = originalButtonText;
+                            submitButton.disabled = false;
+                        }
+                    });
+                }
 
             });
         </script>
