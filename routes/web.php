@@ -25,6 +25,7 @@ use App\Http\Controllers\ContactAdminController;
 use App\Http\Controllers\ContactConversationController;
 use App\Http\Controllers\AdminContactConversationController;
 use App\Http\Controllers\AuditLogController;
+use App\Http\Controllers\GlobalSearchController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +61,9 @@ Route::middleware(['auth', 'single.session'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Global Search
+    Route::get('/search', [GlobalSearchController::class, 'search'])->name('search.global');
 
     // Percakapan dengan Admin
     Route::get('/contact-conversations', [ContactConversationController::class, 'index'])->name('contact.conversations.index');

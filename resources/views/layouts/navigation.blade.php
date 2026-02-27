@@ -115,6 +115,17 @@
                 
 
 
+                {{-- Global Search Button (Desktop) --}}
+                <button
+                    id="global-search-trigger"
+                    class="p-2 text-gray-400 hover:text-green-600 transition-colors duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 inline-flex items-center gap-1.5"
+                    aria-label="Pencarian Global (Ctrl+K)"
+                    title="Cari (Ctrl+K)"
+                >
+                    <i class="fas fa-magnifying-glass text-lg"></i>
+                    <span class="hidden lg:inline text-[10px] text-gray-300 bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5 font-mono">Ctrl+K</span>
+                </button>
+
                 {{-- Product Tour Button --}}
                 <button 
                     id="navbar-tour-button"
@@ -206,7 +217,15 @@
             </div>
 
             {{-- Tombol Hamburger (Mobile) --}}
-            <div class="-me-2 flex items-center sm:hidden">
+            <div class="-me-2 flex items-center gap-1 sm:hidden">
+                {{-- Global Search Button (Mobile) --}}
+                <button
+                    id="global-search-trigger-mobile"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-green-600 hover:bg-green-50 focus:outline-none transition duration-150 ease-in-out"
+                    aria-label="Pencarian Global"
+                >
+                    <i class="fas fa-magnifying-glass text-lg"></i>
+                </button>
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -281,3 +300,5 @@
     </div>
 </nav>
 
+{{-- Global Search Command Palette --}}
+<x-global-search />
