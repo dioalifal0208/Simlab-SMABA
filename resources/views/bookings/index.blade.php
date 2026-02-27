@@ -18,7 +18,7 @@
                 </p>
             </div>
             
-            <a href="{{ route('bookings.create') }}" class="mt-3 sm:mt-0 px-6 py-2.5 bg-green-700 text-white rounded-lg hover:bg-green-800 font-bold text-sm shadow-lg transition-all border-2 border-green-800 flex items-center gap-2">
+            <a href="{{ route('bookings.create') }}" class="mt-3 sm:mt-0 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold text-sm shadow-sm transition-colors flex items-center gap-2">
                 <i class="fas fa-plus"></i> {{ __('bookings.actions.create_new') }}
             </a>
         </div>
@@ -41,7 +41,7 @@
                         <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-6 space-y-4 sm:space-y-0">
                             <div class="flex items-center space-x-3">
                                 <label for="status" class="text-sm font-medium text-gray-700">{{ __('common.labels.status') }}:</label>
-                                <select name="status" id="status" class="w-full sm:w-48 rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
+                                <select name="status" id="status" class="w-full sm:w-48 rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                                     <option value="">{{ __('bookings.filters.all') }}</option>
                                     <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>{{ __('common.status.pending') }}</option>
                                     <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>{{ __('common.status.approved') }}</option>
@@ -51,11 +51,15 @@
                             </div>
                             <div class="flex items-center space-x-3">
                                 <label for="laboratorium" class="text-sm font-medium text-gray-700">{{ __('common.nav.lab_services') }}:</label>
-                                <select name="laboratorium" id="laboratorium" class="w-full sm:w-48 rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
+                                <select name="laboratorium" id="laboratorium" class="w-full sm:w-48 rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                                     <option value="">{{ __('bookings.filters.all_labs') }}</option>
                                     <option value="Biologi" {{ request('laboratorium') == 'Biologi' ? 'selected' : '' }}>Biologi</option>
                                     <option value="Fisika" {{ request('laboratorium') == 'Fisika' ? 'selected' : '' }}>Fisika</option>
                                     <option value="Bahasa" {{ request('laboratorium') == 'Bahasa' ? 'selected' : '' }}>Bahasa</option>
+                                    <option value="Komputer 1" {{ request('laboratorium') == 'Komputer 1' ? 'selected' : '' }}>Komputer 1</option>
+                                    <option value="Komputer 2" {{ request('laboratorium') == 'Komputer 2' ? 'selected' : '' }}>Komputer 2</option>
+                                    <option value="Komputer 3" {{ request('laboratorium') == 'Komputer 3' ? 'selected' : '' }}>Komputer 3</option>
+                                    <option value="Komputer 4" {{ request('laboratorium') == 'Komputer 4' ? 'selected' : '' }}>Komputer 4</option>
                                 </select>
                             </div>
                             <i id="loading-spinner" class="fas fa-spinner fa-spin text-gray-500 hidden"></i>
@@ -97,7 +101,7 @@
                                         @endif
                                     </div>
                                     <div class="mt-4 sm:mt-0 sm:ml-4 flex-shrink-0">
-                                        <a href="{{ route('bookings.show', $booking->id) }}" class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 font-semibold text-xs shadow-sm transition-colors duration-300">
+                                        <a href="{{ route('bookings.show', $booking->id) }}" class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-semibold text-xs shadow-sm transition-colors duration-300">
                                             <i class="fas fa-eye mr-2"></i> {{ __('common.buttons.details') }}
                                         </a>
                                     </div>

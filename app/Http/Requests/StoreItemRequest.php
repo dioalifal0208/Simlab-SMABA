@@ -31,7 +31,7 @@ class StoreItemRequest extends FormRequest
             'kondisi' => 'required|in:baik,kurang baik,Rusak',
             'lokasi_penyimpanan' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
+            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4',
             'photos' => 'nullable|array',
             'photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
         ];
@@ -68,7 +68,7 @@ class StoreItemRequest extends FormRequest
             'lokasi_penyimpanan.max' => 'Lokasi penyimpanan tidak boleh lebih dari :max karakter.',
             
             'laboratorium.required' => 'Laboratorium wajib dipilih.',
-            'laboratorium.in' => 'Laboratorium harus berupa "Biologi", "Fisika", atau "Bahasa".',
+            'laboratorium.in' => 'Laboratorium harus berupa "Biologi", "Fisika", "Bahasa", atau "Komputer 1-4".',
             
             'photos.array' => 'Foto harus berupa array.',
             'photos.*.image' => 'File harus berupa gambar.',

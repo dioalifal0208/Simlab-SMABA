@@ -40,7 +40,7 @@ class UserImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email', // Pastikan email unik
             'role' => 'nullable|in:admin,guru', // Hanya izinkan admin atau guru
-            'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa',
+            'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4',
             'password' => 'required|string|min:8', // Wajibkan password minimal 8 karakter
         ];
     }

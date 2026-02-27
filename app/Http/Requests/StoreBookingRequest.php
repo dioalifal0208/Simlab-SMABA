@@ -32,7 +32,7 @@ class StoreBookingRequest extends FormRequest
             'kelas' => 'nullable|string|max:50',
             'phone_number' => 'nullable|string|max:20',
 
-            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
+            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4',
             'waktu_mulai' => 'required|date',
             'waktu_selesai' => 'required|date|after:waktu_mulai',
             'jumlah_peserta' => 'nullable|integer|min:1',
@@ -56,7 +56,7 @@ class StoreBookingRequest extends FormRequest
             'mata_pelajaran.max' => 'Mata pelajaran tidak boleh lebih dari :max karakter.',
             
             'laboratorium.required' => 'Laboratorium wajib dipilih.',
-            'laboratorium.in' => 'Laboratorium harus berupa "Biologi", "Fisika", atau "Bahasa".',
+            'laboratorium.in' => 'Laboratorium harus berupa "Biologi", "Fisika", "Bahasa", atau "Komputer 1-4".',
             
             'waktu_mulai.required' => 'Waktu mulai wajib diisi.',
             'waktu_mulai.date' => 'Waktu mulai harus berupa tanggal dan waktu yang valid.',

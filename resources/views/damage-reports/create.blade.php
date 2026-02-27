@@ -19,7 +19,7 @@
                             {{-- Deskripsi Kerusakan --}}
                             <div>
                                 <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi Kerusakan</label>
-                                <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>{{ old('description') }}</textarea>
+                                <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>{{ old('description') }}</textarea>
                                 <p class="mt-2 text-xs text-gray-500">Jelaskan sedetail mungkin kerusakan yang Anda temukan.</p>
                                 @error('description') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
                             </div>
@@ -33,8 +33,8 @@
                         </div>
 
                         <div class="mt-8 flex justify-end space-x-3">
-                            <a href="{{ url()->previous() }}" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 font-semibold text-sm transition-colors">Batal</a>
-                            <button type="submit" class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 font-semibold text-sm shadow-md transition-colors">Kirim Laporan</button>
+                            <a href="{{ url()->previous() }}" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold text-sm transition-colors">Batal</a>
+                            <button type="submit" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-semibold text-sm shadow-sm transition-colors">Kirim Laporan</button>
                         </div>
                     </form>
                 </div>

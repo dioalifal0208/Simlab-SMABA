@@ -29,7 +29,7 @@ class ItemRequestController extends Controller
             'tipe' => 'nullable|string|max:100',
             'jumlah' => 'required|integer|min:1',
             'satuan' => 'required|string|max:50',
-            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
+            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4',
             'urgensi' => 'required|in:normal,mendesak',
             'deskripsi' => 'nullable|string',
             'alasan_urgent' => 'nullable|string',

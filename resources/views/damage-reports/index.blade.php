@@ -59,7 +59,7 @@
                                             @endif
                                         </td>
                                         <td class="py-4 px-6 text-center">
-                                            <a href="{{ route('damage-reports.show', $report->id) }}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold text-xs shadow-sm transition-colors duration-300">
+                                            <a href="{{ route('damage-reports.show', $report->id) }}" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-semibold text-xs shadow-sm transition-colors duration-300">
                                                 Lihat Detail
                                             </a>
                                         </td>

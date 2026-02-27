@@ -28,20 +28,20 @@
                             {{-- Judul Modul --}}
                             <div>
                                 <label for="title" class="block font-medium text-sm text-gray-700">Judul Modul / SOP</label>
-                                <input type="text" name="title" id="title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" value="{{ old('title') }}" required autofocus>
+                                <input type="text" name="title" id="title" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" value="{{ old('title') }}" required autofocus>
                             </div>
 
                             {{-- Deskripsi / Langkah-langkah --}}
                             <div>
                                 <label for="description" class="block font-medium text-sm text-gray-700">Deskripsi / Langkah-langkah (Opsional)</label>
-                                <textarea name="description" id="description" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" placeholder="Tuliskan langkah-langkah praktikum atau SOP di sini...">{{ old('description') }}</textarea>
+                                <textarea name="description" id="description" rows="5" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" placeholder="Tuliskan langkah-langkah praktikum atau SOP di sini...">{{ old('description') }}</textarea>
                             </div>
 
                             {{-- Pemilihan Item --}}
                             <div>
                                 <label class="block font-medium text-sm text-gray-700 mb-2">Pilih Alat / Bahan yang Dibutuhkan (Opsional)</label>
                                 <div class="border rounded-lg p-4 bg-gray-50 max-h-72 overflow-y-auto">
-                                    <input type="text" id="item-search-module" placeholder="Ketik untuk mencari item..." class="w-full mb-4 pl-4 pr-4 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
+                                    <input type="text" id="item-search-module" placeholder="Ketik untuk mencari item..." class="w-full mb-4 pl-4 pr-4 py-2 rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                                     <div class="space-y-2" id="item-list-module">
                                         @forelse ($items as $item)
                                             <div class="flex items-center item-entry-module">
@@ -57,8 +57,8 @@
                         </div>
 
                         <div class="mt-8 flex justify-end space-x-3">
-                            <a href="{{ route('practicum-modules.index') }}" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 font-semibold text-sm transition-colors">Batal</a>
-                            <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold text-sm shadow-md transition-colors">Simpan Modul</button>
+                            <a href="{{ route('practicum-modules.index') }}" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold text-sm transition-colors">Batal</a>
+                            <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold text-sm shadow-sm transition-colors">Simpan Modul</button>
                         </div>
                     </form>
                 </div>

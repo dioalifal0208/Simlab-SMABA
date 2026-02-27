@@ -17,7 +17,7 @@
                     </button>
 
                     {{-- Tombol Tambah Pengguna Baru (Manual) --}}
-                    <button @click="showCreateUserModal = true" class="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 font-semibold text-sm shadow-md transition-colors">
+                    <button @click="showCreateUserModal = true" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold text-sm shadow-sm transition-colors">
                         <i class="fas fa-plus mr-2"></i> Tambah Pengguna
                     </button>
 
@@ -54,25 +54,25 @@
                                 {{-- Nama --}}
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                                    <input type="text" name="name" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                    <input type="text" name="name" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                 </div>
 
                                 {{-- Email --}}
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                                    <input type="email" name="email" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                    <input type="email" name="email" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                 </div>
 
                                 {{-- Password --}}
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                                    <input type="password" name="password" required minlength="8" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                    <input type="password" name="password" required minlength="8" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                 </div>
 
                                 {{-- Role --}}
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Peran (Role)</label>
-                                    <select name="role" x-model="role" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                    <select name="role" x-model="role" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                         <option value="guru">Guru</option>
                                         <option value="admin">Admin</option>
                                     </select>
@@ -81,18 +81,22 @@
                                 {{-- Laboratorium (Hanya jika Guru) --}}
                                 <div x-show="role === 'guru'" x-transition>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Laboratorium</label>
-                                    <select name="laboratorium" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                    <select name="laboratorium" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                         <option value="">Pilih Laboratorium</option>
                                         <option value="Biologi">Biologi</option>
                                         <option value="Fisika">Fisika</option>
                                         <option value="Bahasa">Bahasa</option>
+                                        <option value="Komputer 1">Komputer 1</option>
+                                        <option value="Komputer 2">Komputer 2</option>
+                                        <option value="Komputer 3">Komputer 3</option>
+                                        <option value="Komputer 4">Komputer 4</option>
                                     </select>
                                     <p class="text-xs text-gray-500 mt-1">* Wajib dipilih untuk Guru Pengelola Lab.</p>
                                 </div>
 
                                 <div class="pt-4 flex justify-end">
                                     <button type="button" @click="showCreateUserModal = false" class="mr-3 px-4 py-2 text-gray-700 hover:text-gray-900 font-medium">Batal</button>
-                                    <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold shadow-md transition-colors">Simpan</button>
+                                    <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold shadow-sm transition-colors">Simpan</button>
                                 </div>
                             </form>
                         </div>
@@ -236,14 +240,14 @@
                 <div class="mt-4 text-xs text-gray-600">
                     <p class="font-semibold">Pastikan header file Anda sesuai (wajib):</p>
                     <p class="font-mono text-gray-500">nama, email, password, role, laboratorium</p>
-                    <p class="text-gray-500 mt-1">*) Kolom `role` opsional, otomatis 'guru' jika dikosongkan. Kolom `laboratorium` opsional untuk guru (isi: Biologi/Fisika/Bahasa).</p>
+                    <p class="text-gray-500 mt-1">*) Kolom `role` opsional, otomatis 'guru' jika dikosongkan. Kolom `laboratorium` opsional untuk guru (isi: Biologi/Fisika/Bahasa/Komputer 1/Komputer 2/Komputer 3/Komputer 4).</p>
                 </div>
 
                 <div class="mt-6 flex justify-end">
                     <button type="submit" 
                             :disabled="isLoading"
                             :class="{ 'opacity-50 cursor-not-allowed': isLoading }"
-                            class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold text-sm shadow-md transition-colors">
+                            class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold text-sm shadow-sm transition-colors">
                         <span x-show="!isLoading">Mulai Impor Data</span>
                         <span x-show="isLoading">Memproses...</span>
                     </button>

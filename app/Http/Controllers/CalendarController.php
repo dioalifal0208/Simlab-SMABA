@@ -25,9 +25,13 @@ class CalendarController extends Controller
 
         // 1. Ambil semua data booking yang sudah disetujui (approved)
         $labColors = [
-            'Biologi' => '#2563eb', // blue
-            'Fisika'  => '#16a34a', // green
-            'Bahasa'  => '#f59e0b', // amber
+            'Biologi'    => '#2563eb', // blue
+            'Fisika'     => '#16a34a', // green
+            'Bahasa'     => '#f59e0b', // amber
+            'Komputer 1' => '#7c3aed', // violet
+            'Komputer 2' => '#db2777', // pink
+            'Komputer 3' => '#0d9488', // teal
+            'Komputer 4' => '#ea580c', // orange
         ];
 
         $bookingsQuery = Booking::with('user')->where('status', 'approved');

@@ -65,11 +65,11 @@
                                     @csrf @method('PATCH')
                                     <h4 class="font-semibold text-gray-700 mb-2">Ubah Status Laporan</h4>
                                     <div class="flex items-center space-x-3">
-                                        <select name="status" id="status" class="flex-grow rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
+                                        <select name="status" id="status" class="flex-grow rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
                                             @if($report->status == 'Dilaporkan') <option value="Diverifikasi">Ubah ke: Diverifikasi</option> @endif
                                             <option value="Diperbaiki">Ubah ke: Selesai Diperbaiki</option>
                                         </select>
-                                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold text-sm shadow-sm transition-colors">Simpan</button>
+                                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-semibold text-sm shadow-sm transition-colors">Simpan</button>
                                     </div>
                                 </form>
                             @endif

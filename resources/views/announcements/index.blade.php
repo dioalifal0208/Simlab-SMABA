@@ -42,10 +42,10 @@
                         <div class="space-y-4">
                             <div>
                                 <label for="message" class="block font-medium text-sm text-gray-700">Isi Pengumuman</label>
-                                <textarea name="message" id="message" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>{{ old('message') }}</textarea>
+                                <textarea name="message" id="message" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>{{ old('message') }}</textarea>
                             </div>
                             <div class="flex justify-end">
-                                <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 font-semibold text-sm shadow-md transition-colors">
+                                <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-semibold text-sm shadow-sm transition-colors">
                                     Simpan & Publikasikan
                                 </button>
                             </div>
@@ -88,7 +88,7 @@
                                             <form action="{{ route('announcements.destroy', $announcement->id) }}" method="POST" class="delete-form">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="px-3 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 font-semibold text-xs shadow-sm transition-colors duration-300">
+                                                <button type="submit" class="px-3 py-1.5 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 font-semibold text-xs shadow-sm transition-colors duration-300">
                                                     Arsipkan
                                                 </button>
                                             </form>

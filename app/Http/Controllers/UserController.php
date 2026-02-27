@@ -30,7 +30,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', \Illuminate\Validation\Rule::unique('users')->ignore($user->id)],
             'role' => 'required|in:admin,guru',
-            'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa',
+            'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4',
         ]);
 
         $user->update($validated);
@@ -50,7 +50,7 @@ class UserController extends Controller
             'password' => 'required|string|min:8',
             'role' => 'required|in:admin,guru',
             // Laboratorium wajib jika role = guru, tapi opsional jika admin (bisa null)
-            'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa|required_if:role,guru',
+            'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4|required_if:role,guru',
         ], [
             'laboratorium.required_if' => 'Laboratorium wajib dipilih untuk peran Guru.',
         ]);

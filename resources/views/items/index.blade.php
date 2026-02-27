@@ -15,12 +15,12 @@
                     </button>
 
                     {{-- Tombol Tambah Item --}}
-                    <a href="{{ route('items.create') }}" class="inline-block px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-md hover:bg-green-500 shadow-sm transition-colors">
+                    <a href="{{ route('items.create') }}" class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 shadow-sm transition-colors">
                         + {{ __('items.actions.add') }}
                     </a>
                 @else
                     {{-- Guru/Staf: Ajukan penambahan item --}}
-                    <a href="{{ route('item-requests.create') }}" class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-md hover:bg-green-500 shadow-sm transition-colors">
+                    <a href="{{ route('item-requests.create') }}" class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 shadow-sm transition-colors">
                         <i class="fas fa-plus mr-2"></i> {{ __('items.actions.request_add') }}
                     </a>
                 @endcan
@@ -84,6 +84,10 @@
                                     <option value="Biologi" @selected(request('laboratorium', $lockedLab) == 'Biologi')>{{ __('common.labs.biologi') }}</option>
                                     <option value="Fisika" @selected(request('laboratorium', $lockedLab) == 'Fisika')>{{ __('common.labs.fisika') }}</option>
                                     <option value="Bahasa" @selected(request('laboratorium', $lockedLab) == 'Bahasa')>{{ __('common.labs.bahasa') }}</option>
+                                    <option value="Komputer 1" @selected(request('laboratorium', $lockedLab) == 'Komputer 1')>Lab Komputer 1</option>
+                                    <option value="Komputer 2" @selected(request('laboratorium', $lockedLab) == 'Komputer 2')>Lab Komputer 2</option>
+                                    <option value="Komputer 3" @selected(request('laboratorium', $lockedLab) == 'Komputer 3')>Lab Komputer 3</option>
+                                    <option value="Komputer 4" @selected(request('laboratorium', $lockedLab) == 'Komputer 4')>Lab Komputer 4</option>
                                 </select>
                                 @unless($isAdmin)
                                     <input type="hidden" name="laboratorium" value="{{ request('laboratorium', $lockedLab) }}">

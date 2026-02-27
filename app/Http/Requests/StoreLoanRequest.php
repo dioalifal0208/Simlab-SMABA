@@ -28,7 +28,7 @@ class StoreLoanRequest extends FormRequest
             'items' => 'required|array|min:1',
             'items.*' => 'exists:items,id',
             'jumlah.*' => 'nullable|integer|min:1',
-            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa',
+            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4',
             'catatan' => 'nullable|string|max:1000',
         ];
     }
@@ -58,7 +58,7 @@ class StoreLoanRequest extends FormRequest
             'jumlah.*.min' => 'Jumlah minimal :min.',
             
             'laboratorium.required' => 'Laboratorium wajib dipilih.',
-            'laboratorium.in' => 'Laboratorium harus berupa "Biologi", "Fisika", atau "Bahasa".',
+            'laboratorium.in' => 'Laboratorium harus berupa "Biologi", "Fisika", "Bahasa", atau "Komputer 1-4".',
             
             'catatan.max' => 'Catatan tidak boleh lebih dari :max karakter.',
         ];

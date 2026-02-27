@@ -32,7 +32,7 @@ class TestimonialController extends Controller
         $validated = $request->validateWithBag('testimonial', [
             'nama'         => 'required|string|max:100',
             'peran'        => 'nullable|string|max:50',
-            'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa',
+            'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4',
             'pesan'        => 'required|string|max:500',
         ]);
 

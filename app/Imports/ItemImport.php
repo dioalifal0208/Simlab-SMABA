@@ -46,6 +46,15 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
             $row['laboratorium'] = 'Fisika';
         } elseif (stripos($lab, 'Bahasa') !== false) {
             $row['laboratorium'] = 'Bahasa';
+        } elseif (preg_match('/komputer\s*4/i', $lab)) {
+            $row['laboratorium'] = 'Komputer 4';
+        } elseif (preg_match('/komputer\s*3/i', $lab)) {
+            $row['laboratorium'] = 'Komputer 3';
+        } elseif (preg_match('/komputer\s*2/i', $lab)) {
+            $row['laboratorium'] = 'Komputer 2';
+        } elseif (preg_match('/komputer/i', $lab)) {
+            // Default "Komputer" tanpa nomor → Komputer 1
+            $row['laboratorium'] = 'Komputer 1';
         } else {
             // Default sesuai user atau fallback ke Biologi
             $row['laboratorium'] = Auth::user()->laboratorium ?? 'Biologi';
@@ -126,7 +135,7 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
             'satuan' => 'required|string|max:50', // Sinkron dengan manual
             'kondisi' => 'required|in:baik,kurang baik,Rusak',
             'lokasi_penyimpanan' => 'required|string|max:255', // Sinkron dengan manual
-            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa', // Sinkron dengan manual
+            'laboratorium' => 'required|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4', // Sinkron dengan manual
             'stok_minimum' => 'nullable|integer|min:0',
             'deskripsi' => 'nullable|string',
         ];

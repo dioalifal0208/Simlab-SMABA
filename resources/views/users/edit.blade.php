@@ -37,19 +37,19 @@
                             {{-- Nama Pengguna --}}
                             <div>
                                 <label for="name" class="block font-medium text-sm text-gray-700">Nama Lengkap</label>
-                                <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
+                                <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
                             </div>
 
                             {{-- Alamat Email --}}
                             <div>
                                 <label for="email" class="block font-medium text-sm text-gray-700">Alamat Email</label>
-                                <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
+                                <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
                             </div>
 
                             {{-- Peran (Role) --}}
                             <div>
                                 <label for="role" class="block font-medium text-sm text-gray-700">Peran (Role)</label>
-                                <select name="role" id="role" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
+                                <select name="role" id="role" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
                                     <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
                                     <option value="guru" {{ old('role', $user->role) == 'guru' ? 'selected' : '' }}>Guru</option>
                                 </select>
@@ -58,19 +58,23 @@
                             {{-- Laboratorium (untuk Guru) --}}
                             <div>
                                 <label for="laboratorium" class="block font-medium text-sm text-gray-700">Laboratorium (khusus Guru)</label>
-                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                     <option value="">-- Pilih Lab --</option>
                                     <option value="Biologi" @selected(old('laboratorium', $user->laboratorium) === 'Biologi')>Biologi</option>
                                     <option value="Fisika" @selected(old('laboratorium', $user->laboratorium) === 'Fisika')>Fisika</option>
                                     <option value="Bahasa" @selected(old('laboratorium', $user->laboratorium) === 'Bahasa')>Bahasa</option>
+                                    <option value="Komputer 1" @selected(old('laboratorium', $user->laboratorium) === 'Komputer 1')>Komputer 1</option>
+                                    <option value="Komputer 2" @selected(old('laboratorium', $user->laboratorium) === 'Komputer 2')>Komputer 2</option>
+                                    <option value="Komputer 3" @selected(old('laboratorium', $user->laboratorium) === 'Komputer 3')>Komputer 3</option>
+                                    <option value="Komputer 4" @selected(old('laboratorium', $user->laboratorium) === 'Komputer 4')>Komputer 4</option>
                                 </select>
                                 <p class="text-xs text-gray-500 mt-1">Setelan ini membatasi tampilan inventaris & peminjaman guru ke lab terkait.</p>
                             </div>
                         </div>
 
                         <div class="mt-8 flex justify-end space-x-3">
-                            <a href="{{ route('users.index') }}" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 font-semibold text-sm transition-colors">Batal</a>
-                            <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 font-semibold text-sm shadow-md transition-colors">Simpan Perubahan</button>
+                            <a href="{{ route('users.index') }}" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold text-sm transition-colors">Batal</a>
+                            <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold text-sm shadow-sm transition-colors">Simpan Perubahan</button>
                         </div>
                     </form>
                 </div>
