@@ -1,41 +1,25 @@
 {{-- ================================================================
-     TOPBAR — fixed, full-width, h-14
+     TOPBAR — h-14, dimulai setelah sidebar di desktop
      ================================================================ --}}
-<div class="fixed top-0 left-0 right-0 h-14 bg-white border-b border-gray-200 z-40 flex items-center px-4 gap-3">
+<div class="fixed top-0 left-0 lg:left-[260px] right-0 h-14 bg-white border-b border-gray-200 z-30 flex items-center px-4 gap-3">
 
-    {{-- Mobile hamburger --}}
+    {{-- Mobile: hamburger --}}
     <button @click="sidebarOpen = !sidebarOpen"
-            class="lg:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+            class="lg:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors flex-shrink-0"
             aria-label="Toggle sidebar">
         <i class="fas fa-bars text-sm"></i>
     </button>
 
-    {{-- Desktop: collapse toggle --}}
-    <button @click="sidebarCollapsed = !sidebarCollapsed"
-            class="hidden lg:flex p-2 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
-            aria-label="Collapse sidebar">
-        <i class="fas fa-sidebar-flip text-sm" x-show="!sidebarCollapsed" style="display:none"></i>
-        <i class="fas fa-bars text-sm" x-show="sidebarCollapsed"></i>
-        <i class="fas fa-bars text-sm" x-show="!sidebarCollapsed"></i>
+    {{-- Search Bar — centered, clickable box --}}
+    <button id="global-search-trigger"
+            class="flex-1 max-w-sm mx-auto flex items-center gap-3 px-4 py-2 rounded-xl
+                   bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-gray-300
+                   text-left transition-all duration-150 group cursor-pointer"
+            title="Pencarian Global (Ctrl+K)">
+        <i class="fas fa-magnifying-glass text-gray-400 text-sm flex-shrink-0 group-hover:text-green-600 transition-colors"></i>
+        <span class="flex-1 text-sm text-gray-400 group-hover:text-gray-500 transition-colors">Cari alat, dokumen, fitur...</span>
+        <kbd class="hidden sm:inline-flex items-center gap-1 text-[10px] text-gray-400 bg-white border border-gray-200 rounded-md px-1.5 py-0.5 font-mono flex-shrink-0">Ctrl+K</kbd>
     </button>
-
-    {{-- App name (visible when sidebar collapsed on desktop) --}}
-    <span class="hidden font-bold text-green-700 text-sm" x-show="sidebarCollapsed" x-cloak>LAB SMABA</span>
-
-    {{-- Spacer --}}
-    <div class="flex-1"></div>
-
-    {{-- RIGHT: actions --}}
-    <div class="flex items-center gap-1">
-
-        {{-- Global Search Trigger --}}
-        <button id="global-search-trigger"
-                class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-gray-400 bg-gray-50 hover:bg-gray-100 border border-gray-200 transition-colors"
-                title="Pencarian Global (Ctrl+K)">
-            <i class="fas fa-magnifying-glass text-xs"></i>
-            <span class="hidden sm:inline text-xs text-gray-400">Cari...</span>
-            <kbd class="hidden md:inline text-[10px] bg-white border border-gray-200 rounded px-1.5 py-0.5 font-mono text-gray-400">Ctrl+K</kbd>
-        </button>
 
         {{-- Notifications --}}
         <div class="relative">
@@ -124,11 +108,11 @@
 </div>
 
 {{-- ================================================================
-     MOBILE BACKDROP
+     MOBILE BACKDROP — z-20 (di bawah sidebar z-40)
      ================================================================ --}}
 <div x-show="sidebarOpen"
      @click="sidebarOpen = false"
-     class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-30 lg:hidden"
+     class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-20 lg:hidden"
      style="display:none"
      x-transition:enter="transition-opacity ease-out duration-200"
      x-transition:enter-start="opacity-0"
