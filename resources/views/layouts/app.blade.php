@@ -19,19 +19,19 @@
         {{-- TAMBAHAN 1: Memuat style yang dibutuhkan oleh Livewire --}}
         @livewireStyles
 
-        {{-- Sidebar layout offset — tidak bergantung Tailwind JIT --}}
+        {{-- Sidebar layout offset — margin approach, lebih reliable dari padding --}}
         <style>
-            /* Sidebar width: 260px — offset untuk topbar dan main content */
+            /* Sidebar & Topbar offset via margin — tidak bergantung Tailwind */
             #main-wrapper {
-                padding-top: 56px; /* h-14 = 56px */
+                margin-top: 56px;   /* tinggi topbar h-14 = 56px */
+                min-height: calc(100vh - 56px);
             }
             @media (min-width: 1024px) {
                 #main-wrapper {
-                    padding-left: 260px;
+                    margin-left: 260px; /* lebar sidebar = 260px */
                 }
-                /* Saat sidebar collapsed */
                 body.sidebar-collapsed #main-wrapper {
-                    padding-left: 64px;
+                    margin-left: 64px;
                 }
             }
         </style>
@@ -56,13 +56,13 @@
           @modal-state-changed.window="isModalOpen = $event.detail.open"
           @show-toast.window="toast.visible = true; toast.message = $event.detail.message; toast.type = $event.detail.type; setTimeout(() => toast.visible = false, 3000)">
           
-        <div class="min-h-screen bg-gray-50 flex flex-col">
+        <div class="min-h-screen bg-gray-50">
             @unless($hideChrome)
                 @include('layouts.navigation')
             @endunless
 
-            {{-- MAIN WRAPPER: offset diatur via <style> di head, bukan Tailwind arbitrary --}}
-            <div id="main-wrapper" class="flex flex-col flex-grow transition-all duration-300">
+            {{-- MAIN WRAPPER: margin-top=56px (topbar), margin-left=260px lg (sidebar) via style tag --}}
+            <div id="main-wrapper" class="transition-all duration-300">
 
                 {{-- BANNER PENGUMUMAN GLOBAL --}}
                 @if(isset($activeAnnouncement))
