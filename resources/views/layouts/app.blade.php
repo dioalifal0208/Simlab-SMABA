@@ -44,12 +44,17 @@
         {{-- TAMBAHAN 1: Memuat style yang dibutuhkan oleh Livewire --}}
         @livewireStyles
 
-        {{-- Sidebar layout offset — margin approach, lebih reliable dari padding --}}
+        {{-- Sidebar layout offset — padding approach mencegah margin collapse --}}
         <style>
-            /* Sidebar & Topbar offset via margin — tidak bergantung Tailwind */
+            /*
+             * PENTING: Menggunakan padding-top bukan margin-top
+             * margin-top BISA COLLAPSE dengan parent element yang tidak punya
+             * padding/border (menyebabkan konten terdorong jauh ke bawah).
+             * padding-top TIDAK PERNAH collapse.
+             */
             #main-wrapper {
-                margin-top: 56px;   /* tinggi topbar h-14 = 56px */
-                min-height: calc(100vh - 56px);
+                padding-top: 56px;  /* tinggi topbar h-14 = 56px */
+                min-height: 100vh;
             }
             @media (min-width: 1024px) {
                 #main-wrapper {
