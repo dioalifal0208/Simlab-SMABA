@@ -108,7 +108,7 @@
             @endunless
 
             {{-- MAIN WRAPPER: position:fixed, left mengikuti sidebar width --}}
-            <div id="main-wrapper" class="transition-all duration-300"
+            <div id="main-wrapper" class="transition-all duration-300 flex flex-col min-h-full"
                  :style="window.innerWidth >= 1024 ? 'left:' + (sidebarCollapsed ? '64px' : '260px') : ''">
 
                 {{-- BANNER PENGUMUMAN GLOBAL --}}
