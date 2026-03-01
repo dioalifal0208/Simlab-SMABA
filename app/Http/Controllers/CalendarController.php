@@ -28,15 +28,19 @@ class CalendarController extends Controller
 
         // 1. Definisikan Warna Laboratorium
         $labColors = [
-            'Biologi'    => '#2563eb', // blue
-            'Fisika'     => '#16a34a', // green
-            'Bahasa'     => '#f59e0b', // amber
-            'Komputer 1' => '#7c3aed', // violet
-            'Komputer 2' => '#db2777', // pink
-            'Komputer 3' => '#0d9488', // teal
-            'Komputer 4' => '#ea580c', // orange
-            'Komputer'   => '#7c3aed',
-            'Lab Komputer' => '#7c3aed',
+            'Biologi'        => '#2563eb', // blue
+            'Fisika'         => '#16a34a', // green
+            'Bahasa'         => '#f59e0b', // amber
+            'Komputer 1'     => '#7c3aed', // violet
+            'Komputer 2'     => '#db2777', // pink
+            'Komputer 3'     => '#0d9488', // teal
+            'Komputer 4'     => '#ea580c', // orange
+            'Lab Komputer 1' => '#7c3aed',
+            'Lab Komputer 2' => '#db2777',
+            'Lab Komputer 3' => '#0d9488',
+            'Lab Komputer 4' => '#ea580c',
+            'Komputer'       => '#7c3aed',
+            'Lab Komputer'   => '#7c3aed',
         ];
 
         // 2. AMBIL JADWAL LAB & LOANS (Jika type bukan 'holiday')

@@ -48,10 +48,10 @@
                         <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#2563eb] border border-blue-600 flex-shrink-0"></span>Biologi</span>
                         <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#16a34a] border border-green-700 flex-shrink-0"></span>Fisika</span>
                         <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#f59e0b] border border-amber-600 flex-shrink-0"></span>Bahasa</span>
-                        <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#7c3aed] border border-violet-700 flex-shrink-0"></span>Komputer 1</span>
-                        <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#db2777] border border-pink-700 flex-shrink-0"></span>Komputer 2</span>
-                        <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#0d9488] border border-teal-700 flex-shrink-0"></span>Komputer 3</span>
-                        <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#ea580c] border border-orange-700 flex-shrink-0"></span>Komputer 4</span>
+                        <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#7c3aed] border border-violet-700 flex-shrink-0"></span>Lab Komputer 1</span>
+                        <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#db2777] border border-pink-700 flex-shrink-0"></span>Lab Komputer 2</span>
+                        <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#0d9488] border border-teal-700 flex-shrink-0"></span>Lab Komputer 3</span>
+                        <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-[#ea580c] border border-orange-700 flex-shrink-0"></span>Lab Komputer 4</span>
                         <span class="inline-flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-red-500 border border-red-700 flex-shrink-0"></span>{{ __('calendar.legend.national_holiday') }}</span>
                     </div>
                 </div>

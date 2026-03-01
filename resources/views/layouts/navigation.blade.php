@@ -2,7 +2,7 @@
      TOPBAR — h-14, dimulai setelah sidebar di desktop
      ================================================================ --}}
 <div id="top-navbar"
-     class="fixed top-0 right-0 h-14 bg-white border-b border-gray-200 z-30 flex items-center px-4 lg:px-6 gap-3"
+     class="fixed top-0 right-0 h-14 bg-white border-b border-gray-200 z-50 flex items-center px-4 lg:px-6 gap-3"
      :style="'left:' + (window.innerWidth >= 1024 ? (sidebarCollapsed ? '64px' : '260px') : '0') ">
 
     {{-- Mobile: hamburger --}}
@@ -27,11 +27,11 @@
     <div class="flex items-center gap-1">
 
         {{-- Tour Panduan --}}
-        <button id="topbar-tour-button"
-                class="p-2.5 text-gray-400 hover:text-green-600 hover:bg-gray-100 rounded-lg transition-colors"
-                title="Tour Panduan"
-                onclick="document.getElementById('navbar-tour-button')?.click()">
+        <button id="navbar-tour-button"
+                class="flex items-center gap-2 px-3 py-1.5 text-gray-500 hover:text-green-600 hover:bg-gray-100 rounded-lg transition-all border border-transparent hover:border-gray-200"
+                title="Tour Panduan">
             <i class="fas fa-compass text-sm"></i>
+            <span class="text-xs font-semibold hidden md:block">Panduan</span>
         </button>
 
         {{-- Notifications --}}
@@ -206,11 +206,7 @@
                     <span class="sidebar-active-dot"></span>
                 @endif
             </a>
-            <button id="navbar-tour-button" title="Tour Panduan"
-                    class="sidebar-item group text-gray-600 hover:bg-gray-50 hover:text-gray-900 w-full text-left">
-                <i class="fas fa-compass sidebar-icon text-gray-400 group-hover:text-gray-600"></i>
-                <span class="sidebar-label">Tour Panduan</span>
-            </button>
+            {{-- Tour button moved to topbar --}}
         </div>
 
         {{-- === INVENTARIS === --}}

@@ -108,7 +108,7 @@
             @endunless
 
             {{-- MAIN WRAPPER: position:fixed, left mengikuti sidebar width --}}
-            <div id="main-wrapper" class="transition-all duration-300 flex flex-col min-h-full"
+            <div id="main-wrapper" class="transition-all duration-300 flex flex-col"
                  :style="window.innerWidth >= 1024 ? 'left:' + (sidebarCollapsed ? '64px' : '260px') : ''">
 
                 {{-- BANNER PENGUMUMAN GLOBAL --}}
@@ -170,7 +170,7 @@
              x-transition:leave="transition ease-in duration-200"
              x-transition:leave-start="opacity-100 translate-y-0"
              x-transition:leave-end="opacity-0 translate-y-2"
-             class="fixed top-4 right-4 z-50 max-w-sm w-full"
+             class="fixed top-4 right-4 z-[60] max-w-sm w-full"
              style="display: none;">
             <div :class="{
                 'bg-green-50 border-green-200 text-green-800': toast.type === 'success',
