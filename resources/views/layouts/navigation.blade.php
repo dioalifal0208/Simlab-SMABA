@@ -40,7 +40,7 @@
                 <x-slot name="trigger">
                     <button id="notification-bell"
                             data-unread="{{ $unreadCount ?? 0 }}"
-                            class="relative p-2.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                            class="relative p-3 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                             title="{{ __('common.nav.notifications') }}">
                         <i class="fas fa-bell text-sm"></i>
                         @if(($unreadCount ?? 0) > 0)

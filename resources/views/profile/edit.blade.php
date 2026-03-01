@@ -17,10 +17,10 @@
 
     <div class="py-10">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
-            <div class="bg-gradient-to-r from-indigo-600 to-indigo-500 text-white rounded-2xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-once="true">
+            <div class="bg-gradient-to-r from-smaba-dark-green to-smaba-light-green text-white rounded-2xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-once="true">
                 <div class="p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                     <div class="flex items-center gap-4">
-                        <div class="h-14 w-14 rounded-full bg-white/20 flex items-center justify-center text-2xl font-bold">
+                        <div class="h-14 w-14 rounded-full bg-white/20 flex items-center justify-center text-2xl font-bold text-white">
                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                         </div>
                         <div>
