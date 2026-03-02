@@ -34,6 +34,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/lang/{locale}', [\App\Http\Controllers\LanguageController::class, 'switch'])->name('lang.switch');
 Route::get('/test-lang', function() { return view('test-lang'); });
 
+use App\Models\Item;
+use App\Models\User;
+use App\Models\Loan;
+
 // Halaman Landing Page
 Route::get('/', function () {
     $testimonials = Testimonial::where('status', 'approved')
@@ -48,7 +52,12 @@ Route::get('/', function () {
         ->take(5)
         ->get();
 
-    return view('welcome', compact('testimonials', 'todayBookings'));
+    // Stats Dynamic
+    $inventoryCount = Item::sum('stok');
+    $teacherCount = User::where('role', 'guru')->count();
+    $activityCount = Booking::count() + Loan::count();
+
+    return view('welcome', compact('testimonials', 'todayBookings', 'inventoryCount', 'teacherCount', 'activityCount'));
 })->middleware('no.cache')->name('welcome');
 
 

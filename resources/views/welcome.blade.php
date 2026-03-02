@@ -127,16 +127,16 @@
                     {{-- STATS GRID (CLEAN) --}}
                     <div class="grid grid-cols-3 gap-8 pt-8 border-t border-gray-100">
                         <div>
-                            <div class="text-2xl font-bold text-gray-900">500+</div>
+                            <div class="text-2xl font-bold text-gray-900">{{ number_format($inventoryCount) }}+</div>
                             <div class="text-sm text-gray-500 font-medium">{{ __('welcome.stats.items') }}</div>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold text-gray-900">50+</div>
+                            <div class="text-2xl font-bold text-gray-900">{{ number_format($teacherCount) }}+</div>
                             <div class="text-sm text-gray-500 font-medium">{{ __('welcome.stats.teachers') }}</div>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold text-gray-900">100%</div>
-                            <div class="text-sm text-gray-500 font-medium">{{ __('welcome.stats.transparent') }}</div>
+                            <div class="text-2xl font-bold text-gray-900">{{ number_format($activityCount) }}+</div>
+                            <div class="text-sm text-gray-500 font-medium">{{ __('welcome.stats.activity') }}</div>
                         </div>
                     </div>
                 </div>
