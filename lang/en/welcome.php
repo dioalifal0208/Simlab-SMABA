@@ -41,6 +41,14 @@ return [
             'title' => 'Reports & Analytics',
             'desc' => 'Monitor laboratory activity trends and download automated report summaries in Excel format.',
         ],
+        'security' => [
+            'title' => 'Advanced Security',
+            'desc' => 'Protect accounts with Two-Factor Authentication (2FA) and an automatic Auto-Lock Screen system.',
+        ],
+        'search' => [
+            'title' => 'Smart Search',
+            'desc' => 'Instantly find tools, materials, or practicum documents with the global search feature.',
+        ],
     ],
     'workflow' => [
         'title' => 'Digital Laboratory Workflow',
@@ -179,6 +187,22 @@ return [
             'lab_biologi' => 'Biology Lab',
             'lab_kimia' => 'Chemistry Lab',
             'lab_komputer' => 'Computer Lab',
+        ],
+        'security' => [
+            'title' => 'Advanced Security (2FA)',
+            'step1_title' => 'Secure Login',
+            'step1_desc' => 'Enter email and password as usual.',
+            'step2_title' => 'Main Verification',
+            'step2_desc' => 'Enter the 6-digit code from your Google Authenticator app.',
+            'step3_title' => 'Guaranteed Access',
+            'step3_desc' => 'Account protected from unauthorized access even if password is known by others.',
+        ],
+        'search' => [
+            'title' => 'Global Search',
+            'placeholder' => 'Search tools, teachers, or documents...',
+            'quick_result' => 'Quick Results',
+            'item_example' => 'Binocular Microscope',
+            'doc_example' => 'Safety Work Guide',
         ],
         'footer_cta' => 'Try Direct on Dashboard',
     ],

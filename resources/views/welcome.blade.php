@@ -294,6 +294,34 @@
                             </button>
                         </div>
                     </div>
+
+                    {{-- Feature 7: Security (2FA) --}}
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300 flex flex-col h-full" data-aos="fade-up" data-aos-delay="600">
+                        <div class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center mb-6 text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all duration-300 shrink-0">
+                            <i class="fas fa-shield-halved text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.security.title') }}</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.security.desc') }}</p>
+                        <div class="mt-auto">
+                            <button @click="showFeatureModal = true; activeFeature = 'security'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                                {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    {{-- Feature 8: Search --}}
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300 flex flex-col h-full" data-aos="fade-up" data-aos-delay="700">
+                        <div class="w-14 h-14 bg-sky-50 rounded-xl flex items-center justify-center mb-6 text-sky-600 group-hover:bg-sky-600 group-hover:text-white transition-all duration-300 shrink-0">
+                            <i class="fas fa-magnifying-glass text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.search.title') }}</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.search.desc') }}</p>
+                        <div class="mt-auto">
+                            <button @click="showFeatureModal = true; activeFeature = 'search'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                                {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -916,7 +944,7 @@
                         </div>
                     </div>
 
-                    {{-- 6. EXCEL/REPORT UI MOCKUP --}}
+                     {{-- 6. EXCEL/REPORT UI MOCKUP --}}
                     <div x-show="activeFeature === 'report'" class="w-full max-w-3xl flex flex-col md:flex-row gap-6">
                          <div class="flex-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center text-center space-y-4">
                              <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-2">
@@ -947,6 +975,70 @@
                                  </div>
                              </div>
                          </div>
+                    </div>
+
+                    {{-- 7. SECURITY (2FA) UI MOCKUP --}}
+                    <div x-show="activeFeature === 'security'" class="w-full max-w-lg bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                        <div class="bg-red-600 p-4 text-white flex items-center justify-between">
+                            <span class="text-sm font-bold uppercase tracking-wider">{{ __('welcome.spotlight.security.title') }}</span>
+                            <i class="fas fa-shield-halved"></i>
+                        </div>
+                        <div class="p-8 space-y-6">
+                            <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-500">1</div>
+                                <div>
+                                    <p class="font-bold text-gray-900">{{ __('welcome.spotlight.security.step1_title') }}</p>
+                                    <p class="text-xs text-gray-500">{{ __('welcome.spotlight.security.step1_desc') }}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4 p-4 bg-red-50 rounded-xl border border-red-100 animate-pulse">
+                                <div class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center font-bold text-white">2</div>
+                                <div>
+                                    <p class="font-bold text-red-900">{{ __('welcome.spotlight.security.step2_title') }}</p>
+                                    <p class="text-xs text-red-600">{{ __('welcome.spotlight.security.step2_desc') }}</p>
+                                </div>
+                            </div>
+                             <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200 opacity-50">
+                                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-500">3</div>
+                                <div>
+                                    <p class="font-bold text-gray-900">{{ __('welcome.spotlight.security.step3_title') }}</p>
+                                    <p class="text-xs text-gray-500">{{ __('welcome.spotlight.security.step3_desc') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- 8. GLOBAL SEARCH UI MOCKUP --}}
+                    <div x-show="activeFeature === 'search'" class="w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+                        <div class="p-6 border-b border-gray-100 bg-gray-50">
+                            <div class="relative">
+                                <i class="fas fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                <div class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-400 animate-pulse">
+                                    {{ __('welcome.spotlight.search.placeholder') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <h5 class="text-xs font-bold text-gray-400 uppercase tracking-widest">{{ __('welcome.spotlight.search.quick_result') }}</h5>
+                            <div class="flex items-center gap-4 p-3 hover:bg-sky-50 rounded-xl transition-colors cursor-pointer group">
+                                <div class="w-10 h-10 bg-sky-100 text-sky-600 rounded-lg flex items-center justify-center group-hover:bg-sky-600 group-hover:text-white">
+                                    <i class="fas fa-box"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-gray-900">{{ __('welcome.spotlight.search.item_example') }}</p>
+                                    <p class="text-xs text-gray-500">ID: #M-001 • Lab Biologi</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 p-3 hover:bg-purple-50 rounded-xl transition-colors cursor-pointer group">
+                                <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-gray-900">{{ __('welcome.spotlight.search.doc_example') }}</p>
+                                    <p class="text-xs text-gray-500">PDF • 2.4 MB • Pustaka Digital</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>

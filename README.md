@@ -23,30 +23,34 @@
 
 ## ✨ Fitur Unggulan
 
-### 1. 🛡️ Keamanan Berlapis (Security First)
-- **Two-Factor Authentication (2FA)**: Proteksi akun tambahan menggunakan Google Authenticator.
+### 1. 🛡️ Keamanan Tingkat Lanjut (Security First)
+- **Two-Factor Authentication (2FA)**: Proteksi akun tambahan menggunakan Google Authenticator (Wajib diaktifkan).
 - **Dynamic Lock Screen**: Penguncian layar otomatis saat sesi tidak aktif dengan efek blur untuk privasi data.
-- **Audit Trails**: Pencatatan setiap aktivitas penting dalam sistem untuk transparansi penuh.
+- **Audit Trails**: Pencatatan setiap aktivitas penting dalam sistem (Create, Update, Delete) untuk transparansi penuh.
 
-### 2. 🗓️ Penjadwalan & Peminjaman Cerdas
+### 2. 🔍 Pencarian Global Cerdas
+- **Instant Search**: Navigasi cepat ke instrumen, guru, atau dokumen hanya dengan mengetik di bilah pencarian global.
+- **Contextual Results**: Hasil pencarian yang relevan berdasarkan kategori data.
+
+### 3. 🗓️ Penjadwalan & Peminjaman Cerdas
 - **Kalender Interaktif**: Visualisasi jadwal laboratorium yang transparan untuk mencegah konflik penggunaan.
 - **Workflow Persetujuan Digital**: Alur kerja dari pengajuan oleh guru hingga persetujuan Kepala Lab yang sepenuhnya paperless.
 - **Validasi QR Code**: Setiap surat peminjaman dilengkapi dengan QR Code unik yang dapat divalidasi secara publik.
 
-### 3. 📦 Manajemen Aset Terintegrasi
+### 4. 📦 Manajemen Aset Terintegrasi
 - **Inventaris Digital**: Database terpusat untuk alat dan bahan dengan pelacakan stok real-time.
 - **Laporan Kerusakan**: Sistem pelaporan masalah alat yang terintegrasi untuk mempercepat proses pemeliharaan.
 - **Maintenance Log**: Riwayat pemeliharaan alat untuk menjaga kualitas aset sekolah.
 
-### 4. 📚 Pustaka & Pusat Pengetahuan
+### 5. 📚 Pustaka & Pusat Pengetahuan
 - **Modul Praktikum Digital**: Penyimpanan terpusat untuk modul, panduan praktikum, dan SOP laboratorium.
 - **Multi-Format Support**: Mendukung dokumen PDF, Word, dan Excel dengan akses yang mudah bagi guru dan siswa.
 
-### 5. 📊 Analitik & Reporting Otomatis
+### 6. 📊 Analitik & Reporting Otomatis
 - **Real-time Landing Stats**: Statistik jumlah alat, guru, dan aktivitas yang diambil langsung dari database.
 - **One-Click Export**: Menghasilkan laporan penggunaan lab dan peminjaman alat dalam format Excel (.xlsx) secara instan.
 
-### 6. 🌐 Pengalaman Pengguna Premium
+### 7. 🌐 Pengalaman Pengguna Premium
 - **Interactive Product Tour**: Panduan visual 6 langkah untuk membantu pengguna baru memahami alur aplikasi.
 - **Bilingual Support**: Dukungan penuh bahasa Indonesia dan Inggris (Full I18n).
 - **Modern Responsive UI**: Desain yang bersih, profesional, dan dioptimalkan untuk berbagai perangkat.

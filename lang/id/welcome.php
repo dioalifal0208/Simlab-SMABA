@@ -41,6 +41,14 @@ return [
             'title' => 'Laporan & Analitik',
             'desc' => 'Pantau tren aktivitas laboratorium dan unduh rekapitulasi laporan otomatis format Excel.',
         ],
+        'security' => [
+            'title' => 'Keamanan Tingkat Lanjut',
+            'desc' => 'Proteksi akun dengan Two-Factor Authentication (2FA) dan sistem Auto-Lock Screen otomatis.',
+        ],
+        'search' => [
+            'title' => 'Pencarian Cerdas',
+            'desc' => 'Temukan alat, bahan, atau dokumen praktikum secara instan dengan fitur pencarian global.',
+        ],
     ],
     'workflow' => [
         'title' => 'Digitalisasi Alur Kerja Lab',
@@ -179,6 +187,22 @@ return [
             'lab_biologi' => 'Lab Biologi',
             'lab_kimia' => 'Lab Kimia',
             'lab_komputer' => 'Lab Komputer',
+        ],
+        'security' => [
+            'title' => 'Keamanan Tingkat Lanjut (2FA)',
+            'step1_title' => 'Login Aman',
+            'step1_desc' => 'Masukkan email dan password seperti biasa.',
+            'step2_title' => 'Verifikasi Utama',
+            'step2_desc' => 'Masukkan kode 6-digit dari aplikasi Google Authenticator Anda.',
+            'step3_title' => 'Akses Terjamin',
+            'step3_desc' => 'Akun terlindungi dari akses tidak sah meskipun password diketahui orang lain.',
+        ],
+        'search' => [
+            'title' => 'Pencarian Global',
+            'placeholder' => 'Cari alat, guru, atau dokumen...',
+            'quick_result' => 'Hasil Cepat',
+            'item_example' => 'Mikroskop Binokuler',
+            'doc_example' => 'Panduan Keselamatan Kerja',
         ],
         'footer_cta' => 'Coba Langsung di Dashboard',
     ],
