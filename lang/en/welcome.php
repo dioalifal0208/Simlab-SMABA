@@ -83,6 +83,7 @@ return [
         'multi_device' => 'Multi-Device Access (Mobile/Laptop)',
         'paperless' => 'Paperless & Eco-Friendly',
         'privacy' => 'Privacy Security (Auto-Lock)',
+        'two_factor' => 'Account Security (2FA)',
     ],
     'cta_bottom' => [
         'title' => 'Ready to Digitalize Your Lab?',

@@ -83,6 +83,7 @@ return [
         'multi_device' => 'Akses Multi-Device (HP/Laptop)',
         'paperless' => 'Paperless & Hemat Kertas',
         'privacy' => 'Keamanan Privasi (Auto-Lock)',
+        'two_factor' => 'Keamanan Akun (2FA)',
     ],
     'cta_bottom' => [
         'title' => 'Siap Digitalisasi Lab Anda?',

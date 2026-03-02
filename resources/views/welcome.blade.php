@@ -331,6 +331,10 @@
                                 <i class="fas fa-shield-alt text-gray-500 w-5 text-center"></i>
                                 <span class="text-sm font-medium text-gray-600">{{ __('welcome.benefits.privacy') }}</span>
                             </div>
+                            <div class="flex items-center gap-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+                                <i class="fas fa-key text-blue-600 w-5 text-center"></i>
+                                <span class="text-sm font-medium text-blue-900">{{ __('welcome.benefits.two_factor') }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
