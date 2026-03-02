@@ -198,25 +198,24 @@
 
         {{-- === UTAMA === --}}
         <div class="sidebar-section">
-            <p class="sidebar-section-label">Utama</p>
-            <a href="{{ route('dashboard') }}" title="Dashboard" class="sidebar-item group {{ $active('dashboard') }}">
+            <p class="sidebar-section-label" data-aos="fade-right" data-aos-delay="100">Utama</p>
+            <a href="{{ route('dashboard') }}" title="Dashboard" class="sidebar-item group {{ $active('dashboard') }}" data-aos="fade-right" data-aos-delay="150">
                 <i class="fas fa-gauge-high sidebar-icon {{ $activeIcon('dashboard') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.dashboard') }}</span>
                 @if(request()->routeIs('dashboard'))
                     <span class="sidebar-active-dot"></span>
                 @endif
             </a>
-            {{-- Tour button moved to topbar --}}
         </div>
 
         {{-- === INVENTARIS === --}}
         <div class="sidebar-section">
-            <p class="sidebar-section-label">Inventaris</p>
-            <a href="{{ route('items.index') }}" title="Inventaris" class="sidebar-item group {{ $active('items.*') }}">
+            <p class="sidebar-section-label" data-aos="fade-right" data-aos-delay="200">Inventaris</p>
+            <a href="{{ route('items.index') }}" title="Inventaris" class="sidebar-item group {{ $active('items.*') }}" data-aos="fade-right" data-aos-delay="250">
                 <i class="fas fa-boxes-stacked sidebar-icon {{ $activeIcon('items.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.inventory') }}</span>
             </a>
-            <a href="{{ route('calendar.index') }}" title="Kalender" class="sidebar-item group {{ $active('calendar.index') }}">
+            <a href="{{ route('calendar.index') }}" title="Kalender" class="sidebar-item group {{ $active('calendar.index') }}" data-aos="fade-right" data-aos-delay="300">
                 <i class="fas fa-calendar-days sidebar-icon {{ $activeIcon('calendar.index') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.calendar') }}</span>
             </a>
@@ -224,23 +223,23 @@
 
         {{-- === LAYANAN LAB === --}}
         <div class="sidebar-section">
-            <p class="sidebar-section-label">Layanan Lab</p>
-            <a href="{{ route('bookings.index') }}" title="Booking Lab" class="sidebar-item group {{ $active('bookings.*') }}">
+            <p class="sidebar-section-label" data-aos="fade-right" data-aos-delay="350">Layanan Lab</p>
+            <a href="{{ route('bookings.index') }}" title="Booking Lab" class="sidebar-item group {{ $active('bookings.*') }}" data-aos="fade-right" data-aos-delay="400">
                 <i class="fas fa-calendar-check sidebar-icon {{ $activeIcon('bookings.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.bookings') }}</span>
             </a>
-            <a href="{{ route('loans.index') }}" title="Peminjaman" class="sidebar-item group {{ $active('loans.*') }}">
+            <a href="{{ route('loans.index') }}" title="Peminjaman" class="sidebar-item group {{ $active('loans.*') }}" data-aos="fade-right" data-aos-delay="450">
                 <i class="fas fa-hand-holding sidebar-icon {{ $activeIcon('loans.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.loans') }}</span>
             </a>
             @if($isGuru)
-                <a href="{{ route('item-requests.create') }}" class="sidebar-item group {{ $active('item-requests.create') }}">
+                <a href="{{ route('item-requests.create') }}" class="sidebar-item group {{ $active('item-requests.create') }}" data-aos="fade-right" data-aos-delay="500">
                     <i class="fas fa-paper-plane sidebar-icon {{ $activeIcon('item-requests.create') }}"></i>
                     <span class="sidebar-label">{{ __('common.nav.item_requests') }}</span>
                 </a>
             @endif
             @if($isAdmin)
-                <a href="{{ route('admin.testimonials.index') }}" class="sidebar-item group {{ $active('admin.testimonials.*') }}">
+                <a href="{{ route('admin.testimonials.index') }}" class="sidebar-item group {{ $active('admin.testimonials.*') }}" data-aos="fade-right" data-aos-delay="500">
                     <i class="fas fa-star sidebar-icon {{ $activeIcon('admin.testimonials.*') }}"></i>
                     <span class="sidebar-label">{{ __('common.nav.testimonials') }}</span>
                 </a>
@@ -249,12 +248,12 @@
 
         {{-- === SUMBER DAYA === --}}
         <div class="sidebar-section">
-            <p class="sidebar-section-label">Sumber Daya</p>
-            <a href="{{ route('documents.index') }}" title="Pustaka Digital" class="sidebar-item group {{ $active('documents.*') }}">
+            <p class="sidebar-section-label" data-aos="fade-right" data-aos-delay="550">Sumber Daya</p>
+            <a href="{{ route('documents.index') }}" title="Pustaka Digital" class="sidebar-item group {{ $active('documents.*') }}" data-aos="fade-right" data-aos-delay="600">
                 <i class="fas fa-file-lines sidebar-icon {{ $activeIcon('documents.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.documents') }}</span>
             </a>
-            <a href="{{ route('practicum-modules.index') }}" title="Modul Praktikum" class="sidebar-item group {{ $active('practicum-modules.*') }}">
+            <a href="{{ route('practicum-modules.index') }}" title="Modul Praktikum" class="sidebar-item group {{ $active('practicum-modules.*') }}" data-aos="fade-right" data-aos-delay="650">
                 <i class="fas fa-flask sidebar-icon {{ $activeIcon('practicum-modules.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.practicum_modules') }}</span>
             </a>
@@ -263,32 +262,32 @@
         {{-- === MANAJEMEN (admin only) === --}}
         @if($isAdmin)
         <div class="sidebar-section">
-            <p class="sidebar-section-label">Manajemen</p>
-            <a href="{{ route('users.index') }}" title="Manajemen User" class="sidebar-item group {{ $active('users.*') }}">
+            <p class="sidebar-section-label" data-aos="fade-right" data-aos-delay="700">Manajemen</p>
+            <a href="{{ route('users.index') }}" title="Manajemen User" class="sidebar-item group {{ $active('users.*') }}" data-aos="fade-right" data-aos-delay="750">
                 <i class="fas fa-users-gear sidebar-icon {{ $activeIcon('users.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.users') }}</span>
             </a>
-            <a href="{{ route('admin.item-requests.index') }}" title="Permintaan Item" class="sidebar-item group {{ $active('admin.item-requests.*') }}">
+            <a href="{{ route('admin.item-requests.index') }}" title="Permintaan Item" class="sidebar-item group {{ $active('admin.item-requests.*') }}" data-aos="fade-right" data-aos-delay="800">
                 <i class="fas fa-inbox sidebar-icon {{ $activeIcon('admin.item-requests.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.item_requests') }}</span>
             </a>
-            <a href="{{ route('reports.index') }}" title="Laporan" class="sidebar-item group {{ $active('reports.*') }}">
+            <a href="{{ route('reports.index') }}" title="Laporan" class="sidebar-item group {{ $active('reports.*') }}" data-aos="fade-right" data-aos-delay="850">
                 <i class="fas fa-chart-bar sidebar-icon {{ $activeIcon('reports.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.reports') }}</span>
             </a>
-            <a href="{{ route('damage-reports.index') }}" title="Laporan Kerusakan" class="sidebar-item group {{ $active('damage-reports.*') }}">
+            <a href="{{ route('damage-reports.index') }}" title="Laporan Kerusakan" class="sidebar-item group {{ $active('damage-reports.*') }}" data-aos="fade-right" data-aos-delay="900">
                 <i class="fas fa-triangle-exclamation sidebar-icon {{ $activeIcon('damage-reports.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.damage_reports') }}</span>
             </a>
-            <a href="{{ route('announcements.index') }}" title="Pengumuman" class="sidebar-item group {{ $active('announcements.index') }}">
+            <a href="{{ route('announcements.index') }}" title="Pengumuman" class="sidebar-item group {{ $active('announcements.index') }}" data-aos="fade-right" data-aos-delay="950">
                 <i class="fas fa-bullhorn sidebar-icon {{ $activeIcon('announcements.index') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.announcements') }}</span>
             </a>
-            <a href="{{ route('admin.contact-conversations.index') }}" title="Pesan" class="sidebar-item group {{ $active('admin.contact-conversations.*') }}">
+            <a href="{{ route('admin.contact-conversations.index') }}" title="Pesan" class="sidebar-item group {{ $active('admin.contact-conversations.*') }}" data-aos="fade-right" data-aos-delay="1000">
                 <i class="fas fa-envelope sidebar-icon {{ $activeIcon('admin.contact-conversations.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.messages') }}</span>
             </a>
-            <a href="{{ route('audit-logs.index') }}" title="Audit Log" class="sidebar-item group {{ $active('audit-logs.*') }}">
+            <a href="{{ route('audit-logs.index') }}" title="Audit Log" class="sidebar-item group {{ $active('audit-logs.*') }}" data-aos="fade-right" data-aos-delay="1050">
                 <i class="fas fa-shield-halved sidebar-icon {{ $activeIcon('audit-logs.*') }}"></i>
                 <span class="sidebar-label">{{ __('common.nav.audit_logs') }}</span>
             </a>

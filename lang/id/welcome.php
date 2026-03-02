@@ -21,17 +21,25 @@ return [
             'title' => 'Inventaris Digital',
             'desc' => 'Database terpusat untuk semua alat dan bahan. Lacak kondisi dan lokasi dengan mudah.',
         ],
+        'booking' => [
+            'title' => 'Peminjaman Ruang & Alat',
+            'desc' => 'Booking laboratorium dan alat praktikum secara realtime tanpa birokrasi rumit.',
+        ],
         'validation' => [
             'title' => 'Validasi Digital (QR)',
-            'desc' => 'Surat peminjaman dilengkapi QR Code unik yang terverifikasi. Cek keaslian dokumen tanpa login.',
+            'desc' => 'Surat peminjaman dilengkapi QR Code unik yang terverifikasi untuk keamanan dokumen.',
         ],
         'calendar' => [
             'title' => 'Kalender Cerdas',
-            'desc' => 'Cegah bentrok jadwal antar guru mata pelajaran Fisika, Biologi, dan Bahasa.',
+            'desc' => 'Cegah bentrok jadwal antar guru dengan kalender penjadwalan lab yang transparan.',
+        ],
+        'resources' => [
+            'title' => 'Pustaka & Modul',
+            'desc' => 'Akses dokumen pedoman, modul praktikum, dan materi digital dalam satu tempat.',
         ],
         'report' => [
-            'title' => 'Laporan & Export Excel',
-            'desc' => 'Pantau tren peminjaman dan download rekapitulasi laporan bulanan dalam format Excel otomatis.',
+            'title' => 'Laporan & Analitik',
+            'desc' => 'Pantau tren aktivitas laboratorium dan unduh rekapitulasi laporan otomatis format Excel.',
         ],
     ],
     'workflow' => [

@@ -21,17 +21,25 @@ return [
             'title' => 'Digital Inventory',
             'desc' => 'Centralized database for all tools and materials. Track condition and location easily.',
         ],
+        'booking' => [
+            'title' => 'Lab & Item Booking',
+            'desc' => 'Book laboratories and practicum equipment in realtime without complex bureaucracy.',
+        ],
         'validation' => [
             'title' => 'Digital Validation (QR)',
-            'desc' => 'Loan documents equipped with verified unique QR Codes. Check authenticity without login.',
+            'desc' => 'Loan documents equipped with verified unique QR Codes for document security.',
         ],
         'calendar' => [
             'title' => 'Smart Calendar',
-            'desc' => 'Prevent schedule conflicts between Physics, Biology, and Language subject teachers.',
+            'desc' => 'Prevent schedule conflicts between teachers with a transparent lab scheduling calendar.',
+        ],
+        'resources' => [
+            'title' => 'Digital Library & Modules',
+            'desc' => 'Access guidance documents, practicum modules, and digital materials in one place.',
         ],
         'report' => [
-            'title' => 'Reports & Excel Export',
-            'desc' => 'Monitor loan trends and download automated monthly report summaries in Excel format.',
+            'title' => 'Reports & Analytics',
+            'desc' => 'Monitor laboratory activity trends and download automated report summaries in Excel format.',
         ],
     ],
     'workflow' => [

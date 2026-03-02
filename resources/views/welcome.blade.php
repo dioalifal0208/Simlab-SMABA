@@ -204,45 +204,77 @@
                     <p class="mt-4 text-gray-600">{{ __('welcome.features.subtitle') }}</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {{-- Feature 1 --}}
-                    <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-green-600 transition-colors duration-300" data-aos="fade-up">
-                        <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mb-4 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors">
-                            <i class="fas fa-boxes-stacked text-xl"></i>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {{-- Feature 1: Inventory --}}
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300" data-aos="fade-up">
+                        <div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-6 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-all duration-300">
+                            <i class="fas fa-boxes-stacked text-2xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.features.inventory.title') }}</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ __('welcome.features.inventory.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'inventory'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">{{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-search-plus text-xs"></i></button>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.inventory.title') }}</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.inventory.desc') }}</p>
+                        <button @click="showFeatureModal = true; activeFeature = 'inventory'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                            {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
+                        </button>
                     </div>
                     
-                    {{-- Feature 2 --}}
-                    <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-green-600 transition-colors duration-300" data-aos="fade-up" data-aos-delay="100">
-                        <div class="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center mb-4 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                            <i class="fas fa-qrcode text-xl"></i>
+                    {{-- Feature 2: Booking --}}
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                            <i class="fas fa-calendar-check text-2xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.features.validation.title') }}</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ __('welcome.features.validation.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'validation'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">{{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-search-plus text-xs"></i></button>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.booking.title') }}</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.booking.desc') }}</p>
+                        <button @click="showDemoModal = true; activeSlide = 1" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                            Lihat Cara Kerja <i class="fas fa-arrow-right text-xs"></i>
+                        </button>
                     </div>
 
-                    {{-- Feature 3 --}}
-                    <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-green-600 transition-colors duration-300" data-aos="fade-up" data-aos-delay="200">
-                        <div class="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center mb-4 text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                            <i class="fas fa-calendar-alt text-xl"></i>
+                    {{-- Feature 3: Validation --}}
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center mb-6 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+                            <i class="fas fa-qrcode text-2xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.features.calendar.title') }}</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ __('welcome.features.calendar.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'calendar'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">{{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-search-plus text-xs"></i></button>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.validation.title') }}</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.validation.desc') }}</p>
+                        <button @click="showFeatureModal = true; activeFeature = 'validation'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                            {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
+                        </button>
                     </div>
 
-                    {{-- Feature 4 --}}
-                    <div class="group p-6 bg-white border border-gray-200 rounded-xl hover:border-green-600 transition-colors duration-300" data-aos="fade-up" data-aos-delay="300">
-                        <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
-                            <i class="fas fa-file-excel text-xl"></i>
+                    {{-- Feature 4: Calendar --}}
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+                        <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-6 text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-all duration-300">
+                            <i class="fas fa-calendar-days text-2xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.features.report.title') }}</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ __('welcome.features.report.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'report'" class="text-sm font-semibold text-green-700 hover:text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">{{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-search-plus text-xs"></i></button>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.calendar.title') }}</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.calendar.desc') }}</p>
+                        <button @click="showFeatureModal = true; activeFeature = 'calendar'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                            {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+
+                    {{-- Feature 5: Resources --}}
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300" data-aos="fade-up" data-aos-delay="400">
+                        <div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-6 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
+                            <i class="fas fa-book-bookmark text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.resources.title') }}</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.resources.desc') }}</p>
+                        <a href="{{ auth()->check() ? route('documents.index') : '#' }}" @click="if(!{{ auth()->check() ? 'true' : 'false' }}) isModalOpen = true" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                            Buka Pustaka <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+
+                    {{-- Feature 6: Report --}}
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300" data-aos="fade-up" data-aos-delay="500">
+                        <div class="w-14 h-14 bg-indigo-50 rounded-xl flex items-center justify-center mb-6 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                            <i class="fas fa-chart-line text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.report.title') }}</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.report.desc') }}</p>
+                        <button @click="showFeatureModal = true; activeFeature = 'report'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                            {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -256,28 +288,28 @@
                         <h2 class="text-3xl font-bold text-gray-900 tracking-tight mb-6">{{ __('welcome.workflow.title') }}</h2>
                         <div class="space-y-8">
                             <div class="flex gap-4" data-aos="fade-up" data-aos-delay="100">
-                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-sm">1</div>
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-green-200">1</div>
                                 <div>
                                     <h4 class="text-lg font-bold text-gray-900">{{ __('welcome.workflow.step1_title') }}</h4>
                                     <p class="text-gray-600 text-sm mt-1">{{ __('welcome.workflow.step1_desc') }}</p>
                                 </div>
                             </div>
                             <div class="flex gap-4" data-aos="fade-up" data-aos-delay="200">
-                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm">2</div>
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-blue-200">2</div>
                                 <div>
                                     <h4 class="text-lg font-bold text-gray-900">{{ __('welcome.workflow.step2_title') }}</h4>
                                     <p class="text-gray-600 text-sm mt-1">{{ __('welcome.workflow.step2_desc') }}</p>
                                 </div>
                             </div>
                             <div class="flex gap-4" data-aos="fade-up" data-aos-delay="300">
-                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm">3</div>
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-amber-200">3</div>
                                 <div>
                                     <h4 class="text-lg font-bold text-gray-900">{{ __('welcome.workflow.step3_title') }}</h4>
                                     <p class="text-gray-600 text-sm mt-1">{{ __('welcome.workflow.step3_desc') }}</p>
                                 </div>
                             </div>
                             <div class="flex gap-4" data-aos="fade-up" data-aos-delay="400">
-                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm">4</div>
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-purple-200">4</div>
                                 <div>
                                     <h4 class="text-lg font-bold text-gray-900">{{ __('welcome.workflow.step4_title') }}</h4>
                                     <p class="text-gray-600 text-sm mt-1">{{ __('welcome.workflow.step4_desc') }}</p>
