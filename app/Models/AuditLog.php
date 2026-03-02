@@ -55,15 +55,7 @@ class AuditLog extends Model
      */
     public function getActionLabel(): string
     {
-        return match($this->action) {
-            'created' => 'Dibuat',
-            'updated' => 'Diperbarui',
-            'deleted' => 'Dihapus',
-            'login' => 'Login',
-            'logout' => 'Logout',
-            'failed_login' => 'Login Gagal',
-            default => ucfirst($this->action),
-        };
+        return __("dashboard.activity.actions.{$this->action}");
     }
 
     /**
@@ -77,16 +69,6 @@ class AuditLog extends Model
 
         $modelName = class_basename($this->model);
         
-        return match($modelName) {
-            'Item' => 'Item',
-            'Loan' => 'Peminjaman',
-            'Booking' => 'Booking',
-            'User' => 'User',
-            'Document' => 'Dokumen',
-            'DamageReport' => 'Laporan Kerusakan',
-            'PracticumModule' => 'Modul Praktikum',
-            'Auth' => 'Autentikasi',
-            default => $modelName,
-        };
+        return __("dashboard.activity.models.{$modelName}");
     }
 }

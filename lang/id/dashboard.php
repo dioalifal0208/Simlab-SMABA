@@ -69,5 +69,23 @@ return [
         'view' => 'Lihat',
         'detail' => 'Detail',
         'system' => 'Sistem',
+        'actions' => [
+            'created' => 'Dibuat',
+            'updated' => 'Diperbarui',
+            'deleted' => 'Dihapus',
+            'login' => 'Login',
+            'logout' => 'Logout',
+            'failed_login' => 'Login Gagal',
+        ],
+        'models' => [
+            'Item' => 'Item',
+            'Loan' => 'Peminjaman',
+            'Booking' => 'Booking',
+            'User' => 'User',
+            'Document' => 'Dokumen',
+            'DamageReport' => 'Laporan Kerusakan',
+            'PracticumModule' => 'Modul Praktikum',
+            'Auth' => 'Autentikasi',
+        ],
     ],
 ];
