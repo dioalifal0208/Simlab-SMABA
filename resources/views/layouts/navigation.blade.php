@@ -36,7 +36,7 @@
 
         {{-- Notifications --}}
         <div class="relative">
-            <x-dropdown align="right" width="72">
+            <x-dropdown align="right" width="80">
                 <x-slot name="trigger">
                     <button id="notification-bell"
                             data-unread="{{ $unreadCount ?? 0 }}"
@@ -64,9 +64,14 @@
                                 <span class="text-[11px] text-gray-400 mt-0.5 block">{{ $notification->created_at->diffForHumans() }}</span>
                             </a>
                         @empty
-                            <div class="px-4 py-6 text-center text-sm text-gray-400">
-                                <i class="fas fa-bell-slash text-2xl text-gray-200 block mb-2"></i>
-                                {{ __('common.messages.no_notifications') }}
+                            <div class="px-6 py-12 text-center bg-gray-50/50">
+                                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100">
+                                    <i class="fas fa-bell-slash text-2xl text-gray-300"></i>
+                                </div>
+                                <p class="font-semibold text-gray-500 text-sm">{{ __('common.messages.no_notifications') }}</p>
+                                <p class="text-xs text-gray-400 mt-2 px-4 italic leading-relaxed">
+                                    {{ app()->getLocale() == 'id' ? 'Tetap produktif! Kami akan mengirim notifikasi saat ada aktivitas baru.' : 'Stay productive! We will notify you when there is new activity.' }}
+                                </p>
                             </div>
                         @endforelse
                     </div>
