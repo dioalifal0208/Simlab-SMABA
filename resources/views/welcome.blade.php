@@ -46,7 +46,13 @@
             });
         </script>
         @vite(['resources/js/app.js'])
-    </head>
+        <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+    </style>
+</head>
 
     <body class="landing-page antialiased bg-white text-gray-900 overflow-x-hidden selection:bg-green-100 selection:text-green-900"
           data-authenticated="{{ auth()->check() ? '1' : '0' }}"
@@ -482,7 +488,7 @@
                         <button @click="showDemoModal = false" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xl"></i></button>
                     </div>
                     
-                    <div class="space-y-2 flex-1">
+                    <div class="space-y-2 flex-1 overflow-y-auto pr-2 custom-scrollbar">
                         <button @click="activeSlide = 0" :class="activeSlide === 0 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
                             <div :class="activeSlide === 0 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">1</div>
                             <div>
@@ -504,6 +510,30 @@
                             <div>
                                 <p :class="activeSlide === 2 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">{{ __('welcome.tour.step3_title') }}</p>
                                 <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ __('welcome.tour.step3_desc') }}</p>
+                            </div>
+                        </button>
+
+                        <button @click="activeSlide = 3" :class="activeSlide === 3 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
+                            <div :class="activeSlide === 3 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">4</div>
+                            <div>
+                                <p :class="activeSlide === 3 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">{{ __('welcome.tour.step4_title') }}</p>
+                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ __('welcome.tour.step4_desc') }}</p>
+                            </div>
+                        </button>
+
+                        <button @click="activeSlide = 4" :class="activeSlide === 4 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
+                            <div :class="activeSlide === 4 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">5</div>
+                            <div>
+                                <p :class="activeSlide === 4 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">{{ __('welcome.tour.step5_title') }}</p>
+                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ __('welcome.tour.step5_desc') }}</p>
+                            </div>
+                        </button>
+
+                        <button @click="activeSlide = 5" :class="activeSlide === 5 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
+                            <div :class="activeSlide === 5 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">6</div>
+                            <div>
+                                <p :class="activeSlide === 5 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">{{ __('welcome.tour.step6_title') }}</p>
+                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ __('welcome.tour.step6_desc') }}</p>
                             </div>
                         </button>
                     </div>
@@ -594,6 +624,78 @@
                                 50% { transform: scale(1.02); }
                                 100% { border-left-color: #22c55e; } 
                             } 
+                        </style>
+                    </div>
+
+                    {{-- SLIDE 4: QR VALIDATION --}}
+                    <div x-show="activeSlide === 3" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" class="w-full max-w-sm bg-white p-8 rounded-2xl shadow-xl border border-gray-100 text-center relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1.5 bg-green-500"></div>
+                        <div class="mb-6 relative inline-block">
+                             <div class="w-32 h-32 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 flex items-center justify-center p-2">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SIMLAB-VALID-DOC" class="w-full h-full opacity-50 grayscale">
+                             </div>
+                             {{-- Scan Line Animation --}}
+                             <div class="absolute top-0 left-0 w-full h-1 bg-green-500 shadow-[0_0_15px_#22c55e] animate-[scan_2s_infinite]"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-900">{{ __('welcome.tour.mockup.qr_title') }}</h4>
+                        <p class="text-sm text-gray-400 mt-1 mb-6">{{ __('welcome.tour.mockup.qr_doc') }}</p>
+                        <div class="bg-green-50 p-4 rounded-xl border border-green-100 inline-flex items-center gap-2 text-green-700 font-bold animate-pulse">
+                            <i class="fas fa-check-circle"></i> {{ __('welcome.tour.mockup.qr_status') }}
+                        </div>
+                        <style> @keyframes scan { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } } </style>
+                    </div>
+
+                    {{-- SLIDE 5: DIGITAL PUSTAKA --}}
+                    <div x-show="activeSlide === 4" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-10" x-transition:enter-end="opacity-100 translate-y-0" class="w-full max-w-lg space-y-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="h-4 w-32 bg-gray-200 rounded"></div>
+                            <div class="w-8 h-8 rounded-full bg-gray-200"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            @for($i=1; $i<=4; $i++)
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-green-200 transition-all cursor-pointer group">
+                                <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600 mb-3 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                                    <i class="fas {{ $i % 2 == 0 ? 'fa-file-pdf' : 'fa-file-word' }}"></i>
+                                </div>
+                                <div class="h-2 w-full bg-gray-100 rounded mb-2"></div>
+                                <div class="h-2 w-2/3 bg-gray-50 rounded"></div>
+                            </div>
+                            @endfor
+                        </div>
+                        <div class="text-center p-3 text-xs text-gray-400 italic">"Sentralisasi materi belajar dalam satu genggaman"</div>
+                    </div>
+
+                    {{-- SLIDE 6: REPORTING --}}
+                    <div x-show="activeSlide === 5" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-110" x-transition:enter-end="opacity-100 scale-100" class="w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
+                        <div class="bg-gray-50 border-b border-gray-100 p-4 flex justify-between items-center">
+                            <h4 class="font-bold text-gray-800 flex items-center gap-2"><i class="fas fa-chart-pie text-green-600"></i> {{ __('welcome.tour.mockup.report_title') }}</h4>
+                            <button class="px-3 py-1.5 bg-green-600 text-white text-xs font-bold rounded flex items-center gap-2 hover:bg-green-700 transition">
+                                <i class="fas fa-download"></i> {{ __('welcome.tour.mockup.report_export') }}
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <div class="space-y-4">
+                                @for($i=1; $i<=3; $i++)
+                                <div class="flex items-center gap-4 animate-[fadeInRight_0.5s_ease_forwards]" style="animation-delay: {{ $i * 0.2 }}s">
+                                    <div class="w-12 h-2 bg-gray-100 rounded flex-1"></div>
+                                    <div class="w-24 h-2 bg-green-100 rounded"></div>
+                                    <div class="w-8 h-2 bg-gray-200 rounded"></div>
+                                </div>
+                                @endfor
+                            </div>
+                            <div class="mt-8 pt-6 border-t border-gray-50 flex justify-center">
+                                <div class="relative w-32 h-32">
+                                    <svg class="w-full h-full" viewBox="0 0 36 36">
+                                        <path class="text-gray-100" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <path class="text-green-500 animate-[dash_2s_ease-out_forwards]" stroke-width="3" stroke-dasharray="75, 100" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    </svg>
+                                    <div class="absolute inset-0 flex items-center justify-center font-bold text-green-700">75%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <style> 
+                            @keyframes dash { from { stroke-dasharray: 0, 100; } to { stroke-dasharray: 75, 100; } } 
+                            @keyframes fadeInRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
                         </style>
                     </div>
 
