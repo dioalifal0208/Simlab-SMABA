@@ -652,15 +652,38 @@
                             <div class="w-8 h-8 rounded-full bg-gray-200"></div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
-                            @for($i=1; $i<=4; $i++)
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-green-200 transition-all cursor-pointer group">
-                                <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600 mb-3 group-hover:bg-green-600 group-hover:text-white transition-colors">
-                                    <i class="fas {{ $i % 2 == 0 ? 'fa-file-pdf' : 'fa-file-word' }}"></i>
+                            {{-- Item 1: PDF (Red) --}}
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-red-200 transition-all cursor-pointer group">
+                                <div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center text-red-600 mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fas fa-file-pdf"></i>
                                 </div>
                                 <div class="h-2 w-full bg-gray-100 rounded mb-2"></div>
                                 <div class="h-2 w-2/3 bg-gray-50 rounded"></div>
                             </div>
-                            @endfor
+                            {{-- Item 2: Word (Blue) --}}
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-blue-200 transition-all cursor-pointer group">
+                                <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fas fa-file-word"></i>
+                                </div>
+                                <div class="h-2 w-full bg-gray-100 rounded mb-2"></div>
+                                <div class="h-2 w-2/3 bg-gray-50 rounded"></div>
+                            </div>
+                            {{-- Item 3: Excel (Green) --}}
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-green-200 transition-all cursor-pointer group">
+                                <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600 mb-3 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                                    <i class="fas fa-file-excel"></i>
+                                </div>
+                                <div class="h-2 w-full bg-gray-100 rounded mb-2"></div>
+                                <div class="h-2 w-2/3 bg-gray-50 rounded"></div>
+                            </div>
+                            {{-- Item 4: PDF (Red) --}}
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-red-200 transition-all cursor-pointer group">
+                                <div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center text-red-600 mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <div class="h-2 w-full bg-gray-100 rounded mb-2"></div>
+                                <div class="h-2 w-2/3 bg-gray-50 rounded"></div>
+                            </div>
                         </div>
                         <div class="text-center p-3 text-xs text-gray-400 italic">"Sentralisasi materi belajar dalam satu genggaman"</div>
                     </div>
