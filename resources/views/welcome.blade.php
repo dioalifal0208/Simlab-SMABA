@@ -208,7 +208,7 @@
                     {{-- Feature 1: Inventory --}}
                     <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300" data-aos="fade-up">
                         <div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-6 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-all duration-300">
-                            <i class="fas fa-boxes-stacked text-2xl"></i>
+                            <i class="fas fa-cubes text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.inventory.title') }}</h3>
                         <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.inventory.desc') }}</p>
@@ -224,8 +224,8 @@
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.booking.title') }}</h3>
                         <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.booking.desc') }}</p>
-                        <button @click="showDemoModal = true; activeSlide = 1" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
-                            Lihat Cara Kerja <i class="fas fa-arrow-right text-xs"></i>
+                        <button @click="showFeatureModal = true; activeFeature = 'booking'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                            {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
                         </button>
                     </div>
 
@@ -260,9 +260,9 @@
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.resources.title') }}</h3>
                         <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.resources.desc') }}</p>
-                        <a href="{{ auth()->check() ? route('documents.index') : '#' }}" @click="if(!{{ auth()->check() ? 'true' : 'false' }}) isModalOpen = true" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
-                            Buka Pustaka <i class="fas fa-arrow-right text-xs"></i>
-                        </a>
+                        <button @click="showFeatureModal = true; activeFeature = 'resources'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                            {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
+                        </button>
                     </div>
 
                     {{-- Feature 6: Report --}}
@@ -594,7 +594,14 @@
                 {{-- Header --}}
                 <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                     <div>
-                        <h3 class="text-2xl font-bold text-gray-900" x-text="activeFeature === 'inventory' ? '{{ __('welcome.spotlight.inventory.title') }}' : (activeFeature === 'validation' ? '{{ __('welcome.spotlight.validation.title') }}' : (activeFeature === 'calendar' ? '{{ __('welcome.spotlight.calendar.title') }}' : '{{ __('welcome.spotlight.report.title') }}'))"></h3>
+                        <h3 class="text-2xl font-bold text-gray-900" x-text="{
+                            'inventory': '{{ __('welcome.spotlight.inventory.title') }}',
+                            'booking': '{{ __('welcome.spotlight.booking.title') }}',
+                            'validation': '{{ __('welcome.spotlight.validation.title') }}',
+                            'calendar': '{{ __('welcome.spotlight.calendar.title') }}',
+                            'resources': '{{ __('welcome.spotlight.resources.title') }}',
+                            'report': '{{ __('welcome.spotlight.report.title') }}'
+                        }[activeFeature]"></h3>
                         <p class="text-gray-500 text-sm mt-1">{{ __('welcome.spotlight.subtitle') }}</p>
                     </div>
                     <button @click="showFeatureModal = false" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 transition-colors">
@@ -640,7 +647,38 @@
                         </div>
                     </div>
 
-                    {{-- 2. VALIDATION UI MOCKUP --}}
+                    {{-- 2. BOOKING UI MOCKUP --}}
+                    <div x-show="activeFeature === 'booking'" class="w-full max-w-lg bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                                <i class="fas fa-calendar-plus text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">{{ __('welcome.spotlight.booking.heading') }}</h4>
+                                <p class="text-sm text-gray-500">{{ __('welcome.spotlight.booking.desc') }}</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-gray-400 uppercase">{{ __('welcome.spotlight.booking.lab_label') }}</span>
+                                    <span class="text-sm font-bold text-blue-600">Lab Fisika Utama</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs font-bold text-gray-400 uppercase">{{ __('welcome.spotlight.booking.item_label') }}</span>
+                                    <span class="text-sm font-bold text-gray-800">Set Optik Dasar</span>
+                                </div>
+                            </div>
+                            <button class="w-full py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-100">
+                                {{ __('welcome.tour.mockup.submit_loan') }}
+                            </button>
+                        </div>
+                        <div class="mt-6 flex items-center justify-center gap-2 text-xs text-gray-400">
+                            <i class="fas fa-shield-halved"></i> Terverifikasi Sistem SIMLAB
+                        </div>
+                    </div>
+
+                    {{-- 3. VALIDATION UI MOCKUP --}}
                     <div x-show="activeFeature === 'validation'" class="w-full max-w-sm bg-white p-8 rounded-xl shadow-lg border border-gray-200 text-center relative overflow-hidden">
                         <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-emerald-500"></div>
                         <div class="w-24 h-24 mx-auto bg-white p-2 rounded-lg border-2 border-dashed border-gray-300 mb-6">
@@ -664,7 +702,7 @@
                         </div>
                     </div>
 
-                    {{-- 3. CALENDAR UI MOCKUP --}}
+                    {{-- 4. CALENDAR UI MOCKUP --}}
                     <div x-show="activeFeature === 'calendar'" class="w-full max-w-3xl bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="bg-white border-b border-gray-200 p-4 flex justify-between items-center">
                             <h4 class="font-bold text-gray-800">{{ __('welcome.spotlight.calendar.month') }}</h4>
@@ -703,7 +741,41 @@
                         </div>
                     </div>
 
-                    {{-- 4. EXCEL/REPORT UI MOCKUP --}}
+                    {{-- 5. RESOURCES UI MOCKUP --}}
+                    <div x-show="activeFeature === 'resources'" class="w-full max-w-2xl space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-gray-900">{{ __('welcome.spotlight.resources.heading') }}</h4>
+                            <div class="relative w-48">
+                                <i class="fas fa-search absolute left-3 top-2 text-gray-400 text-xs"></i>
+                                <input disabled type="text" value="{{ __('welcome.spotlight.resources.search_placeholder') }}" class="w-full pl-8 pr-4 py-1.5 bg-white border border-gray-200 rounded-full text-xs">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-4 bg-white rounded-xl border-2 border-purple-100 hover:border-purple-300 transition-all flex items-start gap-4 shadow-sm animate-pulse">
+                                <div class="w-10 h-10 bg-purple-50 rounded text-purple-600 flex items-center justify-center shrink-0">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <h5 class="text-xs font-bold text-gray-800 truncate">{{ __('welcome.spotlight.resources.doc_title') }}</h5>
+                                    <p class="text-[10px] text-gray-400">PDF • 1.2 MB</p>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-white rounded-xl border border-gray-100 hover:border-purple-300 transition-all flex items-start gap-4">
+                                <div class="w-10 h-10 bg-blue-50 rounded text-blue-600 flex items-center justify-center shrink-0">
+                                    <i class="fas fa-file-word"></i>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <h5 class="text-xs font-bold text-gray-800 truncate">SOP Keselamatan Laboratorium</h5>
+                                    <p class="text-[10px] text-gray-400">DOCX • 850 KB</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center p-4 bg-purple-50 rounded-lg text-xs text-purple-700 font-medium">
+                            <i class="fas fa-info-circle mr-1"></i> Tersedia untuk diunduh oleh semua Guru terdaftar.
+                        </div>
+                    </div>
+
+                    {{-- 6. EXCEL/REPORT UI MOCKUP --}}
                     <div x-show="activeFeature === 'report'" class="w-full max-w-3xl flex flex-col md:flex-row gap-6">
                          <div class="flex-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center text-center space-y-4">
                              <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-2">

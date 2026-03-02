@@ -43,15 +43,15 @@ return [
         ],
     ],
     'workflow' => [
-        'title' => 'Simple Workflow',
-        'step1_title' => 'Teacher Requests',
-        'step1_desc' => 'Select date, items, and class hours via the dashboard.',
-        'step2_title' => 'Digital Validation',
-        'step2_desc' => 'Lab Head approves and the system automatically issues a QR Code on the loan document.',
-        'step3_title' => 'Execution',
-        'step3_desc' => 'Practicum proceeds, and the final condition of the equipment is recorded upon return.',
-        'step4_title' => 'Automated Reports',
-        'step4_desc' => 'Data is automatically saved and can be exported to Excel for monthly reports.',
+        'title' => 'Digital Laboratory Workflow',
+        'step1_title' => 'Planning & Submission',
+        'step1_desc' => 'Teachers check lab/equipment availability via the calendar and submit requests digitally via the Dashboard.',
+        'step2_title' => 'Validation & Approval',
+        'step2_desc' => 'The system notifies the Lab Head for verification. Loan documents are automatically issued with a valid QR Code.',
+        'step3_title' => 'Execution & Monitoring',
+        'step3_desc' => 'Equipment is borrowed and used. Post-usage conditions are recorded transparently to maintain inventory quality.',
+        'step4_title' => 'Reporting & Maintenance',
+        'step4_desc' => 'Usage data is processed into automated reports (Excel), and it facilitates rapid reporting of equipment damage.',
     ],
     'footer' => [
         'privacy' => 'Privacy Policy',
@@ -125,6 +125,13 @@ return [
                 'unit' => 'Units',
             ],
         ],
+        'booking' => [
+            'title' => 'Lab & Item Booking',
+            'heading' => 'Organized Lab Booking',
+            'desc' => 'Select available schedules, specify required items, and get instant confirmation.',
+            'lab_label' => 'Laboratory:',
+            'item_label' => 'Primary Item:',
+        ],
         'validation' => [
             'title' => 'QR Document Validation',
             'heading' => 'Valid Document',
@@ -142,6 +149,13 @@ return [
             'days' => [
                 'mon' => 'Mon', 'tue' => 'Tue', 'wed' => 'Wed', 'thu' => 'Thu', 'fri' => 'Fri', 'sat' => 'Sat', 'sun' => 'Sun',
             ],
+        ],
+        'resources' => [
+            'title' => 'Digital Library & Modules',
+            'heading' => 'Practicum Resources Center',
+            'desc' => 'Get access to hundreds of modules and guidance documents to support teaching and learning activities.',
+            'search_placeholder' => 'Search modules...',
+            'doc_title' => 'Chemical Reactions Module XII',
         ],
         'report' => [
             'title' => 'Reports & Analytics',

@@ -43,15 +43,15 @@ return [
         ],
     ],
     'workflow' => [
-        'title' => 'Workflow Sederhana',
-        'step1_title' => 'Guru Mengajukan',
-        'step1_desc' => 'Pilih tanggal, alat, dan jam pelajaran melalui dashboard.',
-        'step2_title' => 'Validasi Digital',
-        'step2_desc' => 'Kepala Lab menyetujui dan sistem menerbitkan QR Code otomatis pada surat peminjaman.',
-        'step3_title' => 'Pelaksanaan',
-        'step3_desc' => 'Praktikum berjalan, pengembalian alat dicatat kondisi akhirnya.',
-        'step4_title' => 'Laporan Otomatis',
-        'step4_desc' => 'Data tersimpan otomatis dan bisa diexport ke Excel untuk laporan bulanan.',
+        'title' => 'Digitalisasi Alur Kerja Lab',
+        'step1_title' => 'Perencanaan & Pengajuan',
+        'step1_desc' => 'Guru mengecek ketersediaan lab/alat melalui kalender dan mengajukan permohonan secara digital via Dashboard.',
+        'step2_title' => 'Validasi & Persetujuan',
+        'step2_desc' => 'Sistem memberitahu Kepala Lab untuk verifikasi. Surat peminjaman diterbitkan otomatis dengan QR Code yang sah.',
+        'step3_title' => 'Pelaksanaan & Monitoring',
+        'step3_desc' => 'Alat dipinjam dan digunakan. Kondisi alat setelah pemakaian dicatat secara transparan untuk menjaga kualitas inventaris.',
+        'step4_title' => 'Laporan & Pemeliharaan',
+        'step4_desc' => 'Data pemakaian diolah menjadi laporan otomatis (Excel), serta memfasilitasi pelaporan kerusakan alat secara cepat.',
     ],
     'footer' => [
         'privacy' => 'Kebijakan Privasi',
@@ -125,6 +125,13 @@ return [
                 'unit' => 'Unit',
             ],
         ],
+        'booking' => [
+            'title' => 'Pemesanan Ruang & Alat',
+            'heading' => 'Booking Lab Lebih Teratur',
+            'desc' => 'Pilih jadwal yang tersedia, tentukan alat yang dibutuhkan, dan dapatkan konfirmasi instan.',
+            'lab_label' => 'Laboratorium:',
+            'item_label' => 'Alat Utama:',
+        ],
         'validation' => [
             'title' => 'Validasi Dokumen QR',
             'heading' => 'Dokumen Valid',
@@ -142,6 +149,13 @@ return [
             'days' => [
                 'mon' => 'Sen', 'tue' => 'Sel', 'wed' => 'Rab', 'thu' => 'Kam', 'fri' => 'Jum', 'sat' => 'Sab', 'sun' => 'Mig',
             ],
+        ],
+        'resources' => [
+            'title' => 'Pustaka & Modul Digital',
+            'heading' => 'Pusat Materi Praktikum',
+            'desc' => 'Dapatkan akses ke ratusan modul dan dokumen panduan untuk mendukung kegiatan belajar mengajar.',
+            'search_placeholder' => 'Cari modul...',
+            'doc_title' => 'Modul Reaksi Kimia XII',
         ],
         'report' => [
             'title' => 'Laporan & Analitik',
