@@ -53,7 +53,7 @@ Route::get('/', function () {
         ->get();
 
     // Stats Dynamic
-    $inventoryCount = Item::sum('stok');
+    $inventoryCount = Item::sum('jumlah');
     $teacherCount = User::where('role', 'guru')->count();
     $activityCount = Booking::count() + Loan::count();
 
