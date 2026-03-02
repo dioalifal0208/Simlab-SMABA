@@ -206,75 +206,87 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {{-- Feature 1: Inventory --}}
-                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300" data-aos="fade-up">
-                        <div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-6 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-all duration-300">
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300 flex flex-col h-full" data-aos="fade-up">
+                        <div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-6 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-all duration-300 shrink-0">
                             <i class="fas fa-cubes text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.inventory.title') }}</h3>
                         <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.inventory.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'inventory'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
-                            {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
-                        </button>
+                        <div class="mt-auto">
+                            <button @click="showFeatureModal = true; activeFeature = 'inventory'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                                {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
                     </div>
                     
                     {{-- Feature 2: Booking --}}
-                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
-                        <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300 flex flex-col h-full" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shrink-0">
                             <i class="fas fa-calendar-check text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.booking.title') }}</h3>
                         <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.booking.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'booking'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
-                            {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
-                        </button>
+                        <div class="mt-auto">
+                            <button @click="showFeatureModal = true; activeFeature = 'booking'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                                {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
                     </div>
 
                     {{-- Feature 3: Validation --}}
-                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
-                        <div class="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center mb-6 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300 flex flex-col h-full" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center mb-6 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 shrink-0">
                             <i class="fas fa-qrcode text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.validation.title') }}</h3>
                         <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.validation.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'validation'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
-                            {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
-                        </button>
+                        <div class="mt-auto">
+                            <button @click="showFeatureModal = true; activeFeature = 'validation'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                                {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
                     </div>
 
                     {{-- Feature 4: Calendar --}}
-                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
-                        <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-6 text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-all duration-300">
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300 flex flex-col h-full" data-aos="fade-up" data-aos-delay="300">
+                        <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-6 text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-all duration-300 shrink-0">
                             <i class="fas fa-calendar-days text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.calendar.title') }}</h3>
                         <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.calendar.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'calendar'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
-                            {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
-                        </button>
+                        <div class="mt-auto">
+                            <button @click="showFeatureModal = true; activeFeature = 'calendar'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                                {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
                     </div>
 
                     {{-- Feature 5: Resources --}}
-                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300" data-aos="fade-up" data-aos-delay="400">
-                        <div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-6 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300 flex flex-col h-full" data-aos="fade-up" data-aos-delay="400">
+                        <div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-6 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300 shrink-0">
                             <i class="fas fa-book-bookmark text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.resources.title') }}</h3>
                         <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.resources.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'resources'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
-                            {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
-                        </button>
+                        <div class="mt-auto">
+                            <button @click="showFeatureModal = true; activeFeature = 'resources'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                                {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
                     </div>
 
                     {{-- Feature 6: Report --}}
-                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300" data-aos="fade-up" data-aos-delay="500">
-                        <div class="w-14 h-14 bg-indigo-50 rounded-xl flex items-center justify-center mb-6 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                    <div class="group p-8 bg-white border border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300 flex flex-col h-full" data-aos="fade-up" data-aos-delay="500">
+                        <div class="w-14 h-14 bg-indigo-50 rounded-xl flex items-center justify-center mb-6 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 shrink-0">
                             <i class="fas fa-chart-line text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.report.title') }}</h3>
                         <p class="text-gray-600 leading-relaxed mb-6">{{ __('welcome.features.report.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'report'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
-                            {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
-                        </button>
+                        <div class="mt-auto">
+                            <button @click="showFeatureModal = true; activeFeature = 'report'" class="text-sm font-bold text-green-700 hover:text-green-800 flex items-center gap-2 group-hover:gap-3 transition-all">
+                                {{ __('welcome.spotlight.footer_cta') }} <i class="fas fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

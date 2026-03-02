@@ -169,7 +169,7 @@ return [
             'lab_kimia' => 'Chemistry Lab',
             'lab_komputer' => 'Computer Lab',
         ],
-        'footer_cta' => 'Try Direct on Dashboard →',
+        'footer_cta' => 'Try Direct on Dashboard',
     ],
     'js' => [
         'processing' => 'Processing...',
