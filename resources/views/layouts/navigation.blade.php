@@ -186,7 +186,7 @@
     </div>
 
     {{-- ── Nav Menu ── --}}
-    <nav class="flex-1 overflow-y-auto overflow-x-hidden py-4 px-3 space-y-0.5" id="sidebar-nav">
+    <nav class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pt-4 pb-2 px-3 space-y-0.5 overscroll-contain" id="sidebar-nav">
 
         @php
             $isAdmin = Auth::user()->role === 'admin';
