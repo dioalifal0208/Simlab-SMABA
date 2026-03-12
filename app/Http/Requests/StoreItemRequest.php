@@ -34,6 +34,8 @@ class StoreItemRequest extends FormRequest
             'laboratorium' => 'required|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4',
             'photos' => 'nullable|array',
             'photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
+            'dokumen_tipe' => 'nullable|in:manual_book,sop_ik,msds',
+            'dokumen' => 'nullable|file|mimes:pdf|max:5120',
         ];
     }
 
@@ -74,6 +76,11 @@ class StoreItemRequest extends FormRequest
             'photos.*.image' => 'File harus berupa gambar.',
             'photos.*.mimes' => 'Format foto harus jpeg, png, jpg, atau webp.',
             'photos.*.max' => 'Ukuran foto tidak boleh lebih dari 2MB.',
+            
+            'dokumen_tipe.in' => 'Jenis dokumen harus berupa Manual Book, SOP/IK, atau MSDS.',
+            'dokumen.file' => 'Dokumen harus berupa file.',
+            'dokumen.mimes' => 'Format dokumen harus PDF.',
+            'dokumen.max' => 'Ukuran dokumen tidak boleh lebih dari 5MB.',
         ];
     }
 
@@ -95,6 +102,8 @@ class StoreItemRequest extends FormRequest
             'deskripsi' => 'deskripsi',
             'laboratorium' => 'laboratorium',
             'photos' => 'foto',
+            'dokumen_tipe' => 'jenis dokumen',
+            'dokumen' => 'dokumen',
         ];
     }
 }

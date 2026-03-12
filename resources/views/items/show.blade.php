@@ -174,6 +174,54 @@
                         </div>
                     </div>
 
+                    <!-- Kartu Dokumen Pendukung (Manual Book / SOP / MSDS) -->
+                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="50" data-aos-once="true">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">{{ __('items.details.doc_title') }}</h3>
+                            @if($item->dokumen_path)
+                                <div class="flex items-center gap-4 p-4 bg-gray-50 border border-gray-200 rounded-xl">
+                                    <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0
+                                        @if($item->dokumen_tipe === 'manual_book') bg-blue-50 text-blue-600
+                                        @elseif($item->dokumen_tipe === 'sop_ik') bg-green-50 text-green-600
+                                        @elseif($item->dokumen_tipe === 'msds') bg-amber-50 text-amber-600
+                                        @else bg-gray-100 text-gray-500 @endif">
+                                        <i class="fas fa-file-pdf text-xl"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-bold text-gray-800">
+                                            @if($item->dokumen_tipe === 'manual_book') 📘 {{ __('items.form.doc_types.manual_book') }}
+                                            @elseif($item->dokumen_tipe === 'sop_ik') 📋 {{ __('items.form.doc_types.sop_ik') }}
+                                            @elseif($item->dokumen_tipe === 'msds') ⚠️ {{ __('items.form.doc_types.msds') }}
+                                            @else {{ __('items.details.doc_generic') }}
+                                            @endif
+                                        </p>
+                                        <p class="text-xs text-gray-500 mt-0.5">{{ __('items.details.doc_format') }}</p>
+                                    </div>
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <a href="{{ Storage::url($item->dokumen_path) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-semibold hover:bg-indigo-100 transition-colors">
+                                            <i class="fas fa-eye"></i> {{ __('items.details.doc_view') }}
+                                        </a>
+                                        <a href="{{ Storage::url($item->dokumen_path) }}" download class="inline-flex items-center gap-1.5 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors">
+                                            <i class="fas fa-download"></i> {{ __('items.details.doc_download') }}
+                                        </a>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-6 text-center border-2 border-dashed border-gray-200 rounded-xl">
+                                    <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <i class="fas fa-file-circle-xmark text-gray-400 text-xl"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-500">{{ __('items.details.doc_empty') }}</p>
+                                    @can('is-admin')
+                                        <a href="{{ route('items.edit', $item->id) }}" class="inline-block mt-2 text-sm font-semibold text-indigo-600 hover:text-indigo-800">
+                                            <i class="fas fa-upload mr-1"></i> {{ __('items.details.doc_upload_cta') }}
+                                        </a>
+                                    @endcan
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
                     <!-- Kartu Riwayat Peminjaman -->
                     <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
                         <div class="p-6 max-h-96 overflow-y-auto">

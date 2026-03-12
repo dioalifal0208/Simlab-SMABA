@@ -12,7 +12,7 @@ return [
     'stats' => [
         'items' => 'Inventory Items',
         'teachers' => 'Active Teachers',
-        'activity' => 'Logged Actions',
+        'activity' => 'Visitors',
     ],
     'features' => [
         'title' => 'All Features in One Platform',

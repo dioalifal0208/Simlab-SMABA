@@ -28,6 +28,8 @@ class Item extends Model
         'tahun_pengadaan',
         'deskripsi', // Mengganti 'keterangan' menjadi 'deskripsi' agar konsisten
         'laboratorium',
+        'dokumen_tipe',
+        'dokumen_path',
         'user_id'
     ];
     public function user(): BelongsTo

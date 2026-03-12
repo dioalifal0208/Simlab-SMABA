@@ -135,7 +135,7 @@
                             <div class="text-sm text-gray-500 font-medium">{{ __('welcome.stats.teachers') }}</div>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold text-gray-900">{{ number_format($activityCount) }}+</div>
+                            <div class="text-2xl font-bold text-gray-900">{{ number_format($visitorCount) }}+</div>
                             <div class="text-sm text-gray-500 font-medium">{{ __('welcome.stats.activity') }}</div>
                         </div>
                     </div>

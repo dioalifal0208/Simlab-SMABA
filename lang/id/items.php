@@ -48,6 +48,22 @@ return [
         'unit_placeholder' => 'Contoh: Pcs, Gram, Liter',
         'lab' => 'Laboratorium',
         'lab_prefix' => 'Lab',
+        // Dokumen Pendukung
+        'doc_section_title' => 'Dokumen Pendukung',
+        'doc_hint_alat' => 'Untuk alat ukur/instrumen, disarankan upload Manual Book. Untuk alat sederhana, upload SOP atau Instruksi Kerja (IK).',
+        'doc_hint_bahan' => 'Untuk bahan praktikum/zat kimia, disarankan upload dokumen MSDS (Material Safety Data Sheet).',
+        'doc_type_label' => 'Jenis Dokumen',
+        'doc_type_placeholder' => 'Pilih Jenis Dokumen',
+        'doc_types' => [
+            'manual_book' => 'Manual Book',
+            'sop_ik' => 'SOP / Instruksi Kerja',
+            'msds' => 'MSDS (Safety Data Sheet)',
+        ],
+        'doc_file_label' => 'Upload Dokumen',
+        'doc_replace_label' => 'Ganti Dokumen',
+        'doc_max_size' => 'Maks. 5MB',
+        'doc_current' => 'Dokumen yang sudah ada',
+        'doc_view' => 'Lihat',
     ],
 
     // Kategori
@@ -164,6 +180,14 @@ return [
         'scan_tip' => 'Scan untuk membuka detail item.',
         'user_actions' => 'Aksi Pengguna',
         'admin_actions' => 'Aksi Admin',
+        // Dokumen Pendukung
+        'doc_title' => 'Dokumen Pendukung',
+        'doc_generic' => 'Dokumen',
+        'doc_format' => 'Format PDF',
+        'doc_view' => 'Lihat',
+        'doc_download' => 'Unduh',
+        'doc_empty' => 'Belum ada dokumen pendukung untuk item ini.',
+        'doc_upload_cta' => 'Upload Dokumen',
     ],
 
     // Filter

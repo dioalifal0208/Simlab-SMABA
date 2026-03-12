@@ -37,6 +37,7 @@ Route::get('/test-lang', function() { return view('test-lang'); });
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Loan;
+use App\Models\VisitorCounter;
 
 // Halaman Landing Page
 Route::get('/', function () {
@@ -55,9 +56,9 @@ Route::get('/', function () {
     // Stats Dynamic
     $inventoryCount = Item::sum('jumlah');
     $teacherCount = User::where('role', 'guru')->count();
-    $activityCount = Booking::count() + Loan::count();
+    $visitorCount = VisitorCounter::incrementAndGet('landing');
 
-    return view('welcome', compact('testimonials', 'todayBookings', 'inventoryCount', 'teacherCount', 'activityCount'));
+    return view('welcome', compact('testimonials', 'todayBookings', 'inventoryCount', 'teacherCount', 'visitorCount'));
 })->middleware('no.cache')->name('welcome');
 
 

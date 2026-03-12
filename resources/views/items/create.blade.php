@@ -98,6 +98,31 @@
                                 <input id="photos" class="block mt-1 w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200" type="file" name="photos[]" multiple>
                             </div>
 
+                            {{-- Dokumen Pendukung (Manual Book / SOP / MSDS) --}}
+                            <div class="md:col-span-2 p-4 bg-gray-50 border border-gray-200 rounded-lg space-y-4" x-data="{ itemTipe: document.getElementById('tipe').value }" x-init="document.getElementById('tipe').addEventListener('change', (e) => { itemTipe = e.target.value })">
+                                <h4 class="text-sm font-bold text-gray-700 flex items-center gap-2">
+                                    <i class="fas fa-file-pdf text-red-500"></i> {{ __('items.form.doc_section_title') }}
+                                </h4>
+                                <p class="text-xs text-gray-500" x-show="itemTipe === 'Alat'">{{ __('items.form.doc_hint_alat') }}</p>
+                                <p class="text-xs text-gray-500" x-show="itemTipe === 'Bahan Habis Pakai'">{{ __('items.form.doc_hint_bahan') }}</p>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="dokumen_tipe" class="block text-sm font-medium text-gray-700">{{ __('items.form.doc_type_label') }} <span class="text-xs text-gray-400">{{ __('items.form.optional') }}</span></label>
+                                        <select name="dokumen_tipe" id="dokumen_tipe" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
+                                            <option value="">-- {{ __('items.form.doc_type_placeholder') }} --</option>
+                                            <option value="manual_book" @selected(old('dokumen_tipe') == 'manual_book')>📘 {{ __('items.form.doc_types.manual_book') }}</option>
+                                            <option value="sop_ik" @selected(old('dokumen_tipe') == 'sop_ik')>📋 {{ __('items.form.doc_types.sop_ik') }}</option>
+                                            <option value="msds" @selected(old('dokumen_tipe') == 'msds')>⚠️ {{ __('items.form.doc_types.msds') }}</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="dokumen" class="block text-sm font-medium text-gray-700">{{ __('items.form.doc_file_label') }} <span class="text-xs text-gray-400">PDF, {{ __('items.form.doc_max_size') }}</span></label>
+                                        <input id="dokumen" class="block mt-1 w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100" type="file" name="dokumen" accept=".pdf">
+                                    </div>
+                                </div>
+                            </div>
+
                             {{-- Deskripsi (Keterangan) --}}
                             <div class="md:col-span-2">
                                 <label for="deskripsi" class="block text-sm font-medium text-gray-700">{{ __('items.form.description_optional') }}</label>

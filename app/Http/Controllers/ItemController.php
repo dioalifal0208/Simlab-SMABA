@@ -98,6 +98,13 @@ class ItemController extends Controller
         $validated = $request->validated();
         $validated['user_id'] = $request->user()->id;
 
+        // Handle upload dokumen (Manual Book / SOP / MSDS)
+        if ($request->hasFile('dokumen')) {
+            $dokumenFile = $request->file('dokumen');
+            $dokumenFilename = uniqid() . '_' . time() . '.' . $dokumenFile->getClientOriginalExtension();
+            $validated['dokumen_path'] = $dokumenFile->storeAs('item-documents', $dokumenFilename, 'public');
+        }
+
         // Buat item tanpa foto terlebih dahulu
         $item = Item::create($validated);
 
@@ -182,6 +189,17 @@ class ItemController extends Controller
         // Authorization dan validation sudah di-handle di UpdateItemRequest
         $validated = $request->validated();
 
+        // Handle upload dokumen baru (replace jika sudah ada)
+        if ($request->hasFile('dokumen')) {
+            // Hapus dokumen lama dari storage jika ada
+            if ($item->dokumen_path) {
+                Storage::disk('public')->delete($item->dokumen_path);
+            }
+            $dokumenFile = $request->file('dokumen');
+            $dokumenFilename = uniqid() . '_' . time() . '.' . $dokumenFile->getClientOriginalExtension();
+            $validated['dokumen_path'] = $dokumenFile->storeAs('item-documents', $dokumenFilename, 'public');
+        }
+
         // Update data item
         $item->update($validated);
 
@@ -255,6 +273,12 @@ class ItemController extends Controller
         foreach ($item->images as $image) {
             Storage::disk('public')->delete($image->path);
         }
+
+        // Hapus dokumen terkait dari storage
+        if ($item->dokumen_path) {
+            Storage::disk('public')->delete($item->dokumen_path);
+        }
+
         // Relasi diatur dengan onDelete('cascade'), jadi record di item_images akan terhapus otomatis
         // saat item dihapus.
 

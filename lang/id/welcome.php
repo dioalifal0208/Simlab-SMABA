@@ -12,7 +12,7 @@ return [
     'stats' => [
         'items' => 'Item Inventaris',
         'teachers' => 'Guru Aktif',
-        'activity' => 'Aksi Teratat',
+        'activity' => 'Pengunjung',
     ],
     'features' => [
         'title' => 'Semua Fitur dalam Satu Platform',
