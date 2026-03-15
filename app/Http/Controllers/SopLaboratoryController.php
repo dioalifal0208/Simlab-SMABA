@@ -19,9 +19,9 @@ class SopLaboratoryController extends Controller
             'Komputer 1', 'Komputer 2', 'Komputer 3', 'Komputer 4'
         ];
 
-        $sops = SopLaboratory::all()->keyBy('laboratorium');
+        $sopLaboratories = SopLaboratory::all();
 
-        return view('admin.sop-laboratories.index', compact('laboratories', 'sops'));
+        return view('admin.sop-laboratories.index', compact('laboratories', 'sopLaboratories'));
     }
 
     /**
@@ -31,7 +31,7 @@ class SopLaboratoryController extends Controller
     {
         $request->validate([
             'laboratorium' => ['required', Rule::in(['Biologi', 'Fisika', 'Bahasa', 'Komputer 1', 'Komputer 2', 'Komputer 3', 'Komputer 4'])],
-            'sop_file' => ['required', 'file', 'mimes:pdf', 'max:5120'], // Max 5MB PDF
+            'file' => ['required', 'file', 'mimes:pdf', 'max:5120'], // Max 5MB PDF
         ]);
 
         $sop = SopLaboratory::where('laboratorium', $request->laboratorium)->first();
@@ -43,7 +43,7 @@ class SopLaboratoryController extends Controller
 
         // Upload new file
         $fileName = 'sop_' . str_replace(' ', '_', strtolower($request->laboratorium)) . '_' . time() . '.pdf';
-        $path = $request->file('sop_file')->storeAs('sops', $fileName, 'public');
+        $path = $request->file('file')->storeAs('sops', $fileName, 'public');
 
         // Create or update record
         SopLaboratory::updateOrCreate(
