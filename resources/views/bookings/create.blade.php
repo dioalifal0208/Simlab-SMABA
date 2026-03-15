@@ -138,5 +138,49 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Blokir Sabtu, Minggu, dan Hari Libur pada Pemilihan Tanggal ---
+            const dateInputs = document.querySelectorAll('input[type="datetime-local"]');
+            
+            // Daftar hari libur nasional Indonesia tahun 2026 (YYYY-MM-DD)
+            const holidays = [
+                '2026-01-01', '2026-02-17', '2026-03-20', '2026-03-22', '2026-03-23',
+                '2026-04-03', '2026-05-01', '2026-05-14', '2026-05-29', '2026-06-01',
+                '2026-06-18', '2026-08-17', '2026-08-27', '2026-12-25'
+            ];
+
+            dateInputs.forEach(input => {
+                input.addEventListener('change', function(e) {
+                    if (!this.value) return;
+                    
+                    const date = new Date(this.value);
+                    
+                    // 1. Cek Akhir Pekan (Sabtu/Minggu)
+                    const day = date.getDay(); // 0 = Sunday, 6 = Saturday
+                    if (day === 0 || day === 6) {
+                        alert('Laboratorium tidak dapat dibooking pada hari Sabtu atau Minggu. Silakan pilih hari kerja (Senin-Jumat).');
+                        this.value = ''; // Reset the input
+                        return;
+                    }
+
+                    // 2. Cek Hari Libur Nasional
+                    // Format ke YYYY-MM-DD untuk pencocokan
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const dateNum = String(date.getDate()).padStart(2, '0');
+                    const dateString = `${year}-${month}-${dateNum}`;
+                    
+                    if (holidays.includes(dateString)) {
+                        alert(`Laboratorium tidak dapat dibooking pada hari libur nasional (${dateString}). Silakan pilih tanggal lain.`);
+                        this.value = ''; // Reset the input
+                    }
+                });
+            });
+        });
+    </script>
+    @endpush
 </x-app-layout>
 

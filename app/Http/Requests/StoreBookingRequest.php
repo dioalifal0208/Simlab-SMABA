@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\NotWeekend;
 
 class StoreBookingRequest extends FormRequest
 {
@@ -33,8 +34,8 @@ class StoreBookingRequest extends FormRequest
             'phone_number' => 'nullable|string|max:20',
 
             'laboratorium' => 'required|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4',
-            'waktu_mulai' => 'required|date',
-            'waktu_selesai' => 'required|date|after:waktu_mulai',
+            'waktu_mulai' => ['required', 'date', new NotWeekend],
+            'waktu_selesai' => ['required', 'date', 'after:waktu_mulai', new NotWeekend],
             'jumlah_peserta' => 'nullable|integer|min:1',
         ];
     }

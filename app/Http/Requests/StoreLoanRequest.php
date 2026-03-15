@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\NotWeekend;
 
 class StoreLoanRequest extends FormRequest
 {
@@ -40,8 +41,8 @@ class StoreLoanRequest extends FormRequest
             'kelas' => 'nullable|string|max:50',
             'phone_number' => 'nullable|string|max:20',
 
-            'waktu_mulai' => 'required|date|after_or_equal:today',
-            'waktu_selesai' => 'required|date|after:waktu_mulai',
+            'waktu_mulai' => ['required', 'date', 'after_or_equal:today', new NotWeekend],
+            'waktu_selesai' => ['required', 'date', 'after:waktu_mulai', new NotWeekend],
             'jumlah_peserta' => 'nullable|integer|min:1',
         ];
     }
