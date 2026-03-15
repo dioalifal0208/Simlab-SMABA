@@ -55,6 +55,11 @@ return [
         'all_labs' => 'Semua Laboratorium',
     ],
 
+    // Label
+    'labels' => [
+        'diajukan_oleh' => 'Diajukan oleh',
+    ],
+
     // Satuan
     'units' => [
         'item' => 'item',
@@ -76,6 +81,7 @@ return [
         'view' => 'Lihat Detail',
         'edit' => 'Edit',
         'delete' => 'Hapus',
+        'delete_request' => 'Hapus Pengajuan',
     ],
 
     // Pesan

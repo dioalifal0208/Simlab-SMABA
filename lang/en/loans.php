@@ -30,6 +30,11 @@ return [
         'notes' => 'Notes',
     ],
 
+    // Labels
+    'labels' => [
+        'diajukan_oleh' => 'Submitted by',
+    ],
+
     // Status
     'status' => [
         'pending' => 'Pending',
@@ -48,6 +53,7 @@ return [
         'view' => 'View Details',
         'edit' => 'Edit',
         'delete' => 'Delete',
+        'delete_request' => 'Delete Request',
     ],
 
     // Messages
