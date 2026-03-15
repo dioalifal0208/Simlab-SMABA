@@ -209,7 +209,11 @@
                             <div class="space-y-4">
                                 @forelse (($recentActivities ?? collect())->values() as $index => $activity)
                                 <div class="flex items-start gap-4 p-4 rounded-lg hover:bg-gray-50 transition-colors"
-                                     x-show="isVisible({{ $index }})" x-transition>
+                                     style="display: {{ $index < 5 ? 'flex' : 'none' }};"
+                                     x-show="isVisible({{ $index }})" 
+                                     x-transition:enter="transition ease-out duration-300"
+                                     x-transition:enter-start="opacity-0 translate-y-4"
+                                     x-transition:enter-end="opacity-100 translate-y-0">
                                     <div class="flex-shrink-0">
                                         @if ($activity instanceof \App\Models\Loan)
                                         <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
