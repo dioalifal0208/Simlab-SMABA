@@ -96,9 +96,13 @@
               isModalOpen: false,
               sidebarOpen: false,
               sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
+              isSidebarMounted: false,
               toast: { visible: false, message: '', type: 'success' }
           }"
-          x-init="$watch('showImportModal', value => isModalOpen = value)"
+          x-init="
+            $watch('showImportModal', value => isModalOpen = value);
+            setTimeout(() => isSidebarMounted = true, 50);
+          "
           @modal-state-changed.window="isModalOpen = $event.detail.open"
           @show-toast.window="toast.visible = true; toast.message = $event.detail.message; toast.type = $event.detail.type; setTimeout(() => toast.visible = false, 3000)">
           
@@ -108,7 +112,8 @@
             @endunless
 
             {{-- MAIN WRAPPER: position:fixed, left mengikuti sidebar width --}}
-            <div id="main-wrapper" class="transition-all duration-300 flex flex-col"
+            <div id="main-wrapper" class="flex flex-col"
+                 :class="{ 'transition-all duration-300': isSidebarMounted }"
                  :style="window.innerWidth >= 1024 ? 'left:' + (sidebarCollapsed ? '64px' : '260px') : ''">
 
                 {{-- BANNER PENGUMUMAN GLOBAL --}}

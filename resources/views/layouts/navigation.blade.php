@@ -152,35 +152,27 @@
      SIDEBAR — fixed left
      ================================================================ --}}
 <aside id="main-sidebar"
-       class="-translate-x-full lg:translate-x-0 transition-all duration-300 ease-in-out"
+       class="-translate-x-full lg:translate-x-0 ease-in-out"
        :class="{
-           'translate-x-0 shadow-xl lg:shadow-none': sidebarOpen
+           'translate-x-0 shadow-xl lg:shadow-none': sidebarOpen,
+           'transition-all duration-300': isSidebarMounted
        }"
-       :style="'position:fixed; top:0; left:0; height:100vh; width:' + (sidebarCollapsed && window.innerWidth >= 1024 ? '64px' : '260px') + '; background:white; border-right:1px solid #e5e7eb; z-index:40; display:flex; flex-direction:column;'">
+       :style="'position:fixed; top:0; left:0; height:100vh; width:' + (sidebarCollapsed && window.innerWidth >= 1024 ? '80px' : '260px') + '; background:white; border-right:1px solid #e5e7eb; z-index:40; display:flex; flex-direction:column;'">
 
     {{-- ── Sidebar Header ── --}}
-    <div class="h-14 flex items-center border-b border-gray-100 flex-shrink-0"
-         :class="sidebarCollapsed ? 'px-2 justify-center' : 'px-4 gap-4'">
+    <div class="h-14 flex items-center border-b border-gray-100 flex-shrink-0 justify-center px-4">
         {{-- Logo + Brand --}}
-        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 min-w-0" x-show="!sidebarCollapsed">
+        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 min-w-0 mx-auto" x-show="!sidebarCollapsed">
             <img src="{{ asset('images/logo-smaba.webp') }}" alt="Logo" class="w-8 h-8 rounded-lg flex-shrink-0 object-contain">
-            <span class="font-bold text-gray-900 text-sm truncate sidebar-label">LAB SMABA</span>
+            <span class="font-bold text-gray-900 text-sm truncate sidebar-label text-center">LAB SMABA</span>
         </a>
         {{-- Logo only (collapsed) --}}
-        <a href="{{ route('dashboard') }}" x-show="sidebarCollapsed" class="flex-shrink-0">
+        <a href="{{ route('dashboard') }}" x-show="sidebarCollapsed" class="flex-shrink-0 mx-auto">
             <img src="{{ asset('images/logo-smaba.webp') }}" alt="Logo" class="w-8 h-8 rounded-lg object-contain">
         </a>
 
-        {{-- Toggle collapse button (desktop only) --}}
-        <button @click="sidebarCollapsed = !sidebarCollapsed; localStorage.setItem('sidebarCollapsed', sidebarCollapsed); document.body.classList.toggle('sidebar-collapsed', sidebarCollapsed)"
-                class="hidden lg:flex ml-auto p-2.5 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors flex-shrink-0"
-                :class="sidebarCollapsed ? 'ml-0' : 'ml-auto'"
-                title="Toggle Sidebar">
-            <i class="fas text-sm" :class="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
-        </button>
-
         {{-- Mobile close button --}}
-        <button @click="sidebarOpen = false" class="ml-auto p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 lg:hidden">
+        <button @click="sidebarOpen = false" class="absolute right-3 p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 lg:hidden">
             <i class="fas fa-xmark text-sm"></i>
         </button>
     </div>
@@ -302,10 +294,10 @@
     </nav>
 
     {{-- ── Sidebar Footer ── --}}
-    <div class="border-t border-gray-100 p-3 flex-shrink-0 space-y-0.5" x-show="!sidebarCollapsed" x-transition>
+    <div class="border-t border-gray-100 p-3 flex-shrink-0 space-y-2 relative" :class="sidebarCollapsed ? 'px-2' : ''">
         {{-- User info --}}
-        <div class="sidebar-item group text-gray-600 rounded-lg bg-gray-50 cursor-default">
-            <div class="w-7 h-7 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+        <div class="sidebar-item group text-gray-600 rounded-lg bg-gray-50 cursor-default" x-show="!sidebarCollapsed" x-transition>
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
             </div>
             <div class="flex-1 min-w-0 sidebar-label">
@@ -313,6 +305,15 @@
                 <p class="text-[10px] text-gray-400 capitalize leading-tight">{{ Auth::user()->role }} · {{ Auth::user()->laboratorium ?? 'Semua Lab' }}</p>
             </div>
         </div>
+
+        {{-- Toggle collapse button (desktop only) - Moved to bottom --}}
+        <button @click="sidebarCollapsed = !sidebarCollapsed; localStorage.setItem('sidebarCollapsed', sidebarCollapsed); document.body.classList.toggle('sidebar-collapsed', sidebarCollapsed)"
+                class="hidden lg:flex w-full items-center p-2 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors border border-transparent hover:border-gray-200"
+                :class="sidebarCollapsed ? 'justify-center' : 'justify-start gap-3'"
+                title="Toggle Sidebar">
+            <i class="fas text-sm" :class="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+            <span class="text-xs font-semibold sidebar-label" x-show="!sidebarCollapsed">Tutup Sidebar</span>
+        </button>
     </div>
 
 </aside>
@@ -322,36 +323,45 @@
      ================================================================ --}}
 <style>
 /* Section label */
-.sidebar-section { margin-bottom: 4px; }
+.sidebar-section { margin-bottom: 6px; }
 .sidebar-section-label {
-    font-size: 9.5px;
+    font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: #9ca3af;
-    padding: 8px 10px 4px;
+    padding: 12px 12px 6px;
+    transition: opacity 0.2s;
 }
 
 /* Nav item */
 .sidebar-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 8px 10px;
-    border-radius: 8px;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
     font-size: 13.5px;
-    transition: background 0.15s, color 0.15s;
+    transition: all 0.2s ease;
     text-decoration: none;
     position: relative;
+    border: 1px solid transparent;
+}
+.sidebar-item:hover {
+    border-color: #f3f4f6;
+    transform: translateX(2px);
 }
 
 /* Icon */
 .sidebar-icon {
-    font-size: 14px;
-    width: 18px;
+    font-size: 15px;
+    width: 20px;
     text-align: center;
     flex-shrink: 0;
-    transition: color 0.15s;
+    transition: color 0.2s, transform 0.2s;
+}
+.sidebar-item:hover .sidebar-icon {
+    transform: scale(1.1);
 }
 
 /* Active dot */
@@ -373,41 +383,76 @@
     }
     body.sidebar-collapsed .sidebar-item {
         justify-content: center;
-        padding: 10px;
+        padding: 12px;
         gap: 0;
+    }
+    body.sidebar-collapsed .sidebar-item:hover {
+        transform: translateX(0);
     }
     body.sidebar-collapsed .sidebar-icon {
         width: auto;
-        font-size: 16px;
+        font-size: 18px;
     }
     body.sidebar-collapsed .sidebar-section {
-        margin-bottom: 2px;
+        margin-bottom: 4px;
+        padding-top: 8px;
+        border-top: 1px dashed #f3f4f6;
     }
+    body.sidebar-collapsed .sidebar-section:first-child {
+        border-top: none;
+        padding-top: 0;
+    }
+    
     /* Tooltip on hover when collapsed */
     body.sidebar-collapsed .sidebar-item {
         position: relative;
     }
-    body.sidebar-collapsed .sidebar-item:hover::after {
+    body.sidebar-collapsed .sidebar-item::after {
         content: attr(title);
         position: absolute;
-        left: calc(100% + 8px);
+        left: calc(100% + 12px);
         top: 50%;
-        transform: translateY(-50%);
+        transform: translateY(-50%) translateX(10px);
         background: #1e293b;
         color: white;
         font-size: 12px;
-        padding: 4px 10px;
-        border-radius: 6px;
+        padding: 6px 12px;
+        border-radius: 8px;
         white-space: nowrap;
         z-index: 999;
         pointer-events: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
+    body.sidebar-collapsed .sidebar-item::before {
+        content: '';
+        position: absolute;
+        left: calc(100% + 6px);
+        top: 50%;
+        transform: translateY(-50%);
+        border-width: 6px;
+        border-style: solid;
+        border-color: transparent #1e293b transparent transparent;
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+    }
+    body.sidebar-collapsed .sidebar-item:hover::after,
+    body.sidebar-collapsed .sidebar-item:hover::before {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) translateX(0);
     }
 }
 
 /* Scrollbar in sidebar */
-#sidebar-nav::-webkit-scrollbar { width: 3px; }
+#sidebar-nav::-webkit-scrollbar { width: 4px; }
 #sidebar-nav::-webkit-scrollbar-track { background: transparent; }
-#sidebar-nav::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+#sidebar-nav::-webkit-scrollbar-thumb { background: transparent; border-radius: 10px; transition: background 0.3s; }
+#sidebar-nav:hover::-webkit-scrollbar-thumb { background: #d1d5db; }
 </style>
 
 {{-- Sidebar collapse: restore state from localStorage --}}
