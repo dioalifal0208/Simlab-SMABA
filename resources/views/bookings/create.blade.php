@@ -30,7 +30,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('bookings.store') }}" method="POST" class="space-y-6" id="bookingForm" x-data="{ showSopModal: false, hasReadSop: false }">
+                    <form action="{{ route('bookings.store') }}" method="POST" class="space-y-6" id="bookingForm" x-data="{ showSopModal: false, agreedToSop: false, isLoadingPdf: false, pdfUrl: '' }">
                         @csrf
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -132,7 +132,26 @@
                             <button type="button" @click="
                                 if(document.getElementById('bookingForm').checkValidity()) {
                                     showSopModal = true;
-                                    hasReadSop = false;
+                                    agreedToSop = false;
+                                    
+                                    // Fetch PDF URL via AJAX
+                                    const selectedLab = document.getElementById('laboratorium').value;
+                                    isLoadingPdf = true;
+                                    pdfUrl = '';
+                                    
+                                    fetch(`/api/sop-url?lab=${encodeURIComponent(selectedLab)}`)
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            if(data.exists) {
+                                                pdfUrl = data.url;
+                                            }
+                                            isLoadingPdf = false;
+                                        })
+                                        .catch(err => {
+                                            console.error('Error fetching SOP:', err);
+                                            isLoadingPdf = false;
+                                        });
+
                                 } else {
                                     document.getElementById('bookingForm').reportValidity();
                                 }
@@ -153,47 +172,65 @@
                                     <div x-show="showSopModal" @click.away="showSopModal = false"
                                         x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
                                         x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
-                                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
+                                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full max-w-4xl">
                                         
-                                        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                            <div class="sm:flex sm:items-start">
+                                        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 flex flex-col h-[80vh]">
+                                            <div class="sm:flex sm:items-start flex-shrink-0">
                                                 <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                                                    <i class="fas fa-file-contract text-blue-600"></i>
+                                                    <i class="fas fa-file-pdf text-blue-600"></i>
                                                 </div>
                                                 <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
                                                     <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Standar Operasional Prosedur (SOP) Laboratorium</h3>
-                                                    <div class="mt-2 text-sm text-gray-500 mb-4">
-                                                        <p>Silakan gulir (scroll) dan baca seluruh syarat dan ketentuan di bawah ini untuk dapat menyetujui jadwal lab.</p>
-                                                    </div>
-                                                    
-                                                    {{-- Scrollable Content Box --}}
-                                                    <div class="mt-4 bg-gray-50 border border-gray-200 rounded-md p-4 h-64 overflow-y-auto w-full text-sm text-gray-700 space-y-3"
-                                                         @scroll="
-                                                            const bottom = $event.target.scrollHeight - $event.target.scrollTop <= $event.target.clientHeight + 2;
-                                                            if(bottom) hasReadSop = true;
-                                                         ">
-                                                        <h4 class="font-bold text-gray-900">1. Ketentuan Umum</h4>
-                                                        <p>1.1. Peminjam bertanggung jawab penuh atas segala alat, bahan, dan ruangan laboratorium selama masa peminjaman.</p>
-                                                        <p>1.2. Peminjaman laboratorium harus diajukan minimal 1 hari sebelum kegiatan (H-1).</p>
-                                                        <p>1.3. Peminjam wajib memastikan ruangan dalam keadaan bersih dan rapi setelah kegiatan selesai dilaksanakan.</p>
-                                                        
-                                                        <h4 class="font-bold text-gray-900 mt-4">2. Kesehatan dan Keselamatan Kerja (K3)</h4>
-                                                        <p>2.1. Pengguna laboratorium diwajibkan mematuhi standar K3 yang berlaku di masing-masing ruangan yang dipinjam.</p>
-                                                        <p>2.2. Segala bentuk kecelakaan kerja di dalam laboratorium harus segera dilaporkan kepada Kepala Laboratorium / Petugas yang berwenang.</p>
-
-                                                        <h4 class="font-bold text-gray-900 mt-4">3. Persetujuan</h4>
-                                                        <p>Dengan mengajukan permohonan ini, Anda secara sadar telah membaca, memahami, dan menyetujui segala aturan yang berlaku di Laboratorium SMABA.</p>
-                                                        <p class="text-xs text-gray-400 mt-6">(Scroll hingga baris ini untuk menyetujui)</p>
+                                                    <div class="mt-2 text-sm text-gray-500 mb-2">
+                                                        <p>Silakan baca dokumen syarat dan ketentuan di bawah ini secara saksama.</p>
                                                     </div>
                                                 </div>
                                             </div>
+                                            
+                                            {{-- PDF Viewer Container --}}
+                                            <div class="mt-4 border border-gray-200 rounded-md bg-gray-50 flex-grow relative overflow-hidden">
+                                                
+                                                {{-- Loading State --}}
+                                                <div x-show="isLoadingPdf" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10">
+                                                    <i class="fas fa-spinner fa-spin text-3xl text-blue-500 mb-2"></i>
+                                                    <p class="text-sm text-gray-500">Memuat dokumen SOP...</p>
+                                                </div>
+
+                                                {{-- Error/Empty State --}}
+                                                <div x-show="!isLoadingPdf && !pdfUrl" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10 text-center p-6">
+                                                    <i class="fas fa-file-circle-xmark text-4xl text-gray-400 mb-3"></i>
+                                                    <h3 class="text-lg font-medium text-gray-900">SOP Belum Tersedia</h3>
+                                                    <p class="text-sm text-gray-500 mt-1">Admin belum mengunggah dokumen SOP untuk laboratorium ini.</p>
+                                                    <p class="text-sm text-gray-500 mt-2">Anda tetap dapat melanjutkan proses pemesanan.</p>
+                                                </div>
+
+                                                {{-- iframe for PDF --}}
+                                                <template x-if="pdfUrl">
+                                                    <iframe :src="pdfUrl + '#toolbar=0'" class="w-full h-full border-0 absolute inset-0">
+                                                        Sayang sekali, peramban Anda tidak mendukung penayangan PDF bawaan.
+                                                    </iframe>
+                                                </template>
+                                            </div>
+
+                                            {{-- Checkbox Persetujuan --}}
+                                            <div class="mt-4 p-3 bg-blue-50 border border-blue-100 rounded-md flex-shrink-0">
+                                                <label class="flex items-start space-x-3 cursor-pointer">
+                                                    <div class="flex items-center h-5">
+                                                        <input type="checkbox" x-model="agreedToSop" class="w-5 h-5 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                                    </div>
+                                                    <div class="flex-1 text-sm text-gray-700">
+                                                        <span class="font-medium text-gray-900">Saya Setuju</span>
+                                                        <p class="text-gray-500 inline">Dengan mencentang kotak ini, saya menyatakan telah membaca, memahami, dan menyetujui seluruh Standar Operasional Prosedur yang berlaku.</p>
+                                                    </div>
+                                                </label>
+                                            </div>
                                         </div>
                                         
-                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 flex-shrink-0">
                                             <button type="submit" 
                                                 form="bookingForm"
-                                                :class="hasReadSop ? 'bg-green-600 hover:bg-green-500' : 'bg-gray-300 cursor-not-allowed'"
-                                                :disabled="!hasReadSop"
+                                                :class="(agreedToSop || (!isLoadingPdf && !pdfUrl)) ? 'bg-green-600 hover:bg-green-500' : 'bg-gray-300 cursor-not-allowed'"
+                                                :disabled="!(agreedToSop || (!isLoadingPdf && !pdfUrl))"
                                                 class="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto transition-colors">
                                                 Saya Setuju & Simpan Jadwal
                                             </button>

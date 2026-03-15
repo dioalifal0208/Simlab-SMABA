@@ -26,6 +26,7 @@ use App\Http\Controllers\ContactConversationController;
 use App\Http\Controllers\AdminContactConversationController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\GlobalSearchController;
+use App\Http\Controllers\SopLaboratoryController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -74,6 +75,9 @@ Route::middleware(['auth', 'single.session'])->group(function () {
 
     // Global Search
     Route::get('/search', [GlobalSearchController::class, 'search'])->name('search.global');
+
+    // API Internal
+    Route::get('/api/sop-url', [SopLaboratoryController::class, 'getSopUrl'])->name('api.sop.url');
 
     // Percakapan dengan Admin
     Route::get('/contact-conversations', [ContactConversationController::class, 'index'])->name('contact.conversations.index');
@@ -142,6 +146,11 @@ Route::middleware(['auth', 'single.session'])->group(function () {
         // Menggunakan POST agar selaras dengan form HTML (tanpa spoofing method DELETE)
         Route::post('/items/delete-multiple', [ItemController::class, 'deleteMultiple'])->name('items.delete-multiple');
         // ==============================================
+
+        // Manajemen SOP Laboratorium
+        Route::get('/sop-laboratories', [SopLaboratoryController::class, 'index'])->name('admin.sop-laboratories.index');
+        Route::post('/sop-laboratories', [SopLaboratoryController::class, 'store'])->name('admin.sop-laboratories.store');
+        Route::delete('/sop-laboratories/{sopLaboratory}', [SopLaboratoryController::class, 'destroy'])->name('admin.sop-laboratories.destroy');
 
         // Manajemen User
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
