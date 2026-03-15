@@ -28,9 +28,16 @@ class BookingController extends Controller
             $query->where('user_id', Auth::id());
         }
 
-        // Kunci laboratorium sesuai penugasan guru
-        if (Auth::user()->role === 'guru' && Auth::user()->laboratorium) {
-            $request->merge(['laboratorium' => Auth::user()->laboratorium]);
+        // Kunci laboratorium sesuai penugasan guru JIKA request laboratorium kosong atau guru ingin melihat labnya.
+        // Tapi sebenarnya untuk melihat riwayat peminjaman BUKAN jadwal, user harusnya bisa melihat SEMUA riwayat miliknya sendiri.
+        // Namun karena ini digabung, mari kita pastikan user biasa (guru/siswa) tetap melihat SEMUA booking milik mereka,
+        // sedangkan filter 'laboratorium' hanya berlaku jika mereka secara eksplisit memilihnya dari dropdown,
+        // KECUALI jika ingin membatasi Admin/Guru melihat jadwal lab tertentu.
+        if (Auth::user()->role === 'guru' && Auth::user()->laboratorium && !$request->filled('laboratorium')) {
+            // Uncomment this if we really want gurus to ONLY see their own lab by default.
+            // Tapi agar mereka bisa melihat request mereka ke lab lain (jika dulu pernah), lebih baik tidak re-assign.
+            // $request->merge(['laboratorium' => Auth::user()->laboratorium]);
+            // For now, let's just let the explicit filter in the UI handle it.
         }
 
         // Menerapkan filter status jika ada dari request URL.
