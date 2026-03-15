@@ -49,16 +49,56 @@
                                 @endif
                             </div>
 
-                            {{-- Tanggal Pinjam & Kembali --}}
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="tanggal_pinjam" class="block font-medium text-sm text-gray-700">Tanggal Rencana Peminjaman</label>
-                                    <input type="date" name="tanggal_pinjam" id="tanggal_pinjam" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" value="{{ old('tanggal_pinjam') }}" required>
-                                    <p class="text-xs text-amber-600 mt-1">Pengajuan maksimal H-1 dari tanggal pinjam (tidak bisa hari ini).</p>
+                            {{-- Detail Kegiatan & Booking Lab --}}
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 bg-gray-50 border border-gray-200 rounded-xl">
+                                <div class="md:col-span-2 mb-1">
+                                    <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider border-b pb-2 border-gray-200"><i class="fas fa-clipboard-list mr-2 text-indigo-500"></i> Detail Penggunaan Lab</h3>
                                 </div>
+                                
+                                {{-- Nama Guru Pengampu --}}
+                                <div class="md:col-span-2">
+                                    <label for="guru_pengampu" class="block font-medium text-sm text-gray-700">Nama Guru Pengampu</label>
+                                    <input id="guru_pengampu" type="text" name="guru_pengampu" value="{{ old('guru_pengampu', Auth::user()->name) }}" required 
+                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 placeholder-gray-300"
+                                        placeholder="Contoh: Budi Santoso, S.Pd.">
+                                </div>
+
+                                {{-- Jumlah Peserta --}}
                                 <div>
-                                    <label for="tanggal_estimasi_kembali" class="block font-medium text-sm text-gray-700">Estimasi Tanggal Kembali</label>
-                                    <input type="date" name="tanggal_estimasi_kembali" id="tanggal_estimasi_kembali" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" value="{{ old('tanggal_estimasi_kembali') }}" required>
+                                    <label for="jumlah_peserta" class="block font-medium text-sm text-gray-700">Jumlah Peserta <span class="text-[10px] italic text-gray-500">(Opsional)</span></label>
+                                    <input id="jumlah_peserta" type="number" name="jumlah_peserta" value="{{ old('jumlah_peserta') }}" 
+                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 placeholder-gray-300"
+                                        placeholder="Contoh: 30">
+                                </div>
+
+                                {{-- Mata Pelajaran --}}
+                                <div>
+                                    <label for="mata_pelajaran" class="block font-medium text-sm text-gray-700">Mata Pelajaran <span class="text-[10px] italic text-gray-500">(Opsional)</span></label>
+                                    <input id="mata_pelajaran" type="text" name="mata_pelajaran" value="{{ old('mata_pelajaran') }}" 
+                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 placeholder-gray-300"
+                                        placeholder="Contoh: Biologi Reproduksi">
+                                </div>
+
+                                {{-- Tujuan Kegiatan --}}
+                                <div class="md:col-span-2">
+                                    <label for="tujuan_kegiatan" class="block font-medium text-sm text-gray-700">Tujuan Kegiatan / Judul Praktikum</label>
+                                    <textarea id="tujuan_kegiatan" name="tujuan_kegiatan" rows="2" required 
+                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 placeholder-gray-300"
+                                        placeholder="Jelaskan secara ringkas kegiatan yang akan dilakukan...">{{ old('tujuan_kegiatan') }}</textarea>
+                                </div>
+
+                                {{-- Waktu Mulai --}}
+                                <div>
+                                    <label for="waktu_mulai" class="block font-medium text-sm text-gray-700">Waktu Mulai</label>
+                                    <input id="waktu_mulai" type="datetime-local" name="waktu_mulai" value="{{ old('waktu_mulai') }}" required 
+                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                </div>
+
+                                {{-- Waktu Selesai --}}
+                                <div>
+                                    <label for="waktu_selesai" class="block font-medium text-sm text-gray-700">Waktu Selesai</label>
+                                    <input id="waktu_selesai" type="datetime-local" name="waktu_selesai" value="{{ old('waktu_selesai') }}" required 
+                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
                                 </div>
                             </div>
 

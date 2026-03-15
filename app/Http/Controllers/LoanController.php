@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Loan;
+use App\Models\Booking;
 use App\Models\User;
 use App\Services\FonnteService;
 use App\Http\Requests\StoreLoanRequest;
@@ -18,6 +19,7 @@ use App\Notifications\LoanStatusUpdated;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewLoanRequest;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 
 class LoanController extends Controller
@@ -111,10 +113,51 @@ class LoanController extends Controller
     }
     // --- Akhir Validasi Stok ---
 
+    // --- VALIDASI JADWAL BOOKING BENTROK ---
+    $isConflict = Booking::where('status', 'approved')
+        ->where('laboratorium', $laboratoriumDipilih)
+        ->where(function ($query) use ($validated) {
+            $query->where('waktu_mulai', '<', $validated['waktu_selesai'])
+                  ->where('waktu_selesai', '>', $validated['waktu_mulai']);
+        })
+        ->exists();
 
-    $loan = $request->user()->loans()->create([
-        'tanggal_pinjam' => $request->tanggal_pinjam,
-        'tanggal_estimasi_kembali' => $request->tanggal_estimasi_kembali,
+    if ($isConflict) {
+        return back()->withErrors([
+            'waktu_mulai' => 'Jadwal yang Anda pilih bentrok dengan booking lab lain yang sudah disetujui. Silakan pilih waktu yang berbeda.'
+        ])->withInput();
+    }
+    // ----------------------------------------
+
+    // --- UPDATE PROFILE USER ON-THE-FLY ---
+    $user = $request->user();
+    if ($request->hasAny(['nomor_induk', 'kelas', 'phone_number'])) {
+        $user->update([
+            'nomor_induk' => $request->nomor_induk ?? $user->nomor_induk,
+            'kelas' => $request->kelas ?? $user->kelas,
+            'phone_number' => $request->phone_number ?? $user->phone_number,
+        ]);
+    }
+    // ---------------------------------------
+
+    // --- CREATE BOOKING RECORD ---
+    $booking = Booking::create([
+        'user_id' => $user->id,
+        'guru_pengampu' => $validated['guru_pengampu'],
+        'tujuan_kegiatan' => $validated['tujuan_kegiatan'],
+        'mata_pelajaran' => $validated['mata_pelajaran'] ?? null,
+        'status' => 'pending',
+        'laboratorium' => $laboratoriumDipilih,
+        'waktu_mulai' => $validated['waktu_mulai'],
+        'waktu_selesai' => $validated['waktu_selesai'],
+        'jumlah_peserta' => $validated['jumlah_peserta'] ?? null,
+    ]);
+    // -----------------------------
+
+    // --- CREATE LOAN RECORD ---
+    $loan = $user->loans()->create([
+        'tanggal_pinjam' => date('Y-m-d', strtotime($validated['waktu_mulai'])),
+        'tanggal_estimasi_kembali' => date('Y-m-d', strtotime($validated['waktu_selesai'])),
         'status' => 'pending',
         'catatan' => $request->catatan,
         'laboratorium' => $laboratoriumDipilih,

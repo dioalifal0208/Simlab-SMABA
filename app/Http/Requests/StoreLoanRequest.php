@@ -23,13 +23,26 @@ class StoreLoanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tanggal_pinjam' => 'required|date|after_or_equal:today',
-            'tanggal_estimasi_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
+            // Field untuk Item
             'items' => 'required|array|min:1',
             'items.*' => 'exists:items,id',
             'jumlah.*' => 'nullable|integer|min:1',
             'laboratorium' => 'required|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4',
             'catatan' => 'nullable|string|max:1000',
+
+            // Field untuk Booking Lab
+            'guru_pengampu' => 'required|string|max:255',
+            'tujuan_kegiatan' => 'required|string',
+            'mata_pelajaran' => 'nullable|string|max:255',
+            
+            // Profile user update
+            'nomor_induk' => 'nullable|string|max:50',
+            'kelas' => 'nullable|string|max:50',
+            'phone_number' => 'nullable|string|max:20',
+
+            'waktu_mulai' => 'required|date|after_or_equal:today',
+            'waktu_selesai' => 'required|date|after:waktu_mulai',
+            'jumlah_peserta' => 'nullable|integer|min:1',
         ];
     }
 
@@ -41,13 +54,13 @@ class StoreLoanRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'tanggal_pinjam.required' => 'Tanggal pinjam wajib diisi.',
-            'tanggal_pinjam.date' => 'Tanggal pinjam harus berupa tanggal yang valid.',
-            'tanggal_pinjam.after_or_equal' => 'Tanggal pinjam harus hari ini atau setelahnya.',
+            'waktu_mulai.required' => 'Waktu mulai wajib diisi.',
+            'waktu_mulai.date' => 'Waktu mulai harus berupa tanggal yang valid.',
+            'waktu_mulai.after_or_equal' => 'Waktu mulai harus hari ini atau setelahnya.',
             
-            'tanggal_estimasi_kembali.required' => 'Tanggal estimasi kembali wajib diisi.',
-            'tanggal_estimasi_kembali.date' => 'Tanggal estimasi kembali harus berupa tanggal yang valid.',
-            'tanggal_estimasi_kembali.after_or_equal' => 'Tanggal estimasi kembali harus sama dengan atau setelah tanggal pinjam.',
+            'waktu_selesai.required' => 'Waktu selesai wajib diisi.',
+            'waktu_selesai.date' => 'Waktu selesai harus berupa tanggal yang valid.',
+            'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai.',
             
             'items.required' => 'Minimal harus memilih satu item untuk dipinjam.',
             'items.array' => 'Items harus berupa array.',
@@ -61,6 +74,9 @@ class StoreLoanRequest extends FormRequest
             'laboratorium.in' => 'Laboratorium harus berupa "Biologi", "Fisika", "Bahasa", atau "Komputer 1-4".',
             
             'catatan.max' => 'Catatan tidak boleh lebih dari :max karakter.',
+
+            'guru_pengampu.required' => 'Nama guru pengampu wajib diisi.',
+            'tujuan_kegiatan.required' => 'Tujuan kegiatan wajib diisi.',
         ];
     }
 
@@ -72,12 +88,15 @@ class StoreLoanRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'tanggal_pinjam' => 'tanggal pinjam',
-            'tanggal_estimasi_kembali' => 'tanggal estimasi kembali',
+            'waktu_mulai' => 'waktu mulai',
+            'waktu_selesai' => 'waktu selesai',
             'items' => 'item',
             'jumlah.*' => 'jumlah',
             'laboratorium' => 'laboratorium',
             'catatan' => 'catatan',
+            'guru_pengampu' => 'guru pengampu',
+            'tujuan_kegiatan' => 'tujuan kegiatan',
+            'jumlah_peserta' => 'jumlah peserta',
         ];
     }
 }
