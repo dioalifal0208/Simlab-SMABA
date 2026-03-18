@@ -50,70 +50,90 @@
             @endif
 
             {{-- PERUBAHAN: Desain Ulang Area Filter dan Tombol Hapus Massal --}}
-            <div class="mb-6" data-aos="fade-up">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                    {{-- Form Filter --}}
-                    <form action="{{ route('items.index') }}" method="GET" id="filter-form" class="w-full flex-grow">
-                        <div class="flex items-center gap-3">
-                            {{-- Input Pencarian dengan ikon --}}
-                            <div class="relative flex-grow">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-search text-gray-400"></i>
-                                </div>
-                                <input type="text" name="search" id="search" placeholder="{{ __('items.filters.search') }}" value="{{ request('search') }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 pl-10 text-sm">
-                            </div>
-                            {{-- Dropdown Filter --}}
-                            <select name="tipe" id="tipe" class="w-auto rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
-                                <option value="">{{ __('items.filters.type') }}</option>
-                                <option value="Alat" @selected(request('tipe') == 'Alat')>{{ __('items.categories.alat') }}</option>
-                                <option value="Bahan Habis Pakai" @selected(request('tipe') == 'Bahan Habis Pakai')>{{ __('items.categories.bahan') }}</option>
-                            </select>
-                            <select name="kondisi" id="kondisi" class="w-auto rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
-                                <option value="">{{ __('items.filters.condition') }}</option>
-                                <option value="baik" @selected(request('kondisi') == 'baik')>{{ __('items.conditions.baik') }}</option>
-                                <option value="kurang baik" @selected(request('kondisi') == 'kurang baik')>{{ __('items.conditions.kurang_baik') }}</option>
-                                <option value="Rusak" @selected(request('kondisi') == 'Rusak')>{{ __('items.conditions.rusak') }}</option>
-                            </select>
-                            @php
-                                $isAdmin = auth()->user()?->role === 'admin';
-                                $lockedLab = auth()->user()?->laboratorium;
-                            @endphp
-                            <div class="flex items-center gap-2">
-                                <select name="laboratorium" id="laboratorium" class="w-auto rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm" {{ $isAdmin ? '' : 'disabled' }}>
-                                    <option value="">{{ __('items.filters.all_labs') }}</option>
-                                    <option value="Biologi" @selected(request('laboratorium', $lockedLab) == 'Biologi')>{{ __('common.labs.biologi') }}</option>
-                                    <option value="Fisika" @selected(request('laboratorium', $lockedLab) == 'Fisika')>{{ __('common.labs.fisika') }}</option>
-                                    <option value="Bahasa" @selected(request('laboratorium', $lockedLab) == 'Bahasa')>{{ __('common.labs.bahasa') }}</option>
-                                    <option value="Komputer 1" @selected(request('laboratorium', $lockedLab) == 'Komputer 1')>Lab Komputer 1</option>
-                                    <option value="Komputer 2" @selected(request('laboratorium', $lockedLab) == 'Komputer 2')>Lab Komputer 2</option>
-                                    <option value="Komputer 3" @selected(request('laboratorium', $lockedLab) == 'Komputer 3')>Lab Komputer 3</option>
-                                    <option value="Komputer 4" @selected(request('laboratorium', $lockedLab) == 'Komputer 4')>Lab Komputer 4</option>
-                                </select>
-                                @unless($isAdmin)
-                                    <input type="hidden" name="laboratorium" value="{{ request('laboratorium', $lockedLab) }}">
-                                    <span class="text-xs text-gray-500">{{ __('items.filters.locked_lab') }}</span>
-                                @endunless
-                            </div>
-                            {{-- Tombol Reset --}}
-                            <a href="{{ route('items.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-semibold text-sm shadow-sm transition-colors" title="{{ __('items.actions.reset_filters') }}">
-                                <i class="fas fa-sync-alt"></i>
-                            </a>
+            <div class="mb-8" data-aos="fade-up">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 relative overflow-hidden">
+                    {{-- Decorative top border --}}
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-400"></div>
+                    
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div class="flex flex-col">
+                            <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider mb-1">
+                                <i class="fas fa-filter text-green-500 mr-1.5 inline-block"></i> Filter Data
+                            </h3>
                         </div>
-                    </form>
+                        
+                        {{-- Form Filter --}}
+                        <form action="{{ route('items.index') }}" method="GET" id="filter-form" class="w-full md:flex-grow">
+                            <div class="flex flex-wrap items-center justify-end gap-3">
+                                {{-- Input Pencarian dengan ikon --}}
+                                <div class="relative flex-grow max-w-md">
+                                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                        <i class="fas fa-search text-gray-400"></i>
+                                    </div>
+                                    <input type="text" name="search" id="search" placeholder="{{ __('items.filters.search') }}" value="{{ request('search') }}" class="w-full rounded-xl border-gray-200 shadow-sm focus:border-green-500 focus:ring-green-500/30 pl-10 py-2.5 text-sm transition-colors bg-gray-50/50 hover:bg-white focus:bg-white text-gray-800 placeholder-gray-400">
+                                </div>
+                                {{-- Dropdown Filter --}}
+                                <select name="tipe" id="tipe" class="w-auto min-w-[140px] rounded-xl border-gray-200 shadow-sm focus:border-green-500 focus:ring-green-500/30 py-2.5 text-sm transition-colors text-gray-700 bg-gray-50/50 hover:bg-white cursor-pointer appearance-none font-medium">
+                                    <option value="">{{ __('items.filters.type') }}</option>
+                                    <option value="Alat" @selected(request('tipe') == 'Alat')>{{ __('items.categories.alat') }}</option>
+                                    <option value="Bahan Habis Pakai" @selected(request('tipe') == 'Bahan Habis Pakai')>{{ __('items.categories.bahan') }}</option>
+                                </select>
+                                <select name="kondisi" id="kondisi" class="w-auto min-w-[140px] rounded-xl border-gray-200 shadow-sm focus:border-green-500 focus:ring-green-500/30 py-2.5 text-sm transition-colors text-gray-700 bg-gray-50/50 hover:bg-white cursor-pointer appearance-none font-medium">
+                                    <option value="">{{ __('items.filters.condition') }}</option>
+                                    <option value="baik" @selected(request('kondisi') == 'baik')>{{ __('items.conditions.baik') }}</option>
+                                    <option value="kurang baik" @selected(request('kondisi') == 'kurang baik')>{{ __('items.conditions.kurang_baik') }}</option>
+                                    <option value="Rusak" @selected(request('kondisi') == 'Rusak')>{{ __('items.conditions.rusak') }}</option>
+                                </select>
+                                @php
+                                    $isAdmin = auth()->user()?->role === 'admin';
+                                    $lockedLab = auth()->user()?->laboratorium;
+                                @endphp
+                                <div class="flex items-center gap-2">
+                                    <select name="laboratorium" id="laboratorium" class="w-auto min-w-[140px] rounded-xl border-gray-200 shadow-sm focus:border-green-500 focus:ring-green-500/30 py-2.5 text-sm transition-colors text-gray-700 bg-gray-50/50 hover:bg-white cursor-pointer appearance-none font-medium" {{ $isAdmin ? '' : 'disabled' }}>
+                                        <option value="">{{ __('items.filters.all_labs') }}</option>
+                                        <option value="Biologi" @selected(request('laboratorium', $lockedLab) == 'Biologi')>{{ __('common.labs.biologi') }}</option>
+                                        <option value="Fisika" @selected(request('laboratorium', $lockedLab) == 'Fisika')>{{ __('common.labs.fisika') }}</option>
+                                        <option value="Bahasa" @selected(request('laboratorium', $lockedLab) == 'Bahasa')>{{ __('common.labs.bahasa') }}</option>
+                                        <option value="Komputer 1" @selected(request('laboratorium', $lockedLab) == 'Komputer 1')>Lab Komputer 1</option>
+                                        <option value="Komputer 2" @selected(request('laboratorium', $lockedLab) == 'Komputer 2')>Lab Komputer 2</option>
+                                        <option value="Komputer 3" @selected(request('laboratorium', $lockedLab) == 'Komputer 3')>Lab Komputer 3</option>
+                                        <option value="Komputer 4" @selected(request('laboratorium', $lockedLab) == 'Komputer 4')>Lab Komputer 4</option>
+                                    </select>
+                                    @unless($isAdmin)
+                                        <input type="hidden" name="laboratorium" value="{{ request('laboratorium', $lockedLab) }}">
+                                        <span class="text-[10px] uppercase font-bold text-gray-400 ml-1">{{ __('items.filters.locked_lab') }}</span>
+                                    @endunless
+                                </div>
+                                {{-- Tombol Reset --}}
+                                <a href="{{ route('items.index') }}" class="px-4 py-2.5 bg-slate-100/80 text-slate-600 rounded-xl hover:bg-slate-200 hover:text-slate-900 font-semibold text-sm transition-colors border border-slate-200 group flex items-center shadow-sm" title="{{ __('items.actions.reset_filters') }}">
+                                    <i class="fas fa-sync-alt group-hover:rotate-180 transition-transform duration-300"></i>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
                 {{-- Tombol Aksi Hapus Massal (Muncul saat ada item terpilih) --}}
-                <div x-show="selectedItems.length > 0" x-transition class="mt-4 bg-white border border-red-300 rounded-lg p-3 flex justify-between items-center" style="display: none;">
-                    <span class="text-sm font-semibold text-gray-700">
-                        <span x-text="selectedItems.length"></span> {{ __('items.status.selected_count', ['count' => '']) }}
-                    </span>
-                    <form id="bulk-delete-form" action="{{ route('items.delete-multiple') }}" method="POST">
+                <div x-show="selectedItems.length > 0" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4" class="mt-4 bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-2xl p-4 flex justify-between items-center shadow-md relative overflow-hidden" style="display: none;">
+                    {{-- Warning stripes background --}}
+                    <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, #ef4444 10px, #ef4444 20px);"></div>
+                    
+                    <div class="flex items-center gap-3 relative z-10">
+                        <div class="bg-red-100 text-red-600 p-2 rounded-xl border border-red-200 font-bold">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <span class="text-sm font-bold text-red-800 tracking-tight">
+                            <span x-text="selectedItems.length" class="text-lg"></span> Item Terpilih
+                        </span>
+                    </div>
+                    
+                    <form id="bulk-delete-form" action="{{ route('items.delete-multiple') }}" method="POST" class="relative z-10">
                         @csrf
                         {{-- Input tersembunyi untuk menampung ID item --}}
                         <template x-for="id in selectedItems" :key="id">
                             <input type="hidden" name="item_ids[]" :value="id">
                         </template>
-                        <button type="button" @click="confirmBulkDelete(selectedItems)" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-semibold text-sm shadow-md transition-colors">
+                        <button type="button" @click="confirmBulkDelete(selectedItems)" class="px-5 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 font-bold text-sm shadow-[0_4px_14px_0_rgb(239,68,68,0.39)] hover:shadow-[0_6px_20px_rgba(239,68,68,0.23)] hover:-translate-y-0.5 transition-all outline-none">
                             <i class="fas fa-trash-alt mr-2"></i> {{ __('items.actions.bulk_delete') }}
                         </button>
                     </form>
@@ -121,7 +141,7 @@
             </div>
 
             {{-- Tabel Daftar Item (AJAX Container) --}}
-            <div id="table-container" class="bg-white border border-gray-100 overflow-hidden shadow-sm sm:rounded-xl" data-aos="fade-up" data-aos-delay="100">
+            <div id="table-container" class="bg-white border border-gray-100 overflow-hidden shadow-sm sm:rounded-2xl" data-aos="fade-up" data-aos-delay="100">
                 @include('items.partials.item-table')
             </div>
         </div>
