@@ -1,307 +1,466 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
-                    {{ __('bookings.details.title') }} #{{ $booking->id }}
-                </h2>
-                <p class="text-sm text-gray-500 mt-1">{{ __('bookings.labels.diajukan_oleh') }}: <span class="font-semibold">{{ $booking->user->name }}</span></p>
-            </div>
-            
-            <div class="flex items-center space-x-3">
-                {{-- Tombol Cetak (Pindah ke Header) --}}
-                @if(($booking->status == 'approved' || $booking->status == 'completed') && (auth()->user()->role === 'admin' || auth()->id() === $booking->user_id))
-                    <button onclick="openDocModal('{{ route('bookings.surat', $booking->id) }}', 'Surat Booking #{{ $booking->id }}')" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-semibold text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                        {{ __('bookings.letter.view') }}
-                    </button>
-                    {{-- Hidden link for direct download if needed --}}
-                @endif
+    @php
+        $startTime = \Carbon\Carbon::parse($booking->waktu_mulai);
+        $endTime = \Carbon\Carbon::parse($booking->waktu_selesai);
+        $durationHours = $startTime->diffInHours($endTime);
+        $durationMinutes = $startTime->diffInMinutes($endTime) % 60;
+        
+        $durationText = '';
+        if ($durationHours > 0) $durationText .= $durationHours . ' Jam ';
+        if ($durationMinutes > 0) $durationText .= $durationMinutes . ' Menit';
+        $durationText = trim($durationText) ?: '0 Menit';
 
-                <a href="{{ route('bookings.index') }}" class="text-sm font-semibold text-indigo-500 hover:text-indigo-600 transition-colors">
-                    &larr; {{ __('common.buttons.back') }}
-                </a>
+        // Time block visualization logic (07:00 to 16:00)
+        $vizStartHour = 7;
+        $vizEndHour = 16;
+        $totalVizMins = ($vizEndHour - $vizStartHour) * 60; // 540 mins
+        
+        $bookingStartMins = ($startTime->format('G') * 60) + $startTime->format('i');
+        $baseStartMins = $vizStartHour * 60;
+        
+        $leftMins = $bookingStartMins - $baseStartMins;
+        $leftPercent = max(0, min(100, ($leftMins / $totalVizMins) * 100));
+        
+        $bookingDurationMins = ($durationHours * 60) + $durationMinutes;
+        $widthPercent = ($bookingDurationMins / $totalVizMins) * 100;
+        
+        if ($leftPercent + $widthPercent > 100) {
+            $widthPercent = 100 - $leftPercent;
+        }
+
+        // Color coding by Lab
+        $labColor = match($booking->laboratorium) {
+            'Biologi' => 'emerald',
+            'Fisika' => 'blue',
+            'Bahasa' => 'amber',
+            default => 'indigo' // Default inc. Komputer
+        };
+
+        // Conflict Detection
+        $conflict = null;
+        if (in_array($booking->status, ['pending', 'approved'])) {
+            $conflict = \App\Models\Booking::where('laboratorium', $booking->laboratorium)
+                ->where('status', 'approved')
+                ->where('id', '!=', $booking->id)
+                ->whereDate('waktu_mulai', $startTime->format('Y-m-d'))
+                ->where(function($q) use ($startTime, $endTime) {
+                    $q->where('waktu_mulai', '<', $endTime)
+                      ->where('waktu_selesai', '>', $startTime);
+                })->first();
+        }
+    @endphp
+
+    <div x-data="{ 
+            showModal: false, 
+            modalType: '', 
+            actionTitle: '', 
+            actionColor: '', 
+            actionIcon: '',
+            btnColor: ''
+        }" 
+        @keydown.escape.window="showModal = false"
+        class="relative min-h-screen pb-12">
+        
+        {{-- HEADER BERGRADIENT HALUS --}}
+        <div class="bg-gradient-to-b from-slate-50 to-white/0 pt-6 pb-2 border-b border-slate-100/50 mb-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <a href="{{ route('bookings.index') }}" class="text-[11px] font-extrabold text-slate-400 hover:text-indigo-600 transition-colors uppercase tracking-widest flex items-center gap-1.5 mb-2 group">
+                            <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> Dashboard / Jadwal Lab
+                        </a>
+                        <h2 class="font-extrabold text-2xl text-slate-900 tracking-tight flex items-center gap-3">
+                            {{ __('bookings.details.title') }} 
+                            <span class="text-slate-300 font-light text-xl">#{{ str_pad($booking->id, 4, '0', STR_PAD_LEFT) }}</span>
+                        </h2>
+                    </div>
+
+                    {{-- Header Badges --}}
+                    @if(($booking->status == 'approved' || $booking->status == 'completed') && (auth()->user()->role === 'admin' || auth()->id() === $booking->user_id))
+                    <div class="flex gap-3">
+                        <a href="{{ route('bookings.surat', $booking->id) }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-white border border-slate-300 rounded-xl font-bold text-xs text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-all shadow-sm">
+                            <i class="fas fa-print mr-2 text-slate-400"></i> Cetak Surat
+                        </a>
+                    </div>
+                    @endif
+                </div>
             </div>
         </div>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
+            {{-- ALERTS --}}
             @if (session('success'))
-                <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg" role="alert">
-                    <p class="font-bold">{{ __('common.messages.success') }}</p>
-                    <span>{{ session('success') }}</span>
+                <div class="mb-8 bg-emerald-50 border border-emerald-100 p-4 rounded-xl shadow-sm flex items-start gap-4" data-aos="fade-in">
+                    <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0 mt-0.5"><i class="fas fa-check"></i></div>
+                    <div>
+                        <h4 class="font-bold text-emerald-800">{{ __('common.messages.success') }}</h4>
+                        <p class="text-sm text-emerald-700 mt-0.5">{{ session('success') }}</p>
+                    </div>
                 </div>
             @endif
             @if ($errors->any())
-                <div class="mb-4 bg-red-100 border-l-4 border-red-400 text-red-700 p-4 text-sm rounded-lg" role="alert">
-                    <p class="font-bold">{{ __('common.messages.error_title') }}:</p>
-                    <ul class="mt-2 list-disc list-inside">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                <div class="mb-8 bg-red-50 border border-red-100 p-4 rounded-xl shadow-sm flex items-start gap-4" data-aos="fade-in">
+                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0 mt-0.5"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div>
+                        <h4 class="font-bold text-red-800">{{ __('common.messages.error_title') }}</h4>
+                        <ul class="mt-1 space-y-1 text-sm text-red-700 list-inside list-disc">
+                            @foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach
+                        </ul>
+                    </div>
                 </div>
             @endif
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8" data-aos="fade-in" data-aos-once="true">
-
-                {{-- Kolom Kiri: Detail Booking (Lebih Lebar) --}}
-                <div class="lg:col-span-2 space-y-6">
-                    <div class="bg-white overflow-hidden shadow-sm border border-gray-100 sm:rounded-xl">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                                {{ __('bookings.details.info') }}
+            {{-- MAIN SAAS LAYOUT: 2 COLUMN --}}
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-10">
+                
+                {{-- LEFT COLUMN: PRIMARY CONTENT --}}
+                <div class="lg:col-span-2 space-y-8">
+                    
+                    {{-- 1. Booking Information Card --}}
+                    <section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden" data-aos="fade-up" data-aos-once="true">
+                        <div class="p-6 border-b border-slate-50/50">
+                            <h3 class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                <i class="fas fa-info-circle text-indigo-400"></i> Informasi Kegiatan
                             </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="space-y-4">
-                                    <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">{{ __('bookings.details.applicant') }}</label><p class="font-semibold text-gray-800 text-lg">{{ $booking->user->name }}</p></div>
-                                    <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">{{ __('bookings.details.submission_date') }}</label><p class="text-gray-700">{{ $booking->created_at->format('d F Y, H:i') }}</p></div>
-                                    <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">{{ __('bookings.details.subject') }}</label><p class="text-gray-700">{{ $booking->mata_pelajaran ?? '-' }}</p></div>
+                            
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6">
+                                <div>
+                                    <h4 class="text-xl font-bold text-slate-800 tracking-tight">{{ $booking->tujuan_kegiatan }}</h4>
+                                    <p class="text-sm text-slate-500 font-medium mt-1"><i class="fas fa-user-circle text-slate-400 mr-1.5"></i> Diajukan oleh: <span class="font-bold text-slate-700">{{ $booking->user->name }}</span></p>
                                 </div>
-                                <div class="space-y-4">
-                                    <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">{{ __('bookings.form.lab') }}</label><p class="font-semibold text-green-600">{{ $booking->laboratorium }}</p></div>
-                                    <div><label class="text-xs font-bold text-gray-400 uppercase tracking-wider">{{ __('bookings.details.execution_time') }}</label>
-                                        <div class="flex items-center mt-1 text-gray-800">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                            <span class="font-medium">{{ $booking->waktu_mulai->format('d M Y') }}</span>
-                                        </div>
-                                        <div class="flex items-center mt-1 text-gray-600 text-sm">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 ml-0.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                            {{ $booking->waktu_mulai->format('H:i') }} - {{ $booking->waktu_selesai->format('H:i') }}
-                                        </div>
+                                <div class="bg-{{$labColor}}-50 border border-{{$labColor}}-100 rounded-xl px-4 py-2 text-center min-w-[120px] shadow-sm">
+                                    <div class="text-[10px] font-bold text-{{$labColor}}-400 uppercase tracking-widest">Laboratorium</div>
+                                    <div class="text-sm font-extrabold text-{{$labColor}}-700 mt-0.5 flex items-center justify-center gap-1.5">
+                                        <i class="fas fa-flask"></i> {{ $booking->laboratorium }}
                                     </div>
                                 </div>
-                                <div class="md:col-span-2 pt-4 border-t border-gray-100">
-                                    <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">{{ __('bookings.details.purpose') }}</label>
-                                    <p class="mt-2 text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-lg">{{ $booking->tujuan_kegiatan }}</p>
+                            </div>
+
+                            @if($booking->mata_pelajaran)
+                            <div class="mb-2">
+                                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">{{ __('bookings.details.subject') }}</div>
+                                <div class="text-sm font-bold text-slate-800 inline-block bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">{{ $booking->mata_pelajaran }}</div>
+                            </div>
+                            @endif
+                        </div>
+                    </section>
+
+                    {{-- 2. Schedule & Time Block Card --}}
+                    <section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
+                        <div class="p-6">
+                            <h3 class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                <i class="fas fa-calendar-alt text-indigo-400"></i> Detail Jadwal & Waktu
+                            </h3>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tanggal</div>
+                                    <div class="text-sm font-extrabold text-slate-800">{{ $startTime->translatedFormat('l, d F Y') }}</div>
                                 </div>
-                                @if($booking->admin_notes)
-                                <div class="md:col-span-2">
-                                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                                        <label class="text-xs font-bold text-yellow-600 uppercase tracking-wider flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
-                                            {{ __('bookings.details.admin_notes') }}
-                                        </label>
-                                        <p class="mt-1 text-yellow-800">{{ $booking->admin_notes }}</p>
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Jam Pelaksanaan</div>
+                                    <div class="text-sm font-extrabold text-slate-800 flex items-center gap-2">
+                                        {{ $startTime->format('H:i') }} <span class="text-slate-300 font-normal">to</span> {{ $endTime->format('H:i') }}
                                     </div>
                                 </div>
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Durasi</div>
+                                    <div class="text-sm font-extrabold text-indigo-600">{{ $durationText }}</div>
+                                </div>
+                            </div>
+
+                            {{-- CSS Grid Horizontal Time Visualizer --}}
+                            <div class="mb-4">
+                                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Visualisasi Blok Waktu (07:00 - 16:00)</div>
+                                <div class="relative w-full h-12 bg-slate-100 rounded-xl overflow-hidden shadow-inner border border-slate-200 group">
+                                    {{-- The specific booking block --}}
+                                    <div class="absolute top-0 bottom-0 bg-gradient-to-r from-{{$labColor}}-400 to-{{$labColor}}-500 transition-all duration-1000 ease-out flex items-center justify-center opacity-90 group-hover:opacity-100 hover:shadow-lg cursor-crosshair z-10"
+                                         style="left: {{ $leftPercent }}%; width: {{ $widthPercent }}%;"
+                                         title="Durasi: {{ $durationText }}">
+                                        {{-- Optional Pattern Overlay --}}
+                                        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iLjA1Ii8+PC9zdmc+')] mix-blend-overlay"></div>
+                                        @if($widthPercent > 15)
+                                            <span class="text-white text-[10px] font-bold px-2 truncate relative z-10 drop-shadow-md">{{ $startTime->format('H:i') }} - {{ $endTime->format('H:i') }}</span>
+                                        @endif
+                                    </div>
+
+                                    {{-- Hour Ticks Track --}}
+                                    <div class="absolute inset-0 flex justify-between px-2 pt-8 z-0 pointer-events-none opacity-40">
+                                        @for($h = 7; $h <= 16; $h++)
+                                            <div class="flex flex-col items-center">
+                                                <div class="h-1.5 w-px bg-slate-400"></div>
+                                                <span class="text-[8px] font-bold text-slate-500 mt-0.5">{{ str_pad($h, 2, '0', STR_PAD_LEFT) }}</span>
+                                            </div>
+                                        @endfor
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Conflict Detection Alert (Edge State) --}}
+                        @if($conflict)
+                        <div class="p-6 bg-red-50 border-t border-red-100">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0 animate-pulse">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="w-full">
+                                    <h4 class="font-bold text-red-800 flex items-center gap-2">
+                                        Peringatan: Jadwal Bentrok!
+                                    </h4>
+                                    <p class="text-sm text-red-700 mt-1 leading-relaxed">
+                                        Terdapat jadwal / booking lain yang <strong>telah disetujui</strong> pada waktu yang bersinggungan di Lab {{ $booking->laboratorium }}.
+                                    </p>
+                                    
+                                    <div class="mt-3 bg-white border border-red-200 rounded-lg p-3 shadow-sm flex justify-between items-center text-sm">
+                                        <div>
+                                            <div class="font-bold text-slate-800">{{ $conflict->tujuan_kegiatan }}</div>
+                                            <div class="text-xs text-slate-500"><i class="fas fa-clock mr-1"></i> {{ \Carbon\Carbon::parse($conflict->waktu_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($conflict->waktu_selesai)->format('H:i') }}</div>
+                                        </div>
+                                        <a href="{{ route('bookings.show', $conflict->id) }}" target="_blank" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-md font-bold text-xs transition-colors border border-red-200">Lihat Detail <i class="fas fa-external-link-alt ml-1"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+
+                    </section>
+                </div>
+
+                {{-- RIGHT COLUMN: SECONDARY PANEL (STICKY) --}}
+                <div class="lg:col-span-1">
+                    <div class="sticky top-8 space-y-8">
+                        
+                        {{-- A. Status Summary Card --}}
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 relative overflow-hidden group" data-aos="fade-left" data-aos-once="true">
+                            @php
+                                $statusMeta = match($booking->status) {
+                                    'pending'   => ['color' => 'amber',   'icon' => 'fa-clock',        'desc' => 'Menunggu persetujuan dari Admin Lab.'],
+                                    'approved'  => ['color' => 'emerald', 'icon' => 'fa-check-circle', 'desc' => 'Jadwal disetujui. Silakan gunakan lab.'],
+                                    'rejected'  => ['color' => 'red',     'icon' => 'fa-times-circle', 'desc' => 'Pengajuan jadwal ditolak oleh admin.'],
+                                    'completed' => ['color' => 'slate',   'icon' => 'fa-clipboard-check', 'desc' => 'Kegiatan telah selesai dilaksanakan.'],
+                                    default     => ['color' => 'indigo',  'icon' => 'fa-info-circle',  'desc' => 'Status tidak diketahui.']
+                                };
+                                $metaColor = $statusMeta['color'];
+                            @endphp
+                            
+                            {{-- Decorative gradient blob --}}
+                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-{{$metaColor}}-50 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity"></div>
+                            
+                            <h3 class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-4">Status Pengajuan</h3>
+                            
+                            <div class="flex items-center gap-4 mb-3 relative z-10">
+                                <div class="w-12 h-12 rounded-xl bg-{{$metaColor}}-50 flex items-center justify-center text-{{$metaColor}}-500 text-xl border border-{{$metaColor}}-100 shadow-inner">
+                                    <i class="fas {{ $statusMeta['icon'] }}"></i>
+                                </div>
+                                <div>
+                                    <div class="font-extrabold text-lg text-slate-800 capitalize">{{ $booking->status }}</div>
+                                    <div class="text-[11px] font-medium text-slate-500 leading-tight mt-0.5">{{ $statusMeta['desc'] }}</div>
+                                </div>
+                            </div>
+
+                            @if($booking->admin_notes)
+                            <div class="mt-4 pt-4 border-t border-slate-100">
+                                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1">
+                                    <i class="fas fa-comment-dots text-indigo-400"></i> Catatan Admin
+                                </div>
+                                <div class="text-sm font-medium {{ $booking->status == 'rejected' ? 'text-red-600 bg-red-50' : 'text-slate-600 bg-slate-50' }} p-3 rounded-lg border border-slate-100">
+                                    {{ $booking->admin_notes }}
+                                </div>
+                            </div>
+                            @endif
+                        </div>
+
+                        {{-- B. Vertical Process Timeline --}}
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6" data-aos="fade-left" data-aos-delay="100" data-aos-once="true">
+                            <h3 class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-6">Timeline Proses</h3>
+                            
+                            <div class="relative pl-3 space-y-8">
+                                {{-- Background Track --}}
+                                <div class="absolute left-[17px] top-4 bottom-4 w-0.5 bg-slate-100 rounded-full"></div>
+
+                                {{-- Node 1: Diajukan --}}
+                                <div class="relative flex items-start gap-4" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
+                                    <div class="w-2.5 h-2.5 rounded-full {{ in_array($booking->status, ['pending', 'approved', 'completed', 'rejected']) ? 'bg-indigo-500 ring-4 ring-indigo-50' : 'bg-slate-200' }} mt-1.5 z-10 shadow-sm relative"></div>
+                                    <div>
+                                        <div class="text-sm font-bold text-slate-800">Booking Diajukan</div>
+                                        <div class="text-[11px] font-medium text-slate-400 mt-0.5">{{ $booking->created_at->format('d M Y, H:i') }}</div>
+                                    </div>
+                                </div>
+
+                                {{-- Node 2: Persetujuan --}}
+                                @php
+                                    $step2Active = in_array($booking->status, ['approved', 'completed']);
+                                    $step2Rejected = $booking->status === 'rejected';
+                                @endphp
+                                <div class="relative flex items-start gap-4 group" data-aos="fade-up" data-aos-delay="300" data-aos-once="true">
+                                    @if($step2Active || $step2Rejected)
+                                        <div class="absolute -left-[5px] -top-8 bottom-4 w-0.5 {{ $step2Rejected ? 'bg-red-200' : 'bg-indigo-500' }}"></div>
+                                    @endif
+                                    
+                                    <div class="w-2.5 h-2.5 rounded-full mt-1.5 z-10 shadow-sm relative transition-all {{ $step2Rejected ? 'bg-red-500 ring-4 ring-red-50' : ($step2Active ? 'bg-indigo-500 ring-4 ring-indigo-50' : 'bg-white border-2 border-slate-300 ring-4 ring-white') }}">
+                                        {{-- Tooltip hover on node --}}
+                                        <div class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 bg-slate-800 text-white text-[10px] font-bold py-1 px-2 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-20">Tahap Persetujuan</div>
+                                    </div>
+                                    
+                                    <div>
+                                        @if($step2Rejected)
+                                            <div class="text-sm font-bold text-red-600 drop-shadow-sm">Booking Ditolak</div>
+                                            <div class="text-[11px] font-medium text-slate-400 mt-0.5">{{ $booking->updated_at->format('d M Y, H:i') }}</div>
+                                        @elseif($step2Active)
+                                            <div class="text-sm font-bold text-indigo-600">Jadwal Disetujui</div>
+                                            <div class="text-[11px] font-medium text-slate-400 mt-0.5">Siap digunakan</div>
+                                        @else
+                                            <div class="text-sm font-bold text-slate-400">Persetujuan Admin</div>
+                                            <div class="text-[10px] font-bold text-amber-500 bg-amber-50 px-2 py-0.5 rounded-md inline-block mt-1">Pending</div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                {{-- Node 3: Selesai --}}
+                                @if(!$step2Rejected)
+                                    @php
+                                        $step3Active = $booking->status === 'completed';
+                                    @endphp
+                                    <div class="relative flex items-start gap-4 group" data-aos="fade-up" data-aos-delay="400" data-aos-once="true">
+                                        @if($step3Active)
+                                            <div class="absolute -left-[5px] -top-8 bottom-4 w-0.5 bg-emerald-500"></div>
+                                        @endif
+                                        
+                                        <div class="w-2.5 h-2.5 rounded-full mt-1.5 z-10 shadow-sm relative transition-all {{ $step3Active ? 'bg-emerald-500 ring-4 ring-emerald-50' : 'bg-white border-2 border-slate-300 ring-4 ring-white' }}"></div>
+                                        
+                                        <div>
+                                            @if($step3Active)
+                                                <div class="text-sm font-bold text-emerald-600">Selesai Digunakan</div>
+                                                <div class="text-[11px] font-medium text-slate-400 mt-0.5">{{ $booking->waktu_pengembalian ? \Carbon\Carbon::parse($booking->waktu_pengembalian)->format('d M Y, H:i') : $booking->updated_at->format('d M Y, H:i') }}</div>
+                                            @else
+                                                <div class="text-sm font-bold text-slate-400">Penyelesaian</div>
+                                                <div class="text-[10px] font-medium text-slate-400 mt-0.5">Menunggu kegiatan selesai</div>
+                                            @endif
+                                        </div>
+                                    </div>
                                 @endif
                             </div>
                         </div>
-                    </div>
 
-                    {{-- Include Laporan Form (Reused Logic) --}}
-                    @if($booking->status == 'approved' || $booking->status == 'completed')
-                        @include('bookings.partials.return-form')
-                    @endif
+                        {{-- C. Quick Actions Panel (Hanya untuk Admin) --}}
+                        @can('is-admin')
+                            @if(in_array($booking->status, ['pending', 'approved']))
+                            <div class="bg-slate-800 text-white rounded-2xl shadow-lg border border-slate-700 p-6 relative overflow-hidden" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
+                                <div class="absolute -right-6 -top-6 w-24 h-24 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+                                
+                                <h3 class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-4">Tindakan Cepat</h3>
+                                
+                                <div class="space-y-3">
+                                    @if($booking->status == 'pending')
+                                        <button @click="showModal = true; modalType = 'approved'; actionTitle = 'Setujui Jadwal'; actionColor = 'emerald'; actionIcon = 'fa-check'; btnColor = 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-[0_4px_14px_0_rgba(16,185,129,0.39)]'" 
+                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm bg-emerald-500 hover:bg-emerald-400 shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] hover:shadow-[0_6px_20px_rgba(16,185,129,0.23)] transition-all hover:-translate-y-0.5 text-white">
+                                            <i class="fas fa-check mr-2"></i> Approve Jadwal
+                                        </button>
+                                        
+                                        <button @click="showModal = true; modalType = 'rejected'; actionTitle = 'Tolak Jadwal'; actionColor = 'red'; actionIcon = 'fa-times'; btnColor = 'bg-red-500 hover:bg-red-600 text-white shadow-sm'" 
+                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white transition-all">
+                                            <i class="fas fa-times mr-2"></i> Reject Jadwal
+                                        </button>
+                                    @elseif($booking->status == 'approved')
+                                        <button @click="showModal = true; modalType = 'completed'; actionTitle = 'Tandai Selesai'; actionColor = 'indigo'; actionIcon = 'fa-flag-checkered'; btnColor = 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-[0_4px_14px_0_rgba(79,70,229,0.39)]'" 
+                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm bg-indigo-600 hover:bg-indigo-500 shadow-[0_4px_14px_0_rgba(79,70,229,0.39)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.23)] transition-all hover:-translate-y-0.5 text-white">
+                                            <i class="fas fa-clipboard-check mr-2"></i> Mark as Completed
+                                        </button>
+                                    @endif
+
+                                    <div class="border-t border-slate-700 pt-3 mt-4 text-center">
+                                        <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Anda yakin ingin menghapus data jadwal ini sepenuhnya secara permanen?');">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:text-red-400 transition-colors">
+                                                <i class="fas fa-trash-alt mr-1"></i> Hapus Permanen
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+                        @endcan
+
+                        {{-- Metadata Footprint --}}
+                        <div class="text-center">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">ID Booking: <span class="text-slate-500">{{ $booking->id }}</span></p>
+                            <p class="text-[10px] font-medium text-slate-400 mt-1">Terakhir update: {{ $booking->updated_at->diffForHumans() }}</p>
+                        </div>
+                    </div>
                 </div>
 
-                {{-- Kolom Kanan: Status & Control Panel --}}
-                <div class="space-y-6">
+            </div>
+        </div>
+
+        {{-- MODAL KONFIRMASI (ALPINE.JS) --}}
+        <template x-teleport="body">
+            <div x-show="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0" x-cloak>
+                {{-- Backdrop --}}
+                <div x-show="showModal" 
+                     x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
+                     x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" 
+                     class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" @click="showModal = false"></div>
+                
+                {{-- Modal Panel --}}
+                <div x-show="showModal" 
+                     x-transition:enter="ease-out duration-300 delay-100" x-transition:enter-start="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
+                     x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                     class="bg-white rounded-2xl shadow-xl border border-slate-100 max-w-lg w-full relative z-10 overflow-hidden">
                     
-                    {{-- Card Status --}}
-                    <div class="bg-white overflow-hidden shadow-sm border border-gray-100 sm:rounded-xl">
-                        <div class="p-6 text-center">
-                            <h3 class="text-gray-500 font-medium text-sm uppercase tracking-wider mb-4">{{ __('bookings.details.current_status') }}</h3>
-                            @if($booking->status == 'pending') 
-                                <div class="inline-flex flex-col items-center justify-center bg-yellow-100 text-yellow-800 rounded-full h-32 w-32 mb-2 ring-4 ring-yellow-50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                    <span class="font-bold text-lg">{{ __('common.status.pending') }}</span>
-                                </div>
-                                <p class="text-sm text-gray-500 mt-2">{{ __('bookings.messages.waiting_approval') }}</p>
-                            @elseif($booking->status == 'approved') 
-                                <div class="inline-flex flex-col items-center justify-center bg-green-100 text-green-800 rounded-full h-32 w-32 mb-2 ring-4 ring-green-50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                    <span class="font-bold text-lg">{{ __('common.status.approved') }}</span>
-                                </div>
-                                <p class="text-sm text-gray-500 mt-2">{{ __('bookings.messages.print_permit') }}</p>
-                            @elseif($booking->status == 'rejected')
-                                <div class="inline-flex flex-col items-center justify-center bg-red-100 text-red-800 rounded-full h-32 w-32 mb-2 ring-4 ring-red-50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                                    <span class="font-bold text-lg">{{ __('common.status.rejected') }}</span>
-                                </div>
-                            @elseif($booking->status == 'completed')
-                                <div class="inline-flex flex-col items-center justify-center bg-gray-100 text-gray-800 rounded-full h-32 w-32 mb-2 ring-4 ring-gray-50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                                    <span class="font-bold text-lg">{{ __('common.status.completed') }}</span>
-                                </div>
-                                <p class="text-sm text-gray-500 mt-2">{{ __('bookings.messages.event_ended') }}</p>
-                            @endif
-                        </div>
+                    {{-- Header Modal Dinamis --}}
+                    <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center" :class="'bg-' + actionColor + '-50/50'">
+                        <h3 class="font-extrabold text-lg text-slate-800 flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm" :class="'bg-' + actionColor + '-100 text-' + actionColor + '-600'"><i class="fas" :class="actionIcon"></i></div>
+                            <span x-text="actionTitle"></span>
+                        </h3>
+                        <button @click="showModal = false" class="text-slate-400 hover:text-slate-600 transition-colors w-8 h-8 flex justify-center items-center rounded-lg hover:bg-slate-100"><i class="fas fa-times"></i></button>
                     </div>
-
-                    {{-- Admin Control Panel --}}
-                    @can('is-admin')
-                    <div class="bg-gradient-to-br from-white to-gray-50 overflow-hidden shadow-sm border border-gray-200 sm:rounded-xl">
-                        <div class="p-4 border-b border-gray-100 bg-gray-50">
-                            <h3 class="font-bold text-gray-800 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                                {{ __('bookings.details.admin_control') }}
-                            </h3>
-                        </div>
-                        <div class="p-5 space-y-4">
-                            @if($booking->status == 'pending')
-                                <form action="{{ route('bookings.update', $booking->id) }}" method="POST" class="space-y-4">
-                                    @csrf @method('PATCH')
-                                    <div>
-                                        <label for="admin_notes" class="block text-xs font-medium text-gray-500 uppercase mb-1">{{ __('bookings.details.review_notes') }}</label>
-                                        <textarea name="admin_notes" id="admin_notes" rows="2" class="block w-full text-sm rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="{{ __('bookings.details.reject_placeholder') }}"></textarea>
-                                    </div>
-                                    <div class="grid grid-cols-2 gap-3">
-                                        <button type="submit" name="status" value="approved" class="w-full flex justify-center items-center py-2 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg shadow-sm transition-all transform active:scale-95 text-sm">
-                                            ✔ {{ __('bookings.actions.approve') }}
-                                        </button>
-                                        <button type="submit" name="status" value="rejected" class="w-full flex justify-center items-center py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg shadow-sm transition-all transform active:scale-95 text-sm">
-                                            ✖ {{ __('bookings.actions.reject') }}
-                                        </button>
-                                    </div>
-                                </form>
-                            @elseif($booking->status == 'approved')
-                                <form action="{{ route('bookings.update', $booking->id) }}" method="POST">
-                                    @csrf @method('PATCH')
-                                    <button type="submit" name="status" value="completed" class="w-full flex justify-center items-center py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-md transition-all transform hover:-translate-y-0.5 text-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                                        {{ __('bookings.actions.complete') }}
-                                    </button>
-                                    <p class="text-xs text-gray-400 mt-2 text-center">{{ __('bookings.messages.click_to_complete') }}</p>
-                                </form>
-                            @endif
-
-                            {{-- Form Hapus --}}
-                            @if(in_array($booking->status, ['pending', 'rejected', 'completed']))
-                                <div class="border-t border-gray-200 pt-4 mt-2">
-                                    <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('{{ __('bookings.messages.delete_confirm') }}');">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="w-full text-gray-400 hover:text-red-600 text-xs font-medium transition-colors flex justify-center items-center p-2 rounded hover:bg-red-50">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                                            {{ __('bookings.messages.delete_action') }}
-                                        </button>
-                                    </form>
+                    
+                    {{-- Body Modal (Form) --}}
+                    <form action="{{ route('bookings.update', $booking->id) }}" method="POST" class="p-6">
+                        @csrf @method('PATCH')
+                        <input type="hidden" name="status" x-model="modalType">
+                        
+                        <div class="mb-6">
+                            <template x-if="modalType === 'approved'">
+                                <div>
+                                    <p class="text-sm text-slate-600 leading-relaxed font-medium">Apakah Anda yakin ingin <strong class="text-emerald-600">menyetujui</strong> jadwal ini? Jadwal ini akan terlihat publik oleh seluruh instansi sekolah.</p>
+                                    @if($conflict)
+                                        <div class="mt-4 bg-red-50 border border-red-200 p-3 rounded-lg flex items-start gap-2">
+                                            <i class="fas fa-exclamation-triangle text-red-500 mt-0.5"></i>
+                                            <p class="text-xs text-red-700 font-bold">Peringatan: Terdapat potensi jadwal bentrok jika disetujui, lihat panel peringatan di background.</p>
+                                        </div>
+                                    @endif
                                 </div>
-                            @endif
+                            </template>
+                            
+                            <template x-if="modalType === 'completed'">
+                                <p class="text-sm text-slate-600 leading-relaxed font-medium">Tandai kegiatan ini telah selesai dilaksanakan pada laboratorium terkait?</p>
+                            </template>
+                            
+                            {{-- Field Spesifik untuk Penolakan (WAJIB) --}}
+                            <template x-if="modalType === 'rejected'">
+                                <div>
+                                    <p class="text-sm text-slate-600 leading-relaxed font-medium mb-4">Pengajuan yang ditolak tidak dapat diubah statusnya lagi. Harap masukkan alasan.</p>
+                                    <label for="admin_notes" class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-widest mb-2 flex flex-col gap-1">
+                                        Alasan Penolakan <span class="text-red-500">*</span>
+                                    </label>
+                                    <textarea name="admin_notes" id="admin_notes" rows="3" required class="w-full rounded-xl border-slate-200 shadow-sm focus:border-red-500 focus:ring-red-500/20 text-sm p-4 bg-slate-50 hover:bg-white focus:bg-white transition-colors resize-none placeholder-slate-400" placeholder="Jadwal bentrok..."></textarea>
+                                </div>
+                            </template>
                         </div>
-                    </div>
-                    @endcan
+                        
+                        <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                            <button type="button" @click="showModal = false" class="px-5 py-2.5 bg-white border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-colors text-sm">Batal</button>
+                            <button type="submit" :class="btnColor" class="px-6 py-2.5 rounded-xl font-bold text-sm shadow-sm transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                                <span x-text="actionTitle"></span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
-
             </div>
-        </div>
+        </template>
     </div>
-    {{-- Modal Pratinjau Surat --}}
-    <div id="docModal" class="hidden fixed inset-0 z-50 bg-black/60 items-center justify-center backdrop-blur-sm transition-opacity duration-300" role="dialog" aria-modal="true" aria-labelledby="docModalTitle">
-        <div class="bg-white w-full h-full md:w-11/12 md:h-[90vh] md:max-w-5xl md:rounded-2xl shadow-2xl flex flex-col overflow-hidden transform transition-all scale-100">
-            
-            {{-- Header Modal --}}
-            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                <div class="flex items-center space-x-3">
-                    <div class="p-2 bg-indigo-100 text-indigo-600 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 id="docModalTitle" class="text-lg font-bold text-gray-800">{{ __('bookings.letter.preview_title') }}</h3>
-                        <p class="text-xs text-gray-500">{{ __('bookings.letter.preview_subtitle') }}</p>
-                    </div>
-                </div>
-                <button type="button" onclick="closeDocModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-full transition-colors focus:outline-none" aria-label="{{ __('common.buttons.close') }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-
-            {{-- Content Iframe --}}
-            <div class="flex-grow bg-gray-100 relative">
-                <div id="loadingSpinner" class="absolute inset-0 flex items-center justify-center bg-white z-10">
-                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-                </div>
-                <iframe id="docFrame" class="w-full h-full" src="" title="Pratinjau Surat" onload="document.getElementById('loadingSpinner').classList.add('hidden')"></iframe>
-            </div>
-
-            {{-- Footer Actions --}}
-            <div class="px-6 py-4 border-t border-gray-100 bg-white flex justify-end space-x-3">
-                <button type="button" onclick="closeDocModal()" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-                    {{ __('common.buttons.close') }}
-                </button>
-                <button type="button" onclick="printFrame()" class="inline-flex items-center px-5 py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                    </svg>
-                    {{ __('bookings.letter.download_print') }}
-                </button>
-            </div>
-        </div>
-    </div>
-
-    @push('scripts')
-    <script>
-        function openDocModal(url, title) {
-            const modal = document.getElementById('docModal');
-            const frame = document.getElementById('docFrame');
-            const spinner = document.getElementById('loadingSpinner');
-            
-            if (!modal) return;
-            
-            // Set title and title attribute
-            document.getElementById('docModalTitle').textContent = title || 'Pratinjau Dokumen';
-            
-            // Show loading spinner
-            if(spinner) spinner.classList.remove('hidden');
-            
-            // Set styles to show modal
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
-
-            // Load URL into iframe
-            frame.src = url;
-        }
-
-        function closeDocModal() {
-            const modal = document.getElementById('docModal');
-            if (!modal) return;
-            
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            document.getElementById('docFrame').src = ''; // Stop loading
-            document.body.style.overflow = ''; // Restore scrolling
-        }
-
-        function printFrame() {
-            const frame = document.getElementById('docFrame');
-            if (frame && frame.contentWindow) {
-                frame.contentWindow.focus();
-                frame.contentWindow.print();
-            }
-        }
-
-        // Close on Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeDocModal();
-            }
-        });
-
-        // Close on clicking outside modal content
-        document.getElementById('docModal').addEventListener('click', function(event) {
-            if (event.target === this) {
-                closeDocModal();
-            }
-        });
-    </script>
-    @endpush
 </x-app-layout>
-
