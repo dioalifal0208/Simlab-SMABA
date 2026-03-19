@@ -2,14 +2,14 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
+                <h2 class="font-extrabold text-2xl text-slate-900 tracking-tight leading-tight">
                     @if (auth()->user()->role == 'admin')
                         {{ __('loans.title_admin') }}
                     @else
                         {{ __('loans.title_user') }}
                     @endif
                 </h2>
-                <p class="text-sm text-gray-500 mt-1">
+                <p class="text-sm font-medium text-slate-500 mt-1">
                     @if (auth()->user()->role == 'admin')
                         {{ __('loans.subtitle_admin') }}
                     @else
@@ -30,11 +30,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             @if (session('success'))
-                <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-r-xl shadow-sm" role="alert">
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
-                        <p class="font-bold text-green-800">{{ __('common.messages.success') }}: <span class="font-normal text-green-700">{{ session('success') }}</span></p>
-                    </div>
+                <div class="mb-6 bg-emerald-50 border border-emerald-100 p-4 rounded-xl shadow-sm flex items-center gap-3" role="alert">
+                    <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0"><i class="fas fa-check-circle"></i></div>
+                    <p class="font-bold text-emerald-800 text-sm">{{ __('common.messages.success') }}: <span class="font-normal text-emerald-700">{{ session('success') }}</span></p>
                 </div>
             @endif
 
@@ -62,7 +60,7 @@
                 {{-- Card: Total All --}}
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex items-center justify-between group">
                     <div>
-                        <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-1">Total</p>
+                        <p class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">Total</p>
                         <h3 class="text-3xl font-extrabold text-slate-800">{{ $totalAll }}</h3>
                     </div>
                     <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-slate-100 transition-colors">
@@ -73,7 +71,7 @@
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-amber-100 flex items-center justify-between group relative overflow-hidden">
                     <div class="absolute inset-x-0 bottom-0 h-1 bg-amber-400"></div>
                     <div>
-                        <p class="text-sm font-bold text-amber-600 uppercase tracking-widest mb-1">Pending</p>
+                        <p class="text-[11px] font-extrabold text-amber-600 uppercase tracking-widest mb-1">Pending</p>
                         <h3 class="text-3xl font-extrabold text-slate-800">{{ $totalPending }}</h3>
                     </div>
                     <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center group-hover:bg-amber-100 transition-colors">
@@ -84,7 +82,7 @@
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-emerald-100 flex items-center justify-between group relative overflow-hidden">
                     <div class="absolute inset-x-0 bottom-0 h-1 bg-emerald-500"></div>
                     <div>
-                        <p class="text-sm font-bold text-emerald-600 uppercase tracking-widest mb-1">Disetujui</p>
+                        <p class="text-[11px] font-extrabold text-emerald-600 uppercase tracking-widest mb-1">Disetujui</p>
                         <h3 class="text-3xl font-extrabold text-slate-800">{{ $totalApproved }}</h3>
                     </div>
                     <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center group-hover:bg-emerald-100 transition-colors">
@@ -95,7 +93,7 @@
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-red-100 flex items-center justify-between group relative overflow-hidden">
                     <div class="absolute inset-x-0 bottom-0 h-1 bg-red-500"></div>
                     <div>
-                        <p class="text-sm font-bold text-red-600 uppercase tracking-widest mb-1">Ditolak</p>
+                        <p class="text-[11px] font-extrabold text-red-600 uppercase tracking-widest mb-1">Ditolak</p>
                         <h3 class="text-3xl font-extrabold text-slate-800">{{ $totalRejected }}</h3>
                     </div>
                     <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center group-hover:bg-red-100 transition-colors">

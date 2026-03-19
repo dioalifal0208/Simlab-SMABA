@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('common.nav.dashboard') }}</h2>
+        <h2 class="font-extrabold text-2xl text-slate-900 tracking-tight leading-tight">{{ __('common.nav.dashboard') }}</h2>
         
         {{-- Product Tour CSS & JS --}}
         <link rel="stylesheet" href="{{ asset('css/dashboard-tour.css') }}?v={{ time() }}">

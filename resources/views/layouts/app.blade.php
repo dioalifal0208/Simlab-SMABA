@@ -70,7 +70,7 @@
                 right: 0;
                 bottom: 0;
                 overflow-y: auto;
-                background-color: #f9fafb; /* bg-gray-50 */
+                background-color: #f8fafc; /* bg-slate-50 */
             }
             @media (min-width: 1024px) {
                 #main-wrapper {
@@ -106,7 +106,7 @@
           @modal-state-changed.window="isModalOpen = $event.detail.open"
           @show-toast.window="toast.visible = true; toast.message = $event.detail.message; toast.type = $event.detail.type; setTimeout(() => toast.visible = false, 3000)">
           
-        <div class="min-h-screen bg-gray-50">
+        <div class="min-h-screen bg-slate-50">
             @unless($hideChrome)
                 @include('layouts.navigation')
             @endunless
