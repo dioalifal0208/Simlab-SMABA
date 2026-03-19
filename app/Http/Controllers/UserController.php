@@ -13,10 +13,31 @@
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::latest()->paginate(10);
-        return view('users.index', compact('users'));
+        $query = User::query();
+
+        // Search filter
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        // Role filter
+        if ($role = $request->input('role')) {
+            $query->where('role', $role);
+        }
+
+        $users = $query->latest()->paginate(10)->withQueryString();
+
+        // Summary counts
+        $totalUsers = User::count();
+        $adminCount = User::where('role', 'admin')->count();
+        $guruCount = User::where('role', 'guru')->count();
+
+        return view('users.index', compact('users', 'totalUsers', 'adminCount', 'guruCount'));
     }
 
     public function edit(User $user)

@@ -1,85 +1,66 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-            <div>
-                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
-                    Edit Pengguna: {{ $user->name }}
-                </h2>
-                <p class="text-sm text-gray-500 mt-1">Perbarui informasi dan peran pengguna.</p>
-            </div>
-            <a href="{{ route('users.index') }}" class="mt-3 sm:mt-0 text-sm font-semibold text-indigo-500 hover:text-indigo-600 transition-colors">
-                &larr; Kembali ke Daftar Pengguna
+        <div class="flex items-center gap-4">
+            <a href="{{ route('users.index') }}" class="text-slate-400 hover:text-indigo-600 transition-colors w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-sm border border-slate-200">
+                <i class="fas fa-arrow-left"></i>
             </a>
+            <div>
+                <h2 class="font-extrabold text-2xl text-slate-900 tracking-tight">Edit Pengguna</h2>
+                <p class="text-sm font-medium text-slate-500 mt-1">Perbarui informasi dan peran <strong>{{ $user->name }}</strong>.</p>
+            </div>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
-                <div class="p-6 md:p-8 text-gray-900">
+    <div class="py-8">
+        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
 
-                    {{-- Pesan Error Validasi --}}
-                    @if ($errors->any())
-                        <div class="mb-6 bg-red-50 border-l-4 border-red-400 text-red-700 p-4 text-sm rounded-lg" role="alert">
-                            <p class="font-bold">Oops! Ada yang salah:</p>
-                            <ul class="mt-2 list-disc list-inside">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    <form action="{{ route('users.update', $user->id) }}" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <div class="space-y-6">
-                            {{-- Nama Pengguna --}}
-                            <div>
-                                <label for="name" class="block font-medium text-sm text-gray-700">Nama Lengkap</label>
-                                <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
-                            </div>
-
-                            {{-- Alamat Email --}}
-                            <div>
-                                <label for="email" class="block font-medium text-sm text-gray-700">Alamat Email</label>
-                                <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
-                            </div>
-
-                            {{-- Peran (Role) --}}
-                            <div>
-                                <label for="role" class="block font-medium text-sm text-gray-700">Peran (Role)</label>
-                                <select name="role" id="role" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
-                                    <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
-                                    <option value="guru" {{ old('role', $user->role) == 'guru' ? 'selected' : '' }}>Guru</option>
-                                </select>
-                            </div>
-
-                            {{-- Laboratorium (untuk Guru) --}}
-                            <div>
-                                <label for="laboratorium" class="block font-medium text-sm text-gray-700">Laboratorium (khusus Guru)</label>
-                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
-                                    <option value="">-- Pilih Lab --</option>
-                                    <option value="Biologi" @selected(old('laboratorium', $user->laboratorium) === 'Biologi')>Biologi</option>
-                                    <option value="Fisika" @selected(old('laboratorium', $user->laboratorium) === 'Fisika')>Fisika</option>
-                                    <option value="Bahasa" @selected(old('laboratorium', $user->laboratorium) === 'Bahasa')>Bahasa</option>
-                                    <option value="Komputer 1" @selected(old('laboratorium', $user->laboratorium) === 'Komputer 1')>Komputer 1</option>
-                                    <option value="Komputer 2" @selected(old('laboratorium', $user->laboratorium) === 'Komputer 2')>Komputer 2</option>
-                                    <option value="Komputer 3" @selected(old('laboratorium', $user->laboratorium) === 'Komputer 3')>Komputer 3</option>
-                                    <option value="Komputer 4" @selected(old('laboratorium', $user->laboratorium) === 'Komputer 4')>Komputer 4</option>
-                                </select>
-                                <p class="text-xs text-gray-500 mt-1">Setelan ini membatasi tampilan inventaris & peminjaman guru ke lab terkait.</p>
-                            </div>
-                        </div>
-
-                        <div class="mt-8 flex justify-end space-x-3">
-                            <a href="{{ route('users.index') }}" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold text-sm transition-colors">Batal</a>
-                            <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold text-sm shadow-sm transition-colors">Simpan Perubahan</button>
-                        </div>
-                    </form>
+            @if ($errors->any())
+                <div class="mb-6 bg-red-50 border border-red-100 p-4 rounded-xl shadow-sm flex items-start gap-4" data-aos="fade-in">
+                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0 mt-0.5"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div>
+                        <h4 class="font-bold text-red-800">Oops! Ada yang salah:</h4>
+                        <ul class="mt-1 text-sm text-red-700 list-inside list-disc">
+                            @foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            @endif
+
+            <form action="{{ route('users.update', $user->id) }}" method="POST">
+                @csrf
+                @method('PATCH')
+
+                <x-form.section title="Informasi Akun" description="Perbarui nama lengkap dan alamat email pengguna." icon="fa-user-pen">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <x-form.input name="name" label="Nama Lengkap" :value="old('name', $user->name)" icon="fa-user" required />
+                        <x-form.input name="email" type="email" label="Alamat Email" :value="old('email', $user->email)" icon="fa-envelope" required />
+                    </div>
+                </x-form.section>
+
+                <x-form.section title="Peran & Laboratorium" description="Tentukan peran dan, jika diperlukan, laboratorium pengguna." icon="fa-shield">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" x-data="{ role: '{{ old('role', $user->role) }}' }">
+                        <x-form.select name="role" label="Peran (Role)" icon="fa-shield" x-model="role" required>
+                            <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="guru" {{ old('role', $user->role) == 'guru' ? 'selected' : '' }}>Guru</option>
+                        </x-form.select>
+
+                        <div x-show="role === 'guru'" x-transition>
+                            <x-form.select name="laboratorium" label="Laboratorium" icon="fa-flask" helper="Setelan ini membatasi tampilan inventaris & peminjaman guru ke lab terkait.">
+                                <option value="">-- Pilih Lab --</option>
+                                <option value="Biologi" @selected(old('laboratorium', $user->laboratorium) === 'Biologi')>Biologi</option>
+                                <option value="Fisika" @selected(old('laboratorium', $user->laboratorium) === 'Fisika')>Fisika</option>
+                                <option value="Bahasa" @selected(old('laboratorium', $user->laboratorium) === 'Bahasa')>Bahasa</option>
+                                <option value="Komputer 1" @selected(old('laboratorium', $user->laboratorium) === 'Komputer 1')>Komputer 1</option>
+                                <option value="Komputer 2" @selected(old('laboratorium', $user->laboratorium) === 'Komputer 2')>Komputer 2</option>
+                                <option value="Komputer 3" @selected(old('laboratorium', $user->laboratorium) === 'Komputer 3')>Komputer 3</option>
+                                <option value="Komputer 4" @selected(old('laboratorium', $user->laboratorium) === 'Komputer 4')>Komputer 4</option>
+                            </x-form.select>
+                        </div>
+                    </div>
+                </x-form.section>
+
+                <x-form.sticky-actions cancelUrl="{{ route('users.index') }}" submitText="Simpan Perubahan" submitIcon="fa-save" />
+            </form>
         </div>
     </div>
 </x-app-layout>
-
