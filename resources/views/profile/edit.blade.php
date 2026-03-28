@@ -17,23 +17,23 @@
 
     <div class="py-10">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
-            <div class="bg-gradient-to-r from-smaba-dark-green to-smaba-light-green text-white rounded-2xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-once="true">
+            <div class="bg-white border border-gray-100 rounded-2xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] overflow-hidden" data-aos="fade-up" data-aos-once="true">
                 <div class="p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                     <div class="flex items-center gap-4">
-                        <div class="h-14 w-14 rounded-full bg-white/20 flex items-center justify-center text-2xl font-bold text-white">
+                        <div class="h-14 w-14 rounded-full bg-green-50 border border-green-100 flex items-center justify-center text-2xl font-bold text-green-700 shadow-sm">
                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                         </div>
                         <div>
-                            <p class="text-xs uppercase tracking-wide text-white/80">{{ __('profile.sections.profile_card.badge') }}</p>
-                            <h3 class="text-2xl font-semibold">{{ auth()->user()->name }}</h3>
-                            <p class="text-white/80 text-sm">{{ auth()->user()->email }}</p>
+                            <p class="text-xs uppercase tracking-wide text-gray-500">{{ __('profile.sections.profile_card.badge') }}</p>
+                            <h3 class="text-2xl font-bold text-gray-900">{{ auth()->user()->name }}</h3>
+                            <p class="text-gray-500 text-sm font-medium">{{ auth()->user()->email }}</p>
                         </div>
                     </div>
                     <div class="flex flex-wrap gap-3 text-sm">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full bg-white/20 font-semibold">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full bg-gray-50 border border-gray-200 text-gray-600 font-semibold">
                             {{ __('profile.sections.profile_card.role') }}: {{ auth()->user()->role ? __('common.roles.' . strtolower(auth()->user()->role)) : __('common.roles.student') }}
                         </span>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full bg-white/20 font-semibold">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full bg-gray-50 border border-gray-200 text-gray-600 font-semibold">
                             {{ __('profile.sections.profile_card.updated_at') }}: {{ optional(auth()->user()->updated_at)->format('d M Y') ?? '-' }}
                         </span>
                     </div>

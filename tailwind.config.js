@@ -13,6 +13,9 @@ export default {
 
     theme: {
         extend: {
+            boxShadow: {
+                'soft': '0 2px 10px -4px rgba(0, 0, 0, 0.05)',
+            },
             // Penambahan Palet Warna Kustom (Green Theme - SMABA Logo)
             colors: {
               'smaba-dark-green': '#15803d',     // Green 700

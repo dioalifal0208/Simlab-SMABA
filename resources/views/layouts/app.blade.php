@@ -118,7 +118,7 @@
 
                 {{-- BANNER PENGUMUMAN GLOBAL --}}
                 @if(isset($activeAnnouncement))
-                    <div class="bg-indigo-600 text-white" 
+                    <div class="bg-white border-b border-gray-100 text-gray-800" 
                         x-show="showAnnouncement" 
                         x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 -translate-y-full"
@@ -129,16 +129,16 @@
                         <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
                             <div class="flex items-center justify-between flex-wrap">
                                 <div class="w-0 flex-1 flex items-center">
-                                    <span class="flex-shrink-0 flex p-2 rounded-lg bg-indigo-500">
-                                        <i class="fas fa-bullhorn text-white"></i>
+                                    <span class="flex-shrink-0 flex p-2 rounded-lg bg-green-50">
+                                        <i class="fas fa-bullhorn text-green-600"></i>
                                     </span>
                                     <div class="marquee-container ms-3">
                                         <p class="marquee-text font-medium text-sm">{{ $activeAnnouncement->message }}</p>
                                     </div>
                                 </div>
                                 <div class="order-2 flex-shrink-0 sm:order-3 sm:ms-3">
-                                    <button @click="showAnnouncement = false" type="button" class="-mr-1 flex p-2 rounded-md hover:bg-indigo-500 focus:outline-none">
-                                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    <button @click="showAnnouncement = false" type="button" class="-mr-1 flex p-2 rounded-md hover:bg-gray-100 focus:outline-none">
+                                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                                     </button>
                                 </div>
                             </div>
@@ -232,7 +232,7 @@
         @auth
         <div x-data="lockScreen" @keydown.window="resetTimer" @mousemove.window="resetTimer" @click.window="resetTimer" @scroll.window="resetTimer" style="display: none;" x-show="isOpen" class="fixed inset-0 z-[9999] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             {{-- Blur Backdrop --}}
-            <div x-show="isOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-900/80 backdrop-blur-md transition-opacity"></div>
+            <div x-show="isOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm transition-opacity"></div>
 
             <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
                 <div x-show="isOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md border border-gray-100">

@@ -179,7 +179,7 @@
                                     <td class="py-4 px-6">
                                         <div class="flex items-start gap-4">
                                             @if (auth()->user()->role == 'admin')
-                                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-white font-bold shadow-sm flex-shrink-0">
+                                                <div class="w-10 h-10 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700 font-bold shadow-sm flex-shrink-0">
                                                     {{ substr($loan->user->name, 0, 1) }}
                                                 </div>
                                             @endif

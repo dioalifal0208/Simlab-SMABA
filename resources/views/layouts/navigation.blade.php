@@ -87,7 +87,7 @@
             <x-dropdown align="right" width="56">
                 <x-slot name="trigger">
                     <button class="flex items-center gap-2.5 px-2 py-1 rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500/20">
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 shadow-sm border border-white">
+                        <div class="w-8 h-8 rounded-full bg-green-50 text-green-700 flex items-center justify-center text-xs font-bold flex-shrink-0 shadow-sm border border-green-200">
                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         </div>
                         <div class="hidden sm:block text-left">
@@ -295,7 +295,7 @@
         {{-- Modernized User Card --}}
         <div class="sidebar-user-card group" x-show="!sidebarCollapsed" x-transition>
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 shadow-sm border border-green-400/30">
+                <div class="w-10 h-10 rounded-xl bg-green-50 text-green-700 flex items-center justify-center text-sm font-bold flex-shrink-0 shadow-sm border border-green-200">
                     {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                 </div>
                 <div class="flex-1 min-w-0">
@@ -364,11 +364,9 @@
 
 /* Active State */
 .sidebar-item.active {
-    background-color: #f0fdf4 !important; /* green-50 */
-    color: #15803d !important; /* green-700 */
+    background-color: transparent !important;
+    color: #0f172a !important; /* slate-900 */
     font-weight: 600;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* very subtle internal shadow */
-    border: 1px solid #dcfce7;
 }
 
 /* Indicator line */
@@ -378,9 +376,9 @@
     left: -8px; /* Offset margin */
     top: 50%;
     transform: translateY(-50%);
-    height: 60%;
+    height: 70%;
     width: 3px;
-    background-color: #22c55e;
+    background-color: #16a34a; /* green-600 */
     border-radius: 0 4px 4px 0;
 }
 
@@ -432,7 +430,7 @@
     }
     /* Slightly differently colored full active state when collapsed */
     body.sidebar-collapsed .sidebar-item.active {
-        background-color: #dcfce7 !important; /* slightly darker green-100 */
+        background-color: #f8fafc !important; /* light gray instead of green */
         border-color: transparent;
     }
     body.sidebar-collapsed .sidebar-icon {

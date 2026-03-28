@@ -21,7 +21,7 @@
     <div class="max-w-lg w-full bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100 relative">
         
         {{-- Status Indicator Bar --}}
-        <div class="h-2 w-full {{ $booking->status == 'approved' || $booking->status == 'completed' ? 'bg-gradient-to-r from-green-400 to-emerald-600' : 'bg-gradient-to-r from-red-500 to-pink-600' }}"></div>
+        <div class="h-2 w-full {{ $booking->status == 'approved' || $booking->status == 'completed' ? 'bg-emerald-500' : 'bg-red-500' }}"></div>
 
         <div class="p-8 pb-6 text-center relative">
             {{-- Watermark Effect --}}

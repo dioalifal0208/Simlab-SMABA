@@ -51,9 +51,7 @@
 
             {{-- PERUBAHAN: Desain Ulang Area Filter dan Tombol Hapus Massal --}}
             <div class="mb-8" data-aos="fade-up">
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 relative overflow-hidden">
-                    {{-- Decorative top border --}}
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-400"></div>
+                    {{-- Decorative top border removed for clean UI --}}
                     
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div class="flex flex-col">

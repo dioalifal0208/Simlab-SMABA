@@ -13,16 +13,14 @@
     $disabled = $disabled ?? false;
     $class = $class ?? '';
     
-    $variants = [
-        'primary' => 'bg-blue-700 hover:bg-blue-800 text-white shadow-sm border border-blue-800',
-        'secondary' => 'bg-gray-200 hover:bg-gray-300 text-gray-800 shadow-sm',
-        'success' => 'bg-green-600 hover:bg-green-700 text-white shadow-sm',
-        'danger' => 'bg-red-600 hover:bg-red-700 text-white shadow-sm',
-        'warning' => 'bg-yellow-500 hover:bg-yellow-600 text-white shadow-sm',
-        'info' => 'bg-green-500 hover:bg-green-600 text-white shadow-sm',
-        'outline' => 'bg-white border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white',
+        'primary' => 'bg-green-600 hover:bg-green-700 text-white border border-transparent shadow-sm',
+        'secondary' => 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 shadow-sm',
+        'success' => 'bg-green-600 hover:bg-green-700 text-white border border-transparent shadow-sm',
+        'danger' => 'bg-red-600 hover:bg-red-700 text-white border border-transparent shadow-sm',
+        'warning' => 'bg-yellow-500 hover:bg-yellow-600 text-white shadow-sm border border-transparent',
+        'info' => 'bg-gray-800 hover:bg-gray-900 text-white shadow-sm border border-transparent',
+        'outline' => 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50',
         'ghost' => 'bg-transparent hover:bg-gray-100 text-gray-700',
-    ];
     
     $sizes = [
         'xs' => 'px-2 py-1 text-xs',

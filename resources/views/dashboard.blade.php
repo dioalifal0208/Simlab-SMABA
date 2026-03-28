@@ -31,29 +31,29 @@
                     {{-- 1. HERO / WELCOME SECTION & OVERLAPPING STATS --}}
                     <div>
                         {{-- Hero Background Container --}}
-                        <div class="relative overflow-hidden bg-gradient-to-r from-emerald-600 to-green-500 rounded-3xl shadow-lg border border-green-400">
+                        <div class="relative overflow-hidden bg-white rounded-3xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100">
                             {{-- Decorative Background Patterns --}}
-                            <div class="absolute inset-0 opacity-20">
-                                <svg class="absolute right-0 bottom-0 text-white w-96 h-96 transform translate-x-1/3 translate-y-1/3" fill="currentColor" viewBox="0 0 100 100">
+                            <div class="absolute inset-0 opacity-[0.03]">
+                                <svg class="absolute right-0 bottom-0 text-slate-900 w-96 h-96 transform translate-x-1/3 translate-y-1/3" fill="currentColor" viewBox="0 0 100 100">
                                     <circle cx="50" cy="50" r="50"></circle>
                                 </svg>
-                                <svg class="absolute top-0 right-1/4 text-white w-32 h-32 transform -translate-y-1/2 opacity-50" fill="currentColor" viewBox="0 0 100 100">
+                                <svg class="absolute top-0 right-1/4 text-slate-900 w-32 h-32 transform -translate-y-1/2 opacity-50" fill="currentColor" viewBox="0 0 100 100">
                                     <circle cx="50" cy="50" r="50"></circle>
                                 </svg>
-                                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.7) 1px, transparent 0); background-size: 32px 32px; opacity: 0.3;"></div>
+                                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.8) 1px, transparent 0); background-size: 32px 32px;"></div>
                             </div>
                             
                             <div class="relative px-8 py-10 pb-20 md:px-12 md:py-14 md:pb-24 z-10 flex flex-col md:flex-row justify-between items-start md:items-center">
                                 <div data-aos="fade-up" data-aos-once="true">
-                                    <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+                                    <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
                                         Selamat datang, {{ Auth::user()->name }}! 👋
                                     </h1>
-                                    <p class="mt-2 text-green-50 text-base md:text-lg max-w-xl font-medium">
+                                    <p class="mt-2 text-gray-500 text-base md:text-lg max-w-xl font-medium">
                                         Pantau seluruh aktivitas laboratorium Anda dalam satu dasbor pintar.
                                     </p>
                                 </div>
                                 <div class="mt-6 md:mt-0 opacity-80" data-aos="fade-left" data-aos-once="true" data-aos-delay="200">
-                                    <img src="{{ asset('images/logo-smaba.webp') }}" alt="Logo" class="h-20 w-20 object-contain drop-shadow-md brightness-0 invert">
+                                    <img src="{{ asset('images/logo-smaba.webp') }}" alt="Logo" class="h-20 w-20 object-contain drop-shadow-sm opacity-20 filter grayscale">
                                 </div>
                             </div>
                         </div>
@@ -378,25 +378,25 @@
                     
                     {{-- Hero Section - Matching Admin Style --}}
                     <div>
-                        <div class="relative overflow-hidden bg-gradient-to-r from-teal-600 to-emerald-500 rounded-3xl shadow-lg border border-teal-400">
+                        <div class="relative overflow-hidden bg-white rounded-3xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100">
                             {{-- Pattern --}}
-                            <div class="absolute inset-0 opacity-20">
-                                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.7) 1px, transparent 0); background-size: 32px 32px; opacity: 0.3;"></div>
+                            <div class="absolute inset-0 opacity-[0.03]">
+                                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.8) 1px, transparent 0); background-size: 32px 32px;"></div>
                             </div>
                             
                             <div class="relative px-8 py-10 pb-20 md:px-12 md:py-14 md:pb-24 z-10">
                                 <div class="flex items-center gap-5" data-aos="fade-up" data-aos-once="true">
                                     <div class="flex-shrink-0">
-                                        <div class="h-16 w-16 md:h-20 md:w-20 rounded-2xl bg-white/20 backdrop-blur-md border border-white/40 shadow-xl flex items-center justify-center transform -rotate-6">
-                                            <span class="text-2xl md:text-3xl font-extrabold text-white">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                                        <div class="h-16 w-16 md:h-20 md:w-20 rounded-2xl bg-green-50 border border-green-200 shadow-sm flex items-center justify-center transform -rotate-6">
+                                            <span class="text-2xl md:text-3xl font-extrabold text-green-700">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
                                         </div>
                                     </div>
                                     <div>
-                                        <p class="text-teal-50 text-[11px] md:text-xs font-bold uppercase tracking-widest mb-1.5 drop-shadow-sm">Selamat Datang</p>
-                                        <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight tracking-tight drop-shadow-sm">
+                                        <p class="text-gray-500 text-[11px] md:text-xs font-bold uppercase tracking-widest mb-1.5 drop-shadow-sm">Selamat Datang</p>
+                                        <h1 class="text-2xl md:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight drop-shadow-sm">
                                             {{ auth()->user()->name }} 👋
                                         </h1>
-                                        <p class="mt-1 text-teal-50 font-medium">Siap untuk praktikum hari ini?</p>
+                                        <p class="mt-1 text-gray-500 font-medium">Siap untuk praktikum hari ini?</p>
                                     </div>
                                 </div>
                             </div>
@@ -499,7 +499,7 @@
                             <div class="p-6 flex-grow flex flex-col justify-center">
                                 @if($nextBooking)
                                 <div class="flex items-start gap-5 p-5 rounded-xl bg-blue-50/50 border border-blue-100">
-                                    <div class="flex-shrink-0 flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-md">
+                                    <div class="flex-shrink-0 flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 shadow-sm">
                                         <span class="text-xs font-bold uppercase">{{ $nextBooking->waktu_mulai->format('M') }}</span>
                                         <span class="text-2xl font-extrabold">{{ $nextBooking->waktu_mulai->format('d') }}</span>
                                     </div>

@@ -140,8 +140,8 @@
                                     {{-- Avatar + Name + Email --}}
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-3">
-                                            <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 shadow-sm border border-white
-                                                {{ $user->role == 'admin' ? 'bg-gradient-to-br from-rose-500 to-pink-600 text-white' : 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white' }}">
+                                            <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 shadow-sm border
+                                                {{ $user->role == 'admin' ? 'bg-rose-50 border-rose-200 text-rose-700' : 'bg-emerald-50 border-emerald-200 text-emerald-700' }}">
                                                 {{ strtoupper(substr($user->name, 0, 1)) }}
                                             </div>
                                             <div class="min-w-0">
