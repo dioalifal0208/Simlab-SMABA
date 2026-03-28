@@ -10,8 +10,8 @@
         @keydown.escape.window="showModal = false"
         class="relative min-h-screen pb-12">
         
-        {{-- HEADER BERGRADIENT HALUS --}}
-        <div class="bg-gradient-to-b from-slate-50 to-white/0 pt-6 pb-2 border-b border-slate-100/50 mb-8">
+        {{-- HEADER BERGRADIENT HALUS (DIHAPUS) --}}
+        <div class="bg-white pt-6 pb-2 border-b border-slate-100 mb-8">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
@@ -31,24 +31,24 @@
 
             {{-- ALERTS --}}
             @if (session('success'))
-                <div class="mb-8 bg-emerald-50 border border-emerald-100 p-4 rounded-xl shadow-sm flex items-start gap-4" data-aos="fade-in">
-                    <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0 mt-0.5">
+                <div class="mb-8 bg-white border border-slate-100 border-l-4 border-l-emerald-500 p-4 rounded-xl shadow-sm flex items-start gap-4" data-aos="fade-in">
+                    <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0 mt-0.5">
                         <i class="fas fa-check"></i>
                     </div>
                     <div>
-                        <h4 class="font-bold text-emerald-800">{{ __('common.messages.success') }}</h4>
-                        <p class="text-sm text-emerald-700 mt-0.5">{{ session('success') }}</p>
+                        <h4 class="font-bold text-slate-800">{{ __('common.messages.success') }}</h4>
+                        <p class="text-sm text-slate-600 mt-0.5">{{ session('success') }}</p>
                     </div>
                 </div>
             @endif
             @if ($errors->any())
-                <div class="mb-8 bg-red-50 border border-red-100 p-4 rounded-xl shadow-sm flex items-start gap-4" data-aos="fade-in">
-                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0 mt-0.5">
+                <div class="mb-8 bg-white border border-slate-100 border-l-4 border-l-red-500 p-4 rounded-xl shadow-sm flex items-start gap-4" data-aos="fade-in">
+                    <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-600 flex-shrink-0 mt-0.5">
                         <i class="fas fa-exclamation-triangle"></i>
                     </div>
                     <div>
-                        <h4 class="font-bold text-red-800">{{ __('common.messages.error_title') }}</h4>
-                        <ul class="mt-1 space-y-1 text-sm text-red-700 list-inside list-disc">
+                        <h4 class="font-bold text-slate-800">{{ __('common.messages.error_title') }}</h4>
+                        <ul class="mt-1 space-y-1 text-sm text-slate-600 list-inside list-disc">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
@@ -71,7 +71,7 @@
                             </h3>
                             
                             <div class="flex flex-col sm:flex-row gap-6 items-start">
-                                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-100/50 flex items-center justify-center text-indigo-600 font-bold shadow-sm shadow-indigo-100/20 flex-shrink-0">
+                                <div class="w-16 h-16 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 font-bold shadow-sm flex-shrink-0">
                                     <span class="text-2xl">{{ substr($loan->user->name, 0, 1) }}</span>
                                 </div>
                                 <div class="flex-grow">
@@ -80,9 +80,9 @@
                                             <h4 class="text-xl font-bold text-slate-800 tracking-tight">{{ $loan->user->name }}</h4>
                                             <p class="text-sm text-slate-500 font-medium mt-0.5"><i class="fas fa-envelope text-slate-400 mr-1.5"></i>{{ $loan->user->email }}</p>
                                         </div>
-                                        <div class="bg-slate-50 border border-slate-100 rounded-lg px-4 py-2 text-center">
+                                        <div class="bg-white border border-slate-200 rounded-lg px-4 py-2 text-center shadow-sm">
                                             <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ __('bookings.form.lab') }}</div>
-                                            <div class="text-sm font-bold text-indigo-700 mt-0.5">{{ $loan->laboratorium }}</div>
+                                            <div class="text-sm font-bold text-slate-700 mt-0.5">{{ $loan->laboratorium }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -90,7 +90,7 @@
                         </div>
                         
                         {{-- Borrowing Details Grid --}}
-                        <div class="p-6 bg-slate-50/30">
+                        <div class="p-6 border-t border-slate-100">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8">
                                 <div>
                                     <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">{{ __('loans.details.submission_date') }}</div>
@@ -107,8 +107,8 @@
                                 @if($loan->tanggal_kembali)
                                 <div>
                                     <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">{{ __('loans.details.return_date') }}</div>
-                                    <div class="text-sm font-bold text-emerald-600 flex items-center gap-2">
-                                        <i class="fas fa-box-check text-emerald-500"></i> {{ \Carbon\Carbon::parse($loan->tanggal_kembali)->format('d F Y, H:i') }}
+                                    <div class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                                        <i class="fas fa-box-check text-slate-400"></i> {{ \Carbon\Carbon::parse($loan->tanggal_kembali)->format('d F Y, H:i') }}
                                     </div>
                                 </div>
                                 @endif
@@ -120,22 +120,22 @@
                                     </div>
                                 </div>
 
-                                {{-- Edge State: Alasan Penolakan (Prominent Rejection Note) --}}
+                                <!-- Edge State: Alasan Penolakan -->
                                 @if($loan->status === 'rejected' && $loan->admin_notes)
                                 <div class="col-span-1 sm:col-span-2 mt-2">
-                                    <div class="text-[10px] font-bold text-red-500 uppercase tracking-widest mb-2 flex items-center gap-1.5">
-                                        <i class="fas fa-exclamation-circle"></i> Alasan Penolakan (Admin)
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                                        <i class="fas fa-exclamation-circle text-red-500"></i> Alasan Penolakan (Admin)
                                     </div>
-                                    <div class="bg-red-50 border border-red-100 text-red-800 text-sm p-4 rounded-xl leading-relaxed font-medium">
+                                    <div class="bg-white border border-slate-200 border-l-4 border-l-red-500 text-slate-700 text-sm p-4 rounded-xl leading-relaxed font-medium shadow-sm">
                                         {{ $loan->admin_notes }}
                                     </div>
                                 </div>
                                 @elseif($loan->admin_notes)
                                 <div class="col-span-1 sm:col-span-2 mt-2">
-                                    <div class="text-[10px] font-bold text-amber-500 uppercase tracking-widest mb-2 flex items-center gap-1.5">
-                                        <i class="fas fa-comment-dots"></i> Catatan Admin
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                                        <i class="fas fa-comment-dots text-amber-500"></i> Catatan Admin
                                     </div>
-                                    <div class="bg-amber-50 border border-amber-100 text-amber-900 text-sm p-4 rounded-xl leading-relaxed">
+                                    <div class="bg-white border border-slate-200 border-l-4 border-l-amber-500 text-slate-700 text-sm p-4 rounded-xl leading-relaxed shadow-sm">
                                         {{ $loan->admin_notes }}
                                     </div>
                                 </div>
@@ -149,7 +149,7 @@
                         <div class="p-6">
                             <div class="flex justify-between items-center mb-6">
                                 <h3 class="text-xs font-extrabold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                                    <i class="fas fa-boxes text-indigo-400"></i> Daftar Item Dipinjam
+                                    <i class="fas fa-boxes text-slate-400"></i> Daftar Item Dipinjam
                                 </h3>
                                 <div class="bg-slate-100 text-slate-600 text-[11px] font-bold px-3 py-1 rounded-lg">
                                     {{ $loan->items->count() }} Item
@@ -168,7 +168,7 @@
                             @else
                                 <div class="border border-slate-100 rounded-xl overflow-hidden">
                                     <table class="min-w-full text-left">
-                                        <thead class="bg-slate-50/80 border-b border-slate-100">
+                                        <thead class="bg-white border-b border-slate-100">
                                             <tr>
                                                 <th class="py-3.5 px-5 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">{{ __('loans.details.item_name') }}</th>
                                                 <th class="py-3.5 px-5 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest text-right">{{ __('loans.details.quantity') }}</th>
@@ -179,7 +179,7 @@
                                             <tr class="hover:bg-slate-50 transition-colors group">
                                                 <td class="py-4 px-5">
                                                     <div class="flex items-center gap-3">
-                                                        <div class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-indigo-500 group-hover:bg-indigo-50 transition-colors">
+                                                        <div class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-slate-600 group-hover:bg-slate-100 transition-colors">
                                                             <i class="fas fa-flask"></i>
                                                         </div>
                                                         <div>
@@ -189,7 +189,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="py-4 px-5 text-right align-middle">
-                                                    <div class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-sm shadow-sm group-hover:border-indigo-200 group-hover:text-indigo-700 transition-colors">
+                                                    <div class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-lg text-sm shadow-sm transition-colors">
                                                         {{ $item->pivot->jumlah }} <span class="ml-1 text-[10px] font-semibold opacity-60 uppercase">{{ $item->satuan ?: 'Unit' }}</span>
                                                     </div>
                                                 </td>
@@ -221,13 +221,11 @@
                                 $metaColor = $statusMeta['color'];
                             @endphp
                             
-                            {{-- Decorative gradient blob --}}
-                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-{{$metaColor}}-50 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity"></div>
                             
                             <h3 class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-4">Status Peminjaman</h3>
                             
                             <div class="flex items-center gap-4 mb-3 relative z-10">
-                                <div class="w-12 h-12 rounded-xl bg-{{$metaColor}}-50 flex items-center justify-center text-{{$metaColor}}-500 text-xl border border-{{$metaColor}}-100 shadow-inner">
+                                <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-{{$metaColor}}-500 text-xl border border-slate-200 shadow-sm">
                                     <i class="fas {{ $statusMeta['icon'] }}"></i>
                                 </div>
                                 <div>
@@ -322,25 +320,24 @@
                         {{-- C. Quick Actions Panel (Hanya untuk Admin) --}}
                         @can('is-admin')
                             @if(in_array($loan->status, ['pending', 'approved']))
-                            <div class="bg-slate-800 text-white rounded-2xl shadow-lg border border-slate-700 p-6 relative overflow-hidden" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
-                                <div class="absolute -right-6 -top-6 w-24 h-24 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+                            <div class="bg-white text-slate-800 rounded-2xl shadow-sm border border-slate-200 p-6 relative overflow-hidden" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
                                 
                                 <h3 class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-4">Tindakan Cepat</h3>
                                 
                                 <div class="space-y-3">
                                     @if($loan->status == 'pending')
-                                        <button @click="showModal = true; modalType = 'approved'; actionTitle = 'Setujui Peminjaman'; actionColor = 'emerald'; actionIcon = 'fa-check'; btnColor = 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/30'" 
-                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] hover:shadow-[0_6px_20px_rgba(16,185,129,0.23)] bg-emerald-500 hover:bg-emerald-400 transition-all hover:-translate-y-0.5 text-white">
+                                        <button @click="showModal = true; modalType = 'approved'; actionTitle = 'Setujui Peminjaman'; actionColor = 'emerald'; actionIcon = 'fa-check'; btnColor = 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm'" 
+                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-700 transition-all hover:-translate-y-0.5 text-white shadow-sm">
                                             <i class="fas fa-check mr-2"></i> Approve Request
                                         </button>
                                         
-                                        <button @click="showModal = true; modalType = 'rejected'; actionTitle = 'Tolak Peminjaman'; actionColor = 'red'; actionIcon = 'fa-times'; btnColor = 'bg-red-500 hover:bg-red-600 text-white shadow-red-500/30'" 
-                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white transition-all">
-                                            <i class="fas fa-times mr-2"></i> Reject Request
+                                        <button @click="showModal = true; modalType = 'rejected'; actionTitle = 'Tolak Peminjaman'; actionColor = 'red'; actionIcon = 'fa-times'; btnColor = 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 shadow-sm'" 
+                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-all shadow-sm hover:-translate-y-0.5">
+                                            <i class="fas fa-times mr-2 text-slate-400"></i> Reject Request
                                         </button>
                                     @elseif($loan->status == 'approved')
-                                        <button @click="showModal = true; modalType = 'completed'; actionTitle = 'Tandai Selesai'; actionColor = 'indigo'; actionIcon = 'fa-box-check'; btnColor = 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-500/30'" 
-                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm shadow-[0_4px_14px_0_rgba(79,70,229,0.39)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.23)] bg-indigo-600 hover:bg-indigo-500 transition-all hover:-translate-y-0.5 text-white">
+                                        <button @click="showModal = true; modalType = 'completed'; actionTitle = 'Tandai Selesai'; actionColor = 'emerald'; actionIcon = 'fa-box-check'; btnColor = 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm'" 
+                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-700 transition-all hover:-translate-y-0.5 text-white shadow-sm">
                                             <i class="fas fa-box-check mr-2"></i> Mark as Returned
                                         </button>
                                     @endif

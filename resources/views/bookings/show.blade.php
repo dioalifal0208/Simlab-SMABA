@@ -61,8 +61,8 @@
         @keydown.escape.window="showModal = false"
         class="relative min-h-screen pb-12">
         
-        {{-- HEADER BERGRADIENT HALUS --}}
-        <div class="bg-gradient-to-b from-slate-50 to-white/0 pt-6 pb-2 border-b border-slate-100/50 mb-8">
+        {{-- HEADER BERGRADIENT HALUS (DIHAPUS) --}}
+        <div class="bg-white pt-6 pb-2 border-b border-slate-100 mb-8">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
@@ -91,20 +91,20 @@
 
             {{-- ALERTS --}}
             @if (session('success'))
-                <div class="mb-8 bg-emerald-50 border border-emerald-100 p-4 rounded-xl shadow-sm flex items-start gap-4" data-aos="fade-in">
-                    <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0 mt-0.5"><i class="fas fa-check"></i></div>
+                <div class="mb-8 bg-white border border-slate-100 border-l-4 border-l-emerald-500 p-4 rounded-xl shadow-sm flex items-start gap-4" data-aos="fade-in">
+                    <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0 mt-0.5"><i class="fas fa-check"></i></div>
                     <div>
-                        <h4 class="font-bold text-emerald-800">{{ __('common.messages.success') }}</h4>
-                        <p class="text-sm text-emerald-700 mt-0.5">{{ session('success') }}</p>
+                        <h4 class="font-bold text-slate-800">{{ __('common.messages.success') }}</h4>
+                        <p class="text-sm text-slate-600 mt-0.5">{{ session('success') }}</p>
                     </div>
                 </div>
             @endif
             @if ($errors->any())
-                <div class="mb-8 bg-red-50 border border-red-100 p-4 rounded-xl shadow-sm flex items-start gap-4" data-aos="fade-in">
-                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0 mt-0.5"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="mb-8 bg-white border border-slate-100 border-l-4 border-l-red-500 p-4 rounded-xl shadow-sm flex items-start gap-4" data-aos="fade-in">
+                    <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-600 flex-shrink-0 mt-0.5"><i class="fas fa-exclamation-triangle"></i></div>
                     <div>
-                        <h4 class="font-bold text-red-800">{{ __('common.messages.error_title') }}</h4>
-                        <ul class="mt-1 space-y-1 text-sm text-red-700 list-inside list-disc">
+                        <h4 class="font-bold text-slate-800">{{ __('common.messages.error_title') }}</h4>
+                        <ul class="mt-1 space-y-1 text-sm text-slate-600 list-inside list-disc">
                             @foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach
                         </ul>
                     </div>
@@ -129,9 +129,9 @@
                                     <h4 class="text-xl font-bold text-slate-800 tracking-tight">{{ $booking->tujuan_kegiatan }}</h4>
                                     <p class="text-sm text-slate-500 font-medium mt-1"><i class="fas fa-user-circle text-slate-400 mr-1.5"></i> Diajukan oleh: <span class="font-bold text-slate-700">{{ $booking->user->name }}</span></p>
                                 </div>
-                                <div class="bg-{{$labColor}}-50 border border-{{$labColor}}-100 rounded-xl px-4 py-2 text-center min-w-[120px] shadow-sm">
-                                    <div class="text-[10px] font-bold text-{{$labColor}}-400 uppercase tracking-widest">Laboratorium</div>
-                                    <div class="text-sm font-extrabold text-{{$labColor}}-700 mt-0.5 flex items-center justify-center gap-1.5">
+                                <div class="bg-white border border-slate-200 rounded-xl px-4 py-2 text-center min-w-[120px] shadow-sm">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Laboratorium</div>
+                                    <div class="text-sm font-extrabold text-slate-700 mt-0.5 flex items-center justify-center gap-1.5">
                                         <i class="fas fa-flask"></i> {{ $booking->laboratorium }}
                                     </div>
                                 </div>
@@ -140,7 +140,7 @@
                             @if($booking->mata_pelajaran)
                             <div class="mb-2">
                                 <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">{{ __('bookings.details.subject') }}</div>
-                                <div class="text-sm font-bold text-slate-800 inline-block bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">{{ $booking->mata_pelajaran }}</div>
+                                <div class="text-sm font-bold text-slate-800 inline-block bg-white px-3 py-1 rounded-lg border border-slate-200 shadow-sm">{{ $booking->mata_pelajaran }}</div>
                             </div>
                             @endif
                         </div>
@@ -175,8 +175,8 @@
                                 <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Visualisasi Blok Waktu (07:00 - 16:00)</div>
                                 <div class="relative w-full h-12 bg-slate-100 rounded-xl overflow-hidden shadow-inner border border-slate-200 group">
                                     {{-- The specific booking block --}}
-                                    <div class="absolute top-0 bottom-0 bg-gradient-to-r from-{{$labColor}}-400 to-{{$labColor}}-500 transition-all duration-1000 ease-out flex items-center justify-center opacity-90 group-hover:opacity-100 hover:shadow-lg cursor-crosshair z-10"
-                                         style="left: {{ $leftPercent }}%; width: {{ $widthPercent }}%;"
+                                    <div class="absolute top-0 bottom-0 bg-slate-800 transition-all duration-1000 ease-out flex items-center justify-center hover:bg-slate-700 hover:shadow-lg cursor-crosshair z-10"
+                                         style="left: {{ $leftPercent }}%; width: {{ $widthPercent }}%; border-radius: 4px;"
                                          title="Durasi: {{ $durationText }}">
                                         {{-- Optional Pattern Overlay --}}
                                         <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iLjA1Ii8+PC9zdmc+')] mix-blend-overlay"></div>
@@ -200,9 +200,9 @@
 
                         {{-- Conflict Detection Alert (Edge State) --}}
                         @if($conflict)
-                        <div class="p-6 bg-red-50 border-t border-red-100">
+                        <div class="p-6 bg-white border-t border-slate-100 border-l-4 border-l-red-500">
                             <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0 animate-pulse">
+                                <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600 flex-shrink-0 animate-pulse border border-red-100">
                                     <i class="fas fa-exclamation-triangle"></i>
                                 </div>
                                 <div class="w-full">
@@ -218,7 +218,7 @@
                                             <div class="font-bold text-slate-800">{{ $conflict->tujuan_kegiatan }}</div>
                                             <div class="text-xs text-slate-500"><i class="fas fa-clock mr-1"></i> {{ \Carbon\Carbon::parse($conflict->waktu_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($conflict->waktu_selesai)->format('H:i') }}</div>
                                         </div>
-                                        <a href="{{ route('bookings.show', $conflict->id) }}" target="_blank" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-md font-bold text-xs transition-colors border border-red-200">Lihat Detail <i class="fas fa-external-link-alt ml-1"></i></a>
+                                        <a href="{{ route('bookings.show', $conflict->id) }}" target="_blank" class="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-700 rounded-md font-bold text-xs transition-colors border border-slate-200">Lihat Detail <i class="fas fa-external-link-alt ml-1 text-slate-400"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -245,13 +245,11 @@
                                 $metaColor = $statusMeta['color'];
                             @endphp
                             
-                            {{-- Decorative gradient blob --}}
-                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-{{$metaColor}}-50 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity"></div>
                             
                             <h3 class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-4">Status Pengajuan</h3>
                             
                             <div class="flex items-center gap-4 mb-3 relative z-10">
-                                <div class="w-12 h-12 rounded-xl bg-{{$metaColor}}-50 flex items-center justify-center text-{{$metaColor}}-500 text-xl border border-{{$metaColor}}-100 shadow-inner">
+                                <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-{{$metaColor}}-500 text-xl border border-slate-200 shadow-sm">
                                     <i class="fas {{ $statusMeta['icon'] }}"></i>
                                 </div>
                                 <div>
@@ -282,7 +280,7 @@
 
                                 {{-- Node 1: Diajukan --}}
                                 <div class="relative flex items-start gap-4" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
-                                    <div class="w-2.5 h-2.5 rounded-full {{ in_array($booking->status, ['pending', 'approved', 'completed', 'rejected']) ? 'bg-indigo-500 ring-4 ring-indigo-50' : 'bg-slate-200' }} mt-1.5 z-10 shadow-sm relative"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full {{ in_array($booking->status, ['pending', 'approved', 'completed', 'rejected']) ? 'bg-emerald-500 ring-4 ring-emerald-50' : 'bg-slate-200' }} mt-1.5 z-10 shadow-sm relative"></div>
                                     <div>
                                         <div class="text-sm font-bold text-slate-800">Booking Diajukan</div>
                                         <div class="text-[11px] font-medium text-slate-400 mt-0.5">{{ $booking->created_at->format('d M Y, H:i') }}</div>
@@ -296,10 +294,10 @@
                                 @endphp
                                 <div class="relative flex items-start gap-4 group" data-aos="fade-up" data-aos-delay="300" data-aos-once="true">
                                     @if($step2Active || $step2Rejected)
-                                        <div class="absolute -left-[5px] -top-8 bottom-4 w-0.5 {{ $step2Rejected ? 'bg-red-200' : 'bg-indigo-500' }}"></div>
+                                        <div class="absolute -left-[5px] -top-8 bottom-4 w-0.5 {{ $step2Rejected ? 'bg-red-200' : 'bg-emerald-500' }}"></div>
                                     @endif
                                     
-                                    <div class="w-2.5 h-2.5 rounded-full mt-1.5 z-10 shadow-sm relative transition-all {{ $step2Rejected ? 'bg-red-500 ring-4 ring-red-50' : ($step2Active ? 'bg-indigo-500 ring-4 ring-indigo-50' : 'bg-white border-2 border-slate-300 ring-4 ring-white') }}">
+                                    <div class="w-2.5 h-2.5 rounded-full mt-1.5 z-10 shadow-sm relative transition-all {{ $step2Rejected ? 'bg-red-500 ring-4 ring-red-50' : ($step2Active ? 'bg-emerald-500 ring-4 ring-emerald-50' : 'bg-white border-2 border-slate-300 ring-4 ring-white') }}">
                                         {{-- Tooltip hover on node --}}
                                         <div class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 bg-slate-800 text-white text-[10px] font-bold py-1 px-2 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-20">Tahap Persetujuan</div>
                                     </div>
@@ -309,7 +307,7 @@
                                             <div class="text-sm font-bold text-red-600 drop-shadow-sm">Booking Ditolak</div>
                                             <div class="text-[11px] font-medium text-slate-400 mt-0.5">{{ $booking->updated_at->format('d M Y, H:i') }}</div>
                                         @elseif($step2Active)
-                                            <div class="text-sm font-bold text-indigo-600">Jadwal Disetujui</div>
+                                            <div class="text-sm font-bold text-emerald-600">Jadwal Disetujui</div>
                                             <div class="text-[11px] font-medium text-slate-400 mt-0.5">Siap digunakan</div>
                                         @else
                                             <div class="text-sm font-bold text-slate-400">Persetujuan Admin</div>
@@ -354,18 +352,18 @@
                                 
                                 <div class="space-y-3">
                                     @if($booking->status == 'pending')
-                                        <button @click="showModal = true; modalType = 'approved'; actionTitle = 'Setujui Jadwal'; actionColor = 'emerald'; actionIcon = 'fa-check'; btnColor = 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-[0_4px_14px_0_rgba(16,185,129,0.39)]'" 
-                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm bg-emerald-500 hover:bg-emerald-400 shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] hover:shadow-[0_6px_20px_rgba(16,185,129,0.23)] transition-all hover:-translate-y-0.5 text-white">
+                                        <button @click="showModal = true; modalType = 'approved'; actionTitle = 'Setujui Jadwal'; actionColor = 'emerald'; actionIcon = 'fa-check'; btnColor = 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm'" 
+                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-700 shadow-sm transition-all hover:-translate-y-0.5 text-white">
                                             <i class="fas fa-check mr-2"></i> Approve Jadwal
                                         </button>
                                         
-                                        <button @click="showModal = true; modalType = 'rejected'; actionTitle = 'Tolak Jadwal'; actionColor = 'red'; actionIcon = 'fa-times'; btnColor = 'bg-red-500 hover:bg-red-600 text-white shadow-sm'" 
-                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white transition-all">
-                                            <i class="fas fa-times mr-2"></i> Reject Jadwal
+                                        <button @click="showModal = true; modalType = 'rejected'; actionTitle = 'Tolak Jadwal'; actionColor = 'red'; actionIcon = 'fa-times'; btnColor = 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 shadow-sm'" 
+                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-all shadow-sm hover:-translate-y-0.5 group">
+                                            <i class="fas fa-times mr-2 text-slate-400"></i> Reject Jadwal
                                         </button>
                                     @elseif($booking->status == 'approved')
-                                        <button @click="showModal = true; modalType = 'completed'; actionTitle = 'Tandai Selesai'; actionColor = 'indigo'; actionIcon = 'fa-flag-checkered'; btnColor = 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-[0_4px_14px_0_rgba(79,70,229,0.39)]'" 
-                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm bg-indigo-600 hover:bg-indigo-500 shadow-[0_4px_14px_0_rgba(79,70,229,0.39)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.23)] transition-all hover:-translate-y-0.5 text-white">
+                                        <button @click="showModal = true; modalType = 'completed'; actionTitle = 'Tandai Selesai'; actionColor = 'emerald'; actionIcon = 'fa-flag-checkered'; btnColor = 'bg-slate-800 hover:bg-slate-900 text-white shadow-sm'" 
+                                                class="w-full relative flex justify-center items-center py-3 px-4 rounded-xl font-bold text-sm bg-slate-800 hover:bg-slate-900 shadow-sm transition-all hover:-translate-y-0.5 text-white">
                                             <i class="fas fa-clipboard-check mr-2"></i> Mark as Completed
                                         </button>
                                     @endif

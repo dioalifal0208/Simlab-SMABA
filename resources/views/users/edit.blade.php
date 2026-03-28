@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">
-            <a href="{{ route('users.index') }}" class="text-slate-400 hover:text-indigo-600 transition-colors w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-sm border border-slate-200">
+            <a href="{{ route('users.index') }}" class="text-slate-400 hover:text-emerald-600 transition-colors w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-sm border border-slate-200">
                 <i class="fas fa-arrow-left"></i>
             </a>
             <div>
@@ -15,10 +15,10 @@
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
 
             @if ($errors->any())
-                <div class="mb-6 bg-red-50 border border-red-100 p-4 rounded-xl shadow-sm flex items-start gap-4" data-aos="fade-in">
-                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0 mt-0.5"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="mb-6 bg-white border-l-4 border-l-red-500 p-4 rounded-xl shadow-sm flex items-start gap-4" data-aos="fade-in">
+                    <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-500 flex-shrink-0 mt-0.5"><i class="fas fa-exclamation-triangle"></i></div>
                     <div>
-                        <h4 class="font-bold text-red-800">Oops! Ada yang salah:</h4>
+                        <h4 class="font-bold text-red-700">Oops! Ada yang salah:</h4>
                         <ul class="mt-1 text-sm text-red-700 list-inside list-disc">
                             @foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach
                         </ul>

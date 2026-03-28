@@ -17,7 +17,7 @@
         <tbody class="divide-y divide-slate-100" id="item-list">
             @forelse ($items as $item)
                 {{-- Zebra Striping + Hover Highlight + Alpine Clickable Row --}}
-                <tr class="group hover:bg-slate-50 cursor-pointer transition-colors duration-200 even:bg-slate-50/30" 
+                <tr class="group hover:bg-slate-50 cursor-pointer transition-colors duration-200" 
                     :class="{'bg-green-50/50 hover:bg-green-50': selectedItems.includes('{{ $item->id }}')}"
                     @click="if($event.target.tagName !== 'INPUT' && $event.target.tagName !== 'A' && !$event.target.closest('a') && !$event.target.closest('button')) window.location.href='{{ route('items.show', $item->id) }}'">
                     
@@ -95,8 +95,8 @@
                     <td colspan="7" class="py-16">
                         <div class="text-center px-4">
                             <div class="w-24 h-24 mx-auto rounded-full bg-slate-50 border border-dashed border-slate-300 flex items-center justify-center mb-5 relative group">
-                                <div class="absolute inset-0 bg-green-100 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 opacity-50"></div>
-                                <i class="fas fa-box-open text-4xl text-slate-300 relative z-10 group-hover:text-green-500 transition-colors"></i>
+                                <div class="absolute inset-0 bg-slate-100 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 opacity-50"></div>
+                                <i class="fas fa-box-open text-4xl text-slate-300 relative z-10 group-hover:text-slate-500 transition-colors"></i>
                             </div>
                             <h3 class="text-lg font-bold text-slate-800 mb-1 tracking-tight">{{ __('items.empty.title') }}</h3>
                             <p class="text-sm text-slate-500 mb-6 max-w-sm mx-auto">{{ __('items.empty.description') }}</p>

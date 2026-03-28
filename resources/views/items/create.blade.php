@@ -12,14 +12,14 @@
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             {{-- Desain Kartu Disesuaikan --}}
-            <div class="bg-white overflow-hidden border border-gray-100 shadow-sm sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
-                <div class="p-6 md:p-8 text-gray-900">
+            <div class="bg-white overflow-hidden border border-slate-200 shadow-sm sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
+                <div class="p-6 md:p-8 text-slate-800">
                     
                     {{-- Pesan Error Validasi (jika ada) --}}
                     @if ($errors->any())
-                        <div class="mb-4 bg-red-50 border-l-4 border-red-400 text-red-700 p-4 text-sm rounded-lg" role="alert">
-                            <p class="font-bold">{{ __('common.messages.error_title') }}:</p>
-                            <ul class="mt-2 list-disc list-inside">
+                        <div class="mb-4 bg-white border-l-4 border-l-red-500 p-4 text-sm rounded-lg shadow-sm" role="alert">
+                            <p class="font-bold text-red-700">{{ __('common.messages.error_title') }}:</p>
+                            <ul class="mt-2 list-disc list-inside text-slate-600">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
@@ -34,13 +34,13 @@
                             {{-- Nama Alat --}}
                             <div class="md:col-span-2">
                                 <label for="nama_alat" class="block text-sm font-medium text-gray-700">{{ __('items.form.name_label') }}</label>
-                                <input id="nama_alat" class="block mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" type="text" name="nama_alat" value="{{ old('nama_alat') }}" required autofocus />
+                                <input id="nama_alat" class="block mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" type="text" name="nama_alat" value="{{ old('nama_alat') }}" required autofocus />
                             </div>
 
                             {{-- PENAMBAHAN: Field untuk Tipe Item --}}
                             <div class="md:col-span-2">
                                 <label for="tipe" class="block text-sm font-medium text-gray-700">{{ __('items.form.type') }}</label>
-                                <select name="tipe" id="tipe" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                <select name="tipe" id="tipe" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                                     <option value="Alat" @selected(old('tipe', 'Alat') == 'Alat')>{{ __('items.types.alat') }}</option>
                                     <option value="Bahan Habis Pakai" @selected(old('tipe') == 'Bahan Habis Pakai')>{{ __('items.types.bahan') }}</option>
                                 </select>
@@ -50,22 +50,22 @@
                             <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div>
                                     <label for="jumlah" class="block text-sm font-medium text-gray-700">{{ __('items.form.stock_label') }}</label>
-                                    <input type="number" name="jumlah" id="jumlah" value="{{ old('jumlah') }}" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                    <input type="number" name="jumlah" id="jumlah" value="{{ old('jumlah') }}" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
                                     <label for="stok_minimum" class="block text-sm font-medium text-gray-700">{{ __('items.form.min_stock') }} <span class="text-xs text-gray-400">{{ __('items.form.optional') }}</span></label>
-                                    <input type="number" name="stok_minimum" id="stok_minimum" value="{{ old('stok_minimum') }}" placeholder="{{ __('items.form.min_stock_placeholder') }}" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                    <input type="number" name="stok_minimum" id="stok_minimum" value="{{ old('stok_minimum') }}" placeholder="{{ __('items.form.min_stock_placeholder') }}" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                                 <div>
                                     <label for="satuan" class="block text-sm font-medium text-gray-700">{{ __('items.form.unit') }}</label>
-                                    <input type="text" name="satuan" id="satuan" value="{{ old('satuan') }}" placeholder="{{ __('items.form.unit_placeholder') }}" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                    <input type="text" name="satuan" id="satuan" value="{{ old('satuan') }}" placeholder="{{ __('items.form.unit_placeholder') }}" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                             </div>
                             
                             {{-- Kondisi --}}
                             <div>
                                 <label for="kondisi" class="block text-sm font-medium text-gray-700">{{ __('items.form.condition') }}</label>
-                                <select name="kondisi" id="kondisi" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
+                                <select name="kondisi" id="kondisi" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
                                     <option value="baik" @selected(old('kondisi') == 'baik')>{{ __('items.status.good') }}</option>
                                     <option value="kurang baik" @selected(old('kondisi') == 'kurang baik')>{{ __('items.status.fair') }}</option>
                                     <option value="Rusak" @selected(old('kondisi') == 'Rusak')>{{ __('items.status.broken') }}</option>
@@ -75,13 +75,13 @@
                             {{-- Lokasi Penyimpanan --}}
                             <div>
                                 <label for="lokasi_penyimpanan" class="block text-sm font-medium text-gray-700">{{ __('items.form.location') }}</label>
-                                <input id="lokasi_penyimpanan" class="block mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" type="text" name="lokasi_penyimpanan" value="{{ old('lokasi_penyimpanan') }}" required />
+                                <input id="lokasi_penyimpanan" class="block mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" type="text" name="lokasi_penyimpanan" value="{{ old('lokasi_penyimpanan') }}" required />
                             </div>
 
                             {{-- Laboratorium --}}
                             <div>
                                 <label for="laboratorium" class="block text-sm font-medium text-gray-700">{{ __('items.form.lab') }}</label>
-                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required>
+                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
                                     <option value="Biologi" @selected(old('laboratorium', 'Biologi') === 'Biologi')>{{ __('items.form.lab_prefix') }} Biologi</option>
                                     <option value="Fisika" @selected(old('laboratorium') === 'Fisika')>{{ __('items.form.lab_prefix') }} Fisika</option>
                                     <option value="Bahasa" @selected(old('laboratorium') === 'Bahasa')>{{ __('items.form.lab_prefix') }} Bahasa</option>
@@ -109,7 +109,7 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label for="dokumen_tipe" class="block text-sm font-medium text-gray-700">{{ __('items.form.doc_type_label') }} <span class="text-xs text-gray-400">{{ __('items.form.optional') }}</span></label>
-                                        <select name="dokumen_tipe" id="dokumen_tipe" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
+                                        <select name="dokumen_tipe" id="dokumen_tipe" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
                                             <option value="">-- {{ __('items.form.doc_type_placeholder') }} --</option>
                                             <option value="manual_book" @selected(old('dokumen_tipe') == 'manual_book')>📘 {{ __('items.form.doc_types.manual_book') }}</option>
                                             <option value="sop_ik" @selected(old('dokumen_tipe') == 'sop_ik')>📋 {{ __('items.form.doc_types.sop_ik') }}</option>
@@ -126,13 +126,13 @@
                             {{-- Deskripsi (Keterangan) --}}
                             <div class="md:col-span-2">
                                 <label for="deskripsi" class="block text-sm font-medium text-gray-700">{{ __('items.form.description_optional') }}</label>
-                                <textarea name="deskripsi" id="deskripsi" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">{{ old('deskripsi') }}</textarea>
+                                <textarea name="deskripsi" id="deskripsi" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">{{ old('deskripsi') }}</textarea>
                             </div>
                         </div>
 
                         <div class="mt-8 flex justify-end space-x-3">
-                            <a href="{{ route('items.index') }}" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold text-sm transition-colors">{{ __('common.buttons.cancel') }}</a>
-                            <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold text-sm shadow-sm transition-colors">{{ __('items.actions.save') }}</button>
+                            <a href="{{ route('items.index') }}" class="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-sm shadow-sm">{{ __('common.buttons.cancel') }}</a>
+                            <button type="submit" class="px-6 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 font-bold text-sm shadow-sm transition-colors hover:-translate-y-0.5 transform">{{ __('items.actions.save') }}</button>
                         </div>
                     </form>
                 </div>

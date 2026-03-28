@@ -68,35 +68,32 @@
                     </div>
                 </div>
                 {{-- Card: Pending --}}
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-amber-100 flex items-center justify-between group relative overflow-hidden">
-                    <div class="absolute inset-x-0 bottom-0 h-1 bg-amber-400"></div>
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex items-center justify-between group">
                     <div>
                         <p class="text-[11px] font-extrabold text-amber-600 uppercase tracking-widest mb-1">Pending</p>
                         <h3 class="text-3xl font-extrabold text-slate-800">{{ $totalPending }}</h3>
                     </div>
-                    <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center group-hover:bg-amber-100 transition-colors">
+                    <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-slate-100 transition-colors">
                         <i class="fas fa-clock text-amber-500 text-xl"></i>
                     </div>
                 </div>
                 {{-- Card: Approved --}}
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-emerald-100 flex items-center justify-between group relative overflow-hidden">
-                    <div class="absolute inset-x-0 bottom-0 h-1 bg-emerald-500"></div>
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex items-center justify-between group">
                     <div>
                         <p class="text-[11px] font-extrabold text-emerald-600 uppercase tracking-widest mb-1">Disetujui</p>
                         <h3 class="text-3xl font-extrabold text-slate-800">{{ $totalApproved }}</h3>
                     </div>
-                    <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center group-hover:bg-emerald-100 transition-colors">
+                    <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-slate-100 transition-colors">
                         <i class="fas fa-check-circle text-emerald-500 text-xl"></i>
                     </div>
                 </div>
                 {{-- Card: Rejected --}}
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-red-100 flex items-center justify-between group relative overflow-hidden">
-                    <div class="absolute inset-x-0 bottom-0 h-1 bg-red-500"></div>
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex items-center justify-between group">
                     <div>
                         <p class="text-[11px] font-extrabold text-red-600 uppercase tracking-widest mb-1">Ditolak</p>
                         <h3 class="text-3xl font-extrabold text-slate-800">{{ $totalRejected }}</h3>
                     </div>
-                    <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center group-hover:bg-red-100 transition-colors">
+                    <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-slate-100 transition-colors">
                         <i class="fas fa-times-circle text-red-500 text-xl"></i>
                     </div>
                 </div>
@@ -113,17 +110,17 @@
                     </a>
                     <a href="{{ route('loans.index', array_merge(request()->query(), ['status' => 'pending'])) }}" 
                        class="px-5 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-all duration-200 
-                       @if($currentStatus == 'pending') bg-white text-amber-600 shadow-sm @else text-slate-500 hover:text-slate-700 hover:bg-slate-100 @endif">
+                       @if($currentStatus == 'pending') bg-white text-slate-800 shadow-sm @else text-slate-500 hover:text-slate-700 hover:bg-slate-100 @endif">
                         Pending
                     </a>
                     <a href="{{ route('loans.index', array_merge(request()->query(), ['status' => 'approved'])) }}" 
                        class="px-5 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-all duration-200 
-                       @if($currentStatus == 'approved') bg-white text-emerald-600 shadow-sm @else text-slate-500 hover:text-slate-700 hover:bg-slate-100 @endif">
+                       @if($currentStatus == 'approved') bg-white text-slate-800 shadow-sm @else text-slate-500 hover:text-slate-700 hover:bg-slate-100 @endif">
                         Disetujui
                     </a>
                     <a href="{{ route('loans.index', array_merge(request()->query(), ['status' => 'rejected'])) }}" 
                        class="px-5 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-all duration-200 
-                       @if($currentStatus == 'rejected') bg-white text-red-600 shadow-sm @else text-slate-500 hover:text-slate-700 hover:bg-slate-100 @endif">
+                       @if($currentStatus == 'rejected') bg-white text-slate-800 shadow-sm @else text-slate-500 hover:text-slate-700 hover:bg-slate-100 @endif">
                         Ditolak
                     </a>
                     <a href="{{ route('loans.index', array_merge(request()->query(), ['status' => 'completed'])) }}" 
@@ -169,7 +166,7 @@
                         </thead>
                         <tbody class="divide-y divide-slate-100 text-slate-700">
                             @forelse ($loans as $loan)
-                                <tr class="group hover:bg-slate-50 cursor-pointer transition-colors duration-200 even:bg-slate-50/30" 
+                                <tr class="group hover:bg-slate-50 cursor-pointer transition-colors duration-200" 
                                     @click="if(!$event.target.closest('form') && !$event.target.closest('a') && !$event.target.closest('button')) window.location.href='{{ route('loans.show', $loan->id) }}'">
                                     
                                     <td class="py-4 px-6">
@@ -259,8 +256,8 @@
                                     <td colspan="5" class="py-16">
                                         <div class="text-center px-4">
                                             <div class="w-24 h-24 mx-auto rounded-full bg-slate-50 border border-dashed border-slate-300 flex items-center justify-center mb-5 relative group">
-                                                <div class="absolute inset-0 bg-green-100 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 opacity-50"></div>
-                                                <i class="fas fa-clipboard-list text-4xl text-slate-300 relative z-10 group-hover:text-green-500 transition-colors"></i>
+                                                <div class="absolute inset-0 bg-slate-100 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 opacity-50"></div>
+                                                <i class="fas fa-clipboard-list text-4xl text-slate-300 relative z-10 group-hover:text-slate-500 transition-colors"></i>
                                             </div>
                                             <h3 class="text-lg font-bold text-slate-800 mb-1 tracking-tight">{{ __('loans.empty.title') }}</h3>
                                             <p class="text-sm text-slate-500 mb-6 max-w-sm mx-auto">{{ __('loans.empty.description') }}</p>

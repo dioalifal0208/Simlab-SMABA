@@ -37,14 +37,14 @@
 
             {{-- Pesan Sukses/Error --}}
             @if (session('success'))
-                <div class="mb-6 bg-emerald-50 border border-emerald-100 p-4 rounded-xl shadow-sm flex items-center gap-3" role="alert">
-                    <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0"><i class="fas fa-check-circle"></i></div>
+                <div class="mb-6 bg-white border border-slate-100 border-l-4 border-l-emerald-500 p-4 rounded-xl shadow-sm flex items-center gap-3" role="alert">
+                    <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0"><i class="fas fa-check-circle"></i></div>
                     <div><p class="font-bold text-emerald-800 text-sm">{{ __('common.messages.success') }}</p><span class="text-emerald-700 text-sm">{{ session('success') }}</span></div>
                 </div>
             @endif
             @if (session('error'))
-                <div class="mb-6 bg-red-50 border border-red-100 p-4 rounded-xl shadow-sm flex items-center gap-3" role="alert">
-                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="mb-6 bg-white border border-slate-100 border-l-4 border-l-red-500 p-4 rounded-xl shadow-sm flex items-center gap-3" role="alert">
+                    <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-600 flex-shrink-0"><i class="fas fa-exclamation-triangle"></i></div>
                     <div><p class="font-bold text-red-800 text-sm">{{ __('common.messages.error') }}</p><span class="text-red-700 text-sm">{{ session('error') }}</span></div>
                 </div>
             @endif

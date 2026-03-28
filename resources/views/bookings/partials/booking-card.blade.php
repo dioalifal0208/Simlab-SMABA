@@ -1,11 +1,11 @@
 @php
     $statusColors = [
-        'pending' => 'bg-amber-50 text-amber-700 border-amber-200 border-l-amber-500',
-        'approved' => 'bg-emerald-50 text-emerald-700 border-emerald-200 border-l-emerald-500',
-        'rejected' => 'bg-red-50 text-red-700 border-red-200 border-l-red-500',
-        'completed' => 'bg-slate-50 text-slate-700 border-slate-200 border-l-slate-400',
+        'pending' => 'bg-white text-slate-800 border-slate-200 border-l-amber-500',
+        'approved' => 'bg-white text-slate-800 border-slate-200 border-l-emerald-500',
+        'rejected' => 'bg-slate-50 text-slate-500 border-slate-200 border-l-red-500 opacity-80',
+        'completed' => 'bg-white text-slate-800 border-slate-200 border-l-slate-400',
     ];
-    $statusColor = $statusColors[$booking->status] ?? 'bg-indigo-50 text-indigo-700 border-indigo-200 border-l-indigo-500';
+    $statusColor = $statusColors[$booking->status] ?? 'bg-white text-slate-800 border-slate-200 border-l-slate-500';
 
     $statusIcons = [
         'pending' => 'fa-clock',
@@ -15,14 +15,7 @@
     ];
     $statusIcon = $statusIcons[$booking->status] ?? 'fa-info-circle';
     
-    $labColors = [
-        'Biologi' => 'text-emerald-600 bg-emerald-50',
-        'Fisika' => 'text-blue-600 bg-blue-50',
-        'Bahasa' => 'text-amber-600 bg-amber-50',
-    ];
-    // Default fallback lab color if no exact match
-    $labColor = $labColors[$booking->laboratorium] ?? 'text-purple-600 bg-purple-50';
-    if(str_contains(strtolower($booking->laboratorium), 'komputer')) $labColor = 'text-purple-600 bg-purple-50';
+    $labColor = 'text-slate-500 bg-slate-50 border border-slate-200';
 @endphp
 
 <div class="bg-white rounded-2xl border {{ $statusColor }} border-l-4 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden group">
@@ -45,7 +38,7 @@
             <div class="text-sm font-extrabold text-slate-800">
                 <i class="fas fa-calendar-alt text-slate-400 mb-1"></i> {{ $booking->waktu_mulai->translatedFormat('d M Y') }}
             </div>
-            <div class="text-lg font-bold text-indigo-700 tracking-tight flex items-center gap-2">
+            <div class="text-lg font-bold text-slate-800 tracking-tight flex items-center gap-2">
                 {{ $booking->waktu_mulai->format('H:i') }} <span class="text-slate-300 text-sm font-light">to</span> {{ $booking->waktu_selesai->format('H:i') }}
             </div>
         </div>
@@ -94,7 +87,7 @@
                 </div>
             @endif
 
-            <a href="{{ route('bookings.show', $booking->id) }}" class="inline-flex items-center justify-center px-4 py-2 bg-white text-indigo-600 border border-indigo-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 font-bold text-xs shadow-sm shadow-indigo-100 transition-all whitespace-nowrap w-full md:w-auto ml-auto">
+            <a href="{{ route('bookings.show', $booking->id) }}" class="inline-flex items-center justify-center px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50 hover:text-green-600 hover:border-green-300 font-bold text-xs shadow-sm transition-all whitespace-nowrap w-full md:w-auto ml-auto">
                 {{ __('common.buttons.details') }} <i class="fas fa-arrow-right ml-2 text-[10px]"></i>
             </a>
         </div>

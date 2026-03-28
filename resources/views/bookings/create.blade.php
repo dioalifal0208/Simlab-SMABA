@@ -31,24 +31,24 @@
         <div class="mb-10 flex items-center justify-center max-w-xl mx-auto">
             <div class="flex items-center w-full justify-between relative">
                 <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 rounded-full z-0"></div>
-                <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-indigo-500 rounded-full z-0 transition-all duration-500" :style="'width: ' + ((step - 1) * 100) + '%'"></div>
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-emerald-500 rounded-full z-0 transition-all duration-500" :style="'width: ' + ((step - 1) * 100) + '%'"></div>
                 
                 {{-- Step 1 --}}
                 <div class="relative z-10 flex flex-col items-center gap-2 cursor-pointer group" @click="step = 1">
                     <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 shadow-sm"
-                         :class="step >= 1 ? 'bg-indigo-600 text-white ring-4 ring-indigo-50 shadow-indigo-200/50' : 'bg-white text-slate-400 border border-slate-300 group-hover:border-indigo-400'">
+                         :class="step >= 1 ? 'bg-emerald-600 text-white ring-4 ring-white shadow-sm' : 'bg-white text-slate-400 border border-slate-300 group-hover:border-emerald-400'">
                         1
                     </div>
-                    <span class="text-[11px] font-extrabold uppercase tracking-widest" :class="step >= 1 ? 'text-indigo-600' : 'text-slate-400'">Informasi</span>
+                    <span class="text-[11px] font-extrabold uppercase tracking-widest" :class="step >= 1 ? 'text-emerald-600' : 'text-slate-400'">Informasi</span>
                 </div>
                 
                 {{-- Step 2 --}}
                 <div class="relative z-10 flex flex-col items-center gap-2">
                     <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 shadow-sm"
-                         :class="step >= 2 ? 'bg-indigo-600 text-white ring-4 ring-indigo-50 shadow-indigo-200/50' : 'bg-white text-slate-400 border border-slate-300'">
+                         :class="step >= 2 ? 'bg-emerald-600 text-white ring-4 ring-white shadow-sm' : 'bg-white text-slate-400 border border-slate-300'">
                         2
                     </div>
-                    <span class="text-[11px] font-extrabold uppercase tracking-widest" :class="step >= 2 ? 'text-indigo-600' : 'text-slate-400'">Penjadwalan</span>
+                    <span class="text-[11px] font-extrabold uppercase tracking-widest" :class="step >= 2 ? 'text-emerald-600' : 'text-slate-400'">Penjadwalan</span>
                 </div>
             </div>
         </div>
@@ -101,8 +101,8 @@
                 </x-form.section>
 
                 <div class="sticky bottom-0 z-40 bg-white/80 backdrop-blur-md border border-slate-200 rounded-2xl p-4 sm:px-6 sm:py-4 flex justify-between items-center shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)] transition-all">
-                    <a href="{{ route('bookings.index') }}" class="text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors">Batal</a>
-                    <button type="button" @click="if(isStep1Valid()) step = 2; else alert('Harap isi Tujuan Kegiatan dan Laboratorium terlebih dahulu.');" class="inline-flex items-center px-6 py-2.5 bg-slate-900 border border-transparent rounded-xl font-bold text-sm text-white tracking-wide hover:bg-slate-800 focus:bg-slate-700 active:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 shadow-lg transition ease-in-out duration-150">
+                    <a href="{{ route('bookings.index') }}" class="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-sm shadow-sm">Batal</a>
+                    <button type="button" @click="if(isStep1Valid()) step = 2; else alert('Harap isi Tujuan Kegiatan dan Laboratorium terlebih dahulu.');" class="inline-flex items-center px-6 py-2.5 bg-emerald-600 border border-transparent rounded-xl font-bold text-sm text-white tracking-wide hover:bg-emerald-700 transition ease-in-out duration-150 shadow-sm">
                         Langkah Selanjutnya <i class="fas fa-arrow-right ml-2 text-xs"></i>
                     </button>
                 </div>
@@ -112,11 +112,11 @@
             <div x-show="step === 2" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0" style="display: none;">
                 <x-form.section title="Pengaturan Waktu" description="Tentukan tanggal dan jam pelaksanaan kegiatan di laboratorium." icon="fa-clock">
                     
-                    <div class="bg-indigo-50 rounded-xl p-4 mb-8 flex gap-4 border border-indigo-100">
-                        <i class="fas fa-lightbulb text-indigo-500 text-xl mt-1"></i>
+                    <div class="bg-slate-50 rounded-xl p-4 mb-8 flex gap-4 border border-slate-200">
+                        <i class="fas fa-lightbulb text-emerald-500 text-xl mt-1"></i>
                         <div>
-                            <h4 class="font-bold text-indigo-900 text-sm">Pro Tip Penjadwalan</h4>
-                            <p class="text-[13px] text-indigo-700 mt-0.5 leading-relaxed">Pastikan mengecek kalender laboratorium terlebih dahulu untuk menghindari bentrok jadwal. Jam kerja efektif lab adalah pukul 07:00 hingga 16:00 WIB.</p>
+                            <h4 class="font-bold text-slate-800 text-sm">Pro Tip Penjadwalan</h4>
+                            <p class="text-[13px] text-slate-600 mt-0.5 leading-relaxed">Pastikan mengecek kalender laboratorium terlebih dahulu untuk menghindari bentrok jadwal. Jam kerja efektif lab adalah pukul 07:00 hingga 16:00 WIB.</p>
                         </div>
                     </div>
 
@@ -158,10 +158,10 @@
                 </x-form.section>
 
                 <div class="sticky bottom-0 z-40 bg-white/80 backdrop-blur-md border border-slate-200 rounded-2xl p-4 sm:px-6 sm:py-4 flex justify-between items-center shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)] transition-all">
-                    <button type="button" @click="step = 1" class="text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors flex items-center">
+                    <button type="button" @click="step = 1" class="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-sm shadow-sm flex items-center">
                         <i class="fas fa-arrow-left mr-2"></i> Kembali
                     </button>
-                    <button type="button" @click="if(isStep2Valid()) showConfirm = true; else alert('Harap lengkapi tanggal dan jam pelaksanaan.');" class="inline-flex items-center px-6 py-2.5 bg-indigo-600 rounded-xl font-bold text-sm text-white shadow-[0_4px_14px_0_rgba(79,70,229,0.39)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.23)] transition-all transform hover:-translate-y-0.5">
+                    <button type="button" @click="if(isStep2Valid()) showConfirm = true; else alert('Harap lengkapi tanggal dan jam pelaksanaan.');" class="inline-flex items-center px-6 py-2.5 bg-emerald-600 rounded-xl font-bold text-sm text-white shadow-sm hover:bg-emerald-700 transition-all transform hover:-translate-y-0.5">
                         <i class="fas fa-paper-plane mr-2 text-xs"></i> Ajukan Booking
                     </button>
                 </div>
@@ -180,9 +180,9 @@
                         x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:scale-95" 
                         class="bg-white rounded-2xl shadow-xl border border-slate-100 max-w-lg w-full relative z-10 overflow-hidden">
                         
-                        <div class="px-6 py-5 border-b border-indigo-100 bg-indigo-50/50 flex justify-between items-center">
-                            <h3 class="font-extrabold text-lg text-indigo-900 flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm bg-indigo-100 text-indigo-600"><i class="fas fa-check-double"></i></div>
+                        <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center">
+                            <h3 class="font-extrabold text-lg text-slate-800 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm bg-emerald-50 text-emerald-600"><i class="fas fa-check-double"></i></div>
                                 Konfirmasi Pengajuan
                             </h3>
                         </div>
@@ -197,7 +197,7 @@
                                 </div>
                                 <div class="flex justify-between border-b border-slate-200 pb-2">
                                     <span class="text-xs font-bold text-slate-400 uppercase">Lab</span>
-                                    <span class="text-sm font-bold text-indigo-600" x-text="formData.lab"></span>
+                                    <span class="text-sm font-bold text-slate-800" x-text="formData.lab"></span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-xs font-bold text-slate-400 uppercase">Pelaksanaan</span>
@@ -209,8 +209,8 @@
                         </div>
                         
                         <div class="flex items-center justify-end gap-3 px-6 py-4 bg-slate-50 border-t border-slate-100">
-                            <button type="button" @click="showConfirm = false" class="px-5 py-2.5 bg-white border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-colors text-sm">Batal</button>
-                            <button type="button" @click="$refs.submitBtnHidden.click(); showConfirm = false" class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-[0_4px_14px_0_rgba(79,70,229,0.39)] hover:bg-indigo-500 transition-all hover:-translate-y-0.5">Ya, Kirim Sekarang</button>
+                            <button type="button" @click="showConfirm = false" class="px-5 py-2.5 bg-white border border-slate-300 shadow-sm text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-sm">Batal</button>
+                            <button type="button" @click="$refs.submitBtnHidden.click(); showConfirm = false" class="px-6 py-2.5 bg-emerald-600 text-white rounded-xl font-bold text-sm shadow-sm hover:bg-emerald-700 transition-all hover:-translate-y-0.5">Ya, Kirim Sekarang</button>
                             {{-- Native Form Submit Button Hidden --}}
                             <button type="submit" x-ref="submitBtnHidden" class="hidden"></button>
                         </div>

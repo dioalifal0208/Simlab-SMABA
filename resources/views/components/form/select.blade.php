@@ -39,7 +39,7 @@
                 'pr-10 py-2.5 ' .
                 ($hasError 
                     ? 'border-red-300 text-red-900 focus:border-red-500 focus:ring-4 focus:ring-red-500/20 bg-red-50' 
-                    : 'border-slate-200 text-slate-900 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 bg-slate-50 hover:bg-white focus:bg-white')
+                    : 'border-slate-200 text-slate-900 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 bg-slate-50 hover:bg-white focus:bg-white')
             ]) }}
         >
             {{ $slot }}

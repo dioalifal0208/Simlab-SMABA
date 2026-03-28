@@ -31,7 +31,7 @@
                             {{-- Pilih Laboratorium --}}
                             <div>
                                 <label for="laboratorium" class="block font-medium text-sm text-gray-700">Laboratorium</label>
-                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" required {{ auth()->user()->role === 'admin' ? '' : 'disabled' }}>
+                                <select name="laboratorium" id="laboratorium" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required {{ auth()->user()->role === 'admin' ? '' : 'disabled' }}>
                                     <option value="Biologi" @selected(old('laboratorium', $selectedLaboratorium ?? 'Biologi') === 'Biologi')>Lab Biologi</option>
                                     <option value="Fisika" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Fisika')>Lab Fisika</option>
                                     <option value="Bahasa" @selected(old('laboratorium', $selectedLaboratorium ?? '') === 'Bahasa')>Lab Bahasa</option>
@@ -58,7 +58,7 @@
                                 <div class="md:col-span-2">
                                     <label for="guru_pengampu" class="block font-medium text-sm text-gray-700">Nama Guru Pengampu</label>
                                     <input id="guru_pengampu" type="text" name="guru_pengampu" value="{{ old('guru_pengampu', Auth::user()->name) }}" required 
-                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 placeholder-gray-300"
+                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 placeholder-gray-300"
                                         placeholder="Contoh: Budi Santoso, S.Pd.">
                                 </div>
 
@@ -66,7 +66,7 @@
                                 <div>
                                     <label for="jumlah_peserta" class="block font-medium text-sm text-gray-700">Jumlah Peserta <span class="text-[10px] italic text-gray-500">(Opsional)</span></label>
                                     <input id="jumlah_peserta" type="number" name="jumlah_peserta" value="{{ old('jumlah_peserta') }}" 
-                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 placeholder-gray-300"
+                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 placeholder-gray-300"
                                         placeholder="Contoh: 30">
                                 </div>
 
@@ -74,7 +74,7 @@
                                 <div>
                                     <label for="mata_pelajaran" class="block font-medium text-sm text-gray-700">Mata Pelajaran <span class="text-[10px] italic text-gray-500">(Opsional)</span></label>
                                     <input id="mata_pelajaran" type="text" name="mata_pelajaran" value="{{ old('mata_pelajaran') }}" 
-                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 placeholder-gray-300"
+                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 placeholder-gray-300"
                                         placeholder="Contoh: Biologi Reproduksi">
                                 </div>
 
@@ -82,7 +82,7 @@
                                 <div class="md:col-span-2">
                                     <label for="tujuan_kegiatan" class="block font-medium text-sm text-gray-700">Tujuan Kegiatan / Judul Praktikum</label>
                                     <textarea id="tujuan_kegiatan" name="tujuan_kegiatan" rows="2" required 
-                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 placeholder-gray-300"
+                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 placeholder-gray-300"
                                         placeholder="Jelaskan secara ringkas kegiatan yang akan dilakukan...">{{ old('tujuan_kegiatan') }}</textarea>
                                 </div>
 
@@ -90,14 +90,14 @@
                                 <div>
                                     <label for="waktu_mulai" class="block font-medium text-sm text-gray-700">Waktu Mulai</label>
                                     <input id="waktu_mulai" type="datetime-local" name="waktu_mulai" value="{{ old('waktu_mulai') }}" required 
-                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
 
                                 {{-- Waktu Selesai --}}
                                 <div>
                                     <label for="waktu_selesai" class="block font-medium text-sm text-gray-700">Waktu Selesai</label>
                                     <input id="waktu_selesai" type="datetime-local" name="waktu_selesai" value="{{ old('waktu_selesai') }}" required 
-                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                        class="mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                                 </div>
                             </div>
 
@@ -107,7 +107,7 @@
                                 <div class="border rounded-lg p-4 bg-gray-50">
                                     {{-- Input untuk Live Search --}}
                                     <div class="relative mb-4">
-                                        <input type="text" id="item-search" placeholder="Ketik untuk mencari item..." class="w-full pl-10 pr-4 py-2 rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm">
+                                        <input type="text" id="item-search" placeholder="Ketik untuk mencari item..." class="w-full pl-10 pr-4 py-2 rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
                                         </div>
@@ -130,7 +130,7 @@
                                                     </div>
                                                     <div>
                                                         <label for="jumlah_{{ $item->id }}" class="sr-only">Jumlah</label>
-                                                        <input type="number" name="jumlah[{{ $item->id }}]" id="jumlah_{{ $item->id }}" min="1" max="{{ $item->jumlah }}" placeholder="Jml" class="w-20 text-sm rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600">
+                                                        <input type="number" name="jumlah[{{ $item->id }}]" id="jumlah_{{ $item->id }}" min="1" max="{{ $item->jumlah }}" placeholder="Jml" class="w-20 text-sm rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                                                     </div>
                                                 </div>
                                             </div>
@@ -144,12 +144,12 @@
                             {{-- Catatan --}}
                             <div>
                                 <label for="catatan" class="block font-medium text-sm text-gray-700">Catatan (Opsional)</label>
-                                <textarea name="catatan" id="catatan" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" placeholder="Contoh: Untuk praktikum kelas XI IPA 1">{{ old('catatan') }}</textarea>
+                                <textarea name="catatan" id="catatan" rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" placeholder="Contoh: Untuk praktikum kelas XI IPA 1">{{ old('catatan') }}</textarea>
                             </div>
                         </div>
 
                         <div class="mt-8 flex justify-end space-x-3">
-                            <button type="button" onclick="window.history.back();" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold text-sm transition-colors">Batal</button>
+                            <button type="button" onclick="window.history.back();" class="px-4 py-2 bg-white border border-slate-300 text-slate-700 shadow-sm rounded-lg hover:bg-slate-50 font-semibold text-sm transition-colors">Batal</button>
                             <button type="button" @click="
                                 // Validasi HTML5 dasar form sebelum nampilin modal
                                 if(document.getElementById('loanForm').checkValidity()) {
@@ -196,8 +196,8 @@
                                         
                                         <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 flex flex-col h-[80vh]">
                                             <div class="sm:flex sm:items-start flex-shrink-0">
-                                                <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                                                    <i class="fas fa-file-pdf text-blue-600"></i>
+                                                <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-emerald-50 sm:mx-0 sm:h-10 sm:w-10">
+                                                    <i class="fas fa-file-pdf text-emerald-500"></i>
                                                 </div>
                                                 <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
                                                     <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Standar Operasional Prosedur (SOP) Laboratorium</h3>
@@ -212,7 +212,7 @@
                                                 
                                                 {{-- Loading State --}}
                                                 <div x-show="isLoadingPdf" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10">
-                                                    <i class="fas fa-spinner fa-spin text-3xl text-blue-500 mb-2"></i>
+                                                    <i class="fas fa-spinner fa-spin text-3xl text-emerald-500 mb-2"></i>
                                                     <p class="text-sm text-gray-500">Memuat dokumen SOP...</p>
                                                 </div>
 
@@ -233,10 +233,10 @@
                                             </div>
 
                                             {{-- Checkbox Persetujuan --}}
-                                            <div class="mt-4 p-3 bg-blue-50 border border-blue-100 rounded-md flex-shrink-0">
+                                            <div class="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-md flex-shrink-0">
                                                 <label class="flex items-start space-x-3 cursor-pointer">
                                                     <div class="flex items-center h-5">
-                                                        <input type="checkbox" x-model="agreedToSop" class="w-5 h-5 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                                        <input type="checkbox" x-model="agreedToSop" class="w-5 h-5 text-emerald-600 bg-white border-gray-300 rounded focus:ring-emerald-500 focus:ring-2">
                                                     </div>
                                                     <div class="flex-1 text-sm text-gray-700">
                                                         <span class="font-medium text-gray-900">Saya Setuju</span>

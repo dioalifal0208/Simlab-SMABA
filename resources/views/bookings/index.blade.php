@@ -66,7 +66,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             @if (session('success'))
-                <div class="mb-6 bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-xl shadow-sm" role="alert">
+                <div class="mb-6 bg-white border border-slate-100 border-l-4 border-l-emerald-500 p-4 rounded-xl shadow-sm" role="alert">
                     <div class="flex items-center">
                         <i class="fas fa-check-circle text-emerald-500 mr-3 text-lg"></i>
                         <p class="font-bold text-emerald-800">{{ __('common.messages.success') }}: <span class="font-normal text-emerald-700">{{ session('success') }}</span></p>
@@ -74,7 +74,7 @@
                 </div>
             @endif
             @if ($errors->any())
-                <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl shadow-sm" role="alert">
+                <div class="mb-6 bg-white border border-slate-100 border-l-4 border-l-red-500 p-4 rounded-xl shadow-sm" role="alert">
                     <div class="flex items-start">
                         <i class="fas fa-exclamation-circle text-red-500 mr-3 text-lg mt-0.5"></i>
                         <div>
@@ -94,10 +94,10 @@
                 
                 {{-- View Toggles --}}
                 <div class="flex bg-slate-100 p-1 rounded-xl w-full lg:w-auto overflow-x-auto hide-scrollbar">
-                    <a href="{{ request()->fullUrlWithQuery(['view' => 'list']) }}" class="flex-1 lg:flex-none flex items-center justify-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all {{ $viewMode === 'list' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700' }}">
+                    <a href="{{ request()->fullUrlWithQuery(['view' => 'list']) }}" class="flex-1 lg:flex-none flex items-center justify-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all {{ $viewMode === 'list' ? 'bg-white text-green-600 shadow-sm' : 'text-slate-500 hover:text-slate-700' }}">
                         <i class="fas fa-list-ul"></i> List
                     </a>
-                    <a href="{{ request()->fullUrlWithQuery(['view' => 'calendar']) }}" class="flex-1 lg:flex-none flex items-center justify-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all {{ $viewMode === 'calendar' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700' }}">
+                    <a href="{{ request()->fullUrlWithQuery(['view' => 'calendar']) }}" class="flex-1 lg:flex-none flex items-center justify-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all {{ $viewMode === 'calendar' ? 'bg-white text-green-600 shadow-sm' : 'text-slate-500 hover:text-slate-700' }}">
                         <i class="fas fa-calendar-alt"></i> Kalender <span class="hidden sm:inline">(Minggu Ini)</span>
                     </a>
                 </div>
@@ -167,7 +167,7 @@
                     @if($todayBookings->isNotEmpty())
                     <div data-aos="fade-up" data-aos-delay="100">
                         <h3 class="text-sm font-extrabold tracking-widest text-slate-400 uppercase mb-4 flex items-center gap-2">
-                            <i class="fas fa-calendar-day text-indigo-500"></i> Hari Ini
+                            <i class="fas fa-calendar-day text-slate-400"></i> Hari Ini
                         </h3>
                         <div class="space-y-4">
                             @foreach($todayBookings as $booking)
@@ -181,7 +181,7 @@
                     @if($upcomingBookings->isNotEmpty())
                     <div data-aos="fade-up" data-aos-delay="150">
                         <h3 class="text-sm font-extrabold tracking-widest text-slate-400 uppercase mb-4 flex items-center gap-2">
-                            <i class="fas fa-calendar-plus text-emerald-500"></i> Akan Datang
+                            <i class="fas fa-calendar-plus text-slate-400"></i> Akan Datang
                         </h3>
                         <div class="space-y-4">
                             @foreach($upcomingBookings as $booking)
@@ -231,21 +231,13 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden" data-aos="fade-up">
                     <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row justify-between items-center gap-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-lg">
+                            <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-lg">
                                 <i class="fas fa-calendar-week"></i>
                             </div>
                             <div>
                                 <h3 class="font-bold text-slate-800">Jadwal Minggu Ini</h3>
                                 <p class="text-sm text-slate-500">{{ $startOfWeek->translatedFormat('d F Y') }} - {{ $endOfWeek->translatedFormat('d F Y') }}</p>
                             </div>
-                        </div>
-                        
-                        {{-- Legend Laboratorium --}}
-                        <div class="flex flex-wrap gap-3 items-center text-xs font-bold text-slate-500 bg-white p-2 px-4 border border-slate-200 rounded-xl shadow-sm">
-                            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-400"></span>Biologi</div>
-                            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-400"></span>Fisika</div>
-                            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-400"></span>Bahasa</div>
-                            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-purple-400"></span>Komputer</div>
                         </div>
                     </div>
 
@@ -259,28 +251,26 @@
                                     $currentDate = $startOfWeek->copy()->addDays($index);
                                     $isToday = $currentDate->isToday();
                                 @endphp
-                                <div class="py-4 {{ $isToday ? 'bg-indigo-50/80 text-indigo-700' : '' }}">
+                                <div class="py-4 {{ $isToday ? 'bg-slate-100/80 text-slate-700' : '' }}">
                                     <div class="{{ $isToday ? 'font-extrabold' : '' }}">{{ $day }}</div>
-                                    <div class="mt-1 {{ $isToday ? 'text-indigo-500' : 'text-slate-400' }}">{{ $currentDate->format('d/m') }}</div>
+                                    <div class="mt-1 {{ $isToday ? 'text-slate-600' : 'text-slate-400' }}">{{ $currentDate->format('d/m') }}</div>
                                 </div>
                             @endforeach
                         </div>
                         
                         <div class="min-w-[800px] grid grid-cols-7 divide-x divide-slate-100 bg-white min-h-[400px]">
                             @for ($i = 1; $i <= 7; $i++)
-                                <div class="p-2 space-y-2 relative group {{ $startOfWeek->copy()->addDays($i-1)->isToday() ? 'bg-indigo-50/20' : '' }}">
+                                <div class="p-2 space-y-2 relative group {{ $startOfWeek->copy()->addDays($i-1)->isToday() ? 'bg-slate-50/50' : '' }}">
                                     @forelse($bookingsByDay[$i] as $b)
                                         @php
-                                            // Warna berdasarkan status & lab
-                                            $labLower = strtolower($b->laboratorium);
-                                            $colorClass = 'bg-slate-100 text-slate-700 border-slate-200 border-l-slate-400';
+                                            // Warna berdasarkan status (monochrome)
+                                            $colorClass = 'bg-white text-slate-700 border-slate-200 border-l-slate-400';
                                             
-                                            if (str_contains($labLower, 'biologi')) $colorClass = 'bg-emerald-50 text-emerald-800 border-emerald-100 border-l-emerald-400 group-hover:border-emerald-300';
-                                            elseif (str_contains($labLower, 'fisika')) $colorClass = 'bg-blue-50 text-blue-800 border-blue-100 border-l-blue-400 group-hover:border-blue-300';
-                                            elseif (str_contains($labLower, 'bahasa')) $colorClass = 'bg-amber-50 text-amber-800 border-amber-100 border-l-amber-400 group-hover:border-amber-300';
-                                            elseif (str_contains($labLower, 'komputer')) $colorClass = 'bg-purple-50 text-purple-800 border-purple-100 border-l-purple-400 group-hover:border-purple-300';
+                                            if ($b->status == 'pending') $colorClass = 'bg-white text-slate-700 border-slate-200 border-l-amber-400';
+                                            elseif ($b->status == 'approved') $colorClass = 'bg-white text-slate-700 border-slate-200 border-l-emerald-400';
+                                            elseif ($b->status == 'rejected') $colorClass = 'bg-slate-50 text-slate-500 border-slate-200 border-l-red-500 opacity-60 line-through';
+                                            elseif ($b->status == 'completed') $colorClass = 'bg-white text-slate-700 border-slate-200 border-l-slate-300';
 
-                                            if ($b->status == 'rejected') $colorClass = 'bg-red-50 text-red-800 border-red-100 border-l-red-500 opacity-60 line-through';
                                         @endphp
                                         <a href="{{ route('bookings.show', $b->id) }}" class="block p-2.5 rounded-r-lg border border-l-4 shadow-sm hover:shadow-md transition-all cursor-pointer {{ $colorClass }} relative z-10 hover:z-20 hover:-translate-y-0.5">
                                             <div class="text-[10px] font-extrabold opacity-80 mb-0.5 flex items-center justify-between">

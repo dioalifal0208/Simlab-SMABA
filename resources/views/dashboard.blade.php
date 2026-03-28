@@ -63,8 +63,8 @@
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                                 <div class="bg-white/90 backdrop-blur-md rounded-2xl p-6 border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgb(0,0,0,0.1)] transition-all duration-300 group" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
                                     <div class="flex items-center gap-5">
-                                        <div class="p-3.5 bg-green-50 rounded-xl group-hover:bg-green-500 group-hover:text-white transition-colors duration-300 shadow-sm border border-green-100 flex-shrink-0">
-                                            <i class="fas fa-boxes-stacked text-2xl text-green-600 group-hover:text-white transition-colors"></i>
+                                        <div class="p-3.5 bg-slate-50 rounded-xl group-hover:bg-slate-800 group-hover:text-white transition-colors duration-300 shadow-sm border border-slate-200 flex-shrink-0">
+                                            <i class="fas fa-boxes-stacked text-2xl text-slate-500 group-hover:text-white transition-colors"></i>
                                         </div>
                                         <div>
                                             <p class="text-slate-500 text-[11px] font-bold uppercase tracking-wider mb-1">Total Inventaris</p>
@@ -75,8 +75,8 @@
                                 
                                 <div class="bg-white/90 backdrop-blur-md rounded-2xl p-6 border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgb(0,0,0,0.1)] transition-all duration-300 group" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
                                     <div class="flex items-center gap-5">
-                                        <div class="p-3.5 bg-blue-50 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 shadow-sm border border-blue-100 flex-shrink-0">
-                                            <i class="fas fa-users text-2xl text-blue-600 group-hover:text-white transition-colors"></i>
+                                        <div class="p-3.5 bg-slate-50 rounded-xl group-hover:bg-slate-800 group-hover:text-white transition-colors duration-300 shadow-sm border border-slate-200 flex-shrink-0">
+                                            <i class="fas fa-users text-2xl text-slate-500 group-hover:text-white transition-colors"></i>
                                         </div>
                                         <div>
                                             <p class="text-slate-500 text-[11px] font-bold uppercase tracking-wider mb-1">Total Pengguna</p>
@@ -87,8 +87,8 @@
                                 
                                 <div class="bg-white/90 backdrop-blur-md rounded-2xl p-6 border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgb(0,0,0,0.1)] transition-all duration-300 group" data-aos="fade-up" data-aos-delay="300" data-aos-once="true">
                                     <div class="flex items-center gap-5">
-                                        <div class="p-3.5 bg-indigo-50 rounded-xl group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300 shadow-sm border border-indigo-100 flex-shrink-0">
-                                            <i class="fas fa-right-left text-2xl text-indigo-600 group-hover:text-white transition-colors"></i>
+                                        <div class="p-3.5 bg-slate-50 rounded-xl group-hover:bg-slate-800 group-hover:text-white transition-colors duration-300 shadow-sm border border-slate-200 flex-shrink-0">
+                                            <i class="fas fa-right-left text-2xl text-slate-500 group-hover:text-white transition-colors"></i>
                                         </div>
                                         <div>
                                             <p class="text-slate-500 text-[11px] font-bold uppercase tracking-wider mb-1">Transaksi Bulan Ini</p>
@@ -121,8 +121,8 @@
                     @if((isset($lowStockItems) && $lowStockItems->isNotEmpty()) || ($overdueLoansCount ?? 0) > 0)
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
                         @if(isset($lowStockItems) && $lowStockItems->isNotEmpty())
-                        <div class="bg-amber-50 rounded-2xl p-5 border border-amber-200/60 shadow-sm relative overflow-hidden group">
-                            <div class="absolute right-0 top-0 -mt-4 -mr-4 w-24 h-24 bg-amber-200/30 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500"></div>
+                        <div class="bg-white rounded-2xl p-5 border border-slate-100 border-l-4 border-l-amber-500 shadow-sm relative overflow-hidden group">
+                            <div class="absolute right-0 top-0 -mt-4 -mr-4 w-24 h-24 bg-amber-100/50 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500"></div>
                             <div class="flex items-start gap-4 relative z-10">
                                 <div class="p-2.5 bg-amber-100 rounded-lg shrink-0 border border-amber-200">
                                     <i class="fas fa-triangle-exclamation text-xl text-amber-600"></i>
@@ -137,8 +137,8 @@
                         @endif
                         
                         @if(($overdueLoansCount ?? 0) > 0)
-                        <div class="bg-red-50 rounded-2xl p-5 border border-red-200/60 shadow-sm relative overflow-hidden group">
-                            <div class="absolute right-0 top-0 -mt-4 -mr-4 w-24 h-24 bg-red-200/30 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500"></div>
+                        <div class="bg-white rounded-2xl p-5 border border-slate-100 border-l-4 border-l-red-500 shadow-sm relative overflow-hidden group">
+                            <div class="absolute right-0 top-0 -mt-4 -mr-4 w-24 h-24 bg-red-100/50 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500"></div>
                             <div class="flex items-start gap-4 relative z-10">
                                 <div class="p-2.5 bg-red-100 rounded-lg shrink-0 border border-red-200">
                                     <i class="fas fa-clock text-xl text-red-600"></i>
@@ -160,7 +160,7 @@
                         <a href="{{ route('loans.index', ['status' => 'pending']) }}" class="group bg-white rounded-2xl p-5 border border-slate-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-yellow-200 transition-all duration-300 relative overflow-hidden">
                             <div class="absolute right-0 top-0 w-2 h-full bg-yellow-400 group-hover:w-full group-hover:opacity-5 transition-all duration-500"></div>
                             <div class="flex items-center justify-between mb-4 relative z-10">
-                                <div class="w-12 h-12 flex items-center justify-center bg-yellow-50 rounded-xl text-yellow-500 border border-yellow-100 group-hover:scale-110 transition-transform duration-300">
+                                <div class="w-12 h-12 flex items-center justify-center bg-white rounded-xl text-yellow-500 border border-slate-200 shadow-sm group-hover:scale-110 transition-transform duration-300">
                                     <i class="fas fa-hourglass-half text-xl"></i>
                                 </div>
                                 <span class="text-3xl font-extrabold text-slate-800 group-hover:text-yellow-600 transition-colors">{{ $pendingLoansCount ?? 0 }}</span>
@@ -175,7 +175,7 @@
                         <a href="{{ route('bookings.index', ['status' => 'pending']) }}" class="group bg-white rounded-2xl p-5 border border-slate-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-purple-200 transition-all duration-300 relative overflow-hidden">
                             <div class="absolute right-0 top-0 w-2 h-full bg-purple-400 group-hover:w-full group-hover:opacity-5 transition-all duration-500"></div>
                             <div class="flex items-center justify-between mb-4 relative z-10">
-                                <div class="w-12 h-12 flex items-center justify-center bg-purple-50 rounded-xl text-purple-600 border border-purple-100 group-hover:scale-110 transition-transform duration-300">
+                                <div class="w-12 h-12 flex items-center justify-center bg-white rounded-xl text-purple-600 border border-slate-200 shadow-sm group-hover:scale-110 transition-transform duration-300">
                                     <i class="fas fa-calendar-alt text-xl"></i>
                                 </div>
                                 <span class="text-3xl font-extrabold text-slate-800 group-hover:text-purple-600 transition-colors">{{ $pendingBookingsCount ?? 0 }}</span>
@@ -190,7 +190,7 @@
                         <a href="{{ route('damage-reports.index', ['status' => 'Dilaporkan']) }}" class="group bg-white rounded-2xl p-5 border border-slate-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-orange-200 transition-all duration-300 relative overflow-hidden">
                             <div class="absolute right-0 top-0 w-2 h-full bg-orange-400 group-hover:w-full group-hover:opacity-5 transition-all duration-500"></div>
                             <div class="flex items-center justify-between mb-4 relative z-10">
-                                <div class="w-12 h-12 flex items-center justify-center bg-orange-50 rounded-xl text-orange-500 border border-orange-100 group-hover:scale-110 transition-transform duration-300">
+                                <div class="w-12 h-12 flex items-center justify-center bg-white rounded-xl text-orange-500 border border-slate-200 shadow-sm group-hover:scale-110 transition-transform duration-300">
                                     <i class="fas fa-triangle-exclamation text-xl"></i>
                                 </div>
                                 <span class="text-3xl font-extrabold text-slate-800 group-hover:text-orange-600 transition-colors">{{ $newDamageReportsCount ?? 0 }}</span>
@@ -205,7 +205,7 @@
                         <a href="{{ route('calendar.index') }}" class="group bg-white rounded-2xl p-5 border border-slate-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-emerald-200 transition-all duration-300 relative overflow-hidden">
                             <div class="absolute right-0 top-0 w-2 h-full bg-emerald-400 group-hover:w-full group-hover:opacity-5 transition-all duration-500"></div>
                             <div class="flex items-center justify-between mb-4 relative z-10">
-                                <div class="w-12 h-12 flex items-center justify-center bg-emerald-50 rounded-xl text-emerald-600 border border-emerald-100 group-hover:scale-110 transition-transform duration-300">
+                                <div class="w-12 h-12 flex items-center justify-center bg-white rounded-xl text-emerald-600 border border-slate-200 shadow-sm group-hover:scale-110 transition-transform duration-300">
                                     <i class="fas fa-calendar-check text-xl"></i>
                                 </div>
                                 <span class="text-3xl font-extrabold text-slate-800 group-hover:text-emerald-600 transition-colors">{{ $upcomingBookingsCount ?? 0 }}</span>
@@ -252,38 +252,38 @@
                                     {{-- Icon Node --}}
                                     <div class="relative z-10 flex-shrink-0 bg-white ring-8 ring-white rounded-full mt-1.5 transition-transform group-hover:scale-110">
                                         @if ($activity instanceof \App\Models\Loan)
-                                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center border border-blue-200 shadow-sm">
-                                            <i class="fas fa-handshake text-blue-600 text-[10px]"></i>
+                                        <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200 shadow-sm">
+                                            <i class="fas fa-handshake text-slate-400 text-[10px]"></i>
                                         </div>
                                         @elseif ($activity instanceof \App\Models\Booking)
-                                        <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center border border-purple-200 shadow-sm">
-                                            <i class="fas fa-calendar-alt text-purple-600 text-[10px]"></i>
+                                        <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200 shadow-sm">
+                                            <i class="fas fa-calendar-alt text-slate-400 text-[10px]"></i>
                                         </div>
                                         @elseif ($activity instanceof \App\Models\AuditLog)
                                             @if ($activity->action === 'created')
-                                            <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center border border-emerald-200 shadow-sm">
-                                                <i class="fas fa-plus text-emerald-600 text-[10px]"></i>
+                                            <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200 shadow-sm">
+                                                <i class="fas fa-plus text-slate-400 text-[10px]"></i>
                                             </div>
                                             @elseif ($activity->action === 'updated')
-                                            <div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center border border-amber-200 shadow-sm">
-                                                <i class="fas fa-edit text-amber-600 text-[10px]"></i>
+                                            <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200 shadow-sm">
+                                                <i class="fas fa-edit text-slate-400 text-[10px]"></i>
                                             </div>
                                             @elseif ($activity->action === 'deleted')
-                                            <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center border border-red-200 shadow-sm">
+                                            <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center border border-red-200 shadow-sm">
                                                 <i class="fas fa-trash text-red-600 text-[10px]"></i>
                                             </div>
                                             @elseif ($activity->action === 'login')
-                                            <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center border border-indigo-200 shadow-sm">
-                                                <i class="fas fa-sign-in-alt text-indigo-600 text-[10px]"></i>
+                                            <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200 shadow-sm">
+                                                <i class="fas fa-sign-in-alt text-slate-400 text-[10px]"></i>
                                             </div>
                                             @else
-                                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200 shadow-sm">
-                                                <i class="fas fa-clock-rotate-left text-slate-500 text-[10px]"></i>
+                                            <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200 shadow-sm">
+                                                <i class="fas fa-clock-rotate-left text-slate-400 text-[10px]"></i>
                                             </div>
                                             @endif
                                         @else
-                                        <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200 shadow-sm">
-                                            <i class="fas fa-info text-slate-500 text-[10px]"></i>
+                                        <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200 shadow-sm">
+                                            <i class="fas fa-info text-slate-400 text-[10px]"></i>
                                         </div>
                                         @endif
                                     </div>
@@ -307,9 +307,9 @@
                                             
                                             <div class="flex-shrink-0">
                                                 @if ($activity instanceof \App\Models\Loan)
-                                                <a href="{{ route('loans.show', $activity->id) }}" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-bold bg-white text-green-600 border border-green-200 rounded-lg hover:bg-green-50 transition-colors shadow-sm">Lihat <i class="fas fa-arrow-right ml-1"></i></a>
+                                                <a href="{{ route('loans.show', $activity->id) }}" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-bold bg-white text-slate-600 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors shadow-sm">Lihat <i class="fas fa-arrow-right ml-1"></i></a>
                                                 @elseif ($activity instanceof \App\Models\Booking)
-                                                <a href="{{ route('bookings.show', $activity->id) }}" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-bold bg-white text-purple-600 border border-purple-200 rounded-lg hover:bg-purple-50 transition-colors shadow-sm">Lihat <i class="fas fa-arrow-right ml-1"></i></a>
+                                                <a href="{{ route('bookings.show', $activity->id) }}" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-bold bg-white text-slate-600 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors shadow-sm">Lihat <i class="fas fa-arrow-right ml-1"></i></a>
                                                 @elseif ($activity instanceof \App\Models\AuditLog)
                                                 <a href="{{ route('audit-logs.show', $activity->id) }}" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-bold bg-white text-slate-600 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors shadow-sm">Detail <i class="fas fa-arrow-right ml-1"></i></a>
                                                 @endif
@@ -407,8 +407,8 @@
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                                 <div class="bg-white/90 backdrop-blur-md rounded-2xl p-5 border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1 hover:shadow-lg transition-transform" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
                                     <div class="flex items-center gap-4">
-                                        <div class="p-3 bg-green-50 rounded-xl border border-green-100 flex-shrink-0">
-                                            <i class="fas fa-flask text-xl text-green-600"></i>
+                                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex-shrink-0">
+                                            <i class="fas fa-flask text-xl text-slate-500"></i>
                                         </div>
                                         <div>
                                             <p class="text-slate-500 text-[11px] font-bold uppercase tracking-wider mb-1">Peminjaman Aktif</p>
@@ -419,8 +419,8 @@
                                 
                                 <div class="bg-white/90 backdrop-blur-md rounded-2xl p-5 border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1 hover:shadow-lg transition-transform" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
                                     <div class="flex items-center gap-4">
-                                        <div class="p-3 bg-blue-50 rounded-xl border border-blue-100 flex-shrink-0">
-                                            <i class="fas fa-calendar-check text-xl text-blue-600"></i>
+                                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex-shrink-0">
+                                            <i class="fas fa-calendar-check text-xl text-slate-500"></i>
                                         </div>
                                         <div>
                                             <p class="text-slate-500 text-[11px] font-bold uppercase tracking-wider mb-1">Booking Mendatang</p>
@@ -431,8 +431,8 @@
                                 
                                 <div class="bg-white/90 backdrop-blur-md rounded-2xl p-5 border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1 hover:shadow-lg transition-transform" data-aos="fade-up" data-aos-delay="300" data-aos-once="true">
                                     <div class="flex items-center gap-4">
-                                        <div class="p-3 bg-indigo-50 rounded-xl border border-indigo-100 flex-shrink-0">
-                                            <i class="fas fa-clock-rotate-left text-xl text-indigo-600"></i>
+                                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex-shrink-0">
+                                            <i class="fas fa-clock-rotate-left text-xl text-slate-500"></i>
                                         </div>
                                         <div>
                                             <p class="text-slate-500 text-[11px] font-bold uppercase tracking-wider mb-1">Total Riwayat</p>
@@ -498,17 +498,17 @@
                             </div>
                             <div class="p-6 flex-grow flex flex-col justify-center">
                                 @if($nextBooking)
-                                <div class="flex items-start gap-5 p-5 rounded-xl bg-blue-50/50 border border-blue-100">
-                                    <div class="flex-shrink-0 flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 shadow-sm">
+                                <div class="flex items-start gap-5 p-5 rounded-xl bg-slate-50/50 border border-slate-100">
+                                    <div class="flex-shrink-0 flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-white text-slate-700 border border-slate-200 shadow-sm">
                                         <span class="text-xs font-bold uppercase">{{ $nextBooking->waktu_mulai->format('M') }}</span>
                                         <span class="text-2xl font-extrabold">{{ $nextBooking->waktu_mulai->format('d') }}</span>
                                     </div>
                                     <div class="flex-grow">
                                         <p class="font-bold text-slate-800 text-lg leading-tight">{{ $nextBooking->tujuan_kegiatan }}</p>
                                         <div class="flex items-center gap-3 mt-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                                            <span class="bg-white px-2 py-1 rounded border border-slate-200"><i class="fas fa-clock text-blue-400 mr-1.5"></i>{{ $nextBooking->waktu_mulai->format('H:i') }} - {{ $nextBooking->waktu_selesai->format('H:i') }}</span>
+                                            <span class="bg-white px-2 py-1 rounded border border-slate-200"><i class="fas fa-clock text-slate-400 mr-1.5"></i>{{ $nextBooking->waktu_mulai->format('H:i') }} - {{ $nextBooking->waktu_selesai->format('H:i') }}</span>
                                         </div>
-                                        <a href="{{ route('bookings.show', $nextBooking->id) }}" class="inline-block mt-4 text-sm font-bold text-blue-600 hover:text-blue-800 hover:underline transition-all">Lihat Detail <i class="fas fa-arrow-right text-[10px] ml-1"></i></a>
+                                        <a href="{{ route('bookings.show', $nextBooking->id) }}" class="inline-block mt-4 text-sm font-bold text-slate-600 hover:text-slate-800 hover:underline transition-all">Lihat Detail <i class="fas fa-arrow-right text-[10px] ml-1"></i></a>
                                     </div>
                                 </div>
                                 @else
@@ -517,7 +517,7 @@
                                         <i class="fas fa-calendar-xmark text-2xl text-slate-300"></i>
                                     </div>
                                     <p class="text-slate-500 font-medium">Tidak ada jadwal booking mendatang.</p>
-                                    <a href="{{ route('bookings.index', ['create' => 'true']) }}" class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-blue-600 bg-blue-50 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors">
+                                    <a href="{{ route('bookings.index', ['create' => 'true']) }}" class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-slate-600 bg-slate-50 px-4 py-2 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors shadow-sm">
                                         Buat Booking Baru <i class="fas fa-arrow-right text-[10px] ml-1"></i>
                                     </a>
                                 </div>

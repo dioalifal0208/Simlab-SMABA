@@ -7,7 +7,7 @@
     <div class="p-6 md:p-8 space-y-6">
         <div class="flex items-start justify-between gap-4">
             <div>
-                <p class="text-xs font-semibold text-indigo-600 uppercase tracking-wide">{{ __('profile.sections.identity.badge') }}</p>
+                <p class="text-xs font-semibold text-emerald-600 uppercase tracking-wide">{{ __('profile.sections.identity.badge') }}</p>
                 <h3 class="text-xl font-bold text-gray-900">{{ __('profile.sections.identity.title') }}</h3>
                 <p class="text-sm text-gray-500">{{ __('profile.sections.identity.subtitle') }}</p>
             </div>
@@ -32,7 +32,7 @@
                         id="name"
                         name="name"
                         type="text"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                         :value="old('name', $user->name)"
                         required
                         autofocus
@@ -47,7 +47,7 @@
                         id="email"
                         name="email"
                         type="email"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                         :value="old('email', $user->email)"
                         required
                         autocomplete="username"
@@ -59,7 +59,7 @@
                             <span class="flex h-6 w-6 items-center justify-center rounded-full bg-amber-200 text-amber-700 text-xs font-bold">!</span>
                             <div class="text-sm text-amber-800 space-y-1">
                                 <p>{{ __('profile.messages.email_unverified') }}</p>
-                                <button form="send-verification" class="text-sm font-semibold text-indigo-600 hover:text-indigo-500 underline">
+                                <button form="send-verification" class="text-sm font-semibold text-emerald-600 hover:text-emerald-500 underline">
                                     {{ __('profile.buttons.resend_verification') }}
                                 </button>
                             </div>
@@ -75,25 +75,25 @@
 
                 <div class="md:col-span-1">
                     <label for="nomor_induk" class="block text-sm font-medium text-gray-700">{{ __('profile.labels.nomor_induk') }}</label>
-                    <x-text-input id="nomor_induk" name="nomor_induk" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" :value="old('nomor_induk', $user->nomor_induk)" />
+                    <x-text-input id="nomor_induk" name="nomor_induk" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" :value="old('nomor_induk', $user->nomor_induk)" />
                     <x-input-error class="mt-2" :messages="$errors->get('nomor_induk')" />
                 </div>
 
                 <div class="md:col-span-1">
                     <label for="phone_number" class="block text-sm font-medium text-gray-700">{{ __('profile.labels.phone_number') }}</label>
-                    <x-text-input id="phone_number" name="phone_number" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" :value="old('phone_number', $user->phone_number)" placeholder="{{ __('profile.placeholders.phone_number') }}" />
+                    <x-text-input id="phone_number" name="phone_number" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" :value="old('phone_number', $user->phone_number)" placeholder="{{ __('profile.placeholders.phone_number') }}" />
                     <x-input-error class="mt-2" :messages="$errors->get('phone_number')" />
                 </div>
 
                 <div class="md:col-span-1">
                     <label for="kelas" class="block text-sm font-medium text-gray-700">{{ __('profile.labels.kelas') }}</label>
-                    <x-text-input id="kelas" name="kelas" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" :value="old('kelas', $user->kelas)" placeholder="{{ __('profile.placeholders.kelas') }}" />
+                    <x-text-input id="kelas" name="kelas" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" :value="old('kelas', $user->kelas)" placeholder="{{ __('profile.placeholders.kelas') }}" />
                     <x-input-error class="mt-2" :messages="$errors->get('kelas')" />
                 </div>
             </div>
 
             <div class="flex items-center justify-end gap-4">
-                <button type="submit" class="px-5 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-indigo-500 transition-colors">
+                <button type="submit" class="px-5 py-2 bg-emerald-600 text-white text-sm font-semibold rounded-lg shadow-sm hover:bg-emerald-700 transition-colors">
                     {{ __('profile.buttons.save') }}
                 </button>
 

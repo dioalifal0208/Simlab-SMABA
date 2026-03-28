@@ -18,7 +18,7 @@
         
         <button type="submit" 
             {{ $isFormValidObject ? "x-bind:disabled=!{$isFormValidObject}" : '' }}
-            {{ $attributes->merge(['class' => 'w-full sm:w-auto inline-flex justify-center items-center px-6 py-2.5 text-sm font-bold text-white bg-indigo-600 rounded-xl hover:bg-indigo-500 focus:bg-indigo-700 shadow-[0_4px_14px_0_rgba(79,70,229,0.39)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.23)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none']) }}>
+            {{ $attributes->merge(['class' => 'w-full sm:w-auto inline-flex justify-center items-center px-6 py-2.5 text-sm font-bold text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 focus:bg-emerald-700 shadow-sm transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none']) }}>
             <i class="fas {{ $submitIcon }} mr-2"></i> {{ $submitText }}
         </button>
     </div>
