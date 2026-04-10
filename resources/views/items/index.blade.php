@@ -16,7 +16,7 @@
             PENAMBAHAN: 
             Inisialisasi Alpine.js untuk mengelola state modal impor dan item yang dipilih untuk hapus massal.
         --}}
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" x-data="{ showImportModal: false, selectedItems: [] }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" x-data="{ showImportModal: false, selectedItems: [] }">
 
             {{-- Pesan Sukses/Error --}}
             @if (session('success'))

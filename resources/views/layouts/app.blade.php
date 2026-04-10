@@ -71,6 +71,7 @@
                 bottom: 0;
                 overflow-y: auto;
                 background-color: #f8fafc; /* bg-slate-50 */
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
             @media (min-width: 1024px) {
                 #main-wrapper {
@@ -78,6 +79,126 @@
                 }
                 body.sidebar-collapsed #main-wrapper {
                     left: 72px;
+                }
+            }
+
+            /* ============================================
+             * GLOBAL RESPONSIVE LAYOUT SYSTEM
+             * Normalizes padding & max-width across all pages.
+             * Applied via <main> to avoid touching individual templates.
+             * ============================================ */
+
+            /* --- Responsive Container Normalization --- */
+            /* Ensure all max-w-7xl containers inherit consistent padding */
+            #main-wrapper .max-w-7xl,
+            #main-wrapper .max-w-\[1400px\] {
+                padding-left: max(1rem, env(safe-area-inset-left));
+                padding-right: max(1rem, env(safe-area-inset-right));
+            }
+            @media (min-width: 640px) {
+                #main-wrapper .max-w-7xl,
+                #main-wrapper .max-w-\[1400px\] {
+                    padding-left: 1.5rem;
+                    padding-right: 1.5rem;
+                }
+            }
+            @media (min-width: 1024px) {
+                #main-wrapper .max-w-7xl,
+                #main-wrapper .max-w-\[1400px\] {
+                    padding-left: 2rem;
+                    padding-right: 2rem;
+                }
+            }
+
+            /* --- Table Responsive: horizontal scroll on tablet --- */
+            @media (max-width: 1023px) {
+                #main-wrapper table {
+                    display: block;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                }
+                #main-wrapper thead,
+                #main-wrapper tbody,
+                #main-wrapper tr {
+                    display: table;
+                    width: 100%;
+                    table-layout: fixed;
+                }
+                #main-wrapper table {
+                    min-width: 640px;
+                }
+            }
+
+            /* --- Mobile card-style table rows (< 640px) --- */
+            @media (max-width: 639px) {
+                #main-wrapper table.responsive-cards thead {
+                    display: none;
+                }
+                #main-wrapper table.responsive-cards tbody tr {
+                    display: flex;
+                    flex-direction: column;
+                    padding: 1rem;
+                    margin-bottom: 0.75rem;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 0.75rem;
+                    background: #fff;
+                    box-shadow: 0 1px 3px 0 rgba(0,0,0,.05);
+                }
+                #main-wrapper table.responsive-cards tbody td {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0.375rem 0;
+                    border: none;
+                }
+                #main-wrapper table.responsive-cards tbody td::before {
+                    content: attr(data-label);
+                    font-weight: 600;
+                    font-size: 0.75rem;
+                    color: #64748b;
+                    flex-shrink: 0;
+                    margin-right: 1rem;
+                }
+            }
+
+            /* --- Smooth layout transitions for grid columns --- */
+            @media (min-width: 768px) and (max-width: 1023px) {
+                /* Force 2-col max on tablet for grids that use 3+ cols */
+                #main-wrapper .lg\:grid-cols-3 {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+                #main-wrapper .lg\:grid-cols-4 {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+                #main-wrapper .lg\:grid-cols-12 {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+                /* 2-column detail pages: stack on tablet */
+                #main-wrapper .lg\:col-span-8,
+                #main-wrapper .lg\:col-span-4,
+                #main-wrapper .lg\:col-span-2 {
+                    grid-column: span 2 / span 2;
+                }
+            }
+
+            /* --- Spacing normalization --- */
+            @media (max-width: 639px) {
+                /* Reduce vertical padding on mobile for tighter feel */
+                #main-wrapper .py-12 {
+                    padding-top: 1.5rem;
+                    padding-bottom: 1.5rem;
+                }
+                #main-wrapper .py-8 {
+                    padding-top: 1rem;
+                    padding-bottom: 1rem;
+                }
+                #main-wrapper .gap-8 {
+                    gap: 1rem;
+                }
+                /* Page header tighter on mobile */
+                #main-wrapper .px-6 {
+                    padding-left: 1rem;
+                    padding-right: 1rem;
                 }
             }
         </style>
