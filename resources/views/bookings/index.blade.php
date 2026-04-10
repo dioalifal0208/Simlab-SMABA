@@ -169,7 +169,7 @@
                         <h3 class="text-sm font-extrabold tracking-widest text-slate-400 uppercase mb-4 flex items-center gap-2">
                             <i class="fas fa-calendar-day text-slate-400"></i> Hari Ini
                         </h3>
-                        <div class="space-y-4">
+                        <div class="space-y-5">
                             @foreach($todayBookings as $booking)
                                 @include('bookings.partials.booking-card', ['booking' => $booking])
                             @endforeach
@@ -183,7 +183,7 @@
                         <h3 class="text-sm font-extrabold tracking-widest text-slate-400 uppercase mb-4 flex items-center gap-2">
                             <i class="fas fa-calendar-plus text-slate-400"></i> Akan Datang
                         </h3>
-                        <div class="space-y-4">
+                        <div class="space-y-5">
                             @foreach($upcomingBookings as $booking)
                                 @include('bookings.partials.booking-card', ['booking' => $booking])
                             @endforeach
@@ -209,7 +209,7 @@
                                 </a>
                             </div>
                         @else
-                            <div class="space-y-4">
+                            <div class="space-y-5">
                                 @foreach($pastBookings as $booking)
                                     @include('bookings.partials.booking-card', ['booking' => $booking])
                                 @endforeach

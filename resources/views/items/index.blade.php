@@ -7,25 +7,8 @@
                 </h2>
                 <p class="text-sm font-medium text-slate-500 mt-1">{{ __('items.subtitle') }}</p>
             </div>
-            <div class="mt-3 sm:mt-0 flex items-center space-x-3">
-                @can('is-admin')
-                    {{-- Tombol Impor Item (membuka modal) --}}
-                    <button @click="showImportModal = true" class="px-4 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 font-bold text-sm shadow-sm transition-colors">
-                        <i class="fas fa-upload mr-2"></i> {{ __('items.actions.import') }}
-                    </button>
-
-                    {{-- Tombol Tambah Item --}}
-                    <a href="{{ route('items.create') }}" class="inline-flex items-center px-4 py-2.5 bg-emerald-600 text-white text-sm font-bold rounded-xl hover:bg-emerald-500 shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] transition-all hover:-translate-y-0.5">
-                        <i class="fas fa-plus mr-2"></i> {{ __('items.actions.add') }}
-                    </a>
-                @else
-                    {{-- Guru/Staf: Ajukan penambahan item --}}
-                    <a href="{{ route('item-requests.create') }}" class="inline-flex items-center px-4 py-2.5 bg-emerald-600 text-white text-sm font-bold rounded-xl hover:bg-emerald-500 shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] transition-all hover:-translate-y-0.5">
-                        <i class="fas fa-plus mr-2"></i> {{ __('items.actions.request_add') }}
-                    </a>
-                @endcan
             </div>
-        </div>
+    
     </x-slot>
 
     <div class="py-12">
@@ -37,9 +20,9 @@
 
             {{-- Pesan Sukses/Error --}}
             @if (session('success'))
-                <div class="mb-6 bg-white border border-slate-100 border-l-4 border-l-emerald-500 p-4 rounded-xl shadow-sm flex items-center gap-3" role="alert">
-                    <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0"><i class="fas fa-check-circle"></i></div>
-                    <div><p class="font-bold text-emerald-800 text-sm">{{ __('common.messages.success') }}</p><span class="text-emerald-700 text-sm">{{ session('success') }}</span></div>
+                <div class="mb-6 bg-white border border-slate-100 border-l-4 border-l-green-500 p-4 rounded-xl shadow-sm flex items-center gap-3" role="alert">
+                    <div class="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600 flex-shrink-0"><i class="fas fa-check-circle"></i></div>
+                    <div><p class="font-bold text-green-800 text-sm">{{ __('common.messages.success') }}</p><span class="text-green-700 text-sm">{{ session('success') }}</span></div>
                 </div>
             @endif
             @if (session('error'))
@@ -50,66 +33,74 @@
             @endif
 
             {{-- PERUBAHAN: Desain Ulang Area Filter dan Tombol Hapus Massal --}}
-            <div class="mb-8" data-aos="fade-up">
-                    {{-- Decorative top border removed for clean UI --}}
-                    
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                        <div class="flex flex-col">
-                            <h3 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
-                                <i class="fas fa-filter text-slate-300 mr-1.5 inline-block"></i> Filter Data
-                            </h3>
-                        </div>
-                        
-                        {{-- Form Filter --}}
-                        <form action="{{ route('items.index') }}" method="GET" id="filter-form" class="w-full md:flex-grow">
-                            <div class="flex flex-wrap items-center justify-end gap-3">
-                                {{-- Input Pencarian dengan ikon --}}
-                                <div class="relative flex-grow max-w-md">
-                                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                                        <i class="fas fa-search text-gray-400"></i>
-                                    </div>
-                                    <input type="text" name="search" id="search" placeholder="{{ __('items.filters.search') }}" value="{{ request('search') }}" class="w-full rounded-xl border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 pl-10 py-2.5 text-sm transition-all bg-slate-50 hover:bg-white focus:bg-white text-slate-800 placeholder-slate-400 font-medium">
-                                </div>
-                                {{-- Dropdown Filter --}}
-                                <select name="tipe" id="tipe" class="w-auto min-w-[140px] rounded-xl border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 py-2.5 text-sm transition-all text-slate-600 bg-slate-50 hover:bg-white cursor-pointer appearance-none font-medium">
-                                    <option value="">{{ __('items.filters.type') }}</option>
-                                    <option value="Alat" @selected(request('tipe') == 'Alat')>{{ __('items.categories.alat') }}</option>
-                                    <option value="Bahan Habis Pakai" @selected(request('tipe') == 'Bahan Habis Pakai')>{{ __('items.categories.bahan') }}</option>
-                                </select>
-                                <select name="kondisi" id="kondisi" class="w-auto min-w-[140px] rounded-xl border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 py-2.5 text-sm transition-all text-slate-600 bg-slate-50 hover:bg-white cursor-pointer appearance-none font-medium">
-                                    <option value="">{{ __('items.filters.condition') }}</option>
-                                    <option value="baik" @selected(request('kondisi') == 'baik')>{{ __('items.conditions.baik') }}</option>
-                                    <option value="kurang baik" @selected(request('kondisi') == 'kurang baik')>{{ __('items.conditions.kurang_baik') }}</option>
-                                    <option value="Rusak" @selected(request('kondisi') == 'Rusak')>{{ __('items.conditions.rusak') }}</option>
-                                </select>
-                                @php
-                                    $isAdmin = auth()->user()?->role === 'admin';
-                                    $lockedLab = auth()->user()?->laboratorium;
-                                @endphp
-                                <div class="flex items-center gap-2">
-                                    <select name="laboratorium" id="laboratorium" class="w-auto min-w-[140px] rounded-xl border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 py-2.5 text-sm transition-all text-slate-600 bg-slate-50 hover:bg-white cursor-pointer appearance-none font-medium" {{ $isAdmin ? '' : 'disabled' }}>
-                                        <option value="">{{ __('items.filters.all_labs') }}</option>
-                                        <option value="Biologi" @selected(request('laboratorium', $lockedLab) == 'Biologi')>{{ __('common.labs.biologi') }}</option>
-                                        <option value="Fisika" @selected(request('laboratorium', $lockedLab) == 'Fisika')>{{ __('common.labs.fisika') }}</option>
-                                        <option value="Bahasa" @selected(request('laboratorium', $lockedLab) == 'Bahasa')>{{ __('common.labs.bahasa') }}</option>
-                                        <option value="Komputer 1" @selected(request('laboratorium', $lockedLab) == 'Komputer 1')>Lab Komputer 1</option>
-                                        <option value="Komputer 2" @selected(request('laboratorium', $lockedLab) == 'Komputer 2')>Lab Komputer 2</option>
-                                        <option value="Komputer 3" @selected(request('laboratorium', $lockedLab) == 'Komputer 3')>Lab Komputer 3</option>
-                                        <option value="Komputer 4" @selected(request('laboratorium', $lockedLab) == 'Komputer 4')>Lab Komputer 4</option>
-                                    </select>
-                                    @unless($isAdmin)
-                                        <input type="hidden" name="laboratorium" value="{{ request('laboratorium', $lockedLab) }}">
-                                        <span class="text-[10px] uppercase font-bold text-slate-400 ml-1">{{ __('items.filters.locked_lab') }}</span>
-                                    @endunless
-                                </div>
-                                {{-- Tombol Reset --}}
-                                <a href="{{ route('items.index') }}" class="px-4 py-2.5 bg-slate-100/80 text-slate-600 rounded-xl hover:bg-slate-200 hover:text-slate-900 font-semibold text-sm transition-colors border border-slate-200 group flex items-center shadow-sm" title="{{ __('items.actions.reset_filters') }}">
-                                    <i class="fas fa-sync-alt group-hover:rotate-180 transition-transform duration-300"></i>
-                                </a>
-                            </div>
-                        </form>
+                        {{-- ACTION BAR (Top) --}}
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6" data-aos="fade-up">
+                <div class="w-full md:w-96 relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-slate-400"></i>
                     </div>
+                    <input type="text" name="search" id="search" placeholder="{{ __('items.filters.search') }}" value="{{ request('search') }}" form="filter-form" class="w-full rounded-lg border-slate-200 shadow-sm focus:border-green-500 focus:ring-4 focus:ring-green-500/20 pl-10 py-2.5 text-sm transition-all bg-white text-slate-800 placeholder-slate-400 font-medium h-[42px]">
                 </div>
+                
+                <div class="flex items-center gap-3 w-full md:w-auto shrink-0">
+                    @can('is-admin')
+                        <button @click="showImportModal = true" class="flex-1 md:flex-none inline-flex items-center justify-center px-4 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 font-bold text-sm shadow-sm transition-all hover:shadow hover:border-slate-300 h-[42px]">
+                            <i class="fas fa-cloud-arrow-up mr-2.5 text-slate-400"></i> {{ __('items.actions.import') }}
+                        </button>
+                        <a href="{{ route('items.create') }}" class="flex-1 md:flex-none inline-flex items-center justify-center px-5 py-2.5 bg-green-600 text-white text-sm font-bold rounded-lg shadow-sm hover:bg-green-700 hover:shadow-md transition-all h-[42px] hover:-translate-y-0.5">
+                            <i class="fas fa-plus mr-2.5 text-green-200"></i> {{ __('items.actions.add') }}
+                        </a>
+                    @else
+                        <a href="{{ route('item-requests.create') }}" class="flex-1 md:flex-none inline-flex items-center justify-center px-5 py-2.5 bg-green-600 text-white text-sm font-bold rounded-lg shadow-sm hover:bg-green-700 hover:shadow-md transition-all h-[42px] hover:-translate-y-0.5">
+                            <i class="fas fa-plus mr-2.5 text-green-200"></i> {{ __('items.actions.request_add') }}
+                        </a>
+                    @endcan
+                </div>
+            </div>
+
+            {{-- FILTER PANEL CARD --}}
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-8" data-aos="fade-up" data-aos-delay="50">
+                <form action="{{ route('items.index') }}" method="GET" id="filter-form" class="flex flex-col md:flex-row items-center gap-5">
+                    <div class="flex items-center text-sm font-bold text-slate-800 md:border-r border-slate-100 md:pr-5 shrink-0 self-start md:self-auto uppercase tracking-wide">
+                        <i class="fas fa-filter text-green-600 mr-2 border border-green-100 bg-green-50 p-1.5 rounded-lg shadow-sm"></i> Filter
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row flex-grow w-full gap-3">
+                        <select name="tipe" id="tipe" class="flex-1 rounded-lg border-slate-200 shadow-sm focus:border-green-500 focus:ring-4 focus:ring-green-500/20 py-2.5 text-sm transition-all text-slate-700 bg-slate-50 hover:bg-white font-medium h-[42px]">
+                            <option value="">{{ __('items.filters.type') }}</option>
+                            <option value="Alat" @selected(request('tipe') == 'Alat')>{{ __('items.categories.alat') }}</option>
+                            <option value="Bahan Habis Pakai" @selected(request('tipe') == 'Bahan Habis Pakai')>{{ __('items.categories.bahan') }}</option>
+                        </select>
+                        <select name="kondisi" id="kondisi" class="flex-1 rounded-lg border-slate-200 shadow-sm focus:border-green-500 focus:ring-4 focus:ring-green-500/20 py-2.5 text-sm transition-all text-slate-700 bg-slate-50 hover:bg-white font-medium h-[42px]">
+                            <option value="">{{ __('items.filters.condition') }}</option>
+                            <option value="baik" @selected(request('kondisi') == 'baik')>{{ __('items.conditions.baik') }}</option>
+                            <option value="kurang baik" @selected(request('kondisi') == 'kurang baik')>{{ __('items.conditions.kurang_baik') }}</option>
+                            <option value="Rusak" @selected(request('kondisi') == 'Rusak')>{{ __('items.conditions.rusak') }}</option>
+                        </select>
+                        @php
+                            $isAdmin = auth()->user()?->role === 'admin';
+                            $lockedLab = auth()->user()?->laboratorium;
+                        @endphp
+                        <div class="flex-1 relative">
+                            <select name="laboratorium" id="laboratorium" class="w-full rounded-lg border-slate-200 shadow-sm focus:border-green-500 focus:ring-4 focus:ring-green-500/20 py-2.5 text-sm transition-all text-slate-700 bg-slate-50 hover:bg-white font-medium h-[42px]" {{ $isAdmin ? '' : 'disabled' }}>
+                                <option value="">{{ __('items.filters.all_labs') }}</option>
+                                <option value="Biologi" @selected(request('laboratorium', $lockedLab) == 'Biologi')>{{ __('common.labs.biologi') }}</option>
+                                <option value="Fisika" @selected(request('laboratorium', $lockedLab) == 'Fisika')>{{ __('common.labs.fisika') }}</option>
+                                <option value="Bahasa" @selected(request('laboratorium', $lockedLab) == 'Bahasa')>{{ __('common.labs.bahasa') }}</option>
+                                <option value="Komputer" @selected(request('laboratorium', $lockedLab) == 'Komputer')>{{ __('common.labs.komputer') }}</option>
+                            </select>
+                            @unless($isAdmin)
+                                <input type="hidden" name="laboratorium" value="{{ request('laboratorium', $lockedLab) }}">
+                                <span class="absolute right-8 top-3 text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-1.5 rounded">{{ __('items.filters.locked_lab') }}</span>
+                            @endunless
+                        </div>
+                    </div>
+
+                    <a href="{{ route('items.index') }}" class="shrink-0 text-sm font-bold text-slate-500 hover:text-slate-900 px-4 py-2.5 rounded-lg border border-transparent hover:bg-slate-100 hover:border-slate-200 transition-all flex items-center h-[42px]" title="{{ __('items.actions.reset_filters') }}">
+                        Reset
+                    </a>
+                </form>
+            </div>
 
                 {{-- Tombol Aksi Hapus Massal (Muncul saat ada item terpilih) --}}
                 <div x-show="selectedItems.length > 0" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4" class="mt-4 bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-2xl p-4 flex justify-between items-center shadow-md relative overflow-hidden" style="display: none;">

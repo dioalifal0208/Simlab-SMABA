@@ -54,32 +54,32 @@
     </style>
 </head>
 
-    <body class="landing-page antialiased bg-white text-gray-900 overflow-x-hidden selection:bg-green-100 selection:text-green-900"
+    <body class="landing-page antialiased bg-white text-slate-900 overflow-x-hidden selection:bg-green-100 selection:text-green-900"
           data-authenticated="{{ auth()->check() ? '1' : '0' }}"
           x-data="{ isModalOpen: false, showDemoModal: false, showFeatureModal: false, activeSlide: 0, activeFeature: 'inventory', otpStep: false }"
           @keydown.escape.window="isModalOpen = false; showDemoModal = false; showFeatureModal = false; otpStep = false">
 
 
         {{-- NAVBAR --}}
-        <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
+        <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 transition-all duration-300">
             <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-8 py-4">
                 <div class="flex items-center gap-3">
                     <a href="/" class="flex items-center gap-2">
                         <img class="h-9 w-auto" src="{{ asset('images/logo-smaba.webp') }}" alt="Logo SMABA">
                         <div class="hidden sm:block">
-                            <p class="text-sm font-bold text-gray-900 tracking-tight">LAB-SMABA</p>
+                            <p class="text-sm font-bold text-slate-900 tracking-tight">LAB-SMABA</p>
                         </div>
                     </a>
                 </div>
                 
                     {{-- Language Switcher --}}
-                    <div class="flex items-center bg-gray-100 rounded-lg p-0.5">
+                    <div class="flex items-center bg-slate-100 rounded-lg p-0.5">
                         <a href="{{ route('lang.switch', 'id') }}" 
-                           class="px-3 py-1 text-[10px] font-bold rounded-md transition-all duration-200 {{ app()->getLocale() == 'id' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-400 hover:text-gray-600' }}">
+                           class="px-3 py-1 text-[10px] font-bold rounded-md transition-all duration-200 {{ app()->getLocale() == 'id' ? 'bg-white text-green-700 shadow-sm' : 'text-slate-400 hover:text-slate-600' }}">
                             ID
                         </a>
                         <a href="{{ route('lang.switch', 'en') }}" 
-                           class="px-3 py-1 text-[10px] font-bold rounded-md transition-all duration-200 {{ app()->getLocale() == 'en' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-400 hover:text-gray-600' }}">
+                           class="px-3 py-1 text-[10px] font-bold rounded-md transition-all duration-200 {{ app()->getLocale() == 'en' ? 'bg-white text-green-700 shadow-sm' : 'text-slate-400 hover:text-slate-600' }}">
                             EN
                         </a>
                     </div>
@@ -87,38 +87,35 @@
                     <div class="flex items-center gap-4">
                         @if (Route::has('login'))
                             @auth
-                                <a href="{{ url('/dashboard') }}" class="text-sm font-medium text-gray-600 hover:text-green-700 transition-colors">{{ __('welcome.nav.dashboard') }}</a>
+                                <a href="{{ url('/dashboard') }}" class="text-sm font-medium text-slate-600 hover:text-green-700 transition-colors">{{ __('welcome.nav.dashboard') }}</a>
                             @else
-                                <button @click="isModalOpen = true" class="text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-2 transition-colors">{{ __('welcome.nav.login') }}</button>
+                                <button @click="isModalOpen = true" class="text-sm font-medium text-slate-600 hover:text-slate-900 px-3 py-2 transition-colors">{{ __('welcome.nav.login') }}</button>
                             @endauth
                         @endif
                     </div>
             </nav>
         </header>
 
-                <main class="relative z-10 pt-32 pb-24 lg:pt-40 lg:pb-32 overflow-hidden bg-white">
-            <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <main class="relative z-10 pt-32 pb-24 lg:pt-44 lg:pb-32 overflow-hidden bg-white">
+            <div class="max-w-[1200px] mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
                 {{-- HERO COPY --}}
-                <div class="flex flex-col gap-8" data-aos="fade-up" data-aos-duration="700">
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-sm font-medium text-blue-700 w-max">
+                <div class="lg:col-span-7 flex flex-col gap-8 lg:pr-8" data-aos="fade-up" data-aos-duration="700">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 border border-green-100 text-sm font-medium text-green-700 w-max">
                         Sistem Manajemen Lab Generasi Baru
                     </div>
                     
-                    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 tracking-tight leading-tight">
-                        Kelola Praktikum <br/>
-                        <span class="text-blue-600">Lebih Profesional</span>
-                    </h1>
+                    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 tracking-[-0.02em] leading-[1.15]">Kelola Praktikum <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">Lebih Profesional</span></h1>
                     
-                    <p class="text-lg sm:text-xl text-gray-500 leading-relaxed max-w-lg">
+                    <p class="text-lg sm:text-xl text-slate-500 leading-relaxed max-w-lg">
                         Tinggalkan cara manual. Digitalisasi peminjaman alat, penjadwalan lab, dan pelaporan dengan mudah dalam satu platform yang terintegrasi untuk sekolah Anda.
                     </p>
                     
                     <div class="flex flex-wrap items-center gap-4 pt-2">
-                        <button @click="isModalOpen = true" class="px-8 py-4 bg-blue-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-600/20 hover:bg-blue-700 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2">
+                        <button @click="isModalOpen = true" class="px-8 py-4 bg-green-600 text-white font-semibold rounded-xl shadow-lg shadow-green-600/20 hover:bg-green-700 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2">
                             {{ __('welcome.hero.cta_start') }} <i class="fas fa-arrow-right text-sm"></i>
                         </button>
-                        <button @click="showDemoModal = true; activeSlide = 0" class="px-8 py-4 text-gray-700 bg-white border border-gray-200 font-semibold rounded-xl hover:border-gray-300 hover:bg-gray-50 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2">
-                            <i class="fas fa-play text-blue-600 text-sm"></i> {{ __('welcome.hero.cta_tour') }}
+                        <button @click="showDemoModal = true; activeSlide = 0" class="px-8 py-4 text-slate-700 bg-white border border-slate-200 font-semibold rounded-xl hover:border-slate-300 hover:bg-slate-50 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2">
+                            <i class="fas fa-play text-green-600 text-sm"></i> {{ __('welcome.hero.cta_tour') }}
                         </button>
                     </div>
 
@@ -126,63 +123,63 @@
                 </div>
 
                 {{-- HERO DASHBOARD MOCKUP --}}
-                <div class="relative" data-aos="fade-left" data-aos-duration="700">
-                    <div class="relative z-10 bg-white border border-gray-100 rounded-2xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.05)] overflow-hidden">
+                <div class="lg:col-span-5 relative" data-aos="fade-left" data-aos-duration="700">
+                    <div class="relative z-10 bg-white border border-slate-100 rounded-2xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.05)] overflow-hidden">
                         <!-- Browser Header -->
-                        <div class="bg-white border-b border-gray-100 px-4 py-3 flex items-center">
+                        <div class="bg-white border-b border-slate-100 px-4 py-3 flex items-center">
                             <div class="flex gap-2">
-                                <div class="w-3 h-3 rounded-full bg-gray-200"></div>
-                                <div class="w-3 h-3 rounded-full bg-gray-200"></div>
-                                <div class="w-3 h-3 rounded-full bg-gray-200"></div>
+                                <div class="w-3 h-3 rounded-full bg-slate-200"></div>
+                                <div class="w-3 h-3 rounded-full bg-slate-200"></div>
+                                <div class="w-3 h-3 rounded-full bg-slate-200"></div>
                             </div>
-                            <div class="mx-auto px-4 py-1.5 bg-gray-50 border border-gray-100 rounded-md text-xs font-medium text-gray-400 font-mono">
+                            <div class="mx-auto px-4 py-1.5 bg-slate-50 border border-slate-100 rounded-md text-xs font-medium text-slate-400 font-mono">
                                 lab-smaba.sch.id/admin
                             </div>
                         </div>
                         
                         <!-- Dashboard Content -->
-                        <div class="p-6 bg-gray-50/50">
+                        <div class="p-6 bg-slate-50/50">
                             <div class="flex justify-between items-center mb-6">
                                 <div>
-                                    <h3 class="font-bold text-gray-900 text-lg">Dashboard Lab</h3>
-                                    <p class="text-xs text-gray-500 mt-1">Ringkasan aktivitas hari ini</p>
+                                    <h3 class="font-bold text-slate-900 text-lg">Dashboard Lab</h3>
+                                    <p class="text-xs text-slate-500 mt-1">Ringkasan aktivitas hari ini</p>
                                 </div>
-                                <span class="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full border border-blue-100">Online</span>
+                                <span class="px-3 py-1 bg-green-50 text-green-600 text-xs font-bold rounded-full border border-green-100">Online</span>
                             </div>
 
                             <!-- Mock Stats -->
                             <div class="grid grid-cols-2 gap-4 mb-6">
-                                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                                    <i class="fas fa-calendar-check text-blue-500 mb-2 text-lg"></i>
-                                    <p class="text-xs text-gray-500 font-medium">Jadwal Aktif</p>
-                                    <p class="text-2xl font-bold text-gray-900 mt-1">3 <span class="text-sm font-normal text-gray-500">Sesi</span></p>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                                    <i class="fas fa-calendar-check text-green-500 mb-2 text-lg"></i>
+                                    <p class="text-xs text-slate-500 font-medium">Jadwal Aktif</p>
+                                    <p class="text-2xl font-bold text-slate-900 mt-1">3 <span class="text-sm font-normal text-slate-500">Sesi</span></p>
                                 </div>
-                                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                                    <i class="fas fa-flask text-blue-500 mb-2 text-lg"></i>
-                                    <p class="text-xs text-gray-500 font-medium">Alat Dipinjam</p>
-                                    <p class="text-2xl font-bold text-gray-900 mt-1">12 <span class="text-sm font-normal text-gray-500">Item</span></p>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                                    <i class="fas fa-flask text-green-500 mb-2 text-lg"></i>
+                                    <p class="text-xs text-slate-500 font-medium">Alat Dipinjam</p>
+                                    <p class="text-2xl font-bold text-slate-900 mt-1">12 <span class="text-sm font-normal text-slate-500">Item</span></p>
                                 </div>
                             </div>
 
                             <!-- Mock Task/Schedule -->
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Aktivitas Mendatang</p>
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Aktivitas Mendatang</p>
                                 <div class="space-y-4">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm shrink-0">F</div>
+                                        <div class="w-10 h-10 rounded-full bg-green-50 text-green-600 flex items-center justify-center font-bold text-sm shrink-0">F</div>
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-sm font-bold text-gray-900 truncate">Praktikum Fisika Kelas XII</p>
-                                            <p class="text-xs text-gray-500">10:00 - 11:30 WIB</p>
+                                            <p class="text-sm font-bold text-slate-900 truncate">Praktikum Fisika Kelas XII</p>
+                                            <p class="text-xs text-slate-500">10:00 - 11:30 WIB</p>
                                         </div>
-                                        <span class="text-[10px] bg-blue-50 text-blue-600 px-2.5 py-1 rounded border border-blue-100 font-bold shrink-0">Aktif</span>
+                                        <span class="text-[10px] bg-green-50 text-green-600 px-2.5 py-1 rounded border border-green-100 font-bold shrink-0">Aktif</span>
                                     </div>
                                     <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-full bg-gray-50 text-gray-600 flex items-center justify-center font-bold text-sm shrink-0">B</div>
+                                        <div class="w-10 h-10 rounded-full bg-slate-50 text-slate-600 flex items-center justify-center font-bold text-sm shrink-0">B</div>
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-sm font-bold text-gray-900 truncate">Praktikum Biologi Kelas XI</p>
-                                            <p class="text-xs text-gray-500">13:00 - 14:30 WIB</p>
+                                            <p class="text-sm font-bold text-slate-900 truncate">Praktikum Biologi Kelas XI</p>
+                                            <p class="text-xs text-slate-500">13:00 - 14:30 WIB</p>
                                         </div>
-                                        <span class="text-[10px] bg-gray-50 text-gray-500 px-2.5 py-1 rounded border border-gray-200 font-bold shrink-0">Menunggu</span>
+                                        <span class="text-[10px] bg-slate-50 text-slate-500 px-2.5 py-1 rounded border border-slate-200 font-bold shrink-0">Menunggu</span>
                                     </div>
                                 </div>
                             </div>
@@ -193,104 +190,104 @@
         </main>
 
         {{-- SECTION 2: TRUST / STATS --}}
-        <section class="py-16 bg-gray-50 border-y border-gray-200" data-aos="fade-up" data-aos-delay="100">
+        <section class="py-28 bg-slate-50/50 border-y border-slate-100" data-aos="fade-up" data-aos-delay="100">
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-24 text-center">
                     <div>
-                        <p class="text-4xl font-bold text-gray-900 mb-2">{{ number_format($inventoryCount) }}+</p>
-                        <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ __('welcome.stats.items') }}</p>
+                        <p class="text-4xl font-bold text-slate-900 mb-2">{{ number_format($inventoryCount) }}+</p>
+                        <p class="text-sm font-medium text-slate-500 uppercase tracking-wide">{{ __('welcome.stats.items') }}</p>
                     </div>
-                    <div class="hidden md:block w-px h-16 bg-gray-200"></div>
+                    <div class="hidden md:block w-px h-16 bg-slate-200"></div>
                     <div>
-                        <p class="text-4xl font-bold text-gray-900 mb-2">{{ number_format($teacherCount) }}+</p>
-                        <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ __('welcome.stats.teachers') }}</p>
+                        <p class="text-4xl font-bold text-slate-900 mb-2">{{ number_format($teacherCount) }}+</p>
+                        <p class="text-sm font-medium text-slate-500 uppercase tracking-wide">{{ __('welcome.stats.teachers') }}</p>
                     </div>
-                    <div class="hidden md:block w-px h-16 bg-gray-200"></div>
+                    <div class="hidden md:block w-px h-16 bg-slate-200"></div>
                     <div>
-                        <p class="text-4xl font-bold text-gray-900 mb-2">{{ number_format($visitorCount) }}+</p>
-                        <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ __('welcome.stats.activity') }}</p>
+                        <p class="text-4xl font-bold text-slate-900 mb-2">{{ number_format($visitorCount) }}+</p>
+                        <p class="text-sm font-medium text-slate-500 uppercase tracking-wide">{{ __('welcome.stats.activity') }}</p>
                     </div>
                 </div>
             </div>
         </section>
 
         {{-- SECTION 3: FEATURES --}}
-        <section class="py-20 bg-white border-b border-gray-100" id="features">
+        <section class="py-28 bg-white border-b border-slate-100" id="features">
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{{ __('welcome.features.title') }}</h2>
-                    <p class="text-lg text-gray-500">{{ __('welcome.features.subtitle') }}</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4 tracking-tight">{{ __('welcome.features.title') }}</h2>
+                    <p class="text-lg text-slate-500">{{ __('welcome.features.subtitle') }}</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {{-- Feature 1: Inventory --}}
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-8 hover:shadow-md transition duration-200 flex flex-col h-full" data-aos="fade-up" data-aos-delay="0">
-                        <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-6 text-blue-600">
-                            <i class="fas fa-cubes text-xl"></i>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[minmax(200px,auto)]">
+                    {{-- Feature 1: Inventory (Bento Large) --}}
+                    <div class="md:col-span-2 bg-white border border-slate-200 rounded-2xl shadow-sm p-8 hover:shadow-xl hover:-translate-y-1 hover:border-slate-300 transition duration-300 flex flex-col h-full group" data-aos="fade-up" data-aos-delay="0">
+                        <div class="w-14 h-14 bg-green-50/50 border border-green-100 rounded-xl flex items-center justify-center mb-6 text-green-600 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-cubes text-2xl"></i>
                         </div>
-                        <h4 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.inventory.title') }}</h4>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-6 flex-1">{{ __('welcome.features.inventory.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'inventory'" class="text-blue-600 font-medium text-sm flex items-center gap-2 hover:gap-3 transition-all w-max">
+                        <h4 class="text-2xl font-bold text-slate-900 mb-3">{{ __('welcome.features.inventory.title') }}</h4>
+                        <p class="text-slate-500 leading-relaxed mb-6 flex-1 max-w-xl">{{ __('welcome.features.inventory.desc') }}</p>
+                        <button @click="showFeatureModal = true; activeFeature = 'inventory'" class="text-green-600 font-semibold text-sm flex items-center gap-2 group-hover:gap-3 transition-all w-max mt-auto">
                             Lihat Detail <i class="fas fa-arrow-right text-xs"></i>
                         </button>
                     </div>
                     
-                    {{-- Feature 2: Booking --}}
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-8 hover:shadow-md transition duration-200 flex flex-col h-full" data-aos="fade-up" data-aos-delay="100">
-                        <div class="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-indigo-600">
+                    {{-- Feature 2: Booking (Bento Small) --}}
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-8 hover:shadow-xl hover:-translate-y-1 hover:border-slate-300 transition duration-300 flex flex-col h-full group" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-12 h-12 bg-indigo-50/50 border border-indigo-100 rounded-xl flex items-center justify-center mb-6 text-indigo-600 group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-calendar-check text-xl"></i>
                         </div>
-                        <h4 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.booking.title') }}</h4>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-6 flex-1">{{ __('welcome.features.booking.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'booking'" class="text-indigo-600 font-medium text-sm flex items-center gap-2 hover:gap-3 transition-all w-max">
+                        <h4 class="text-xl font-bold text-slate-900 mb-3">{{ __('welcome.features.booking.title') }}</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-6 flex-1">{{ __('welcome.features.booking.desc') }}</p>
+                        <button @click="showFeatureModal = true; activeFeature = 'booking'" class="text-indigo-600 font-semibold text-sm flex items-center gap-2 group-hover:gap-3 transition-all w-max mt-auto">
                             Lihat Detail <i class="fas fa-arrow-right text-xs"></i>
                         </button>
                     </div>
 
-                    {{-- Feature 3: Validation --}}
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-8 hover:shadow-md transition duration-200 flex flex-col h-full" data-aos="fade-up" data-aos-delay="200">
-                        <div class="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center mb-6 text-emerald-600">
+                    {{-- Feature 3: Validation (Bento Small) --}}
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-8 hover:shadow-xl hover:-translate-y-1 hover:border-slate-300 transition duration-300 flex flex-col h-full group" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-12 h-12 bg-emerald-50/50 border border-emerald-100 rounded-xl flex items-center justify-center mb-6 text-emerald-600 group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-qrcode text-xl"></i>
                         </div>
-                        <h4 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.validation.title') }}</h4>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-6 flex-1">{{ __('welcome.features.validation.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'validation'" class="text-emerald-600 font-medium text-sm flex items-center gap-2 hover:gap-3 transition-all w-max">
+                        <h4 class="text-xl font-bold text-slate-900 mb-3">{{ __('welcome.features.validation.title') }}</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-6 flex-1">{{ __('welcome.features.validation.desc') }}</p>
+                        <button @click="showFeatureModal = true; activeFeature = 'validation'" class="text-emerald-600 font-semibold text-sm flex items-center gap-2 group-hover:gap-3 transition-all w-max mt-auto">
                             Lihat Detail <i class="fas fa-arrow-right text-xs"></i>
                         </button>
                     </div>
 
-                    {{-- Feature 4: Calendar --}}
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-8 hover:shadow-md transition duration-200 flex flex-col h-full" data-aos="fade-up" data-aos-delay="300">
-                        <div class="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center mb-6 text-orange-600">
-                            <i class="fas fa-calendar-days text-xl"></i>
+                    {{-- Feature 4: Calendar (Bento Large) --}}
+                    <div class="md:col-span-2 bg-white border border-slate-200 rounded-2xl shadow-sm p-8 hover:shadow-xl hover:-translate-y-1 hover:border-slate-300 transition duration-300 flex flex-col h-full group" data-aos="fade-up" data-aos-delay="300">
+                        <div class="w-14 h-14 bg-orange-50/50 border border-orange-100 rounded-xl flex items-center justify-center mb-6 text-orange-600 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-calendar-days text-2xl"></i>
                         </div>
-                        <h4 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.calendar.title') }}</h4>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-6 flex-1">{{ __('welcome.features.calendar.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'calendar'" class="text-orange-600 font-medium text-sm flex items-center gap-2 hover:gap-3 transition-all w-max">
+                        <h4 class="text-2xl font-bold text-slate-900 mb-3">{{ __('welcome.features.calendar.title') }}</h4>
+                        <p class="text-slate-500 leading-relaxed mb-6 flex-1 max-w-xl">{{ __('welcome.features.calendar.desc') }}</p>
+                        <button @click="showFeatureModal = true; activeFeature = 'calendar'" class="text-orange-600 font-semibold text-sm flex items-center gap-2 group-hover:gap-3 transition-all w-max mt-auto">
                             Lihat Detail <i class="fas fa-arrow-right text-xs"></i>
                         </button>
                     </div>
 
-                    {{-- Feature 5: Resources --}}
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-8 hover:shadow-md transition duration-200 flex flex-col h-full" data-aos="fade-up" data-aos-delay="400">
-                        <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-6 text-purple-600">
-                            <i class="fas fa-book-bookmark text-xl"></i>
+                    {{-- Feature 5: Resources (Bento Large) --}}
+                    <div class="md:col-span-2 bg-white border border-slate-200 rounded-2xl shadow-sm p-8 hover:shadow-xl hover:-translate-y-1 hover:border-slate-300 transition duration-300 flex flex-col h-full group" data-aos="fade-up" data-aos-delay="400">
+                        <div class="w-14 h-14 bg-purple-50/50 border border-purple-100 rounded-xl flex items-center justify-center mb-6 text-purple-600 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-book-bookmark text-2xl"></i>
                         </div>
-                        <h4 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.resources.title') }}</h4>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-6 flex-1">{{ __('welcome.features.resources.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'resources'" class="text-purple-600 font-medium text-sm flex items-center gap-2 hover:gap-3 transition-all w-max">
+                        <h4 class="text-2xl font-bold text-slate-900 mb-3">{{ __('welcome.features.resources.title') }}</h4>
+                        <p class="text-slate-500 leading-relaxed mb-6 flex-1 max-w-xl">{{ __('welcome.features.resources.desc') }}</p>
+                        <button @click="showFeatureModal = true; activeFeature = 'resources'" class="text-purple-600 font-semibold text-sm flex items-center gap-2 group-hover:gap-3 transition-all w-max mt-auto">
                             Lihat Detail <i class="fas fa-arrow-right text-xs"></i>
                         </button>
                     </div>
 
-                    {{-- Feature 6: Report --}}
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-8 hover:shadow-md transition duration-200 flex flex-col h-full" data-aos="fade-up" data-aos-delay="500">
-                        <div class="w-12 h-12 bg-cyan-50 rounded-lg flex items-center justify-center mb-6 text-cyan-600">
+                    {{-- Feature 6: Report (Bento Small) --}}
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-8 hover:shadow-xl hover:-translate-y-1 hover:border-slate-300 transition duration-300 flex flex-col h-full group" data-aos="fade-up" data-aos-delay="500">
+                        <div class="w-12 h-12 bg-cyan-50/50 border border-cyan-100 rounded-xl flex items-center justify-center mb-6 text-cyan-600 group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-chart-pie text-xl"></i>
                         </div>
-                        <h4 class="text-xl font-bold text-gray-900 mb-3">{{ __('welcome.features.report.title') }}</h4>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-6 flex-1">{{ __('welcome.features.report.desc') }}</p>
-                        <button @click="showFeatureModal = true; activeFeature = 'report'" class="text-cyan-600 font-medium text-sm flex items-center gap-2 hover:gap-3 transition-all w-max">
+                        <h4 class="text-xl font-bold text-slate-900 mb-3">{{ __('welcome.features.report.title') }}</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-6 flex-1">{{ __('welcome.features.report.desc') }}</p>
+                        <button @click="showFeatureModal = true; activeFeature = 'report'" class="text-cyan-600 font-semibold text-sm flex items-center gap-2 group-hover:gap-3 transition-all w-max mt-auto">
                             Lihat Detail <i class="fas fa-arrow-right text-xs"></i>
                         </button>
                     </div>
@@ -299,62 +296,62 @@
         </section>
 
         {{-- SECTION 4: WORKFLOW / PROCESS --}}
-        <section class="py-20 bg-gray-50 border-y border-gray-200" id="workflow">
+        <section class="py-28 bg-slate-50 border-y border-slate-200" id="workflow">
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="text-center max-w-2xl mx-auto mb-20" data-aos="fade-up">
-                    <h2 class="text-sm font-bold text-gray-500 tracking-widest uppercase mb-3">Alur Kerja</h2>
-                    <h3 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">{{ __('welcome.workflow.title') }}</h3>
-                    <p class="mt-4 text-gray-500 text-lg">Proses peminjaman alat kini lebih terstruktur dengan rekam jejak digital yang jelas.</p>
+                    <h2 class="text-sm font-bold text-slate-500 tracking-widest uppercase mb-3">Alur Kerja</h2>
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-4">{{ __('welcome.workflow.title') }}</h3>
+                    <p class="mt-4 text-slate-500 text-lg">Proses peminjaman alat kini lebih terstruktur dengan rekam jejak digital yang jelas.</p>
                 </div>
 
                 <div class="relative">
                     <!-- Base line for desktop -->
-                    <div class="hidden md:block absolute top-[28px] left-[10%] right-[10%] h-px bg-gray-200 -z-10"></div>
+                    <div class="hidden md:block absolute top-[28px] left-[10%] right-[10%] h-px bg-slate-200 -z-10"></div>
                     <!-- Base line for mobile -->
-                    <div class="md:hidden absolute top-0 bottom-0 left-[28px] w-px bg-gray-200 -z-10"></div>
+                    <div class="md:hidden absolute top-0 bottom-0 left-[28px] w-px bg-slate-200 -z-10"></div>
 
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-6">
                         <!-- Step 1 -->
                         <div class="relative flex md:flex-col items-start gap-6 group" data-aos="fade-up" data-aos-delay="0">
-                            <div class="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center text-xl font-bold text-gray-500 shadow-sm mx-auto md:mx-auto md:mb-4">
+                            <div class="w-14 h-14 bg-white border border-slate-200 rounded-full flex items-center justify-center text-xl font-bold text-slate-500 shadow-sm mx-auto md:mx-auto md:mb-4">
                                 1
                             </div>
                             <div class="md:text-center mt-2 md:mt-0 flex-1">
-                                <h4 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.workflow.step1_title') }}</h4>
-                                <p class="text-gray-500 text-sm leading-relaxed">{{ __('welcome.workflow.step1_desc') }}</p>
+                                <h4 class="text-lg font-bold text-slate-900 mb-2">{{ __('welcome.workflow.step1_title') }}</h4>
+                                <p class="text-slate-500 text-sm leading-relaxed">{{ __('welcome.workflow.step1_desc') }}</p>
                             </div>
                         </div>
 
                         <!-- Step 2 -->
                         <div class="relative flex md:flex-col items-start gap-6 group" data-aos="fade-up" data-aos-delay="100">
-                            <div class="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center text-xl font-bold text-gray-500 shadow-sm mx-auto md:mx-auto md:mb-4">
+                            <div class="w-14 h-14 bg-white border border-slate-200 rounded-full flex items-center justify-center text-xl font-bold text-slate-500 shadow-sm mx-auto md:mx-auto md:mb-4">
                                 2
                             </div>
                             <div class="md:text-center mt-2 md:mt-0 flex-1">
-                                <h4 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.workflow.step2_title') }}</h4>
-                                <p class="text-gray-500 text-sm leading-relaxed">{{ __('welcome.workflow.step2_desc') }}</p>
+                                <h4 class="text-lg font-bold text-slate-900 mb-2">{{ __('welcome.workflow.step2_title') }}</h4>
+                                <p class="text-slate-500 text-sm leading-relaxed">{{ __('welcome.workflow.step2_desc') }}</p>
                             </div>
                         </div>
 
                         <!-- Step 3 -->
                         <div class="relative flex md:flex-col items-start gap-6 group" data-aos="fade-up" data-aos-delay="200">
-                            <div class="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center text-xl font-bold text-gray-500 shadow-sm mx-auto md:mx-auto md:mb-4">
+                            <div class="w-14 h-14 bg-white border border-slate-200 rounded-full flex items-center justify-center text-xl font-bold text-slate-500 shadow-sm mx-auto md:mx-auto md:mb-4">
                                 3
                             </div>
                             <div class="md:text-center mt-2 md:mt-0 flex-1">
-                                <h4 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.workflow.step3_title') }}</h4>
-                                <p class="text-gray-500 text-sm leading-relaxed">{{ __('welcome.workflow.step3_desc') }}</p>
+                                <h4 class="text-lg font-bold text-slate-900 mb-2">{{ __('welcome.workflow.step3_title') }}</h4>
+                                <p class="text-slate-500 text-sm leading-relaxed">{{ __('welcome.workflow.step3_desc') }}</p>
                             </div>
                         </div>
 
                         <!-- Step 4 -->
                         <div class="relative flex md:flex-col items-start gap-6 group" data-aos="fade-up" data-aos-delay="300">
-                            <div class="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center text-xl font-bold text-gray-500 shadow-sm mx-auto md:mx-auto md:mb-4">
+                            <div class="w-14 h-14 bg-white border border-slate-200 rounded-full flex items-center justify-center text-xl font-bold text-slate-500 shadow-sm mx-auto md:mx-auto md:mb-4">
                                 4
                             </div>
                             <div class="md:text-center mt-2 md:mt-0 flex-1">
-                                <h4 class="text-lg font-bold text-gray-900 mb-2">{{ __('welcome.workflow.step4_title') }}</h4>
-                                <p class="text-gray-500 text-sm leading-relaxed">{{ __('welcome.workflow.step4_desc') }}</p>
+                                <h4 class="text-lg font-bold text-slate-900 mb-2">{{ __('welcome.workflow.step4_title') }}</h4>
+                                <p class="text-slate-500 text-sm leading-relaxed">{{ __('welcome.workflow.step4_desc') }}</p>
                             </div>
                         </div>
                     </div>
@@ -363,50 +360,50 @@
         </section>
 
         {{-- SECTION 5: ROLE / USER TYPE --}}
-        <section class="py-20 bg-white border-b border-gray-200 relative overflow-hidden">
+        <section class="py-28 bg-white border-b border-slate-200 relative overflow-hidden">
             <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
                 <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
-                    <h2 class="text-sm font-bold text-gray-500 tracking-widest uppercase mb-3">Satu Aplikasi, Berbagai Peran</h2>
-                    <h3 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">Didesain untuk Tim Anda</h3>
+                    <h2 class="text-sm font-bold text-slate-500 tracking-widest uppercase mb-3">Satu Aplikasi, Berbagai Peran</h2>
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-4">Didesain untuk Tim Anda</h3>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Guru Card -->
-                    <div class="bg-white border border-gray-200 p-8 rounded-xl hover:shadow-md transition duration-200 shadow-sm" data-aos="fade-up" data-aos-delay="0">
-                        <div class="w-12 h-12 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
+                    <div class="bg-white border border-slate-200 p-8 rounded-xl hover:shadow-md transition duration-200 shadow-sm" data-aos="fade-up" data-aos-delay="0">
+                        <div class="w-12 h-12 bg-green-50 border border-green-100 rounded-xl flex items-center justify-center text-green-600 mb-6">
                             <i class="fas fa-chalkboard-teacher text-xl"></i>
                         </div>
-                        <h4 class="text-xl font-bold mb-3 text-gray-900">Untuk Guru</h4>
-                        <ul class="space-y-4 text-sm text-gray-500">
-                            <li class="flex gap-3"><i class="fas fa-check text-blue-600 mt-0.5"></i> <span>Tak perlu mencari laboran untuk cek ketersediaan alat.</span></li>
-                            <li class="flex gap-3"><i class="fas fa-check text-blue-600 mt-0.5"></i> <span>Pemesanan dari rumah, kapan saja lewat HP.</span></li>
-                            <li class="flex gap-3"><i class="fas fa-check text-blue-600 mt-0.5"></i> <span>Notifikasi instan jika jadwal disetujui.</span></li>
+                        <h4 class="text-xl font-bold mb-3 text-slate-900">Untuk Guru</h4>
+                        <ul class="space-y-4 text-sm text-slate-500">
+                            <li class="flex gap-3"><i class="fas fa-check text-green-600 mt-0.5"></i> <span>Tak perlu mencari laboran untuk cek ketersediaan alat.</span></li>
+                            <li class="flex gap-3"><i class="fas fa-check text-green-600 mt-0.5"></i> <span>Pemesanan dari rumah, kapan saja lewat HP.</span></li>
+                            <li class="flex gap-3"><i class="fas fa-check text-green-600 mt-0.5"></i> <span>Notifikasi instan jika jadwal disetujui.</span></li>
                         </ul>
                     </div>
 
                     <!-- Laboran Card -->
-                    <div class="bg-gray-50 border border-gray-200 p-8 rounded-xl hover:shadow-md transition duration-200 shadow-sm relative" data-aos="fade-up" data-aos-delay="100">
-                        <div class="absolute -top-4 right-4 bg-gray-900 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-sm">Paling Terbantu</div>
-                        <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white mb-6">
+                    <div class="bg-slate-50 border border-slate-200 p-8 rounded-xl hover:shadow-md transition duration-200 shadow-sm relative" data-aos="fade-up" data-aos-delay="100">
+                        <div class="absolute -top-4 right-4 bg-slate-900 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-sm">Paling Terbantu</div>
+                        <div class="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white mb-6">
                             <i class="fas fa-wrench text-xl"></i>
                         </div>
-                        <h4 class="text-xl font-bold mb-3 text-gray-900">Untuk Laboran</h4>
-                        <ul class="space-y-4 text-sm text-gray-600">
-                            <li class="flex gap-3"><i class="fas fa-check text-blue-600 mt-0.5"></i> <span>Rekap alat masuk/keluar otomatis & akurat.</span></li>
-                            <li class="flex gap-3"><i class="fas fa-check text-blue-600 mt-0.5"></i> <span>Jadwal lab terpantau satu pintu tanpa bentrok.</span></li>
-                            <li class="flex gap-3"><i class="fas fa-check text-blue-600 mt-0.5"></i> <span>Ekspor laporan bulanan inventaris dalam 1-klik.</span></li>
+                        <h4 class="text-xl font-bold mb-3 text-slate-900">Untuk Laboran</h4>
+                        <ul class="space-y-4 text-sm text-slate-600">
+                            <li class="flex gap-3"><i class="fas fa-check text-green-600 mt-0.5"></i> <span>Rekap alat masuk/keluar otomatis & akurat.</span></li>
+                            <li class="flex gap-3"><i class="fas fa-check text-green-600 mt-0.5"></i> <span>Jadwal lab terpantau satu pintu tanpa bentrok.</span></li>
+                            <li class="flex gap-3"><i class="fas fa-check text-green-600 mt-0.5"></i> <span>Ekspor laporan bulanan inventaris dalam 1-klik.</span></li>
                         </ul>
                     </div>
 
                     <!-- Siswa / OSIS Card -->
-                    <div class="bg-white border border-gray-200 p-8 rounded-xl hover:shadow-md transition duration-200 shadow-sm" data-aos="fade-up" data-aos-delay="200">
-                        <div class="w-12 h-12 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
+                    <div class="bg-white border border-slate-200 p-8 rounded-xl hover:shadow-md transition duration-200 shadow-sm" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-12 h-12 bg-green-50 border border-green-100 rounded-xl flex items-center justify-center text-green-600 mb-6">
                             <i class="fas fa-user-graduate text-xl"></i>
                         </div>
-                        <h4 class="text-xl font-bold mb-3 text-gray-900">Untuk Siswa</h4>
-                        <ul class="space-y-4 text-sm text-gray-500">
-                            <li class="flex gap-3"><i class="fas fa-check text-blue-600 mt-0.5"></i> <span>Akses pustaka SOP lab tanpa repot tanya guru.</span></li>
-                            <li class="flex gap-3"><i class="fas fa-check text-blue-600 mt-0.5"></i> <span>Alur meminjam proyektor/alat untuk ekskul lebih tertib.</span></li>
+                        <h4 class="text-xl font-bold mb-3 text-slate-900">Untuk Siswa</h4>
+                        <ul class="space-y-4 text-sm text-slate-500">
+                            <li class="flex gap-3"><i class="fas fa-check text-green-600 mt-0.5"></i> <span>Akses pustaka SOP lab tanpa repot tanya guru.</span></li>
+                            <li class="flex gap-3"><i class="fas fa-check text-green-600 mt-0.5"></i> <span>Alur meminjam proyektor/alat untuk ekskul lebih tertib.</span></li>
                         </ul>
                     </div>
                 </div>
@@ -414,34 +411,34 @@
         </section>
 
         {{-- SECTION 6: COMPARISON --}}
-        <section class="py-20 bg-gray-50 border-y border-gray-200 overflow-hidden">
+        <section class="py-28 bg-slate-50 border-y border-slate-200 overflow-hidden">
             <div class="max-w-6xl mx-auto px-6 lg:px-8">
                 <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
-                    <h2 class="text-sm font-bold text-gray-500 tracking-widest uppercase mb-3">Transformasi</h2>
-                    <h3 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">Tinggalkan Cara Lama</h3>
+                    <h2 class="text-sm font-bold text-slate-500 tracking-widest uppercase mb-3">Transformasi</h2>
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">Tinggalkan Cara Lama</h3>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12" data-aos="fade-up">
                     <!-- Before (Cara Manual) -->
-                    <div class="p-8 md:p-10 bg-white border border-gray-200 rounded-xl shadow-sm relative">
-                        <h4 class="text-xl font-bold text-gray-400 mb-8 flex items-center gap-3">
-                            <span class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-sm"><i class="fas fa-pen-nib"></i></span>
+                    <div class="p-8 md:p-10 bg-white border border-slate-200 rounded-xl shadow-sm relative">
+                        <h4 class="text-xl font-bold text-slate-400 mb-8 flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-sm"><i class="fas fa-pen-nib"></i></span>
                             Cara Manual
                         </h4>
                         <ul class="space-y-5">
-                            <li class="flex items-start gap-4 text-gray-400 text-sm">
+                            <li class="flex items-start gap-4 text-slate-400 text-sm">
                                 <i class="fas fa-times mt-1"></i>
                                 Kertas rekap tercecer & hilang
                             </li>
-                            <li class="flex items-start gap-4 text-gray-400 text-sm">
+                            <li class="flex items-start gap-4 text-slate-400 text-sm">
                                 <i class="fas fa-times mt-1"></i>
                                 Tanda tangan Kepala Lab butuh berhari-hari
                             </li>
-                            <li class="flex items-start gap-4 text-gray-400 text-sm">
+                            <li class="flex items-start gap-4 text-slate-400 text-sm">
                                 <i class="fas fa-times mt-1"></i>
                                 Pembaruan stok harus tulis tangan
                             </li>
-                            <li class="flex items-start gap-4 text-gray-400 text-sm">
+                            <li class="flex items-start gap-4 text-slate-400 text-sm">
                                 <i class="fas fa-times mt-1"></i>
                                 Sulit mencari data peminjaman bulan lalu
                             </li>
@@ -449,27 +446,27 @@
                     </div>
 
                     <!-- After (Digital) -->
-                    <div class="p-8 md:p-10 bg-white border border-blue-200 rounded-xl shadow-md relative ring-1 ring-blue-50">
-                        <div class="absolute top-0 right-0 p-6 opacity-5 text-blue-600"><i class="fas fa-check-circle text-6xl"></i></div>
-                        <h4 class="text-xl font-bold text-gray-900 mb-8 flex items-center gap-3 relative z-10">
-                            <span class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm"><i class="fas fa-rocket"></i></span>
+                    <div class="p-8 md:p-10 bg-white border border-green-200 rounded-xl shadow-md relative ring-1 ring-green-50">
+                        <div class="absolute top-0 right-0 p-6 opacity-5 text-green-600"><i class="fas fa-check-circle text-6xl"></i></div>
+                        <h4 class="text-xl font-bold text-slate-900 mb-8 flex items-center gap-3 relative z-10">
+                            <span class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-sm"><i class="fas fa-rocket"></i></span>
                             Dengan SimLab
                         </h4>
                         <ul class="space-y-5 relative z-10">
-                            <li class="flex items-start gap-4 text-gray-600 text-sm font-medium">
-                                <div class="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mt-0.5"><i class="fas fa-check text-[10px]"></i></div>
+                            <li class="flex items-start gap-4 text-slate-600 text-sm font-medium">
+                                <div class="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0 mt-0.5"><i class="fas fa-check text-[10px]"></i></div>
                                 Data digital tersimpan rahasia & aman di cloud
                             </li>
-                            <li class="flex items-start gap-4 text-gray-600 text-sm font-medium">
-                                <div class="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mt-0.5"><i class="fas fa-check text-[10px]"></i></div>
+                            <li class="flex items-start gap-4 text-slate-600 text-sm font-medium">
+                                <div class="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0 mt-0.5"><i class="fas fa-check text-[10px]"></i></div>
                                 Persetujuan (Approve) cukup sekali klik dari HP
                             </li>
-                            <li class="flex items-start gap-4 text-gray-600 text-sm font-medium">
-                                <div class="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mt-0.5"><i class="fas fa-check text-[10px]"></i></div>
+                            <li class="flex items-start gap-4 text-slate-600 text-sm font-medium">
+                                <div class="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0 mt-0.5"><i class="fas fa-check text-[10px]"></i></div>
                                 Stok dan rekap masuk otomatis update
                             </li>
-                            <li class="flex items-start gap-4 text-gray-600 text-sm font-medium">
-                                <div class="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mt-0.5"><i class="fas fa-check text-[10px]"></i></div>
+                            <li class="flex items-start gap-4 text-slate-600 text-sm font-medium">
+                                <div class="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0 mt-0.5"><i class="fas fa-check text-[10px]"></i></div>
                                 Filter laporan ekspor instan ke Excel
                             </li>
                         </ul>
@@ -479,17 +476,17 @@
         </section>
 
         {{-- SECTION 7: CTA BOTTOM --}}
-        <section class="py-24 bg-white" data-aos="zoom-in">
+        <section class="py-32 bg-white" data-aos="zoom-in">
             <div class="max-w-4xl mx-auto text-center px-6">
-                <span class="px-4 py-1.5 bg-gray-50 text-gray-500 font-bold text-xs rounded-full mb-6 inline-block border border-gray-200 uppercase tracking-widest">Siap beralih ke era digital?</span>
-                <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight mb-6">{{ __('welcome.cta_bottom.title') }}</h2>
-                <p class="text-lg text-gray-500 mb-10 max-w-2xl mx-auto">{{ __('welcome.cta_bottom.subtitle') }}</p>
+                <span class="px-5 py-2 bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 font-bold text-xs rounded-full mb-6 inline-block border border-green-100 uppercase tracking-widest">Siap beralih ke era digital?</span>
+                <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight mb-6">{{ __('welcome.cta_bottom.title') }}</h2>
+                <p class="text-lg text-slate-500 mb-10 max-w-2xl mx-auto">{{ __('welcome.cta_bottom.subtitle') }}</p>
                 
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <button @click="isModalOpen = true" class="px-8 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition duration-200 shadow-sm hover:shadow-md">
+                    <button @click="isModalOpen = true" class="px-8 py-3 bg-green-600 text-white font-medium rounded-xl hover:bg-green-700 transition duration-200 shadow-sm hover:shadow-md">
                         Mulai Digitalisasi Sekarang
                     </button>
-                    <button @click="isModalOpen = true" class="px-8 py-3 bg-white text-gray-900 border border-gray-300 font-medium rounded-xl hover:bg-gray-50 transition duration-200 hover:shadow-sm">
+                    <button @click="isModalOpen = true" class="px-8 py-3 bg-white text-slate-900 border border-slate-300 font-medium rounded-xl hover:bg-slate-50 transition duration-200 hover:shadow-sm">
                         {{ __('welcome.cta_bottom.admin_login') }}
                     </button>
                 </div>
@@ -497,34 +494,34 @@
         </section>
 
         {{-- SECTION 8: FOOTER --}}
-        <footer class="bg-gray-50 border-t border-gray-200 py-12">
+        <footer class="bg-slate-50 border-t border-slate-200 py-12">
             <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div class="flex flex-col items-center md:items-start gap-4 flex-1">
                     <div class="flex items-center gap-3">
                         <img class="h-8 w-auto grayscale opacity-80" src="{{ asset('images/logo-smaba.webp') }}" alt="Logo">
-                        <span class="text-lg font-bold text-gray-900 tracking-tight">LAB-SMABA</span>
+                        <span class="text-lg font-bold text-slate-900 tracking-tight">LAB-SMABA</span>
                     </div>
-                    <p class="text-sm text-gray-500 text-center md:text-left max-w-sm">Sistem Informasi Manajemen Laboratorium terpadu untuk efisiensi, keamanan, dan akurasi instansi sekolah.</p>
+                    <p class="text-sm text-slate-500 text-center md:text-left max-w-sm">Sistem Informasi Manajemen Laboratorium terpadu untuk efisiensi, keamanan, dan akurasi instansi sekolah.</p>
                 </div>
                 
                 <div class="flex flex-col items-center md:items-end gap-4 text-sm flex-1">
-                    <div class="flex flex-wrap justify-center md:justify-end gap-6 text-gray-500 font-medium">
-                        <span class="cursor-not-allowed hover:text-gray-900 transition-colors">{{ __('welcome.footer.privacy') }}</span>
-                        <span class="cursor-not-allowed hover:text-gray-900 transition-colors">{{ __('welcome.footer.terms') }}</span>
-                        <a href="mailto:lab@smaba.sch.id" class="hover:text-gray-900 transition-colors">{{ __('welcome.footer.contact') }}</a>
+                    <div class="flex flex-wrap justify-center md:justify-end gap-6 text-slate-500 font-medium">
+                        <span class="cursor-not-allowed hover:text-slate-900 transition-colors">{{ __('welcome.footer.privacy') }}</span>
+                        <span class="cursor-not-allowed hover:text-slate-900 transition-colors">{{ __('welcome.footer.terms') }}</span>
+                        <a href="mailto:lab@smaba.sch.id" class="hover:text-slate-900 transition-colors">{{ __('welcome.footer.contact') }}</a>
                     </div>
-                    <p class="text-gray-400">&copy; {{ date('Y') }} SMA Negeri 1 Babat. Hak Cipta Dilindungi.</p>
+                    <p class="text-slate-400">&copy; {{ date('Y') }} SMA Negeri 1 Babat. Hak Cipta Dilindungi.</p>
                 </div>
             </div>
         </footer>
 
         {{-- MODAL LOGIN + 2FA (2-STEP) --}}
-        <div x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm p-4" style="display: none;">
-            <div @click.outside="isModalOpen = false; otpStep = false" x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" class="w-full max-w-md bg-white p-8 rounded-lg shadow-xl border border-gray-200 relative overflow-hidden">
+        <div x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4" style="display: none;">
+            <div @click.outside="isModalOpen = false; otpStep = false" x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" class="w-full max-w-md bg-white p-8 rounded-lg shadow-xl border border-slate-200 relative overflow-hidden">
 
                 {{-- ===== STEP 1: Form Login ===== --}}
                 <div id="step-login" class="">
-                    <h2 class="text-xl font-bold text-gray-900 text-center mb-6">{{ __('welcome.auth.welcome') }}</h2>
+                    <h2 class="text-xl font-bold text-slate-900 text-center mb-6">{{ __('welcome.auth.welcome') }}</h2>
 
                     <div id="auth-error-message" class="hidden mb-4 bg-red-50 border border-red-200 text-red-600 p-3 text-sm rounded-md" role="alert"></div>
                     <div id="auth-success-message" class="hidden mb-4 bg-green-50 border border-green-200 text-green-600 p-3 text-sm rounded-md" role="alert"></div>
@@ -532,17 +529,17 @@
                     <form id="login-form" method="POST" action="{{ route('login') }}" class="space-y-4">
                         @csrf
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('welcome.auth.email') }}</label>
-                            <input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm" type="email" name="email" required autofocus />
+                            <label class="block text-sm font-medium text-slate-700 mb-1">{{ __('welcome.auth.email') }}</label>
+                            <input class="block w-full rounded-md border-slate-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm" type="email" name="email" required autofocus />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('welcome.auth.password') }}</label>
-                            <input class="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm" type="password" name="password" required />
+                            <label class="block text-sm font-medium text-slate-700 mb-1">{{ __('welcome.auth.password') }}</label>
+                            <input class="block w-full rounded-md border-slate-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm" type="password" name="password" required />
                         </div>
                         <div class="flex items-center justify-between">
                             <label class="flex items-center">
-                                <input type="checkbox" class="rounded border-gray-300 text-green-600 shadow-sm focus:ring-green-500" name="remember">
-                                <span class="ml-2 text-sm text-gray-600">{{ __('welcome.auth.remember') }}</span>
+                                <input type="checkbox" class="rounded border-slate-300 text-green-600 shadow-sm focus:ring-green-500" name="remember">
+                                <span class="ml-2 text-sm text-slate-600">{{ __('welcome.auth.remember') }}</span>
                             </label>
                             <a href="{{ route('password.request') }}" class="text-sm text-green-600 hover:text-green-800 font-medium">{{ __('welcome.auth.forgot_password') }}</a>
                         </div>
@@ -555,14 +552,14 @@
 
                     {{-- Indikator langkah --}}
                     <div class="flex items-center justify-center gap-2 mb-6">
-                        <div class="flex items-center gap-1.5 text-xs text-gray-400">
+                        <div class="flex items-center gap-1.5 text-xs text-slate-400">
                             <span class="w-5 h-5 rounded-full bg-green-600 flex items-center justify-center text-white font-bold"><i class="fas fa-check text-[8px]"></i></span>
                             <span class="font-medium text-green-700">Login</span>
                         </div>
-                        <div class="w-8 h-px bg-gray-300"></div>
+                        <div class="w-8 h-px bg-slate-300"></div>
                         <div class="flex items-center gap-1.5 text-xs">
                             <span class="w-5 h-5 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-[10px]">2</span>
-                            <span class="font-semibold text-gray-800">Verifikasi</span>
+                            <span class="font-semibold text-slate-800">Verifikasi</span>
                         </div>
                     </div>
 
@@ -571,8 +568,8 @@
                         <div class="w-14 h-14 mx-auto mb-4 bg-green-50 border-2 border-green-100 rounded-2xl flex items-center justify-center">
                             <i class="fas fa-shield-alt text-2xl text-green-600"></i>
                         </div>
-                        <h2 class="text-xl font-bold text-gray-900">Verifikasi 2 Langkah</h2>
-                        <p class="text-sm text-gray-500 mt-1">Masukkan kode 6 digit dari<br><span class="font-semibold text-gray-700">Google Authenticator</span></p>
+                        <h2 class="text-xl font-bold text-slate-900">Verifikasi 2 Langkah</h2>
+                        <p class="text-sm text-slate-500 mt-1">Masukkan kode 6 digit dari<br><span class="font-semibold text-slate-700">Google Authenticator</span></p>
                     </div>
 
                     <div id="otp-error-message" class="hidden mb-4 bg-red-50 border border-red-200 text-red-600 p-3 text-sm rounded-md" role="alert"></div>
@@ -589,17 +586,17 @@
                                 required
                                 placeholder="000000"
                                 autocomplete="one-time-code"
-                                class="block w-full rounded-lg border-2 border-gray-200 shadow-sm focus:border-green-500 focus:ring-green-500 text-center text-3xl tracking-[0.55em] font-mono py-3.5 placeholder:text-gray-300 placeholder:tracking-[0.55em] transition-colors"
+                                class="block w-full rounded-lg border-2 border-slate-200 shadow-sm focus:border-green-500 focus:ring-green-500 text-center text-3xl tracking-[0.55em] font-mono py-3.5 placeholder:text-slate-300 placeholder:tracking-[0.55em] transition-colors"
                             />
-                            <p class="text-xs text-gray-400 mt-2 text-center">Atau masukkan <em>recovery code</em> Anda jika tidak memiliki akses ke aplikasi.</p>
+                            <p class="text-xs text-slate-400 mt-2 text-center">Atau masukkan <em>recovery code</em> Anda jika tidak memiliki akses ke aplikasi.</p>
                         </div>
                         <button type="submit" id="otp-submit-btn" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all">
                             <i class="fas fa-unlock-alt"></i> Verifikasi &amp; Masuk
                         </button>
                     </form>
 
-                    <div class="mt-5 pt-4 border-t border-gray-100 text-center">
-                        <button id="back-to-login-btn" class="text-xs text-gray-400 hover:text-gray-600 transition-colors inline-flex items-center gap-1.5">
+                    <div class="mt-5 pt-4 border-t border-slate-100 text-center">
+                        <button id="back-to-login-btn" class="text-xs text-slate-400 hover:text-slate-600 transition-colors inline-flex items-center gap-1.5">
                             <i class="fas fa-arrow-left"></i> Ganti akun / kembali ke login
                         </button>
                     </div>
@@ -609,83 +606,83 @@
         </div>
 
         {{-- PRODUCT TOUR MODAL (INTERACTIVE) --}}
-        <div x-show="showDemoModal" x-transition.opacity class="fixed inset-0 z-[60] overflow-y-auto bg-gray-900/80 backdrop-blur-sm" style="display: none;">
+        <div x-show="showDemoModal" x-transition.opacity class="fixed inset-0 z-[60] overflow-y-auto bg-slate-900/80 backdrop-blur-sm" style="display: none;">
             <div class="flex min-h-full items-center justify-center p-4">
-                <div @click.outside="showDemoModal = false" class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl h-auto md:h-[600px] flex overflow-hidden border border-gray-200 flex-col md:flex-row relative">
+                <div @click.outside="showDemoModal = false" class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl h-auto md:h-[600px] flex overflow-hidden border border-slate-200 flex-col md:flex-row relative">
                 
                 {{-- Sidebar Navigation --}}
-                <div class="w-full md:w-1/3 bg-gray-50 border-r border-gray-200 p-6 flex flex-col">
+                <div class="w-full md:w-1/3 bg-slate-50 border-r border-slate-200 p-6 flex flex-col">
                     <div class="flex items-center justify-between mb-8">
-                        <h3 class="font-bold text-xl text-gray-900">{{ __('welcome.tour.title') }}</h3>
-                        <button @click="showDemoModal = false" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xl"></i></button>
+                        <h3 class="font-bold text-xl text-slate-900">{{ __('welcome.tour.title') }}</h3>
+                        <button @click="showDemoModal = false" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times text-xl"></i></button>
                     </div>
                     
                     <div class="space-y-2 flex-1 overflow-y-auto pr-2 custom-scrollbar">
-                        <button @click="activeSlide = 0" :class="activeSlide === 0 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
-                            <div :class="activeSlide === 0 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">1</div>
+                        <button @click="activeSlide = 0" :class="activeSlide === 0 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-slate-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
+                            <div :class="activeSlide === 0 ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">1</div>
                             <div>
-                                <p :class="activeSlide === 0 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">{{ __('welcome.tour.step1_title') }}</p>
-                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ __('welcome.tour.step1_desc') }}</p>
+                                <p :class="activeSlide === 0 ? 'text-green-700' : 'text-slate-700'" class="font-semibold text-sm">{{ __('welcome.tour.step1_title') }}</p>
+                                <p class="text-xs text-slate-500 mt-1 line-clamp-2">{{ __('welcome.tour.step1_desc') }}</p>
                             </div>
                         </button>
 
-                        <button @click="activeSlide = 1" :class="activeSlide === 1 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
-                            <div :class="activeSlide === 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">2</div>
+                        <button @click="activeSlide = 1" :class="activeSlide === 1 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-slate-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
+                            <div :class="activeSlide === 1 ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">2</div>
                             <div>
-                                <p :class="activeSlide === 1 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">{{ __('welcome.tour.step2_title') }}</p>
-                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ __('welcome.tour.step2_desc') }}</p>
+                                <p :class="activeSlide === 1 ? 'text-green-700' : 'text-slate-700'" class="font-semibold text-sm">{{ __('welcome.tour.step2_title') }}</p>
+                                <p class="text-xs text-slate-500 mt-1 line-clamp-2">{{ __('welcome.tour.step2_desc') }}</p>
                             </div>
                         </button>
 
-                        <button @click="activeSlide = 2" :class="activeSlide === 2 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
-                            <div :class="activeSlide === 2 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">3</div>
+                        <button @click="activeSlide = 2" :class="activeSlide === 2 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-slate-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
+                            <div :class="activeSlide === 2 ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">3</div>
                             <div>
-                                <p :class="activeSlide === 2 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">{{ __('welcome.tour.step3_title') }}</p>
-                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ __('welcome.tour.step3_desc') }}</p>
+                                <p :class="activeSlide === 2 ? 'text-green-700' : 'text-slate-700'" class="font-semibold text-sm">{{ __('welcome.tour.step3_title') }}</p>
+                                <p class="text-xs text-slate-500 mt-1 line-clamp-2">{{ __('welcome.tour.step3_desc') }}</p>
                             </div>
                         </button>
 
-                        <button @click="activeSlide = 3" :class="activeSlide === 3 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
-                            <div :class="activeSlide === 3 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">4</div>
+                        <button @click="activeSlide = 3" :class="activeSlide === 3 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-slate-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
+                            <div :class="activeSlide === 3 ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">4</div>
                             <div>
-                                <p :class="activeSlide === 3 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">{{ __('welcome.tour.step4_title') }}</p>
-                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ __('welcome.tour.step4_desc') }}</p>
+                                <p :class="activeSlide === 3 ? 'text-green-700' : 'text-slate-700'" class="font-semibold text-sm">{{ __('welcome.tour.step4_title') }}</p>
+                                <p class="text-xs text-slate-500 mt-1 line-clamp-2">{{ __('welcome.tour.step4_desc') }}</p>
                             </div>
                         </button>
 
-                        <button @click="activeSlide = 4" :class="activeSlide === 4 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
-                            <div :class="activeSlide === 4 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">5</div>
+                        <button @click="activeSlide = 4" :class="activeSlide === 4 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-slate-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
+                            <div :class="activeSlide === 4 ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">5</div>
                             <div>
-                                <p :class="activeSlide === 4 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">{{ __('welcome.tour.step5_title') }}</p>
-                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ __('welcome.tour.step5_desc') }}</p>
+                                <p :class="activeSlide === 4 ? 'text-green-700' : 'text-slate-700'" class="font-semibold text-sm">{{ __('welcome.tour.step5_title') }}</p>
+                                <p class="text-xs text-slate-500 mt-1 line-clamp-2">{{ __('welcome.tour.step5_desc') }}</p>
                             </div>
                         </button>
 
-                        <button @click="activeSlide = 5" :class="activeSlide === 5 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-gray-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
-                            <div :class="activeSlide === 5 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">6</div>
+                        <button @click="activeSlide = 5" :class="activeSlide === 5 ? 'bg-white shadow-sm border-green-200 ring-1 ring-green-500' : 'hover:bg-slate-100 border-transparent'" class="w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 group">
+                            <div :class="activeSlide === 5 ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-500'" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-colors">6</div>
                             <div>
-                                <p :class="activeSlide === 5 ? 'text-green-700' : 'text-gray-700'" class="font-semibold text-sm">{{ __('welcome.tour.step6_title') }}</p>
-                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ __('welcome.tour.step6_desc') }}</p>
+                                <p :class="activeSlide === 5 ? 'text-green-700' : 'text-slate-700'" class="font-semibold text-sm">{{ __('welcome.tour.step6_title') }}</p>
+                                <p class="text-xs text-slate-500 mt-1 line-clamp-2">{{ __('welcome.tour.step6_desc') }}</p>
                             </div>
                         </button>
                     </div>
 
-                    <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="mt-4 pt-4 border-t border-slate-200">
                         <button @click="isModalOpen = true; showDemoModal = false" class="w-full py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition">{{ __('welcome.tour.cta_login') }}</button>
                     </div>
                 </div>
 
                 {{-- Demo Content --}}
-                <div class="w-full md:w-2/3 bg-gray-100 relative overflow-hidden flex items-center justify-center p-8 bg-grid-demo">
+                <div class="w-full md:w-2/3 bg-slate-100 relative overflow-hidden flex items-center justify-center p-8 bg-grid-demo">
                     
                     {{-- SLIDE 1: DASHBOARD --}}
-                    <div x-show="activeSlide === 0" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-10" x-transition:enter-end="opacity-100 translate-x-0" class="w-full max-w-lg bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-                        <div class="h-6 bg-gray-50 border-b flex items-center px-4 gap-2">
+                    <div x-show="activeSlide === 0" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-10" x-transition:enter-end="opacity-100 translate-x-0" class="w-full max-w-lg bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                        <div class="h-6 bg-slate-50 border-b flex items-center px-4 gap-2">
                             <div class="w-2 h-2 rounded-full bg-red-400"></div><div class="w-2 h-2 rounded-full bg-yellow-400"></div><div class="w-2 h-2 rounded-full bg-green-400"></div>
                         </div>
                         <div class="p-6">
-                            <h4 class="font-bold text-gray-900 mb-4">{{ __('welcome.tour.mockup.stats_title') }}</h4>
-                            <div class="flex gap-4 items-end h-32 pl-2 border-b border-l border-gray-200">
+                            <h4 class="font-bold text-slate-900 mb-4">{{ __('welcome.tour.mockup.stats_title') }}</h4>
+                            <div class="flex gap-4 items-end h-32 pl-2 border-b border-l border-slate-200">
                                 <div class="w-1/4 bg-green-200 rounded-t-lg h-0 animate-[grow_1s_ease-out_forwards]" style="--h: 60%"></div>
                                 <div class="w-1/4 bg-green-300 rounded-t-lg h-0 animate-[grow_1s_ease-out_0.2s_forwards]" style="--h: 80%"></div>
                                 <div class="w-1/4 bg-green-500 rounded-t-lg h-0 animate-[grow_1s_ease-out_0.4s_forwards]" style="--h: 40%"></div>
@@ -703,23 +700,23 @@
 
                     {{-- SLIDE 2: BOOKING FORM --}}
                     {{-- SLIDE 2: BOOKING FORM --}}
-                    <div x-show="activeSlide === 1" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-10" x-transition:enter-end="opacity-100 translate-x-0" class="w-full max-w-lg bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-                        <div class="h-6 bg-gray-50 border-b flex items-center px-4 gap-2">
-                             <span class="text-xs text-gray-400 font-mono">{{ __('welcome.tour.mockup.loan_form') }}</span>
+                    <div x-show="activeSlide === 1" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-10" x-transition:enter-end="opacity-100 translate-x-0" class="w-full max-w-lg bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                        <div class="h-6 bg-slate-50 border-b flex items-center px-4 gap-2">
+                             <span class="text-xs text-slate-400 font-mono">{{ __('welcome.tour.mockup.loan_form') }}</span>
                         </div>
                         <div class="p-6 space-y-4">
                             <div class="space-y-1">
-                                <div class="h-2 w-16 bg-gray-200 rounded"></div>
-                                <div class="h-10 w-full border border-gray-200 rounded-lg bg-gray-50 flex items-center px-3 text-sm text-gray-500 animate-pulse">{{ __('welcome.tour.mockup.item_example') }}</div>
+                                <div class="h-2 w-16 bg-slate-200 rounded"></div>
+                                <div class="h-10 w-full border border-slate-200 rounded-lg bg-slate-50 flex items-center px-3 text-sm text-slate-500 animate-pulse">{{ __('welcome.tour.mockup.item_example') }}</div>
                             </div>
                             <div class="flex gap-4">
                                 <div class="flex-1 space-y-1">
-                                    <div class="h-2 w-12 bg-gray-200 rounded"></div>
-                                    <div class="h-10 w-full border border-gray-200 rounded-lg bg-gray-50"></div>
+                                    <div class="h-2 w-12 bg-slate-200 rounded"></div>
+                                    <div class="h-10 w-full border border-slate-200 rounded-lg bg-slate-50"></div>
                                 </div>
                                 <div class="flex-1 space-y-1">
-                                    <div class="h-2 w-12 bg-gray-200 rounded"></div>
-                                    <div class="h-10 w-full border border-gray-200 rounded-lg bg-gray-50"></div>
+                                    <div class="h-2 w-12 bg-slate-200 rounded"></div>
+                                    <div class="h-10 w-full border border-slate-200 rounded-lg bg-slate-50"></div>
                                 </div>
                             </div>
                             <button class="w-full py-2 bg-green-600 text-white rounded-lg text-sm font-semibold transform hover:scale-105 transition">{{ __('welcome.tour.mockup.submit_loan') }}</button>
@@ -738,8 +735,8 @@
                         <div class="bg-white rounded-lg shadow-md mb-3 p-4 border border-l-4 border-l-yellow-400 animate-[approve_3s_infinite]">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <h5 class="font-bold text-gray-800">{{ __('welcome.tour.mockup.loan_code') }}</h5>
-                                    <p class="text-sm text-gray-500">{{ __('welcome.tour.mockup.user_example') }}</p>
+                                    <h5 class="font-bold text-slate-800">{{ __('welcome.tour.mockup.loan_code') }}</h5>
+                                    <p class="text-sm text-slate-500">{{ __('welcome.tour.mockup.user_example') }}</p>
                                 </div>
                                 <span class="badge px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded font-bold uppercase" id="status-badge">{{ __('welcome.tour.mockup.waiting') }}</span>
                             </div>
@@ -760,17 +757,17 @@
                     </div>
 
                     {{-- SLIDE 4: QR VALIDATION --}}
-                    <div x-show="activeSlide === 3" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" class="w-full max-w-sm bg-white p-8 rounded-2xl shadow-xl border border-gray-100 text-center relative overflow-hidden">
+                    <div x-show="activeSlide === 3" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" class="w-full max-w-sm bg-white p-8 rounded-2xl shadow-xl border border-slate-100 text-center relative overflow-hidden">
                         <div class="absolute top-0 left-0 w-full h-1.5 bg-green-500"></div>
                         <div class="mb-6 relative inline-block">
-                             <div class="w-32 h-32 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 flex items-center justify-center p-2">
+                             <div class="w-32 h-32 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 flex items-center justify-center p-2">
                                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SIMLAB-VALID-DOC" class="w-full h-full opacity-50 grayscale">
                              </div>
                              {{-- Scan Line Animation --}}
                              <div class="absolute top-0 left-0 w-full h-1 bg-green-500 shadow-[0_0_15px_#22c55e] animate-[scan_2s_infinite]"></div>
                         </div>
-                        <h4 class="text-xl font-bold text-gray-900">{{ __('welcome.tour.mockup.qr_title') }}</h4>
-                        <p class="text-sm text-gray-400 mt-1 mb-6">{{ __('welcome.tour.mockup.qr_doc') }}</p>
+                        <h4 class="text-xl font-bold text-slate-900">{{ __('welcome.tour.mockup.qr_title') }}</h4>
+                        <p class="text-sm text-slate-400 mt-1 mb-6">{{ __('welcome.tour.mockup.qr_doc') }}</p>
                         <div class="bg-green-50 p-4 rounded-xl border border-green-100 inline-flex items-center gap-2 text-green-700 font-bold animate-pulse">
                             <i class="fas fa-check-circle"></i> {{ __('welcome.tour.mockup.qr_status') }}
                         </div>
@@ -780,50 +777,50 @@
                     {{-- SLIDE 5: DIGITAL PUSTAKA --}}
                     <div x-show="activeSlide === 4" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-10" x-transition:enter-end="opacity-100 translate-y-0" class="w-full max-w-lg space-y-4">
                         <div class="flex items-center justify-between mb-2">
-                            <div class="h-4 w-32 bg-gray-200 rounded"></div>
-                            <div class="w-8 h-8 rounded-full bg-gray-200"></div>
+                            <div class="h-4 w-32 bg-slate-200 rounded"></div>
+                            <div class="w-8 h-8 rounded-full bg-slate-200"></div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             {{-- Item 1: PDF (Red) --}}
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-red-200 transition-all cursor-pointer group">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:border-red-200 transition-all cursor-pointer group">
                                 <div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center text-red-600 mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
                                     <i class="fas fa-file-pdf"></i>
                                 </div>
-                                <div class="h-2 w-full bg-gray-100 rounded mb-2"></div>
-                                <div class="h-2 w-2/3 bg-gray-50 rounded"></div>
+                                <div class="h-2 w-full bg-slate-100 rounded mb-2"></div>
+                                <div class="h-2 w-2/3 bg-slate-50 rounded"></div>
                             </div>
                             {{-- Item 2: Word (Blue) --}}
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-blue-200 transition-all cursor-pointer group">
-                                <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:border-green-200 transition-all cursor-pointer group">
+                                <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600 mb-3 group-hover:bg-green-600 group-hover:text-white transition-colors">
                                     <i class="fas fa-file-word"></i>
                                 </div>
-                                <div class="h-2 w-full bg-gray-100 rounded mb-2"></div>
-                                <div class="h-2 w-2/3 bg-gray-50 rounded"></div>
+                                <div class="h-2 w-full bg-slate-100 rounded mb-2"></div>
+                                <div class="h-2 w-2/3 bg-slate-50 rounded"></div>
                             </div>
                             {{-- Item 3: Excel (Green) --}}
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-green-200 transition-all cursor-pointer group">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:border-green-200 transition-all cursor-pointer group">
                                 <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600 mb-3 group-hover:bg-green-600 group-hover:text-white transition-colors">
                                     <i class="fas fa-file-excel"></i>
                                 </div>
-                                <div class="h-2 w-full bg-gray-100 rounded mb-2"></div>
-                                <div class="h-2 w-2/3 bg-gray-50 rounded"></div>
+                                <div class="h-2 w-full bg-slate-100 rounded mb-2"></div>
+                                <div class="h-2 w-2/3 bg-slate-50 rounded"></div>
                             </div>
                             {{-- Item 4: PDF (Red) --}}
-                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-red-200 transition-all cursor-pointer group">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:border-red-200 transition-all cursor-pointer group">
                                 <div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center text-red-600 mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
                                     <i class="fas fa-file-pdf"></i>
                                 </div>
-                                <div class="h-2 w-full bg-gray-100 rounded mb-2"></div>
-                                <div class="h-2 w-2/3 bg-gray-50 rounded"></div>
+                                <div class="h-2 w-full bg-slate-100 rounded mb-2"></div>
+                                <div class="h-2 w-2/3 bg-slate-50 rounded"></div>
                             </div>
                         </div>
-                        <div class="text-center p-3 text-xs text-gray-400 italic">"Sentralisasi materi belajar dalam satu genggaman"</div>
+                        <div class="text-center p-3 text-xs text-slate-400 italic">"Sentralisasi materi belajar dalam satu genggaman"</div>
                     </div>
 
                     {{-- SLIDE 6: REPORTING --}}
-                    <div x-show="activeSlide === 5" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-110" x-transition:enter-end="opacity-100 scale-100" class="w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
-                        <div class="bg-gray-50 border-b border-gray-100 p-4 flex justify-between items-center">
-                            <h4 class="font-bold text-gray-800 flex items-center gap-2"><i class="fas fa-chart-pie text-green-600"></i> {{ __('welcome.tour.mockup.report_title') }}</h4>
+                    <div x-show="activeSlide === 5" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-110" x-transition:enter-end="opacity-100 scale-100" class="w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden">
+                        <div class="bg-slate-50 border-b border-slate-100 p-4 flex justify-between items-center">
+                            <h4 class="font-bold text-slate-800 flex items-center gap-2"><i class="fas fa-chart-pie text-green-600"></i> {{ __('welcome.tour.mockup.report_title') }}</h4>
                             <button class="px-3 py-1.5 bg-green-600 text-white text-xs font-bold rounded flex items-center gap-2 hover:bg-green-700 transition">
                                 <i class="fas fa-download"></i> {{ __('welcome.tour.mockup.report_export') }}
                             </button>
@@ -832,16 +829,16 @@
                             <div class="space-y-4">
                                 @for($i=1; $i<=3; $i++)
                                 <div class="flex items-center gap-4 animate-[fadeInRight_0.5s_ease_forwards]" style="animation-delay: {{ $i * 0.2 }}s">
-                                    <div class="w-12 h-2 bg-gray-100 rounded flex-1"></div>
+                                    <div class="w-12 h-2 bg-slate-100 rounded flex-1"></div>
                                     <div class="w-24 h-2 bg-green-100 rounded"></div>
-                                    <div class="w-8 h-2 bg-gray-200 rounded"></div>
+                                    <div class="w-8 h-2 bg-slate-200 rounded"></div>
                                 </div>
                                 @endfor
                             </div>
-                            <div class="mt-8 pt-6 border-t border-gray-50 flex justify-center">
+                            <div class="mt-8 pt-6 border-t border-slate-50 flex justify-center">
                                 <div class="relative w-32 h-32">
                                     <svg class="w-full h-full" viewBox="0 0 36 36">
-                                        <path class="text-gray-100" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <path class="text-slate-100" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                                         <path class="text-green-500 animate-[dash_2s_ease-out_forwards]" stroke-width="3" stroke-dasharray="75, 100" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                                     </svg>
                                     <div class="absolute inset-0 flex items-center justify-center font-bold text-green-700">75%</div>
@@ -860,14 +857,14 @@
         </div>
 
         {{-- FEATURE SPOTLIGHT MODAL --}}
-        <div x-show="showFeatureModal" x-transition.opacity class="fixed inset-0 z-[70] overflow-y-auto bg-gray-900/80 backdrop-blur-sm" style="display: none;">
+        <div x-show="showFeatureModal" x-transition.opacity class="fixed inset-0 z-[70] overflow-y-auto bg-slate-900/80 backdrop-blur-sm" style="display: none;">
             <div class="flex min-h-full items-center justify-center p-4">
-                <div @click.outside="showFeatureModal = false" class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden border border-gray-200 flex flex-col relative animate-[popIn_0.3s_ease-out] my-8">
+                <div @click.outside="showFeatureModal = false" class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden border border-slate-200 flex flex-col relative animate-[popIn_0.3s_ease-out] my-8">
                 
                 {{-- Header --}}
-                <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                     <div>
-                        <h3 class="text-2xl font-bold text-gray-900" x-text="{
+                        <h3 class="text-2xl font-bold text-slate-900" x-text="{
                             'inventory': '{{ __('welcome.spotlight.inventory.title') }}',
                             'booking': '{{ __('welcome.spotlight.booking.title') }}',
                             'validation': '{{ __('welcome.spotlight.validation.title') }}',
@@ -875,45 +872,45 @@
                             'resources': '{{ __('welcome.spotlight.resources.title') }}',
                             'report': '{{ __('welcome.spotlight.report.title') }}'
                         }[activeFeature]"></h3>
-                        <p class="text-gray-500 text-sm mt-1">{{ __('welcome.spotlight.subtitle') }}</p>
+                        <p class="text-slate-500 text-sm mt-1">{{ __('welcome.spotlight.subtitle') }}</p>
                     </div>
-                    <button @click="showFeatureModal = false" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 transition-colors">
+                    <button @click="showFeatureModal = false" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 transition-colors">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
 
                 {{-- Body Content --}}
-                <div class="p-8 bg-gray-50/30 min-h-[400px] flex items-center justify-center">
+                <div class="p-8 bg-slate-50/30 min-h-[400px] flex items-center justify-center">
                     
                     {{-- 1. INVENTORY MOCKUP --}}
                     <div x-show="activeFeature === 'inventory'" class="w-full max-w-3xl space-y-4">
-                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex gap-4">
                             <div class="flex-1 relative">
-                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                                <input disabled type="text" value="{{ __('welcome.spotlight.inventory.search_placeholder') }}" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700">
+                                <i class="fas fa-search absolute left-3 top-3 text-slate-400"></i>
+                                <input disabled type="text" value="{{ __('welcome.spotlight.inventory.search_placeholder') }}" class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-700">
                             </div>
                             <button class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700"><i class="fas fa-plus mr-2"></i> {{ __('welcome.spotlight.inventory.add_btn') }}</button>
                         </div>
-                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
                             <table class="w-full text-sm text-left">
-                                <thead class="bg-gray-50 text-gray-500 font-medium">
+                                <thead class="bg-slate-50 text-slate-500 font-medium">
                                     <tr><th class="px-6 py-3">{{ __('welcome.spotlight.inventory.table.name') }}</th><th class="px-6 py-3">{{ __('welcome.spotlight.inventory.table.condition') }}</th><th class="px-6 py-3">{{ __('welcome.spotlight.inventory.table.stock') }}</th></tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
                                     <tr class="hover:bg-green-50/50 transition">
-                                        <td class="px-6 py-4 font-medium text-gray-900">{{ __('welcome.tour.mockup.item_example') }}</td>
+                                        <td class="px-6 py-4 font-medium text-slate-900">{{ __('welcome.tour.mockup.item_example') }}</td>
                                         <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold">{{ __('welcome.spotlight.inventory.table.status_ok') }}</span></td>
-                                        <td class="px-6 py-4 text-gray-600">12 {{ __('welcome.spotlight.inventory.table.unit') }}</td>
+                                        <td class="px-6 py-4 text-slate-600">12 {{ __('welcome.spotlight.inventory.table.unit') }}</td>
                                     </tr>
                                     <tr class="hover:bg-green-50/50 transition">
-                                        <td class="px-6 py-4 font-medium text-gray-900">Gelas Ukur 100ml</td>
+                                        <td class="px-6 py-4 font-medium text-slate-900">Gelas Ukur 100ml</td>
                                         <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold">{{ __('welcome.spotlight.inventory.table.status_ok') }}</span></td>
-                                        <td class="px-6 py-4 text-gray-600">25 {{ __('welcome.spotlight.inventory.table.unit') }}</td>
+                                        <td class="px-6 py-4 text-slate-600">25 {{ __('welcome.spotlight.inventory.table.unit') }}</td>
                                     </tr>
                                     <tr class="hover:bg-green-50/50 transition">
-                                        <td class="px-6 py-4 font-medium text-gray-900">Tabung Reaksi Pyrex</td>
+                                        <td class="px-6 py-4 font-medium text-slate-900">Tabung Reaksi Pyrex</td>
                                         <td class="px-6 py-4"><span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs font-bold">{{ __('welcome.spotlight.inventory.table.status_warn') }}</span></td>
-                                        <td class="px-6 py-4 text-gray-600">48 {{ __('welcome.spotlight.inventory.table.unit') }}</td>
+                                        <td class="px-6 py-4 text-slate-600">48 {{ __('welcome.spotlight.inventory.table.unit') }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -921,52 +918,52 @@
                     </div>
 
                     {{-- 2. BOOKING UI MOCKUP --}}
-                    <div x-show="activeFeature === 'booking'" class="w-full max-w-lg bg-white p-8 rounded-xl shadow-lg border border-gray-200">
-                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
-                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                    <div x-show="activeFeature === 'booking'" class="w-full max-w-lg bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-100">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
                                 <i class="fas fa-calendar-plus text-xl"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-gray-900">{{ __('welcome.spotlight.booking.heading') }}</h4>
-                                <p class="text-sm text-gray-500">{{ __('welcome.spotlight.booking.desc') }}</p>
+                                <h4 class="font-bold text-slate-900">{{ __('welcome.spotlight.booking.heading') }}</h4>
+                                <p class="text-sm text-slate-500">{{ __('welcome.spotlight.booking.desc') }}</p>
                             </div>
                         </div>
                         <div class="space-y-4">
-                            <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                            <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
                                 <div class="flex justify-between items-center mb-2">
-                                    <span class="text-xs font-bold text-gray-400 uppercase">{{ __('welcome.spotlight.booking.lab_label') }}</span>
-                                    <span class="text-sm font-bold text-blue-600">Lab Fisika Utama</span>
+                                    <span class="text-xs font-bold text-slate-400 uppercase">{{ __('welcome.spotlight.booking.lab_label') }}</span>
+                                    <span class="text-sm font-bold text-green-600">Lab Fisika Utama</span>
                                 </div>
                                 <div class="flex justify-between items-center">
-                                    <span class="text-xs font-bold text-gray-400 uppercase">{{ __('welcome.spotlight.booking.item_label') }}</span>
-                                    <span class="text-sm font-bold text-gray-800">Set Optik Dasar</span>
+                                    <span class="text-xs font-bold text-slate-400 uppercase">{{ __('welcome.spotlight.booking.item_label') }}</span>
+                                    <span class="text-sm font-bold text-slate-800">Set Optik Dasar</span>
                                 </div>
                             </div>
-                            <button class="w-full py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-100">
+                            <button class="w-full py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition shadow-lg shadow-green-100">
                                 {{ __('welcome.tour.mockup.submit_loan') }}
                             </button>
                         </div>
-                        <div class="mt-6 flex items-center justify-center gap-2 text-xs text-gray-400">
+                        <div class="mt-6 flex items-center justify-center gap-2 text-xs text-slate-400">
                             <i class="fas fa-shield-halved"></i> Terverifikasi Sistem SIMLAB
                         </div>
                     </div>
 
                     {{-- 3. VALIDATION UI MOCKUP --}}
-                    <div x-show="activeFeature === 'validation'" class="w-full max-w-sm bg-white p-8 rounded-xl shadow-lg border border-gray-200 text-center relative overflow-hidden">
+                    <div x-show="activeFeature === 'validation'" class="w-full max-w-sm bg-white p-8 rounded-xl shadow-lg border border-slate-200 text-center relative overflow-hidden">
                         <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-emerald-500"></div>
-                        <div class="w-24 h-24 mx-auto bg-white p-2 rounded-lg border-2 border-dashed border-gray-300 mb-6">
+                        <div class="w-24 h-24 mx-auto bg-white p-2 rounded-lg border-2 border-dashed border-slate-300 mb-6">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Validasi-SMABA-Official" class="w-full h-full opacity-80">
                         </div>
-                        <h4 class="text-lg font-bold text-gray-900">{{ __('welcome.spotlight.validation.heading') }}</h4>
-                        <p class="text-sm text-gray-500 mb-6">{{ __('welcome.spotlight.validation.doc_id') }}</p>
+                        <h4 class="text-lg font-bold text-slate-900">{{ __('welcome.spotlight.validation.heading') }}</h4>
+                        <p class="text-sm text-slate-500 mb-6">{{ __('welcome.spotlight.validation.doc_id') }}</p>
                         
-                        <div class="space-y-3 text-left bg-gray-50 p-4 rounded-lg border border-gray-100">
+                        <div class="space-y-3 text-left bg-slate-50 p-4 rounded-lg border border-slate-100">
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">{{ __('welcome.spotlight.validation.borrower') }}</span>
-                                <span class="font-medium text-gray-900">{{ __('welcome.spotlight.validation.user_example') }}</span>
+                                <span class="text-slate-500">{{ __('welcome.spotlight.validation.borrower') }}</span>
+                                <span class="font-medium text-slate-900">{{ __('welcome.spotlight.validation.user_example') }}</span>
                             </div>
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">{{ __('welcome.spotlight.validation.status') }}</span>
+                                <span class="text-slate-500">{{ __('welcome.spotlight.validation.status') }}</span>
                                 <span class="text-emerald-600 font-bold flex items-center gap-1"><i class="fas fa-check-circle"></i> {{ __('welcome.spotlight.validation.approved') }}</span>
                             </div>
                         </div>
@@ -976,21 +973,21 @@
                     </div>
 
                     {{-- 4. CALENDAR UI MOCKUP --}}
-                    <div x-show="activeFeature === 'calendar'" class="w-full max-w-3xl bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="bg-white border-b border-gray-200 p-4 flex justify-between items-center">
-                            <h4 class="font-bold text-gray-800">{{ __('welcome.spotlight.calendar.month') }}</h4>
+                    <div x-show="activeFeature === 'calendar'" class="w-full max-w-3xl bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="bg-white border-b border-slate-200 p-4 flex justify-between items-center">
+                            <h4 class="font-bold text-slate-800">{{ __('welcome.spotlight.calendar.month') }}</h4>
                             <div class="flex gap-2">
-                                <button class="p-1 px-3 text-sm bg-gray-100 rounded hover:bg-gray-200">{{ __('welcome.spotlight.calendar.view_month') }}</button>
-                                <button class="p-1 px-3 text-sm text-gray-500 hover:bg-gray-50">{{ __('welcome.spotlight.calendar.view_week') }}</button>
+                                <button class="p-1 px-3 text-sm bg-slate-100 rounded hover:bg-slate-200">{{ __('welcome.spotlight.calendar.view_month') }}</button>
+                                <button class="p-1 px-3 text-sm text-slate-500 hover:bg-slate-50">{{ __('welcome.spotlight.calendar.view_week') }}</button>
                             </div>
                         </div>
-                        <div class="grid grid-cols-7 gap-px bg-gray-200 border-b border-gray-200 text-center text-xs font-semibold text-gray-500 bg-gray-50">
+                        <div class="grid grid-cols-7 gap-px bg-slate-200 border-b border-slate-200 text-center text-xs font-semibold text-slate-500 bg-slate-50">
                             <div class="py-2">{{ __('welcome.spotlight.calendar.days.mon') }}</div><div class="py-2">{{ __('welcome.spotlight.calendar.days.tue') }}</div><div class="py-2">{{ __('welcome.spotlight.calendar.days.wed') }}</div><div class="py-2">{{ __('welcome.spotlight.calendar.days.thu') }}</div><div class="py-2">{{ __('welcome.spotlight.calendar.days.fri') }}</div><div class="py-2">{{ __('welcome.spotlight.calendar.days.sat') }}</div><div class="py-2 text-red-500">{{ __('welcome.spotlight.calendar.days.sun') }}</div>
                         </div>
-                        <div class="grid grid-cols-7 grid-rows-2 h-64 gap-px bg-gray-200">
+                        <div class="grid grid-cols-7 grid-rows-2 h-64 gap-px bg-slate-200">
                              {{-- Dummy Calendar Cells --}}
-                             <div class="bg-white p-2 min-h-[100px] text-sm text-gray-400">29</div>
-                             <div class="bg-white p-2 min-h-[100px] text-sm text-gray-400">30</div>
+                             <div class="bg-white p-2 min-h-[100px] text-sm text-slate-400">29</div>
+                             <div class="bg-white p-2 min-h-[100px] text-sm text-slate-400">30</div>
                              <div class="bg-white p-2 min-h-[100px] text-sm font-bold">1</div>
                              <div class="bg-white p-2 min-h-[100px]">
                                  <span class="text-sm font-bold">2</span>
@@ -1017,10 +1014,10 @@
                     {{-- 5. RESOURCES UI MOCKUP --}}
                     <div x-show="activeFeature === 'resources'" class="w-full max-w-2xl space-y-6">
                         <div class="flex items-center justify-between">
-                            <h4 class="font-bold text-gray-900">{{ __('welcome.spotlight.resources.heading') }}</h4>
+                            <h4 class="font-bold text-slate-900">{{ __('welcome.spotlight.resources.heading') }}</h4>
                             <div class="relative w-48">
-                                <i class="fas fa-search absolute left-3 top-2 text-gray-400 text-xs"></i>
-                                <input disabled type="text" value="{{ __('welcome.spotlight.resources.search_placeholder') }}" class="w-full pl-8 pr-4 py-1.5 bg-white border border-gray-200 rounded-full text-xs">
+                                <i class="fas fa-search absolute left-3 top-2 text-slate-400 text-xs"></i>
+                                <input disabled type="text" value="{{ __('welcome.spotlight.resources.search_placeholder') }}" class="w-full pl-8 pr-4 py-1.5 bg-white border border-slate-200 rounded-full text-xs">
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
@@ -1029,17 +1026,17 @@
                                     <i class="fas fa-file-pdf"></i>
                                 </div>
                                 <div class="overflow-hidden">
-                                    <h5 class="text-xs font-bold text-gray-800 truncate">{{ __('welcome.spotlight.resources.doc_title') }}</h5>
-                                    <p class="text-[10px] text-gray-400">PDF • 1.2 MB</p>
+                                    <h5 class="text-xs font-bold text-slate-800 truncate">{{ __('welcome.spotlight.resources.doc_title') }}</h5>
+                                    <p class="text-[10px] text-slate-400">PDF • 1.2 MB</p>
                                 </div>
                             </div>
-                            <div class="p-4 bg-white rounded-xl border border-gray-100 hover:border-purple-300 transition-all flex items-start gap-4">
-                                <div class="w-10 h-10 bg-blue-50 rounded text-blue-600 flex items-center justify-center shrink-0">
+                            <div class="p-4 bg-white rounded-xl border border-slate-100 hover:border-purple-300 transition-all flex items-start gap-4">
+                                <div class="w-10 h-10 bg-green-50 rounded text-green-600 flex items-center justify-center shrink-0">
                                     <i class="fas fa-file-word"></i>
                                 </div>
                                 <div class="overflow-hidden">
-                                    <h5 class="text-xs font-bold text-gray-800 truncate">SOP Keselamatan Laboratorium</h5>
-                                    <p class="text-[10px] text-gray-400">DOCX • 850 KB</p>
+                                    <h5 class="text-xs font-bold text-slate-800 truncate">SOP Keselamatan Laboratorium</h5>
+                                    <p class="text-[10px] text-slate-400">DOCX • 850 KB</p>
                                 </div>
                             </div>
                         </div>
@@ -1050,49 +1047,49 @@
 
                      {{-- 6. EXCEL/REPORT UI MOCKUP --}}
                     <div x-show="activeFeature === 'report'" class="w-full max-w-3xl flex flex-col md:flex-row gap-6">
-                         <div class="flex-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center text-center space-y-4">
+                         <div class="flex-1 bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center justify-center text-center space-y-4">
                              <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-2">
                                  <i class="fas fa-file-excel text-3xl"></i>
                              </div>
-                             <h4 class="text-lg font-bold text-gray-900">{{ __('welcome.spotlight.report.export_title') }}</h4>
-                             <p class="text-sm text-gray-500">{{ __('welcome.spotlight.report.export_desc') }}</p>
+                             <h4 class="text-lg font-bold text-slate-900">{{ __('welcome.spotlight.report.export_title') }}</h4>
+                             <p class="text-sm text-slate-500">{{ __('welcome.spotlight.report.export_desc') }}</p>
                              <button class="w-full py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition shadow-md"><i class="fas fa-download mr-2"></i> {{ __('welcome.spotlight.report.export_btn') }}</button>
                          </div>
-                         <div class="flex-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                             <h5 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wide">{{ __('welcome.spotlight.report.stats_title') }}</h5>
+                         <div class="flex-1 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                             <h5 class="text-sm font-bold text-slate-700 mb-4 uppercase tracking-wide">{{ __('welcome.spotlight.report.stats_title') }}</h5>
                              <div class="space-y-4">
                                  <div>
-                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">{{ __('welcome.spotlight.report.lab_fisika') }}</span> <span class="text-gray-500">85%</span></div>
-                                     <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div></div>
+                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">{{ __('welcome.spotlight.report.lab_fisika') }}</span> <span class="text-slate-500">85%</span></div>
+                                     <div class="w-full bg-slate-100 rounded-full h-2"><div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div></div>
                                  </div>
                                  <div>
-                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">{{ __('welcome.spotlight.report.lab_biologi') }}</span> <span class="text-gray-500">62%</span></div>
-                                     <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-emerald-500 h-2 rounded-full" style="width: 62%"></div></div>
+                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">{{ __('welcome.spotlight.report.lab_biologi') }}</span> <span class="text-slate-500">62%</span></div>
+                                     <div class="w-full bg-slate-100 rounded-full h-2"><div class="bg-emerald-500 h-2 rounded-full" style="width: 62%"></div></div>
                                  </div>
                                  <div>
-                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">{{ __('welcome.spotlight.report.lab_kimia') }}</span> <span class="text-gray-500">45%</span></div>
-                                     <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-amber-500 h-2 rounded-full" style="width: 45%"></div></div>
+                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">{{ __('welcome.spotlight.report.lab_kimia') }}</span> <span class="text-slate-500">45%</span></div>
+                                     <div class="w-full bg-slate-100 rounded-full h-2"><div class="bg-amber-500 h-2 rounded-full" style="width: 45%"></div></div>
                                  </div>
                                   <div>
-                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">{{ __('welcome.spotlight.report.lab_komputer') }}</span> <span class="text-gray-500">92%</span></div>
-                                     <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-purple-600 h-2 rounded-full" style="width: 92%"></div></div>
+                                     <div class="flex justify-between text-xs mb-1"><span class="font-medium">{{ __('welcome.spotlight.report.lab_komputer') }}</span> <span class="text-slate-500">92%</span></div>
+                                     <div class="w-full bg-slate-100 rounded-full h-2"><div class="bg-purple-600 h-2 rounded-full" style="width: 92%"></div></div>
                                  </div>
                              </div>
                          </div>
                     </div>
 
                     {{-- 7. SECURITY (2FA) UI MOCKUP --}}
-                    <div x-show="activeFeature === 'security'" class="w-full max-w-lg bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div x-show="activeFeature === 'security'" class="w-full max-w-lg bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
                         <div class="bg-red-600 p-4 text-white flex items-center justify-between">
                             <span class="text-sm font-bold uppercase tracking-wider">{{ __('welcome.spotlight.security.title') }}</span>
                             <i class="fas fa-shield-halved"></i>
                         </div>
                         <div class="p-8 space-y-6">
-                            <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
-                                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-500">1</div>
+                            <div class="flex items-start gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-500">1</div>
                                 <div>
-                                    <p class="font-bold text-gray-900">{{ __('welcome.spotlight.security.step1_title') }}</p>
-                                    <p class="text-xs text-gray-500">{{ __('welcome.spotlight.security.step1_desc') }}</p>
+                                    <p class="font-bold text-slate-900">{{ __('welcome.spotlight.security.step1_title') }}</p>
+                                    <p class="text-xs text-slate-500">{{ __('welcome.spotlight.security.step1_desc') }}</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-4 p-4 bg-red-50 rounded-xl border border-red-100 animate-pulse">
@@ -1102,35 +1099,35 @@
                                     <p class="text-xs text-red-600">{{ __('welcome.spotlight.security.step2_desc') }}</p>
                                 </div>
                             </div>
-                             <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200 opacity-50">
-                                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-500">3</div>
+                             <div class="flex items-start gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200 opacity-50">
+                                <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-500">3</div>
                                 <div>
-                                    <p class="font-bold text-gray-900">{{ __('welcome.spotlight.security.step3_title') }}</p>
-                                    <p class="text-xs text-gray-500">{{ __('welcome.spotlight.security.step3_desc') }}</p>
+                                    <p class="font-bold text-slate-900">{{ __('welcome.spotlight.security.step3_title') }}</p>
+                                    <p class="text-xs text-slate-500">{{ __('welcome.spotlight.security.step3_desc') }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     {{-- 8. GLOBAL SEARCH UI MOCKUP --}}
-                    <div x-show="activeFeature === 'search'" class="w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
-                        <div class="p-6 border-b border-gray-100 bg-gray-50">
+                    <div x-show="activeFeature === 'search'" class="w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
+                        <div class="p-6 border-b border-slate-100 bg-slate-50">
                             <div class="relative">
-                                <i class="fas fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                <div class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-400 animate-pulse">
+                                <i class="fas fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <div class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-400 animate-pulse">
                                     {{ __('welcome.spotlight.search.placeholder') }}
                                 </div>
                             </div>
                         </div>
                         <div class="p-6 space-y-4">
-                            <h5 class="text-xs font-bold text-gray-400 uppercase tracking-widest">{{ __('welcome.spotlight.search.quick_result') }}</h5>
+                            <h5 class="text-xs font-bold text-slate-400 uppercase tracking-widest">{{ __('welcome.spotlight.search.quick_result') }}</h5>
                             <div class="flex items-center gap-4 p-3 hover:bg-sky-50 rounded-xl transition-colors cursor-pointer group">
                                 <div class="w-10 h-10 bg-sky-100 text-sky-600 rounded-lg flex items-center justify-center group-hover:bg-sky-600 group-hover:text-white">
                                     <i class="fas fa-box"></i>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-bold text-gray-900">{{ __('welcome.spotlight.search.item_example') }}</p>
-                                    <p class="text-xs text-gray-500">ID: #M-001 • Lab Biologi</p>
+                                    <p class="text-sm font-bold text-slate-900">{{ __('welcome.spotlight.search.item_example') }}</p>
+                                    <p class="text-xs text-slate-500">ID: #M-001 • Lab Biologi</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-4 p-3 hover:bg-purple-50 rounded-xl transition-colors cursor-pointer group">
@@ -1138,8 +1135,8 @@
                                     <i class="fas fa-file-pdf"></i>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-bold text-gray-900">{{ __('welcome.spotlight.search.doc_example') }}</p>
-                                    <p class="text-xs text-gray-500">PDF • 2.4 MB • Pustaka Digital</p>
+                                    <p class="text-sm font-bold text-slate-900">{{ __('welcome.spotlight.search.doc_example') }}</p>
+                                    <p class="text-xs text-slate-500">PDF • 2.4 MB • Pustaka Digital</p>
                                 </div>
                             </div>
                         </div>
@@ -1148,7 +1145,7 @@
                 </div>
                 
                 {{-- Footer --}}
-                <div class="bg-gray-50 p-4 border-t border-gray-200 text-center">
+                <div class="bg-slate-50 p-4 border-t border-slate-200 text-center">
                     <button @click="isModalOpen = true; showFeatureModal = false" class="text-green-600 font-semibold text-sm hover:underline hover:text-green-800">{{ __('welcome.spotlight.footer_cta') }}</button>
                 </div>
             </div>

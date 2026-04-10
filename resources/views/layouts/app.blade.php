@@ -74,10 +74,10 @@
             }
             @media (min-width: 1024px) {
                 #main-wrapper {
-                    left: 260px; /* tepat di samping kanan sidebar (w-[260px]) */
+                    left: 240px; /* tepat di samping kanan sidebar (w-[240px]) */
                 }
                 body.sidebar-collapsed #main-wrapper {
-                    left: 64px;
+                    left: 72px;
                 }
             }
         </style>
@@ -114,7 +114,7 @@
             {{-- MAIN WRAPPER: position:fixed, left mengikuti sidebar width --}}
             <div id="main-wrapper" class="flex flex-col"
                  :class="{ 'transition-all duration-300': isSidebarMounted }"
-                 :style="window.innerWidth >= 1024 ? 'left:' + (sidebarCollapsed ? '64px' : '260px') : ''">
+                 :style="window.innerWidth >= 1024 ? 'left:' + (sidebarCollapsed ? '72px' : '240px') : ''">
 
                 {{-- BANNER PENGUMUMAN GLOBAL --}}
                 @if(isset($activeAnnouncement))

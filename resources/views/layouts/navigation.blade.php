@@ -3,22 +3,22 @@
      ================================================================ --}}
 <div id="top-navbar"
      class="fixed top-0 right-0 h-14 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-[0_1px_2px_rgba(0,0,0,0.02)] z-50 flex items-center px-4 lg:px-6 gap-3 transition-all duration-300"
-     :style="'left:' + (window.innerWidth >= 1024 ? (sidebarCollapsed ? '80px' : '260px') : '0') ">
+     :style="'left:' + (window.innerWidth >= 1024 ? (sidebarCollapsed ? '72px' : '240px') : '0') ">
 
     {{-- Mobile: hamburger --}}
     <button @click="sidebarOpen = !sidebarOpen"
-            class="lg:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors flex-shrink-0 focus:ring-2 focus:ring-blue-500/20 outline-none"
+            class="lg:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors flex-shrink-0 focus:ring-2 focus:ring-green-500/20 outline-none"
             aria-label="Toggle sidebar">
         <i class="fas fa-bars text-sm"></i>
     </button>
 
     {{-- Search Bar — centered, clickable box --}}
     <button id="global-search-trigger"
-            class="flex-1 max-w-md mx-auto flex items-center gap-3 px-4 py-2 rounded-lg
+            class="flex-1 max-w-xl mx-auto flex items-center gap-3 px-4 py-2 rounded-lg
                    bg-white border text-left transition-all duration-200 group cursor-pointer
-                   border-gray-200 hover:border-blue-300 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                   border-gray-200 hover:border-green-300 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500/30"
             title="Pencarian Global (Ctrl+K)">
-        <i class="fas fa-magnifying-glass text-gray-400 text-sm flex-shrink-0 group-hover:text-blue-600 transition-colors"></i>
+        <i class="fas fa-magnifying-glass text-gray-400 text-sm flex-shrink-0 group-hover:text-green-600 transition-colors"></i>
         <span class="flex-1 text-sm text-gray-400 group-hover:text-gray-600 transition-colors">Cari alat, dokumen, pengguna...</span>
         <kbd class="hidden sm:inline-flex items-center gap-1 text-[10px] text-gray-400 bg-white border border-gray-200 rounded px-1.5 py-0.5 font-sans font-medium flex-shrink-0 shadow-sm">Ctrl K</kbd>
     </button>
@@ -28,7 +28,7 @@
 
         {{-- Tour Panduan --}}
         <button id="navbar-tour-button"
-                class="flex items-center gap-2 px-3 py-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all border border-transparent"
+                class="flex items-center gap-2 px-3 py-1.5 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all border border-transparent"
                 title="Tour Panduan">
             <i class="fas fa-circle-question text-sm"></i>
             <span class="text-xs font-semibold hidden md:block">Bantuan</span>
@@ -40,7 +40,7 @@
                 <x-slot name="trigger">
                     <button id="notification-bell"
                             data-unread="{{ $unreadCount ?? 0 }}"
-                            class="relative p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                            class="relative p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500/20"
                             title="{{ __('common.nav.notifications') }}">
                         <i class="fas fa-bell"></i>
                         @if(($unreadCount ?? 0) > 0)
@@ -86,8 +86,8 @@
         <div>
             <x-dropdown align="right" width="56">
                 <x-slot name="trigger">
-                    <button class="flex items-center gap-2.5 px-2 py-1 rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-                        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center text-xs font-bold flex-shrink-0 shadow-sm border border-blue-200">
+                    <button class="flex items-center gap-2.5 px-2 py-1 rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500/20">
+                        <div class="w-8 h-8 rounded-full bg-green-50 text-green-700 flex items-center justify-center text-xs font-bold flex-shrink-0 shadow-sm border border-green-200">
                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         </div>
                         <div class="hidden sm:block text-left">
@@ -103,8 +103,8 @@
                         <p class="text-xs text-gray-500 mt-0.5 truncate">{{ Auth::user()->email }}</p>
                     </div>
                     <div class="py-1">
-                        <x-dropdown-link :href="route('profile.edit')" class="text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-blue-600 group">
-                            <i class="fas fa-circle-user w-5 text-gray-400 group-hover:text-blue-600 transition-colors"></i>{{ __('common.nav.profile') }}
+                        <x-dropdown-link :href="route('profile.edit')" class="text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-green-600 group">
+                            <i class="fas fa-circle-user w-5 text-gray-400 group-hover:text-green-600 transition-colors"></i>{{ __('common.nav.profile') }}
                         </x-dropdown-link>
                         
                         <div class="flex items-center justify-between px-4 py-2 hover:bg-gray-50 cursor-pointer group">
@@ -158,14 +158,14 @@
            'translate-x-0': sidebarOpen,
            'transition-all duration-300': isSidebarMounted
        }"
-       :style="'position:fixed; top:0; left:0; height:100vh; width:' + (sidebarCollapsed && window.innerWidth >= 1024 ? '80px' : '260px') + '; background:#ffffff; border-right:1px solid #f1f5f9; z-index:40; display:flex; flex-direction:column;'">
+       :style="'position:fixed; top:0; left:0; height:100vh; width:' + (sidebarCollapsed && window.innerWidth >= 1024 ? '72px' : '240px') + '; background:#ffffff; border-right:1px solid #f1f5f9; z-index:40; display:flex; flex-direction:column;'">
 
     {{-- ── Sidebar Header ── --}}
     <div class="h-14 flex items-center flex-shrink-0 justify-center px-4" :class="sidebarCollapsed ? 'border-b border-gray-50' : ''">
         {{-- Logo + Brand --}}
         <a href="{{ route('dashboard') }}" class="flex items-center gap-3 min-w-0 mx-auto mt-2" x-show="!sidebarCollapsed">
             <img src="{{ asset('images/logo-smaba.webp') }}" alt="Logo" class="w-8 h-8 rounded-lg flex-shrink-0 object-contain shadow-sm">
-            <span class="font-bold text-gray-900 tracking-tight text-[15px] truncate sidebar-label text-center">SimLab<span class="text-blue-600">SMABA</span></span>
+            <span class="font-bold text-gray-900 tracking-tight text-[15px] truncate sidebar-label text-center">SimLab<span class="text-green-600">SMABA</span></span>
         </a>
         {{-- Logo only (collapsed) --}}
         <a href="{{ route('dashboard') }}" x-show="sidebarCollapsed" class="flex-shrink-0 mx-auto mt-2">
@@ -295,7 +295,7 @@
         {{-- Modernized User Card --}}
         <div class="sidebar-user-card group" x-show="!sidebarCollapsed" x-transition>
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center text-sm font-bold flex-shrink-0 shadow-sm border border-blue-200">
+                <div class="w-10 h-10 rounded-xl bg-green-50 text-green-700 flex items-center justify-center text-sm font-bold flex-shrink-0 shadow-sm border border-green-200">
                     {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                 </div>
                 <div class="flex-1 min-w-0">
@@ -364,8 +364,8 @@
 
 /* Active State */
 .sidebar-item.active {
-    background-color: #eff6ff !important;
-    color: #2563eb !important; /* blue-600 */
+    background-color: #dcfce7 !important; /* green-100 */
+    color: #16a34a !important; /* green-600 */ /* blue-600 */
     border-color: transparent !important;
     font-weight: 600;
 }
@@ -379,7 +379,7 @@
     transform: translateY(-50%);
     height: 70%;
     width: 3px;
-    background-color: #2563eb; /* blue-600 */
+    background-color: #16a34a; /* green-600 */ /* blue-600 */
     border-radius: 0 4px 4px 0;
 }
 
@@ -396,7 +396,7 @@
     color: #475569; /* slate-600 */
 }
 .sidebar-item.active .sidebar-icon {
-    color: #2563eb; /* blue-600 */
+    color: #16a34a; /* blue-600 */
 }
 
 /* User Card Bottom Section */
@@ -431,7 +431,7 @@
     }
     /* Slightly differently colored full active state when collapsed */
     body.sidebar-collapsed .sidebar-item.active {
-        background-color: #eff6ff !important; /* blue-50 */
+        background-color: #dcfce7 !important; /* green-100 */ /* blue-50 */
         border-color: transparent;
     }
     body.sidebar-collapsed .sidebar-icon {
