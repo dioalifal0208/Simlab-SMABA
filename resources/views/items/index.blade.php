@@ -11,12 +11,12 @@
     
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8 sm:py-12">
         {{-- 
-            PENAMBAHAN: 
-            Inisialisasi Alpine.js untuk mengelola state modal impor dan item yang dipilih untuk hapus massal.
+            Alpine.js scope: manages import modal + bulk-delete selection.
+            Moved to outer wrapper so modal (which uses x-teleport) can access showImportModal.
         --}}
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" x-data="{ showImportModal: false, selectedItems: [] }">
+        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8" x-data="{ showImportModal: false, selectedItems: [] }">
 
             {{-- Pesan Sukses/Error --}}
             @if (session('success'))
@@ -32,46 +32,49 @@
                 </div>
             @endif
 
-            {{-- PERUBAHAN: Desain Ulang Area Filter dan Tombol Hapus Massal --}}
-                        {{-- ACTION BAR (Top) --}}
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6" data-aos="fade-up">
+            {{-- ==================== --}}
+            {{-- ACTION BAR (Top)    --}}
+            {{-- ==================== --}}
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8" data-aos="fade-up">
                 <div class="w-full md:w-96 relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                         <i class="fas fa-search text-slate-400"></i>
                     </div>
-                    <input type="text" name="search" id="search" placeholder="{{ __('items.filters.search') }}" value="{{ request('search') }}" form="filter-form" class="w-full rounded-lg border-slate-200 shadow-sm focus:border-green-500 focus:ring-4 focus:ring-green-500/20 pl-10 py-2.5 text-sm transition-all bg-white text-slate-800 placeholder-slate-400 font-medium h-[42px]">
+                    <input type="text" name="search" id="search" placeholder="{{ __('items.filters.search') }}" value="{{ request('search') }}" form="filter-form" class="w-full rounded-xl border-slate-200 shadow-sm focus:border-green-500 focus:ring-4 focus:ring-green-500/20 pl-10 py-2.5 text-sm transition-all bg-white text-slate-800 placeholder-slate-400 font-medium h-[44px]">
                 </div>
                 
                 <div class="flex items-center gap-3 w-full md:w-auto shrink-0">
                     @can('is-admin')
-                        <button @click="showImportModal = true" class="flex-1 md:flex-none inline-flex items-center justify-center px-4 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 font-bold text-sm shadow-sm transition-all hover:shadow hover:border-slate-300 h-[42px]">
+                        <button @click="showImportModal = true" class="flex-1 md:flex-none inline-flex items-center justify-center px-4 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 font-bold text-sm shadow-sm transition-all hover:shadow hover:border-slate-300 h-[44px]">
                             <i class="fas fa-cloud-arrow-up mr-2.5 text-slate-400"></i> {{ __('items.actions.import') }}
                         </button>
-                        <a href="{{ route('items.create') }}" class="flex-1 md:flex-none inline-flex items-center justify-center px-5 py-2.5 bg-green-600 text-white text-sm font-bold rounded-lg shadow-sm hover:bg-green-700 hover:shadow-md transition-all h-[42px] hover:-translate-y-0.5">
+                        <a href="{{ route('items.create') }}" class="flex-1 md:flex-none inline-flex items-center justify-center px-5 py-2.5 bg-green-600 text-white text-sm font-bold rounded-xl shadow-sm hover:bg-green-700 hover:shadow-md transition-all h-[44px] hover:-translate-y-0.5">
                             <i class="fas fa-plus mr-2.5 text-green-200"></i> {{ __('items.actions.add') }}
                         </a>
                     @else
-                        <a href="{{ route('item-requests.create') }}" class="flex-1 md:flex-none inline-flex items-center justify-center px-5 py-2.5 bg-green-600 text-white text-sm font-bold rounded-lg shadow-sm hover:bg-green-700 hover:shadow-md transition-all h-[42px] hover:-translate-y-0.5">
+                        <a href="{{ route('item-requests.create') }}" class="flex-1 md:flex-none inline-flex items-center justify-center px-5 py-2.5 bg-green-600 text-white text-sm font-bold rounded-xl shadow-sm hover:bg-green-700 hover:shadow-md transition-all h-[44px] hover:-translate-y-0.5">
                             <i class="fas fa-plus mr-2.5 text-green-200"></i> {{ __('items.actions.request_add') }}
                         </a>
                     @endcan
                 </div>
             </div>
 
-            {{-- FILTER PANEL CARD --}}
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-8" data-aos="fade-up" data-aos-delay="50">
-                <form action="{{ route('items.index') }}" method="GET" id="filter-form" class="flex flex-col md:flex-row items-center gap-5">
+            {{-- ==================== --}}
+            {{-- FILTER PANEL CARD   --}}
+            {{-- ==================== --}}
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 mb-8" data-aos="fade-up" data-aos-delay="50">
+                <form action="{{ route('items.index') }}" method="GET" id="filter-form" class="flex flex-col md:flex-row items-center gap-4 md:gap-5">
                     <div class="flex items-center text-sm font-bold text-slate-800 md:border-r border-slate-100 md:pr-5 shrink-0 self-start md:self-auto uppercase tracking-wide">
                         <i class="fas fa-filter text-green-600 mr-2 border border-green-100 bg-green-50 p-1.5 rounded-lg shadow-sm"></i> Filter
                     </div>
 
                     <div class="flex flex-col sm:flex-row flex-grow w-full gap-3">
-                        <select name="tipe" id="tipe" class="flex-1 rounded-lg border-slate-200 shadow-sm focus:border-green-500 focus:ring-4 focus:ring-green-500/20 py-2.5 text-sm transition-all text-slate-700 bg-slate-50 hover:bg-white font-medium h-[42px]">
+                        <select name="tipe" id="tipe" class="flex-1 rounded-xl border-slate-200 shadow-sm focus:border-green-500 focus:ring-4 focus:ring-green-500/20 py-2.5 text-sm transition-all text-slate-700 bg-slate-50 hover:bg-white font-medium h-[44px]">
                             <option value="">{{ __('items.filters.type') }}</option>
                             <option value="Alat" @selected(request('tipe') == 'Alat')>{{ __('items.categories.alat') }}</option>
                             <option value="Bahan Habis Pakai" @selected(request('tipe') == 'Bahan Habis Pakai')>{{ __('items.categories.bahan') }}</option>
                         </select>
-                        <select name="kondisi" id="kondisi" class="flex-1 rounded-lg border-slate-200 shadow-sm focus:border-green-500 focus:ring-4 focus:ring-green-500/20 py-2.5 text-sm transition-all text-slate-700 bg-slate-50 hover:bg-white font-medium h-[42px]">
+                        <select name="kondisi" id="kondisi" class="flex-1 rounded-xl border-slate-200 shadow-sm focus:border-green-500 focus:ring-4 focus:ring-green-500/20 py-2.5 text-sm transition-all text-slate-700 bg-slate-50 hover:bg-white font-medium h-[44px]">
                             <option value="">{{ __('items.filters.condition') }}</option>
                             <option value="baik" @selected(request('kondisi') == 'baik')>{{ __('items.conditions.baik') }}</option>
                             <option value="kurang baik" @selected(request('kondisi') == 'kurang baik')>{{ __('items.conditions.kurang_baik') }}</option>
@@ -82,7 +85,7 @@
                             $lockedLab = auth()->user()?->laboratorium;
                         @endphp
                         <div class="flex-1 relative">
-                            <select name="laboratorium" id="laboratorium" class="w-full rounded-lg border-slate-200 shadow-sm focus:border-green-500 focus:ring-4 focus:ring-green-500/20 py-2.5 text-sm transition-all text-slate-700 bg-slate-50 hover:bg-white font-medium h-[42px]" {{ $isAdmin ? '' : 'disabled' }}>
+                            <select name="laboratorium" id="laboratorium" class="w-full rounded-xl border-slate-200 shadow-sm focus:border-green-500 focus:ring-4 focus:ring-green-500/20 py-2.5 text-sm transition-all text-slate-700 bg-slate-50 hover:bg-white font-medium h-[44px]" {{ $isAdmin ? '' : 'disabled' }}>
                                 <option value="">{{ __('items.filters.all_labs') }}</option>
                                 <option value="Biologi" @selected(request('laboratorium', $lockedLab) == 'Biologi')>{{ __('common.labs.biologi') }}</option>
                                 <option value="Fisika" @selected(request('laboratorium', $lockedLab) == 'Fisika')>{{ __('common.labs.fisika') }}</option>
@@ -96,71 +99,82 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('items.index') }}" class="shrink-0 text-sm font-bold text-slate-500 hover:text-slate-900 px-4 py-2.5 rounded-lg border border-transparent hover:bg-slate-100 hover:border-slate-200 transition-all flex items-center h-[42px]" title="{{ __('items.actions.reset_filters') }}">
+                    <a href="{{ route('items.index') }}" class="shrink-0 text-sm font-bold text-slate-500 hover:text-slate-900 px-4 py-2.5 rounded-xl border border-transparent hover:bg-slate-100 hover:border-slate-200 transition-all flex items-center h-[44px]" title="{{ __('items.actions.reset_filters') }}">
                         Reset
                     </a>
                 </form>
             </div>
 
-                {{-- Tombol Aksi Hapus Massal (Muncul saat ada item terpilih) --}}
-                <div x-show="selectedItems.length > 0" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4" class="mt-4 bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-2xl p-4 flex justify-between items-center shadow-md relative overflow-hidden" style="display: none;">
-                    {{-- Warning stripes background --}}
-                    <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, #ef4444 10px, #ef4444 20px);"></div>
-                    
-                    <div class="flex items-center gap-3 relative z-10">
-                        <div class="bg-red-100 text-red-600 p-2 rounded-xl border border-red-200 font-bold">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <span class="text-sm font-bold text-red-800 tracking-tight">
-                            <span x-text="selectedItems.length" class="text-lg"></span> Item Terpilih
-                        </span>
+            {{-- Tombol Aksi Hapus Massal (Muncul saat ada item terpilih) --}}
+            <div x-show="selectedItems.length > 0" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4" class="mb-6 bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-2xl p-4 flex justify-between items-center shadow-md relative overflow-hidden" style="display: none;">
+                {{-- Warning stripes background --}}
+                <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, #ef4444 10px, #ef4444 20px);"></div>
+                
+                <div class="flex items-center gap-3 relative z-10">
+                    <div class="bg-red-100 text-red-600 p-2 rounded-xl border border-red-200 font-bold">
+                        <i class="fas fa-exclamation-triangle"></i>
                     </div>
-                    
-                    <form id="bulk-delete-form" action="{{ route('items.delete-multiple') }}" method="POST" class="relative z-10">
-                        @csrf
-                        {{-- Input tersembunyi untuk menampung ID item --}}
-                        <template x-for="id in selectedItems" :key="id">
-                            <input type="hidden" name="item_ids[]" :value="id">
-                        </template>
-                        <button type="button" @click="confirmBulkDelete(selectedItems)" class="px-5 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 font-bold text-sm shadow-[0_4px_14px_0_rgb(239,68,68,0.39)] hover:shadow-[0_6px_20px_rgba(239,68,68,0.23)] hover:-translate-y-0.5 transition-all outline-none">
-                            <i class="fas fa-trash-alt mr-2"></i> {{ __('items.actions.bulk_delete') }}
-                        </button>
-                    </form>
+                    <span class="text-sm font-bold text-red-800 tracking-tight">
+                        <span x-text="selectedItems.length" class="text-lg"></span> Item Terpilih
+                    </span>
                 </div>
+                
+                <form id="bulk-delete-form" action="{{ route('items.delete-multiple') }}" method="POST" class="relative z-10">
+                    @csrf
+                    {{-- Input tersembunyi untuk menampung ID item --}}
+                    <template x-for="id in selectedItems" :key="id">
+                        <input type="hidden" name="item_ids[]" :value="id">
+                    </template>
+                    <button type="button" @click="confirmBulkDelete(selectedItems)" class="px-5 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 font-bold text-sm shadow-[0_4px_14px_0_rgb(239,68,68,0.39)] hover:shadow-[0_6px_20px_rgba(239,68,68,0.23)] hover:-translate-y-0.5 transition-all outline-none">
+                        <i class="fas fa-trash-alt mr-2"></i> {{ __('items.actions.bulk_delete') }}
+                    </button>
+                </form>
             </div>
 
-            {{-- Tabel Daftar Item (AJAX Container) --}}
-            <div id="table-container" class="bg-white border border-slate-100 overflow-hidden shadow-sm sm:rounded-2xl" data-aos="fade-up" data-aos-delay="100">
+            {{-- ==================== --}}
+            {{-- TABLE CARD          --}}
+            {{-- ==================== --}}
+            <div id="table-container" class="bg-white border border-slate-200 overflow-hidden shadow-sm rounded-2xl" data-aos="fade-up" data-aos-delay="100">
                 @include('items.partials.item-table')
             </div>
-        </div>
+
+            {{-- ======================================================= --}}
+            {{-- IMPORT MODAL — now INSIDE the x-data scope (FIX)        --}}
+            {{-- Uses x-teleport to render at body level for z-index      --}}
+            {{-- ======================================================= --}}
+            @can('is-admin')
+                <template x-teleport="body">
+                    <div x-show="showImportModal" 
+                        x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        x-transition:leave="ease-in duration-200"
+                        x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                        class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" 
+                        style="display: none;"
+                        x-cloak>
+                        
+                        {{-- Kontainer konten modal --}}
+                        <div @click.outside="showImportModal = false" 
+                            x-transition:enter="ease-out duration-300 delay-100"
+                            x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+                            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                            x-transition:leave="ease-in duration-200"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-95"
+                            class="w-full max-w-lg bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-100 relative">
+                            @include('items.modal-import')
+                        </div>
+                    </div>
+                </template>
+            @endcan
+
+        </div>{{-- /max-w container + x-data --}}
     </div>
 
-    {{-- =============================================== --}}
-    {{-- ##       PENAMBAHAN: MODAL IMPOR ITEM        ## --}}
-    {{-- =============================================== --}}
-    @can('is-admin')
-        {{-- Latar belakang gelap modal --}}
-        <div x-show="showImportModal" 
-            x-transition:enter="ease-out duration-300"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="ease-in duration-200"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" 
-            style="display: none;">
-            
-            {{-- Kontainer konten modal --}}
-            <div @click.outside="showImportModal = false" 
-                class="w-full max-w-lg bg-white p-6 sm:p-8 rounded-xl shadow-lg relative">
-                @include('items.modal-import')
-            </div>
-        </div>
-    @endcan
-
     {{-- =================================================================== --}}
-    {{-- ## PENAMBAHAN: SCRIPT UNTUK FILTER OTOMATIS & HAPUS MASSAL       ## --}}
+    {{-- ## SCRIPT UNTUK FILTER OTOMATIS & HAPUS MASSAL                    ## --}}
     {{-- =================================================================== --}}
     @push('scripts')
         {{-- Product Tour CSS & JS --}}
@@ -280,4 +294,3 @@
         </script>
     @endpush
 </x-app-layout>
-

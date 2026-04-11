@@ -61,6 +61,10 @@
         @keydown.escape.window="showModal = false"
         class="relative min-h-screen pb-12">
         
+        {{-- Product Tour CSS & JS --}}
+        <link rel="stylesheet" href="{{ asset('css/dashboard-tour.css') }}?v={{ time() }}">
+        <script src="{{ asset('js/booking-detail-tour.js') }}?v={{ time() }}" defer></script>
+
         {{-- HEADER --}}
         <div class="bg-white pt-6 pb-2 border-b border-slate-100 mb-8">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -118,7 +122,7 @@
                 <div class="lg:col-span-8 space-y-8">
                     
                     {{-- 1. Booking Information Card --}}
-                    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden" data-aos="fade-up" data-aos-once="true">
+                    <section id="tour-info" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden" data-aos="fade-up" data-aos-once="true">
                         <div class="p-6 md:p-8">
                             <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
                                 <i class="fas fa-info-circle text-green-500 text-sm"></i> Informasi Kegiatan
@@ -147,7 +151,7 @@
                     </section>
 
                     {{-- 2. Schedule & Time Block Card --}}
-                    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
+                    <section id="tour-schedule" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
                         <div class="p-6 md:p-8">
                             <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
                                 <i class="fas fa-calendar-alt text-green-500 text-sm"></i> Detail Jadwal & Waktu
@@ -241,7 +245,7 @@
                             };
                         @endphp
                         
-                        <div class="rounded-2xl shadow-sm border {{ $statusMeta['bg'] }} {{ $statusMeta['border'] }} p-6 relative overflow-hidden group" data-aos="fade-left" data-aos-once="true">
+                        <div id="tour-status" class="rounded-2xl shadow-sm border {{ $statusMeta['bg'] }} {{ $statusMeta['border'] }} p-6 relative overflow-hidden group" data-aos="fade-left" data-aos-once="true">
                             <h3 class="text-[10px] font-black {{ $statusMeta['iconText'] }} opacity-70 uppercase tracking-widest mb-4">Status Pengajuan</h3>
                             
                             <div class="flex items-center gap-4 relative z-10">
@@ -349,7 +353,7 @@
                         {{-- C. ACTION PANEL HIERARCHY (Hanya untuk Admin) --}}
                         @can('is-admin')
                             @if(in_array($booking->status, ['pending', 'approved']))
-                            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
+                            <div id="tour-actions" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6" data-aos="fade-up" data-aos-delay="200" data-aos-once="true">
                                 <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Aksi Operator</h3>
                                 
                                 <div class="space-y-3">

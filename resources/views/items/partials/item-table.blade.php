@@ -1,6 +1,6 @@
 <div class="overflow-x-auto min-h-[400px]">
     <table class="min-w-full bg-white text-left relative">
-        <thead class="bg-slate-50/90 backdrop-blur-md sticky top-0 z-10 shadow-sm border-b border-slate-200">
+        <thead class="bg-slate-50 sticky top-0 z-10 border-b border-slate-200">
             <tr>
                 <th class="py-5 px-5 w-10">
                     <input type="checkbox" @click="selectedItems = $event.target.checked ? Array.from(document.querySelectorAll('#item-list input[type=\'checkbox\']')).map(cb => cb.value) : []" class="rounded border-slate-300 text-green-600 shadow-sm focus:ring-green-500 cursor-pointer">
@@ -16,17 +16,17 @@
         <tbody class="divide-y divide-slate-100" id="item-list">
             @forelse ($items as $item)
                 {{-- Zebra Striping + Hover Highlight + Alpine Clickable Row --}}
-                <tr class="group even:bg-slate-50/50 hover:bg-green-50/60 cursor-pointer transition-colors duration-200" 
+                <tr class="group even:bg-slate-50/30 hover:bg-green-50/50 cursor-pointer transition-colors duration-200" 
                     :class="{'bg-green-100/50 hover:bg-green-100/50': selectedItems.includes('{{ $item->id }}')}"
                     @click="if($event.target.tagName !== 'INPUT' && $event.target.tagName !== 'A' && !$event.target.closest('a') && !$event.target.closest('button')) window.location.href='{{ route('items.show', $item->id) }}'">
                     
-                    <td class="py-5 px-5">
+                    <td class="py-6 px-5">
                         <input type="checkbox" x-model="selectedItems" value="{{ $item->id }}" class="rounded border-slate-300 text-green-600 shadow-sm focus:ring-green-500 cursor-pointer transition-transform hover:scale-110" @click.stop>
                     </td>
                     
-                    <td class="py-5 px-6">
+                    <td class="py-6 px-6">
                         <div class="flex items-center gap-4">
-                            <div class="flex-shrink-0 h-14 w-14 rounded-xl border border-slate-200 shadow-sm overflow-hidden bg-white">
+                            <div class="flex-shrink-0 h-[60px] w-[60px] rounded-xl border border-slate-200 shadow-sm overflow-hidden bg-white">
                                 @if($item->photo)
                                     <img class="h-full w-full object-cover transform group-hover:scale-110 transition-transform duration-500" src="{{ asset('storage/' . $item->photo) }}" alt="{{ $item->nama_alat }}">
                                 @else
@@ -42,20 +42,20 @@
                         </div>
                     </td>
                     
-                    <td class="py-5 px-6 hidden md:table-cell">
+                    <td class="py-6 px-6 hidden md:table-cell">
                         <span class="inline-flex items-center px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-600 bg-white border border-slate-200 rounded-lg shadow-sm">
                             {{ $item->tipe }}
                         </span>
                     </td>
                     
-                    <td class="py-5 px-6">
+                    <td class="py-6 px-6">
                         <div class="flex items-center gap-2.5">
                             <i class="fas fa-flask text-slate-300"></i>
                             <span class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">{{ $item->laboratorium }}</span>
                         </div>
                     </td>
                     
-                    <td class="py-5 px-6 text-center">
+                    <td class="py-6 px-6 text-center">
                         <div class="inline-flex flex-col items-center justify-center">
                             <span class="text-xl font-black text-slate-900">{{ $item->jumlah }}<span class="text-xs font-bold text-slate-400 ml-1.5 uppercase">{{ $item->satuan }}</span></span>
                             @if($item->stok_minimum && $item->jumlah < $item->stok_minimum)
@@ -64,7 +64,7 @@
                         </div>
                     </td>
                     
-                    <td class="py-5 px-6 text-center hidden sm:table-cell">
+                    <td class="py-6 px-6 text-center hidden sm:table-cell">
                         @if($item->kondisi == 'baik')
                             <span class="px-3.5 py-1.5 inline-flex text-[11px] leading-tight font-black uppercase tracking-wider rounded-lg bg-green-50 text-green-700 border border-green-200 shadow-sm">
                                 <i class="fas fa-check-circle mr-1.5 object-center mt-[1px]"></i> {{ __('items.conditions.baik') }}
@@ -80,7 +80,7 @@
                         @endif
                     </td>
                     
-                    <td class="py-5 px-6 text-center" x-data="{ openOptions: false }">
+                    <td class="py-6 px-6 text-center" x-data="{ openOptions: false }">
                         {{-- SaaS Dropdown Menu Action --}}
                         <div class="relative flex justify-center items-center" @click.stop>
                             <button @click="openOptions = !openOptions" class="text-slate-400 hover:text-green-600 focus:outline-none p-2 rounded-lg hover:bg-green-50 transition-colors border border-transparent hover:border-green-200">

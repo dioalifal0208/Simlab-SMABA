@@ -18,10 +18,14 @@
                 </p>
             </div>
             
-            <a href="{{ route('bookings.create') }}" class="mt-4 sm:mt-0 px-5 py-2.5 bg-green-600 text-white rounded-xl shadow-[0_4px_14px_0_rgb(34,197,94,0.39)] hover:shadow-[0_6px_20px_rgba(34,197,94,0.23)] hover:-translate-y-0.5 transition-all font-bold text-sm flex items-center gap-2">
+            <a id="tour-btn-create" href="{{ route('bookings.create') }}" class="mt-4 sm:mt-0 px-5 py-2.5 bg-green-600 text-white rounded-xl shadow-[0_4px_14px_0_rgb(34,197,94,0.39)] hover:shadow-[0_6px_20px_rgba(34,197,94,0.23)] hover:-translate-y-0.5 transition-all font-bold text-sm flex items-center gap-2">
                 <i class="fas fa-plus"></i> {{ __('bookings.actions.create_new') }}
             </a>
         </div>
+
+        {{-- Product Tour CSS & JS --}}
+        <link rel="stylesheet" href="{{ asset('css/dashboard-tour.css') }}?v={{ time() }}">
+        <script src="{{ asset('js/bookings-tour.js') }}?v={{ time() }}" defer></script>
     </x-slot>
 
     @php
@@ -90,7 +94,7 @@
             @endif
 
             {{-- FILTER & VIEW CONTROLS --}}
-            <div class="mb-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100" data-aos="fade-up" data-aos-once="true">
+            <div id="tour-filter" class="mb-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100" data-aos="fade-up" data-aos-once="true">
                 
                 {{-- View Toggles --}}
                 <div class="flex bg-slate-100 p-1 rounded-xl w-full lg:w-auto overflow-x-auto hide-scrollbar">
@@ -161,7 +165,7 @@
                     }
                 @endphp
 
-                <div class="space-y-12 block">
+                <div id="tour-booking-list" class="space-y-12 block">
                     
                     {{-- Hari Ini --}}
                     @if($todayBookings->isNotEmpty())

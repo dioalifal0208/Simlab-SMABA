@@ -38,7 +38,7 @@
                         </div>
 
                         {{-- STATS CARDS (2x2 Grid for Left Layout) --}}
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5" data-aos="fade-up" data-aos-delay="50" data-aos-once="true">
+                        <div id="tour-stats" class="grid grid-cols-1 sm:grid-cols-2 gap-5" data-aos="fade-up" data-aos-delay="50" data-aos-once="true">
                             <!-- Card 1 -->
                             <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-center gap-5 transition-all hover:shadow-md hover:border-green-300 group">
                                 <div class="w-14 h-14 bg-green-50 text-green-600 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
@@ -85,7 +85,7 @@
                         </div>
 
                         {{-- ACTIVITY FEED TIMELINE --}}
-                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" data-aos="fade-up" data-aos-delay="100" data-aos-once="true"
+                        <div id="tour-activity" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" data-aos="fade-up" data-aos-delay="100" data-aos-once="true"
                              x-data="{ 
                                 currentPage: 1, perPage: 6,
                                 totalItems: {{ ($recentActivities ?? collect())->count() }},
@@ -184,7 +184,7 @@
                     <div class="lg:col-span-4 space-y-6">
                         
                         {{-- QUICK ACTIONS --}}
-                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5" data-aos="fade-up" data-aos-delay="150" data-aos-once="true">
+                        <div id="tour-quick-actions" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5" data-aos="fade-up" data-aos-delay="150" data-aos-once="true">
                             <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4 border-b border-slate-100 pb-3 flex items-center gap-2">
                                 <i class="fas fa-bolt text-yellow-500"></i> Tindakan Cepat
                             </h3>
