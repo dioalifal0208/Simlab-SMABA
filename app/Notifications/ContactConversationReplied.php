@@ -23,8 +23,9 @@ class ContactConversationReplied extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'message' => 'Balasan baru dari admin untuk pesan Anda.',
-            'url'     => route('contact.conversations.index'),
+            'category' => 'message',
+            'message'  => 'Balasan baru dari admin untuk pesan Anda.',
+            'url'      => route('contact.conversations.index'),
             'body'    => $this->body,
         ];
     }

@@ -14,6 +14,7 @@
         "maatwebsite/excel": "^3.1",
         "milon/barcode": "^12.0",
         "pragmarx/google2fa": "^9.0",
+        "pusher/pusher-php-server": "^7.2",
         "simplesoftwareio/simple-qrcode": "*"
     },
     "require-dev": {

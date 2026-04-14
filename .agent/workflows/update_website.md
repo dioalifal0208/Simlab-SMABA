@@ -19,7 +19,8 @@ Lakukan ini setiap kali ada perubahan pada kode atau tampilan (CSS/JS).
 2. **Upload Assets (Jika ada perubahan tampilan):**
    ```powershell
    # Upload folder build ke server
-   scp -P 65002 -r public/build u451718575@178.16.135.238:~/Simlab-SMABA/public/
+   # Catatan: Sesuaikan path jika Anda menggunakan nama folder domain yang berbeda
+   scp -P 65002 -r public/build u203096280@45.90.229.210:~/domains/websmaba.site/public_html/public/
    ```
 
 3. **Push Code ke GitHub:**
@@ -36,12 +37,12 @@ Lakukan ini untuk mengambil kode terbaru PHP dan update database.
 
 1. **Login SSH:**
    ```powershell
-   ssh -p 65002 u451718575@178.16.135.238
+   ssh -p 65002 u203096280@45.90.229.210
    ```
 
 2. **Jalankan Perintah Update:**
    ```bash
-   cd ~/Simlab-SMABA
+   cd ~/domains/websmaba.site/public_html
    
    # Ambil kode terbaru
    git pull origin main
@@ -64,6 +65,6 @@ Lakukan ini untuk mengambil kode terbaru PHP dan update database.
 Saya telah membuatkan script `deploy.sh` di server. Cukup jalankan:
 
 ```bash
-cd ~/Simlab-SMABA
+cd ~/domains/websmaba.site/public_html
 sh deploy.sh
 ```

@@ -14,6 +14,11 @@ class ContactMessage extends Model
         'sender_type',
         'sender_id',
         'body',
+        'read_at',
+    ];
+
+    protected $casts = [
+        'read_at' => 'datetime',
     ];
 
     public function conversation()

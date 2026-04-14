@@ -35,10 +35,34 @@ class ContactConversationController extends Controller
 
         $messages = $conversation->messages()
             ->orderBy('created_at')
-            ->get(['id', 'sender_type', 'body', 'created_at']);
+            ->get(['id', 'sender_type', 'body', 'created_at', 'read_at']);
 
+        // Mark all admin messages as read
+        $unreadQuery = $conversation->messages()
+            ->where('sender_type', 'admin')
+            ->whereNull('read_at');
+        
+        $unreadMessagesCount = $unreadQuery->count();
+        if ($unreadMessagesCount > 0) {
+            $lastUnread = $unreadQuery->latest()->first();
+            $unreadQuery->update(['read_at' => now()]);
+            
+            // Broadcast that user has read admin's messages
+            // Channel: user.{adminId} (the sending admin)
+            // Note: If multiple admins, we broadcast to the sender of the last unread
+            broadcast(new \App\Events\MessageRead(
+                $conversation->id,
+                $lastUnread->id,
+                $lastUnread->sender_id,
+                auth()->id()
+            ));
+        }
+
+        $lastAdminMessage = $conversation->messages()->where('sender_type', 'admin')->latest()->first();
+        
         return response()->json([
             'conversation_id' => $conversation->id,
+            'receiver_id'     => $lastAdminMessage ? $lastAdminMessage->sender_id : 2,
             'messages'        => $messages,
         ]);
     }
@@ -62,6 +86,9 @@ class ContactConversationController extends Controller
         ]);
 
         $conversation->update(['last_message_at' => now(), 'status' => 'open']);
+        
+        // Broadcast pesan real-time
+        broadcast(new \App\Events\MessageSent($message))->toOthers();
 
         // Notifikasi ke admin
         try {

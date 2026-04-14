@@ -32,6 +32,7 @@ class AdminContactMessage extends Notification
     public function toArray(object $notifiable): array
     {
         return [
+            'category'      => 'message',
             'message'       => "Pesan baru dari {$this->namaPengirim} ({$this->emailPengirim})",
             'url'           => $this->conversationId
                 ? route('admin.contact-conversations.index', ['open' => $this->conversationId])

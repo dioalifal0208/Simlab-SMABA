@@ -70,6 +70,20 @@ Route::get('/verify/booking/{booking}', [BookingController::class, 'verify'])->n
 // Grup Rute yang hanya bisa diakses setelah login
 Route::middleware(['auth', 'single.session'])->group(function () {
 
+    // Notifications by category
+    Route::post('/notifications/read-by-category', function (\Illuminate\Http\Request $request) {
+        $validated = $request->validate([
+            'category' => 'required|string|in:message,booking,system'
+        ]);
+
+        auth()->user()
+            ->unreadNotifications()
+            ->where('category', $validated['category'])
+            ->update(['read_at' => now()]);
+
+        return response()->json(['status' => 'ok']);
+    })->name('notifications.read-by-category');
+
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -83,6 +97,19 @@ Route::middleware(['auth', 'single.session'])->group(function () {
     Route::get('/contact-conversations', [ContactConversationController::class, 'index'])->name('contact.conversations.index');
     Route::post('/contact-conversations', [ContactConversationController::class, 'store'])->name('contact.conversations.store');
     Route::get('/contact-conversations/messages', [ContactConversationController::class, 'messages'])->name('contact.conversations.messages');
+    Route::post('/typing', function (\Illuminate\Http\Request $request) {
+        $request->validate(['receiver_id' => 'required']);
+        $receiverId = $request->receiver_id;
+        $sender = auth()->user();
+        
+        \Illuminate\Support\Facades\Log::info('Typing triggered', [
+            'from' => $sender->id,
+            'to' => $receiverId
+        ]);
+        
+        broadcast(new \App\Events\UserTyping($sender->id, $receiverId, $sender->name));
+        return response()->json(['status' => 'ok']);
+    })->name('chat.typing');
 
     // Profil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

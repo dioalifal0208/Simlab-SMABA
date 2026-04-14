@@ -56,7 +56,30 @@
 
     <body class="landing-page antialiased bg-white text-slate-900 overflow-x-hidden selection:bg-green-100 selection:text-green-900"
           data-authenticated="{{ auth()->check() ? '1' : '0' }}"
-          x-data="{ isModalOpen: false, showDemoModal: false, showFeatureModal: false, activeSlide: 0, activeFeature: 'inventory', otpStep: false }"
+          x-data="{ 
+              isModalOpen: false, 
+              showDemoModal: false, 
+              showFeatureModal: false, 
+              activeSlide: 0, 
+              activeFeature: 'inventory', 
+              otpStep: false,
+              init() {
+                  const urlParams = new URLSearchParams(window.location.search);
+                  if (urlParams.has('login')) {
+                      this.isModalOpen = true;
+                      window.history.replaceState({}, document.title, window.location.pathname);
+                  }
+
+                  this.$watch('isModalOpen', (value) => {
+                      if (value && !this.otpStep) {
+                          setTimeout(() => {
+                              const emailInput = document.getElementById('login-email');
+                              if (emailInput) emailInput.focus();
+                          }, 400); // Wait for transition
+                      }
+                  });
+              }
+          }"
           @keydown.escape.window="isModalOpen = false; showDemoModal = false; showFeatureModal = false; otpStep = false">
 
 
@@ -516,92 +539,185 @@
         </footer>
 
         {{-- MODAL LOGIN + 2FA (2-STEP) --}}
-        <div x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4" style="display: none;">
-            <div @click.outside="isModalOpen = false; otpStep = false" x-show="isModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" class="w-full max-w-md bg-white p-8 rounded-lg shadow-xl border border-slate-200 relative overflow-hidden">
+        <div x-show="isModalOpen" 
+             x-transition:enter="ease-out duration-300" 
+             x-transition:enter-start="opacity-0" 
+             x-transition:enter-end="opacity-100" 
+             x-transition:leave="ease-in duration-200" 
+             x-transition:leave-start="opacity-100" 
+             x-transition:leave-end="opacity-0" 
+             class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4" 
+             style="display: none;"
+             x-cloak>
+            
+            <div @click.outside="isModalOpen = false; otpStep = false" 
+                 x-show="isModalOpen" 
+                 x-transition:enter="ease-out duration-300" 
+                 x-transition:enter-start="opacity-0 translate-y-8 sm:scale-95" 
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
+                 x-transition:leave="ease-in duration-200" 
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+                 x-transition:leave-end="opacity-0 translate-y-8 sm:scale-95" 
+                 class="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-100 relative overflow-hidden">
 
-                {{-- ===== STEP 1: Form Login ===== --}}
-                <div id="step-login" class="">
-                    <h2 class="text-xl font-bold text-slate-900 text-center mb-6">{{ __('welcome.auth.welcome') }}</h2>
+                {{-- Top Accent Bar --}}
+                <div class="h-1.5 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500"></div>
 
-                    <div id="auth-error-message" class="hidden mb-4 bg-red-50 border border-red-200 text-red-600 p-3 text-sm rounded-md" role="alert"></div>
-                    <div id="auth-success-message" class="hidden mb-4 bg-green-50 border border-green-200 text-green-600 p-3 text-sm rounded-md" role="alert"></div>
+                <div class="px-8 pt-8 pb-10">
+                    {{-- Close Button --}}
+                    <button @click="isModalOpen = false; otpStep = false" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors p-2">
+                        <i class="fas fa-times"></i>
+                    </button>
 
-                    <form id="login-form" method="POST" action="{{ route('login') }}" class="space-y-4">
-                        @csrf
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">{{ __('welcome.auth.email') }}</label>
-                            <input class="block w-full rounded-md border-slate-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm" type="email" name="email" required autofocus />
+                    {{-- ===== STEP 1: Form Login ===== --}}
+                    <div id="step-login" :class="otpStep ? 'hidden' : ''">
+                        {{-- Header: Logo + Title --}}
+                        <div class="text-center mb-8">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-green-50 border border-green-100 shadow-sm mb-5">
+                                <img src="{{ asset('images/logo-smaba.webp') }}" alt="Logo" class="w-10 h-10">
+                            </div>
+                            <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Selamat Datang</h2>
+                            <p class="text-sm text-slate-500 mt-2 leading-relaxed">Silakan masuk untuk mengelola laboratorium Anda.</p>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">{{ __('welcome.auth.password') }}</label>
-                            <input class="block w-full rounded-md border-slate-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm" type="password" name="password" required />
+
+                        <div id="auth-error-message" class="hidden mb-6 bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3" role="alert"></div>
+                        <div id="auth-success-message" class="hidden mb-6 bg-green-50 border border-green-200 rounded-xl p-4 flex items-start gap-3" role="alert"></div>
+
+                        <form id="login-form" method="POST" action="{{ route('login') }}" class="space-y-5">
+                            @csrf
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
+                                    <i class="fas fa-envelope text-slate-400 mr-1"></i> Email
+                                </label>
+                                <div class="relative group">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <i class="fas fa-at text-slate-300 group-focus-within:text-green-500 transition-colors"></i>
+                                    </div>
+                                    <input id="login-email"
+                                           class="block w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 text-sm font-medium text-slate-800 placeholder-slate-400 shadow-sm hover:border-slate-300 hover:bg-white focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200" 
+                                           type="email" 
+                                           name="email" 
+                                           placeholder="nama@email.com"
+                                           required />
+                                </div>
+                            </div>
+                            
+                            <div x-data="{ showPassword: false }">
+                                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
+                                    <i class="fas fa-lock text-slate-400 mr-1"></i> Password
+                                </label>
+                                <div class="relative group">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <i class="fas fa-key text-slate-300 group-focus-within:text-green-500 transition-colors"></i>
+                                    </div>
+                                    <input id="login-password"
+                                           :type="showPassword ? 'text' : 'password'" 
+                                           name="password" 
+                                           placeholder="••••••••"
+                                           class="block w-full pl-11 pr-12 py-3.5 rounded-xl border border-slate-200 bg-slate-50 text-sm font-medium text-slate-800 placeholder-slate-400 shadow-sm hover:border-slate-300 hover:bg-white focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200" 
+                                           required />
+                                    <button type="button" 
+                                            @click="showPassword = !showPassword" 
+                                            class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-green-600 transition-colors"
+                                            tabindex="-1">
+                                        <i class="fas text-sm" :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-1">
+                                <label class="flex items-center gap-2 cursor-pointer group">
+                                    <input type="checkbox" 
+                                           class="w-4 h-4 rounded-md border-slate-300 text-green-600 shadow-sm focus:ring-green-500/30 focus:ring-offset-0 transition-colors" 
+                                           name="remember">
+                                    <span class="text-sm text-slate-500 group-hover:text-slate-700 font-medium transition-colors select-none">Ingat saya</span>
+                                </label>
+                                <a href="{{ route('password.request') }}" class="text-sm text-green-600 hover:text-green-700 font-semibold hover:underline underline-offset-2 transition-colors">Lupa Password?</a>
+                            </div>
+
+                            <div class="pt-2">
+                                <button type="submit" 
+                                        id="login-submit-btn"
+                                        class="w-full relative flex justify-center items-center py-3.5 px-4 rounded-xl font-bold text-sm bg-green-600 text-white shadow-lg shadow-green-600/25 hover:bg-green-700 hover:shadow-green-700/30 hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-green-500/30 active:scale-[0.98] transition-all duration-200 group">
+                                    <i class="fas fa-right-to-bracket mr-2 text-white/80 group-hover:text-white transition-colors"></i>
+                                    Masuk Sekarang
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="mt-8 text-center pt-6 border-t border-slate-50">
+                            <p class="text-xs text-slate-400">
+                                <i class="fas fa-shield-halved mr-1 text-slate-300"></i>
+                                Keamanan sesi terjamin enkripsi SSL
+                            </p>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <label class="flex items-center">
-                                <input type="checkbox" class="rounded border-slate-300 text-green-600 shadow-sm focus:ring-green-500" name="remember">
-                                <span class="ml-2 text-sm text-slate-600">{{ __('welcome.auth.remember') }}</span>
-                            </label>
-                            <a href="{{ route('password.request') }}" class="text-sm text-green-600 hover:text-green-800 font-medium">{{ __('welcome.auth.forgot_password') }}</a>
+                    </div>
+
+                    {{-- ===== STEP 2: 2FA OTP Input ===== --}}
+                    <div id="step-otp" class="hidden">
+                        {{-- Header --}}
+                        <div class="text-center mb-8">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-50 border border-amber-100 shadow-sm mb-5">
+                                <i class="fas fa-shield-halved text-2xl text-amber-600"></i>
+                            </div>
+                            <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Verifikasi Keamanan</h2>
+                            <p class="text-sm text-slate-500 mt-2 leading-relaxed">Masukkan kode 6 digit dari aplikasi authenticator atau recovery code.</p>
                         </div>
-                        <button type="submit" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all">{{ __('welcome.auth.login_btn') }}</button>
-                    </form>
+
+                        {{-- Indikator Langkah --}}
+                        <div class="flex items-center justify-center gap-3 mb-8">
+                            <div class="flex items-center gap-2">
+                                <span class="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-[10px] font-bold border border-green-200"><i class="fas fa-check"></i></span>
+                                <span class="text-xs font-bold text-slate-500">Login</span>
+                            </div>
+                            <div class="w-10 h-px bg-slate-200"></div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-6 h-6 rounded-full bg-green-600 text-white flex items-center justify-center text-[10px] font-bold shadow-md shadow-green-600/20">2</span>
+                                <span class="text-xs font-bold text-slate-900">Verifikasi</span>
+                            </div>
+                        </div>
+
+                        <div id="otp-error-message" class="hidden mb-6 bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3" role="alert"></div>
+
+                        <form id="otp-form" class="space-y-6">
+                            @csrf
+                            <div>
+                                <label for="otp-code-input" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 text-center">
+                                    <i class="fas fa-key text-slate-400 mr-1"></i> Kode Verifikasi
+                                </label>
+                                <div class="relative group">
+                                    <input
+                                        id="otp-code-input"
+                                        name="code"
+                                        type="text"
+                                        inputmode="numeric"
+                                        maxlength="16"
+                                        required
+                                        placeholder="000000"
+                                        autocomplete="one-time-code"
+                                        class="block w-full px-4 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 text-3xl font-bold text-slate-800 tracking-[0.4em] text-center placeholder-slate-200 shadow-sm hover:border-slate-200 focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 font-mono"
+                                    />
+                                </div>
+                                <p class="text-xs text-slate-400 mt-3 text-center">
+                                    <i class="fas fa-info-circle mr-1"></i> TOTP 6 digit atau recovery code
+                                </p>
+                            </div>
+
+                            <div class="pt-2">
+                                <button type="submit" id="otp-submit-btn" class="w-full relative flex justify-center items-center py-3.5 px-4 rounded-xl font-bold text-sm bg-green-600 text-white shadow-lg shadow-green-600/25 hover:bg-green-700 hover:shadow-green-700/30 hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-green-500/30 active:scale-[0.98] transition-all duration-200 group">
+                                    <i class="fas fa-unlock-alt mr-2 text-white/80 group-hover:text-white transition-colors"></i>
+                                    Verifikasi &amp; Masuk
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="mt-8 text-center pt-6 border-t border-slate-50">
+                            <button id="back-to-login-btn" class="text-sm text-slate-400 hover:text-green-600 font-semibold transition-colors flex items-center justify-center gap-2 mx-auto">
+                                <i class="fas fa-arrow-left text-xs"></i> Ganti akun / kembali
+                            </button>
+                        </div>
+                    </div>
                 </div>
-
-                {{-- ===== STEP 2: 2FA OTP Input ===== --}}
-                <div id="step-otp" class="hidden">
-
-                    {{-- Indikator langkah --}}
-                    <div class="flex items-center justify-center gap-2 mb-6">
-                        <div class="flex items-center gap-1.5 text-xs text-slate-400">
-                            <span class="w-5 h-5 rounded-full bg-green-600 flex items-center justify-center text-white font-bold"><i class="fas fa-check text-[8px]"></i></span>
-                            <span class="font-medium text-green-700">Login</span>
-                        </div>
-                        <div class="w-8 h-px bg-slate-300"></div>
-                        <div class="flex items-center gap-1.5 text-xs">
-                            <span class="w-5 h-5 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-[10px]">2</span>
-                            <span class="font-semibold text-slate-800">Verifikasi</span>
-                        </div>
-                    </div>
-
-                    {{-- Ikon dan judul --}}
-                    <div class="text-center mb-6">
-                        <div class="w-14 h-14 mx-auto mb-4 bg-green-50 border-2 border-green-100 rounded-2xl flex items-center justify-center">
-                            <i class="fas fa-shield-alt text-2xl text-green-600"></i>
-                        </div>
-                        <h2 class="text-xl font-bold text-slate-900">Verifikasi 2 Langkah</h2>
-                        <p class="text-sm text-slate-500 mt-1">Masukkan kode 6 digit dari<br><span class="font-semibold text-slate-700">Google Authenticator</span></p>
-                    </div>
-
-                    <div id="otp-error-message" class="hidden mb-4 bg-red-50 border border-red-200 text-red-600 p-3 text-sm rounded-md" role="alert"></div>
-
-                    <form id="otp-form" class="space-y-5">
-                        @csrf
-                        <div>
-                            <input
-                                id="otp-code-input"
-                                name="code"
-                                type="text"
-                                inputmode="numeric"
-                                maxlength="8"
-                                required
-                                placeholder="000000"
-                                autocomplete="one-time-code"
-                                class="block w-full rounded-lg border-2 border-slate-200 shadow-sm focus:border-green-500 focus:ring-green-500 text-center text-3xl tracking-[0.55em] font-mono py-3.5 placeholder:text-slate-300 placeholder:tracking-[0.55em] transition-colors"
-                            />
-                            <p class="text-xs text-slate-400 mt-2 text-center">Atau masukkan <em>recovery code</em> Anda jika tidak memiliki akses ke aplikasi.</p>
-                        </div>
-                        <button type="submit" id="otp-submit-btn" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all">
-                            <i class="fas fa-unlock-alt"></i> Verifikasi &amp; Masuk
-                        </button>
-                    </form>
-
-                    <div class="mt-5 pt-4 border-t border-slate-100 text-center">
-                        <button id="back-to-login-btn" class="text-xs text-slate-400 hover:text-slate-600 transition-colors inline-flex items-center gap-1.5">
-                            <i class="fas fa-arrow-left"></i> Ganti akun / kembali ke login
-                        </button>
-                    </div>
-                </div>
-
             </div>
         </div>
 
@@ -1200,7 +1316,11 @@
                 // Tombol kembali ke login
                 const backBtn = document.getElementById('back-to-login-btn');
                 if (backBtn) {
-                    backBtn.addEventListener('click', showLoginStep);
+                    backBtn.addEventListener('click', () => {
+                        const bodyData = document.querySelector('body').__x?.$data || Alpine.$data(document.querySelector('body'));
+                        if (bodyData) bodyData.otpStep = false;
+                        showLoginStep();
+                    });
                 }
 
                 // ===== STEP 1: Login Form =====
@@ -1225,7 +1345,9 @@
                             if (!response.ok) {
                                 showLoginError(data.message || '{{ __("welcome.js.error_generic") }}');
                             } else if (data.status === 'otp_required') {
-                                // Tampilkan OTP step langsung via DOM
+                                // Tampilkan OTP step
+                                const bodyData = document.querySelector('body').__x?.$data || Alpine.$data(document.querySelector('body'));
+                                if (bodyData) bodyData.otpStep = true;
                                 showOtpStep();
                             } else {
                                 window.location.href = '{{ route('dashboard') }}';

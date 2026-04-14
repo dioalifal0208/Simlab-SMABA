@@ -59,7 +59,7 @@
             </button>
         </div>
 
-        <div class="p-3 h-80 overflow-y-auto space-y-3 bg-white" x-ref="messageList">
+        <div id="chat-container" class="p-3 overflow-y-auto space-y-3 bg-white" style="max-height: 400px;" x-ref="messageList">
             <template x-if="loading">
                 <p class="text-sm text-gray-500 text-center">Memuat...</p>
             </template>
@@ -76,16 +76,36 @@
                         ? 'max-w-[75%] px-3 py-2 rounded-lg bg-indigo-500/10 border border-indigo-600/30'
                         : 'max-w-[75%] px-3 py-2 rounded-lg bg-gray-50 border border-gray-100'">
                         <p class="text-sm text-gray-900" x-text="msg.body"></p>
-                        <p class="text-[10px] text-gray-500 mt-1" x-text="formatTime(msg.created_at)"></p>
+                        <div class="flex items-center justify-between mt-1 space-x-2">
+                            <p class="text-[10px] text-gray-500" x-text="formatTime(msg.created_at)"></p>
+                            <template x-if="isOwnMessage(msg)">
+                                <div class="flex items-center">
+                                    <i :class="msg.read_at ? 'fas fa-check-double text-indigo-600' : 'fas fa-check-double text-gray-400'" class="text-[10px]"></i>
+                                </div>
+                            </template>
+                        </div>
                     </div>
                 </div>
+                </div>
             </template>
+            
+            <div x-show="isOtherTyping" x-transition class="flex justify-start mb-2">
+                <div class="px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-100 flex items-center space-x-2">
+                    <div class="flex space-x-1">
+                        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
+                        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+                        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+                    </div>
+                    <p class="text-[11px] text-gray-500 italic"><span x-text="typingUser"></span> sedang mengetik...</p>
+                </div>
+            </div>
         </div>
 
         <div class="p-3 border-t border-gray-100">
             <form @submit.prevent="sendMessage" class="space-y-2">
                 <textarea
                     x-model="newMessage"
+                    @input="handleTyping"
                     rows="2"
                     class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 text-sm"
                     placeholder="Tulis pesan..."
@@ -127,6 +147,11 @@
             userId: document.body ? (document.body.dataset.userId || 'guest') : 'guest',
             badgeStorageKey: '',
             hasShownBadge: false,
+            isOtherTyping: false,
+            typingUser: '',
+            typingTimeout: null,
+            lastTypingEventTime: 0,
+            selectedUserId: null,
             routes: {
                 listUser: "{{ route('contact.conversations.messages') }}",
                 sendUser: "{{ route('contact.conversations.store') }}",
@@ -140,12 +165,22 @@
                 if (this.isAdmin) {
                     this.fetchConversations().then(() => {
                         if (this.activeConversationId) {
-                            this.fetchMessages();
+                            this.fetchMessages().then(() => {
+                                setTimeout(() => this.scrollToBottom(), 100);
+                            });
+                            this.listenForMessages();
+                            this.listenForTyping();
+                            this.listenForReadStatus();
                         }
                     });
                     this.startPolling();
                 } else {
-                    this.fetchMessages();
+                    this.fetchMessages().then(() => {
+                        this.listenForMessages();
+                        this.listenForTyping();
+                        this.listenForReadStatus();
+                        setTimeout(() => this.scrollToBottom(), 100);
+                    });
                     this.startPolling();
                 }
             },
@@ -153,8 +188,29 @@
                 this.open = !this.open;
                 if (this.open) {
                     this.unreadCount = 0;
+                    this.markNotificationsAsRead();
                     this.fetchMessages(true);
-                    this.$nextTick(() => this.scrollToBottom());
+                    setTimeout(() => this.scrollToBottom(), 100);
+                }
+            },
+            async markNotificationsAsRead() {
+                try {
+                    await fetch("{{ route('notifications.read-by-category') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({ category: 'message' })
+                    });
+                    
+                    // Instant UI feedback: Hide global notification dot if visible
+                    const dot = document.querySelector('[data-role="notification-dot"]');
+                    if (dot) dot.style.display = 'none';
+                    
+                } catch (e) {
+                    console.error('Failed to mark notifications as read:', e);
                 }
             },
             startPolling() {
@@ -176,6 +232,17 @@
                     const previousCount = this.messages.length;
                     const newMessages = data.messages || [];
                     const newCount = newMessages.length;
+                    
+                    // Set conversation ID for user side if not set
+                    if (!this.isAdmin && data.conversation_id) {
+                        this.activeConversationId = data.conversation_id;
+                        this.selectedUserId = data.receiver_id;
+                    }
+
+                    if (this.isAdmin && data.conversation) {
+                        this.selectedUserId = data.conversation.user_id;
+                    }
+
                     this.messages = newMessages;
                     if (this.open) {
                         this.unreadCount = 0;
@@ -188,7 +255,9 @@
                         this.markBadgeShown();
                     }
                     this.lastCount = newCount;
-                    this.$nextTick(() => this.scrollToBottom());
+                    
+                    // Trigger scroll to bottom
+                    setTimeout(() => this.scrollToBottom(), 100);
                 } catch (e) {
                     this.error = e.message || 'Gagal memuat pesan';
                 } finally {
@@ -203,6 +272,7 @@
                     this.conversations = data.conversations || [];
                     if (!this.activeConversationId && this.conversations.length > 0) {
                         this.activeConversationId = this.conversations[0].id;
+                        this.selectedUserId = this.conversations[0].user_id;
                     }
                 } catch (e) {
                     this.error = e.message || 'Gagal memuat percakapan';
@@ -210,7 +280,87 @@
             },
             async switchConversation() {
                 this.messages = [];
+                if (window.Echo) {
+                    window.Echo.leave(`chat.${this.activeConversationId}`);
+                }
                 this.fetchMessages(true);
+                this.listenForMessages();
+                this.listenForTyping();
+            },
+            listenForMessages() {
+                if (!this.activeConversationId || !window.Echo) return;
+
+                window.Echo.private(`chat.${this.activeConversationId}`)
+                    .listen('MessageSent', (e) => {
+                        console.log('Message received:', e.id);
+                        
+                        // Avoid duplicates if we are the sender
+                        const exists = this.messages.find(m => m.id === e.id);
+                        if (exists) return;
+
+                        this.messages.push({
+                            id: e.id,
+                            body: e.body,
+                            sender_type: e.sender_type,
+                            sender_id: e.sender_id,
+                            created_at: e.created_at,
+                            read_at: e.read_at
+                        });
+                        
+                        // If window is open and we receive a message that is not ours, mark as read
+                        if (this.open && e.sender_type !== (this.isAdmin ? 'admin' : 'user')) {
+                            this.fetchMessages(); // Triggers mark as read on server
+                        }
+                        
+                        setTimeout(() => this.scrollToBottom(), 100);
+                        
+                        // If window is closed, show unread count
+                        if (!this.open) {
+                            this.unreadCount++;
+                        }
+                    });
+            },
+            listenForTyping() {
+                if (!window.Echo || !this.userId || this.userId === 'guest') return;
+
+                console.log('Listening for typing events on channel:', `typing.${this.userId}`);
+
+                window.Echo.private(`typing.${this.userId}`)
+                    .listen('.typing', (e) => {
+                        console.log('Typing event received:', e);
+                        this.typingUser = e.senderName;
+                        this.isOtherTyping = true;
+                        
+                        if (this.typingTimeout) clearTimeout(this.typingTimeout);
+                        
+                        this.typingTimeout = setTimeout(() => {
+                            this.isOtherTyping = false;
+                        }, 2000);
+                        
+                        setTimeout(() => this.scrollToBottom(), 100);
+                    });
+            },
+            listenForReadStatus() {
+                if (!window.Echo || !this.userId || this.userId === 'guest') return;
+
+                console.log('Listening for read status events on channel:', `user.${this.userId}`);
+
+                window.Echo.private(`user.${this.userId}`)
+                    .listen('.message.read', (e) => {
+                        console.log('Read status received:', e);
+                        
+                        // Guard & Cross-conversation safety
+                        if (!e || !e.conversation_id || !e.last_read_id) return;
+                        if (e.conversation_id != this.activeConversationId) return;
+
+                        // Update local messages
+                        this.messages = this.messages.map(msg => {
+                            if (this.isOwnMessage(msg) && msg.id <= e.last_read_id) {
+                                return { ...msg, read_at: new Date().toISOString() };
+                            }
+                            return msg;
+                        });
+                    });
             },
             async sendMessage() {
                 if (!this.newMessage.trim()) return;
@@ -246,7 +396,7 @@
                         await this.fetchMessages();
                     }
                     this.newMessage = '';
-                    this.$nextTick(() => this.scrollToBottom());
+                    setTimeout(() => this.scrollToBottom(), 100);
                 } catch (e) {
                     this.error = e.message || 'Gagal mengirim pesan';
                 } finally {
@@ -270,10 +420,32 @@
                 }
             },
             scrollToBottom() {
-                const el = this.$refs.messageList;
-                if (el) {
-                    el.scrollTop = el.scrollHeight;
+                const container = document.getElementById('chat-container');
+                if (container) {
+                    container.scrollTo({
+                        top: container.scrollHeight,
+                        behavior: 'smooth'
+                    });
                 }
+            },
+            handleTyping() {
+                if (!this.activeConversationId || !this.selectedUserId) return;
+                
+                const now = Date.now();
+                if (now - this.lastTypingEventTime < 1500) return; // Throttle to every 1.5s
+                
+                this.lastTypingEventTime = now;
+                console.log('Typing event sending to:', this.selectedUserId);
+                
+                fetch("{{ route('chat.typing') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: JSON.stringify({ receiver_id: this.selectedUserId })
+                });
             },
         }
     }

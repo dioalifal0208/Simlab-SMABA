@@ -39,6 +39,7 @@ class AdminContactConversationController extends Controller
                 $latest = $conv->messages->first();
                 return [
                     'id'              => $conv->id,
+                    'user_id'         => $conv->user_id,
                     'user_name'       => $conv->user->name ?? 'Pengguna',
                     'user_email'      => $conv->user->email ?? '-',
                     'user_avatar'     => $conv->user->avatar ?? null, // Placeholder if avatar exists
@@ -61,13 +62,34 @@ class AdminContactConversationController extends Controller
 
         $conversation->load('user');
 
+        // Mark all user messages as read
+        $unreadQuery = $conversation->messages()
+            ->where('sender_type', 'user')
+            ->whereNull('read_at');
+
+        $unreadMessagesCount = $unreadQuery->count();
+        if ($unreadMessagesCount > 0) {
+            $lastUnread = $unreadQuery->latest()->first();
+            $unreadQuery->update(['read_at' => now()]);
+            
+            // Broadcast that admin has read user's messages
+            // Channel: user.{userId} (the guru/user)
+            broadcast(new \App\Events\MessageRead(
+                $conversation->id,
+                $lastUnread->id,
+                $conversation->user_id,
+                auth()->id()
+            ));
+        }
+
         $messages = $conversation->messages()
             ->orderBy('created_at')
-            ->get(['id', 'sender_type', 'body', 'created_at']);
+            ->get(['id', 'sender_type', 'body', 'created_at', 'read_at']);
 
         return response()->json([
             'conversation' => [
                 'id'         => $conversation->id,
+                'user_id'    => $conversation->user_id,
                 'user_name'  => $conversation->user->name ?? 'Pengguna',
                 'user_email' => $conversation->user->email ?? '-',
             ],
@@ -100,6 +122,9 @@ class AdminContactConversationController extends Controller
             'last_message_at' => now(),
             'status'          => 'open',
         ]);
+
+        // Broadcast pesan real-time
+        broadcast(new \App\Events\MessageSent($message))->toOthers();
 
         // Notifikasi ke pengguna
         try {
