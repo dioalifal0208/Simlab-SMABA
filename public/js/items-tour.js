@@ -76,13 +76,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             svg.innerHTML = `
                 <defs>
-                    <filter id="items-tour-blur"><feGaussianBlur in="SourceGraphic" stdDeviation="3"/></filter>
                     <mask id="items-tour-mask">
                         <rect x="0" y="0" width="100%" height="100%" fill="white"/>
-                        <rect id="items-tour-cutout" x="0" y="0" width="0" height="0" rx="14" fill="black"/>
+                        <rect id="items-tour-cutout" x="0" y="0" width="0" height="0" rx="12" fill="black"/>
                     </mask>
                 </defs>
-                <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.72)" mask="url(#items-tour-mask)" filter="url(#items-tour-blur)"/>
+                <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.4)" mask="url(#items-tour-mask)"/>
             `;
             this.overlay.appendChild(svg);
             document.body.appendChild(this.overlay);
@@ -99,9 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
             this.tooltip = document.createElement('div');
             this.tooltip.className = 'tour-tooltip';
             this.tooltip.innerHTML = `
+                <div class="tour-tooltip-arrow"></div>
                 <div class="tour-tooltip-header">
                     <h3 class="tour-tooltip-title"></h3>
-                    <button class="tour-tooltip-close" aria-label="Close tour">&times;</button>
+                    <button class="tour-tooltip-close" aria-label="Close tour"></button>
                 </div>
                 <div class="tour-tooltip-content"></div>
                 <div class="tour-tooltip-footer">
@@ -119,6 +119,17 @@ document.addEventListener('DOMContentLoaded', () => {
             this.tooltip.querySelector('.tour-btn-next').addEventListener('click', () => this.nextStep());
         },
 
+        /* ── Build dots indicator ── */
+        _renderDots() {
+            const container = this.tooltip.querySelector('.tour-tooltip-progress');
+            container.innerHTML = '';
+            for (let i = 0; i < this.steps.length; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'tour-dot' + (i === this.currentStep ? ' active' : '');
+                container.appendChild(dot);
+            }
+        },
+
         /* ── Show Step ── */
         showStep(index) {
             const step = this.steps[index];
@@ -128,7 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Update content
             this.tooltip.querySelector('.tour-tooltip-title').textContent = step.title;
             this.tooltip.querySelector('.tour-tooltip-content').textContent = step.content;
-            this.tooltip.querySelector('.tour-tooltip-progress').textContent = `Langkah ${index + 1} dari ${this.steps.length}`;
+
+            // Dots indicator
+            this._renderDots();
 
             // Update buttons
             const skipBtn = this.tooltip.querySelector('.tour-btn-skip');
@@ -194,10 +207,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         positionTooltip(targetRect, preferred) {
             const vp = 12;
-            const gap = 14;
+            const gap = 16;
 
             this.tooltip.style.position = 'fixed';
-            this.tooltip.style.maxWidth = '420px';
+            this.tooltip.style.maxWidth = '400px';
             this.tooltip.style.width = 'auto';
             this.tooltip.style.left = '0';
             this.tooltip.style.top = '0';

@@ -73,13 +73,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             svg.innerHTML = `
                 <defs>
-                    <filter id="bd-tour-blur"><feGaussianBlur in="SourceGraphic" stdDeviation="3"/></filter>
                     <mask id="bd-tour-mask">
                         <rect x="0" y="0" width="100%" height="100%" fill="white"/>
-                        <rect id="bd-tour-cutout" x="0" y="0" width="0" height="0" rx="14" fill="black"/>
+                        <rect id="bd-tour-cutout" x="0" y="0" width="0" height="0" rx="12" fill="black"/>
                     </mask>
                 </defs>
-                <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.72)" mask="url(#bd-tour-mask)" filter="url(#bd-tour-blur)"/>
+                <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.4)" mask="url(#bd-tour-mask)"/>
             `;
             this.overlay.appendChild(svg);
             document.body.appendChild(this.overlay);
@@ -95,9 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
             this.tooltip = document.createElement('div');
             this.tooltip.className = 'tour-tooltip';
             this.tooltip.innerHTML = `
+                <div class="tour-tooltip-arrow"></div>
                 <div class="tour-tooltip-header">
                     <h3 class="tour-tooltip-title"></h3>
-                    <button class="tour-tooltip-close" aria-label="Close tour">&times;</button>
+                    <button class="tour-tooltip-close" aria-label="Close tour"></button>
                 </div>
                 <div class="tour-tooltip-content"></div>
                 <div class="tour-tooltip-footer">
@@ -113,6 +113,19 @@ document.addEventListener('DOMContentLoaded', () => {
             this.tooltip.querySelector('.tour-tooltip-close').addEventListener('click', () => this.end());
             this.tooltip.querySelector('.tour-btn-back').addEventListener('click', () => this._handleBack());
             this.tooltip.querySelector('.tour-btn-next').addEventListener('click', () => this._handleNext());
+        },
+
+        /* ── Build dots indicator ── */
+        _renderDots() {
+            const visibleSteps = this.steps.filter(s => !s.target || document.querySelector(s.target));
+            const visibleIndex = visibleSteps.indexOf(this.steps[this.currentStep]);
+            const container = this.tooltip.querySelector('.tour-tooltip-progress');
+            container.innerHTML = '';
+            for (let i = 0; i < visibleSteps.length; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'tour-dot' + (i === visibleIndex ? ' active' : '');
+                container.appendChild(dot);
+            }
         },
 
         showStep(index) {
@@ -135,13 +148,14 @@ document.addEventListener('DOMContentLoaded', () => {
             this.tooltip.querySelector('.tour-tooltip-title').textContent = step.title;
             this.tooltip.querySelector('.tour-tooltip-content').textContent = step.content;
 
-            // Calculate visible step number (accounting for skipped steps)
-            const visibleSteps = this.steps.filter(s => !s.target || document.querySelector(s.target));
-            const visibleIndex = visibleSteps.indexOf(step);
-            this.tooltip.querySelector('.tour-tooltip-progress').textContent = `Langkah ${visibleIndex + 1} dari ${visibleSteps.length}`;
+            // Dots indicator (accounts for skipped steps)
+            this._renderDots();
 
             const backBtn = this.tooltip.querySelector('.tour-btn-back');
             const nextBtn = this.tooltip.querySelector('.tour-btn-next');
+
+            const visibleSteps = this.steps.filter(s => !s.target || document.querySelector(s.target));
+            const visibleIndex = visibleSteps.indexOf(step);
 
             if (index === 0) {
                 backBtn.textContent = 'Lewati';
@@ -206,10 +220,10 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         positionTooltip(targetRect, preferred) {
-            const vp = 12, gap = 14;
+            const vp = 12, gap = 16;
 
             this.tooltip.style.position = 'fixed';
-            this.tooltip.style.maxWidth = '420px';
+            this.tooltip.style.maxWidth = '400px';
             this.tooltip.style.width = 'auto';
             this.tooltip.style.left = '0';
             this.tooltip.style.top = '0';

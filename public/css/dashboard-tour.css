@@ -1,6 +1,9 @@
-/* Dashboard Product Tour Styles - SVG Mask Approach */
+/* ═══════════════════════════════════════════════════════════
+   Product Tour — SaaS-Grade UI Refinement
+   Clean card, subtle highlight, no neon/glow, professional
+   ═══════════════════════════════════════════════════════════ */
 
-/* Overlay Container */
+/* ── Overlay ── */
 .tour-overlay {
     position: fixed;
     top: 0;
@@ -9,9 +12,14 @@
     bottom: 0;
     z-index: 9998;
     pointer-events: none;
+    animation: tour-overlay-in 0.3s ease forwards;
 }
 
-/* SVG Overlay with Mask - Creates clean cutout */
+@keyframes tour-overlay-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
 .tour-overlay svg {
     position: absolute;
     top: 0;
@@ -20,343 +28,321 @@
     height: 100%;
 }
 
-/* Spotlight Border */
+/* ── Spotlight — subtle ring, no neon ── */
 .tour-spotlight {
     position: fixed;
     z-index: 10000;
     pointer-events: none;
     background: transparent;
-    border: 3px solid rgba(34, 197, 94, 0.9);
     border-radius: 12px;
-    box-shadow: 
-        0 0 0 4px rgba(34, 197, 94, 0.2),
-        0 0 30px rgba(34, 197, 94, 0.6),
-        0 0 60px rgba(34, 197, 94, 0.4);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: pulse-border 2s ease-in-out infinite;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes pulse-border {
-    0%, 100% {
-        border-color: rgba(34, 197, 94, 0.9);
-        box-shadow: 
-            0 0 0 4px rgba(34, 197, 94, 0.2),
-            0 0 30px rgba(34, 197, 94, 0.6),
-            0 0 60px rgba(34, 197, 94, 0.4);
-    }
-    50% {
-        border-color: rgba(74, 222, 128, 1);
-        box-shadow: 
-            0 0 0 4px rgba(74, 222, 128, 0.3),
-            0 0 40px rgba(34, 197, 94, 0.8),
-            0 0 80px rgba(34, 197, 94, 0.6);
-    }
-}
-
-/* Tooltip Container - Solid Modern Card */
+/* ═══════════════════════════════════════════════════════════
+   Tooltip Card
+   ═══════════════════════════════════════════════════════════ */
 .tour-tooltip {
     position: fixed;
-    z-index: 10001; /* Above spotlight */
+    z-index: 10001;
+    width: 320px;
+    max-width: 90vw;
     background: #ffffff;
-    border-radius: 12px;
-    border: 2px solid #22c55e;
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.3),
-        0 8px 24px rgba(34, 197, 94, 0.2);
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.08),
+        0 4px 10px rgba(0, 0, 0, 0.04);
     overflow: visible;
     opacity: 0;
-    transform: scale(0.95) translateY(-10px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
     pointer-events: auto;
-    max-width: 420px;
-    width: 90vw;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
 .tour-tooltip-visible {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateY(0);
 }
 
-/* Arrow Pointer - Solid with border */
-.tour-tooltip::before,
-.tour-tooltip::after {
-    content: '';
+/* ── Arrow — pseudo-style rotated square ── */
+.tour-tooltip-arrow {
     position: absolute;
-    width: 0;
-    height: 0;
-    border: 12px solid transparent;
-}
-
-/* Arrow border (outer) */
-.tour-tooltip::before {
+    width: 10px;
+    height: 10px;
+    background: #ffffff;
+    transform: rotate(45deg);
     z-index: -1;
 }
 
-/* Arrow fill (inner) */
-.tour-tooltip::after {
-    z-index: 0;
-}
-
-.tour-tooltip[data-position="top"]::before {
-    bottom: -24px;
+/* Top placement → arrow at bottom */
+.tour-tooltip[data-position="top"] .tour-tooltip-arrow {
+    bottom: -6px;
     left: 50%;
-    transform: translateX(-50%);
-    border-top-color: #22c55e;
+    margin-left: -5px;
+    border-right: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
 }
 
-.tour-tooltip[data-position="top"]::after {
-    bottom: -20px;
+/* Bottom placement → arrow at top */
+.tour-tooltip[data-position="bottom"] .tour-tooltip-arrow {
+    top: -6px;
     left: 50%;
-    transform: translateX(-50%);
-    border-top-color: #ffffff;
-    border-width: 10px;
+    margin-left: -5px;
+    border-left: 1px solid #e5e7eb;
+    border-top: 1px solid #e5e7eb;
 }
 
-.tour-tooltip[data-position="bottom"]::before {
-    top: -24px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-bottom-color: #22c55e;
-}
-
-.tour-tooltip[data-position="bottom"]::after {
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-bottom-color: #ffffff;
-    border-width: 10px;
-}
-
-.tour-tooltip[data-position="left"]::before {
-    right: -24px;
+/* Left placement → arrow at right */
+.tour-tooltip[data-position="left"] .tour-tooltip-arrow {
+    right: -6px;
     top: 50%;
-    transform: translateY(-50%);
-    border-left-color: #22c55e;
+    margin-top: -5px;
+    border-right: 1px solid #e5e7eb;
+    border-top: 1px solid #e5e7eb;
 }
 
-.tour-tooltip[data-position="left"]::after {
-    right: -20px;
+/* Right placement → arrow at left */
+.tour-tooltip[data-position="right"] .tour-tooltip-arrow {
+    left: -6px;
     top: 50%;
-    transform: translateY(-50%);
-    border-left-color: #ffffff;
-    border-width: 10px;
+    margin-top: -5px;
+    border-left: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
 }
 
-.tour-tooltip[data-position="right"]::before {
-    left: -24px;
-    top: 50%;
-    transform: translateY(-50%);
-    border-right-color: #22c55e;
+/* Center — no arrow */
+.tour-tooltip[data-position="center"] .tour-tooltip-arrow {
+    display: none;
 }
 
-.tour-tooltip[data-position="right"]::after {
-    left: -20px;
-    top: 50%;
-    transform: translateY(-50%);
-    border-right-color: #ffffff;
-    border-width: 10px;
-}
-
-/* Header - Solid Green Gradient */
+/* ── Header ── */
 .tour-tooltip-header {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-    padding: 18px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: none;
-    border-radius: 10px 10px 0 0;
+    padding: 14px 16px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    border-left: 3px solid #22c55e;
+    border-radius: 16px 16px 0 0;
 }
 
 .tour-tooltip-title {
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 17px;
+    color: #111827;
+    font-weight: 600;
+    font-size: 14px;
     margin: 0;
+    line-height: 1.4;
     letter-spacing: -0.01em;
 }
 
+/* ── Close Button ── */
 .tour-tooltip-close {
-    background: rgba(255, 255, 255, 0.2);
+    background: transparent;
     border: none;
-    color: white;
-    font-size: 20px;
-    width: 32px;
-    height: 32px;
+    color: #9ca3af;
+    font-size: 0;
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.15s ease;
     padding: 0;
-    line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    position: relative;
 }
+
+.tour-tooltip-close::before,
+.tour-tooltip-close::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 1.5px;
+    background: #9ca3af;
+    border-radius: 1px;
+    transition: background 0.15s ease;
+}
+
+.tour-tooltip-close::before { transform: rotate(45deg); }
+.tour-tooltip-close::after  { transform: rotate(-45deg); }
 
 .tour-tooltip-close:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
+    background: #f3f4f6;
 }
 
-/* Content - Clean White Background */
+.tour-tooltip-close:hover::before,
+.tour-tooltip-close:hover::after {
+    background: #374151;
+}
+
+/* ── Body Content ── */
 .tour-tooltip-content {
-    padding: 20px;
-    color: #374151;
-    font-size: 14px;
-    line-height: 1.7;
+    padding: 14px 16px;
+    color: #4b5563;
+    font-size: 13px;
+    line-height: 1.55;
     font-weight: 400;
-    background: #ffffff;
-    max-height: 200px;
+    max-height: 180px;
     overflow-y: auto;
 }
 
-/* Custom scrollbar for content */
-.tour-tooltip-content::-webkit-scrollbar {
-    width: 6px;
-}
+.tour-tooltip-content::-webkit-scrollbar { width: 4px; }
+.tour-tooltip-content::-webkit-scrollbar-track { background: transparent; }
+.tour-tooltip-content::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+.tour-tooltip-content::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
 
-.tour-tooltip-content::-webkit-scrollbar-track {
-    background: #f3f4f6;
-    border-radius: 3px;
-}
-
-.tour-tooltip-content::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 3px;
-}
-
-.tour-tooltip-content::-webkit-scrollbar-thumb:hover {
-    background: #9ca3af;
-}
-
-/* Footer - Clean White */
+/* ── Footer ── */
 .tour-tooltip-footer {
-    padding: 16px 20px;
-    border-top: 1px solid #e5e7eb;
-    background: #f9fafb;
-    border-radius: 0 0 10px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-top: 1px solid #f1f5f9;
 }
 
+/* ── Step Indicator — subtle pill ── */
 .tour-tooltip-progress {
-    color: #6b7280;
-    font-size: 12px;
-    font-weight: 600;
-    background: #e5e7eb;
-    padding: 5px 14px;
-    border-radius: 14px;
-    display: inline-block;
-    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0;
+    padding: 0;
+    font-size: 0;
 }
 
+.tour-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+.tour-dot.active {
+    width: 18px;
+    border-radius: 3px;
+    background: #22c55e;
+}
+
+/* ── Buttons ── */
 .tour-tooltip-buttons {
     display: flex;
-    justify-content: space-between;
-    gap: 12px;
+    gap: 8px;
 }
 
-/* Buttons - Solid Modern Style */
 .tour-btn {
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 12px;
     border: none;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.15s ease;
+    line-height: 1.35;
+    white-space: nowrap;
 }
 
+/* Primary */
 .tour-btn-primary {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-    color: white;
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    background: #22c55e;
+    color: #ffffff;
 }
 
 .tour-btn-primary:hover {
-    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
-    box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
-    transform: translateY(-1px);
+    background: #16a34a;
 }
 
 .tour-btn-primary:active {
-    transform: translateY(0);
+    background: #15803d;
 }
 
+/* Secondary */
 .tour-btn-secondary {
-    background: #e5e7eb;
+    background: #f3f4f6;
     color: #374151;
 }
 
 .tour-btn-secondary:hover {
-    background: #d1d5db;
-    transform: translateY(-1px);
+    background: #e5e7eb;
+    color: #111827;
 }
 
-/* Highlight Effect - Removed (using spotlight instead) */
+.tour-btn-secondary:active {
+    background: #d1d5db;
+}
+
+/* ── Highlight helper ── */
 .tour-highlight {
     position: relative;
     z-index: 9997;
 }
 
-/* Animations */
-@keyframes fadeIn {
+/* ── Animation ── */
+@keyframes fadeInUp {
     from {
         opacity: 0;
+        transform: translateY(8px);
     }
     to {
         opacity: 1;
+        transform: translateY(0);
     }
 }
 
-/* Pulse animation for spotlight */
-@keyframes spotlight-pulse {
-    0%, 100% {
-        box-shadow: 
-            0 0 0 9999px rgba(0, 0, 0, 0.7),
-            0 0 30px rgba(34, 197, 94, 0.5);
-    }
-    50% {
-        box-shadow: 
-            0 0 0 9999px rgba(0, 0, 0, 0.7),
-            0 0 50px rgba(34, 197, 94, 0.8);
-    }
-}
-
-/* Responsive */
+/* ═══════════════════════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════════════════════ */
 @media (max-width: 640px) {
     .tour-tooltip {
-        max-width: 90vw;
-        margin: 0 16px;
+        width: calc(100vw - 32px);
+        max-width: calc(100vw - 32px);
+        border-radius: 14px;
     }
-    
-    .tour-tooltip-content {
-        font-size: 13px;
-        padding: 14px 18px;
-        max-height: 150px;
-    }
-    
+
     .tour-tooltip-header {
-        padding: 14px 18px;
+        padding: 12px 14px;
+        border-radius: 14px 14px 0 0;
     }
-    
+
+    .tour-tooltip-title {
+        font-size: 13px;
+    }
+
+    .tour-tooltip-content {
+        font-size: 12px;
+        padding: 12px 14px;
+        max-height: 140px;
+    }
+
     .tour-tooltip-footer {
-        padding: 12px 18px;
-    }
-    
-    .tour-tooltip-buttons {
+        padding: 10px 14px;
         flex-direction: column;
+        gap: 10px;
     }
-    
-    .tour-btn {
+
+    .tour-tooltip-progress {
+        justify-content: center;
+    }
+
+    .tour-tooltip-buttons {
         width: 100%;
     }
-    
-    .tour-tooltip-title {
-        font-size: 15px;
+
+    .tour-btn {
+        flex: 1;
+        text-align: center;
+        padding: 8px 12px;
     }
 }
 
-/* Smooth scrolling for tour */
+/* ── Lock scroll during tour ── */
 html.tour-active {
     scroll-behavior: smooth;
 }

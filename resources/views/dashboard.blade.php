@@ -285,7 +285,7 @@
                         </div>
 
                         {{-- Stats Row --}}
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5" data-aos="fade-up" data-aos-delay="50" data-aos-once="true">
+                        <div id="tour-stats" class="grid grid-cols-1 sm:grid-cols-3 gap-5" data-aos="fade-up" data-aos-delay="50" data-aos-once="true">
                             <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:shadow-md group">
                                 <div class="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                                     <i class="fas fa-flask text-xl"></i>
@@ -318,7 +318,7 @@
                         </div>
 
                         {{-- Timetable / History List --}}
-                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[500px]" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
+                        <div id="tour-activity" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[500px]" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
                             <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50">
                                 <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
                                     <i class="fas fa-clock-rotate-left text-green-600"></i> Riwayat Peminjaman Anda
@@ -369,7 +369,7 @@
                     <div class="lg:col-span-4 space-y-6">
                         
                         {{-- QUICK ACTIONS --}}
-                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5" data-aos="fade-up" data-aos-delay="150" data-aos-once="true">
+                        <div id="tour-quick-actions" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5" data-aos="fade-up" data-aos-delay="150" data-aos-once="true">
                             <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4 border-b border-slate-100 pb-3 flex items-center gap-2">
                                 <i class="fas fa-paper-plane text-blue-500"></i> Aksi Cepat
                             </h3>

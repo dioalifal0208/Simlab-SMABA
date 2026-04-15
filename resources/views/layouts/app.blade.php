@@ -56,29 +56,32 @@
         {{-- Layout: Main content area sebagai fixed scrollable container --}}
         <style>
             /*
-             * SOLUSI LAYOUT DEFINITIF:
-             * #main-wrapper menggunakan position:fixed — sama seperti sidebar & topbar.
-             * Ini menjamin konten SELALU terpasang di viewport dengan posisi yang tepat.
-             * overflow-y:auto membuat area ini scrollable secara independen.
+             * LAYOUT SYSTEM (STABILIZED):
+             * #main-wrapper is position:fixed and ALWAYS spans full viewport width
+             * (left:0; right:0). Sidebar offset is handled via padding-left,
+             * NOT left positioning. This prevents container resize/reflow during
+             * sidebar toggle, eliminating the visual "pulling" effect.
              *
-             * Tidak lagi terpengaruh margin collapse, parent min-height, atau CSS lainnya.
+             * The sidebar sits on top (z-40) and the padding simply pushes
+             * content to the right of it.
              */
             #main-wrapper {
                 position: fixed;
-                top: 56px;      /* tepat di bawah topbar (h-14 = 56px) */
+                top: 56px;      /* below topbar (h-14 = 56px) */
                 left: 0;
                 right: 0;
                 bottom: 0;
                 overflow-y: auto;
                 background-color: #f8fafc; /* bg-slate-50 */
-                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                will-change: padding-left;
             }
             @media (min-width: 1024px) {
                 #main-wrapper {
-                    left: 240px; /* tepat di samping kanan sidebar (w-[240px]) */
+                    padding-left: 240px; /* sidebar expanded width */
                 }
                 body.sidebar-collapsed #main-wrapper {
-                    left: 72px;
+                    padding-left: 72px;  /* sidebar collapsed width */
                 }
             }
 
@@ -201,6 +204,53 @@
                     padding-right: 1rem;
                 }
             }
+
+            /* ============================================
+             * SAAS PAGE CONTAINER
+             * Self-contained centered content area.
+             * Prevents full-width stretching on wide screens.
+             * Includes its own responsive padding.
+             * ============================================ */
+            .items-page-container,
+            .saas-page-container {
+                width: 100%;
+                max-width: 1280px;
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            @media (min-width: 640px) {
+                .items-page-container,
+                .saas-page-container {
+                    padding-left: 1.5rem;
+                    padding-right: 1.5rem;
+                }
+            }
+            @media (min-width: 1024px) {
+                .items-page-container,
+                .saas-page-container {
+                    padding-left: 2rem;
+                    padding-right: 2rem;
+                }
+            }
+
+            /* ============================================
+             * LAYOUT STABILITY HELPERS
+             * ============================================ */
+
+            /* Prevent layout shift on initial load */
+            #main-wrapper > main {
+                min-height: calc(100vh - 56px);
+            }
+
+            /* Tour target stability — elements used as tour
+               anchors must not depend on animated positioning */
+            [data-tour],
+            [id^="tour-"] {
+                position: relative;
+                z-index: 1;
+            }
         </style>
 
         {{-- PERBAIKAN 1: Menambahkan script Alpine.js di <head> --}}
@@ -232,10 +282,10 @@
                 @include('layouts.navigation')
             @endunless
 
-            {{-- MAIN WRAPPER: position:fixed, left mengikuti sidebar width --}}
+            {{-- MAIN WRAPPER: position:fixed, padding-left mengikuti sidebar width --}}
             <div id="main-wrapper" class="flex flex-col"
                  :class="{ 'transition-all duration-300': isSidebarMounted }"
-                 :style="window.innerWidth >= 1024 ? 'left:' + (sidebarCollapsed ? '72px' : '240px') : ''">
+                 :style="window.innerWidth >= 1024 ? 'padding-left:' + (sidebarCollapsed ? '72px' : '240px') : ''">
 
                 {{-- BANNER PENGUMUMAN GLOBAL --}}
                 @if(isset($activeAnnouncement))

@@ -11,22 +11,22 @@
     
     </x-slot>
 
-    <div class="py-8 sm:py-12">
+    <div class="py-6 sm:py-8">
         {{-- 
             Alpine.js scope: manages import modal + bulk-delete selection.
             Moved to outer wrapper so modal (which uses x-teleport) can access showImportModal.
         --}}
-        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8" x-data="{ showImportModal: false, selectedItems: [] }">
+        <div class="items-page-container" x-data="{ showImportModal: false, selectedItems: [] }">
 
             {{-- Pesan Sukses/Error --}}
             @if (session('success'))
-                <div class="mb-6 bg-white border border-slate-100 border-l-4 border-l-green-500 p-4 rounded-xl shadow-sm flex items-center gap-3" role="alert">
+                <div class="mb-5 bg-white border border-slate-100 border-l-4 border-l-green-500 p-4 rounded-xl shadow-sm flex items-center gap-3" role="alert">
                     <div class="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600 flex-shrink-0"><i class="fas fa-check-circle"></i></div>
                     <div><p class="font-bold text-green-800 text-sm">{{ __('common.messages.success') }}</p><span class="text-green-700 text-sm">{{ session('success') }}</span></div>
                 </div>
             @endif
             @if (session('error'))
-                <div class="mb-6 bg-white border border-slate-100 border-l-4 border-l-red-500 p-4 rounded-xl shadow-sm flex items-center gap-3" role="alert">
+                <div class="mb-5 bg-white border border-slate-100 border-l-4 border-l-red-500 p-4 rounded-xl shadow-sm flex items-center gap-3" role="alert">
                     <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-600 flex-shrink-0"><i class="fas fa-exclamation-triangle"></i></div>
                     <div><p class="font-bold text-red-800 text-sm">{{ __('common.messages.error') }}</p><span class="text-red-700 text-sm">{{ session('error') }}</span></div>
                 </div>
@@ -35,7 +35,7 @@
             {{-- ==================== --}}
             {{-- ACTION BAR (Top)    --}}
             {{-- ==================== --}}
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8" data-aos="fade-up">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-5" data-aos="fade-up">
                 <div class="w-full md:w-96 relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                         <i class="fas fa-search text-slate-400"></i>
@@ -62,7 +62,7 @@
             {{-- ==================== --}}
             {{-- FILTER PANEL CARD   --}}
             {{-- ==================== --}}
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 mb-8" data-aos="fade-up" data-aos-delay="50">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 mb-5" data-aos="fade-up" data-aos-delay="50">
                 <form action="{{ route('items.index') }}" method="GET" id="filter-form" class="flex flex-col md:flex-row items-center gap-4 md:gap-5">
                     <div class="flex items-center text-sm font-bold text-slate-800 md:border-r border-slate-100 md:pr-5 shrink-0 self-start md:self-auto uppercase tracking-wide">
                         <i class="fas fa-filter text-green-600 mr-2 border border-green-100 bg-green-50 p-1.5 rounded-lg shadow-sm"></i> Filter
@@ -106,7 +106,7 @@
             </div>
 
             {{-- Tombol Aksi Hapus Massal (Muncul saat ada item terpilih) --}}
-            <div x-show="selectedItems.length > 0" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4" class="mb-6 bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-2xl p-4 flex justify-between items-center shadow-md relative overflow-hidden" style="display: none;">
+            <div x-show="selectedItems.length > 0" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4" class="mb-5 bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-2xl p-4 flex justify-between items-center shadow-md relative overflow-hidden" style="display: none;">
                 {{-- Warning stripes background --}}
                 <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, #ef4444 10px, #ef4444 20px);"></div>
                 
@@ -170,7 +170,7 @@
                 </template>
             @endcan
 
-        </div>{{-- /max-w container + x-data --}}
+        </div>{{-- /container + x-data --}}
     </div>
 
     {{-- =================================================================== --}}

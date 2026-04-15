@@ -2,6 +2,12 @@
  * Dashboard Product Tour — 4 Steps (+ optional sidebar)
  * Reuses shared dashboard-tour.css styles.
  * Accounts for #main-wrapper being the scroll container (position:fixed layout).
+ *
+ * Fixes:
+ *  - Waits for window.load + Alpine ready before init (ensures DOM is fully rendered)
+ *  - Validates each target exists before showing the step; skips missing targets
+ *  - Debug logging in console for every step
+ *  - Never falls back to centered modal for targeted steps
  */
 
 class DashboardTour {
@@ -15,12 +21,13 @@ class DashboardTour {
         this.scrollContainer = null;
 
         this.STORAGE_KEY = 'lab-smaba-dashboard-tour-v2';
+        this.DEBUG = true; // flip to false in production
 
         this.steps = [
             {
                 title: 'Dashboard Utama',
                 content: 'Halaman ini menampilkan ringkasan aktivitas dan data penting sistem laboratorium.',
-                target: null,
+                target: null,           // welcome — intentionally centered
                 position: 'center'
             },
             {
@@ -44,8 +51,44 @@ class DashboardTour {
         ];
     }
 
+    _log(msg, ...args) {
+        if (this.DEBUG) console.log(`%c[DashboardTour] ${msg}`, 'color:#22c55e;font-weight:bold', ...args);
+    }
+
+    _warn(msg, ...args) {
+        if (this.DEBUG) console.warn(`[DashboardTour] ${msg}`, ...args);
+    }
+
+    /**
+     * Build a filtered list of steps whose targets actually exist in the DOM.
+     * Steps with target === null (welcome) are always included.
+     */
+    _getVisibleSteps() {
+        return this.steps.filter(step => {
+            if (!step.target) return true; // welcome step
+            const el = document.querySelector(step.target);
+            if (!el) {
+                this._warn(`Target "${step.target}" NOT found — step "${step.title}" will be skipped.`);
+                return false;
+            }
+            this._log(`Target "${step.target}" found ✓`, el);
+            return true;
+        });
+    }
+
     init() {
         this.scrollContainer = document.getElementById('main-wrapper');
+
+        // Log all targets at init time
+        this._log('Initializing — checking targets…');
+        this.steps.forEach((step, i) => {
+            if (step.target) {
+                const el = document.querySelector(step.target);
+                this._log(`Step ${i} "${step.title}" → target="${step.target}" → ${el ? 'EXISTS ✓' : 'MISSING ✗'}`);
+            } else {
+                this._log(`Step ${i} "${step.title}" → no target (centered welcome)`);
+            }
+        });
 
         // Auto-start on first visit
         if (!localStorage.getItem(this.STORAGE_KEY)) {
@@ -61,8 +104,18 @@ class DashboardTour {
 
     start() {
         if (this.isActive) return;
+
+        // Rebuild visible steps at start time (DOM may have changed)
+        this.visibleSteps = this._getVisibleSteps();
+        if (this.visibleSteps.length === 0) {
+            this._warn('No visible steps — aborting tour.');
+            return;
+        }
+
         this.isActive = true;
         this.currentStep = 0;
+
+        this._log(`Starting tour with ${this.visibleSteps.length} visible steps (out of ${this.steps.length} total).`);
 
         this.createOverlay();
         this.createTooltip();
@@ -80,13 +133,12 @@ class DashboardTour {
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.innerHTML = `
             <defs>
-                <filter id="dash-tour-blur"><feGaussianBlur in="SourceGraphic" stdDeviation="3"/></filter>
                 <mask id="dash-tour-mask">
                     <rect x="0" y="0" width="100%" height="100%" fill="white"/>
-                    <rect id="dash-tour-cutout" x="0" y="0" width="0" height="0" rx="14" fill="black"/>
+                    <rect id="dash-tour-cutout" x="0" y="0" width="0" height="0" rx="12" fill="black"/>
                 </mask>
             </defs>
-            <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.72)" mask="url(#dash-tour-mask)" filter="url(#dash-tour-blur)"/>
+            <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.4)" mask="url(#dash-tour-mask)"/>
         `;
         this.overlay.appendChild(svg);
         document.body.appendChild(this.overlay);
@@ -103,9 +155,10 @@ class DashboardTour {
         this.tooltip = document.createElement('div');
         this.tooltip.className = 'tour-tooltip';
         this.tooltip.innerHTML = `
+            <div class="tour-tooltip-arrow"></div>
             <div class="tour-tooltip-header">
                 <h3 class="tour-tooltip-title"></h3>
-                <button class="tour-tooltip-close" aria-label="Close tour">&times;</button>
+                <button class="tour-tooltip-close" aria-label="Close tour"></button>
             </div>
             <div class="tour-tooltip-content"></div>
             <div class="tour-tooltip-footer">
@@ -123,16 +176,50 @@ class DashboardTour {
         this.tooltip.querySelector('.tour-btn-next').addEventListener('click', () => this._handleNext());
     }
 
+    /* ── Build dots indicator ── */
+    _renderDots() {
+        const container = this.tooltip.querySelector('.tour-tooltip-progress');
+        container.innerHTML = '';
+        for (let i = 0; i < this.visibleSteps.length; i++) {
+            const dot = document.createElement('span');
+            dot.className = 'tour-dot' + (i === this.currentStep ? ' active' : '');
+            container.appendChild(dot);
+        }
+    }
+
     /* ── Show Step ── */
     showStep(index) {
-        const step = this.steps[index];
-        if (!step) return;
+        const step = this.visibleSteps[index];
+        if (!step) {
+            this._warn(`No step at visible index ${index} — ending tour.`);
+            this.complete();
+            return;
+        }
+
+        // Double-check targeted steps still exist (DOM can mutate)
+        if (step.target) {
+            const el = document.querySelector(step.target);
+            if (!el) {
+                this._warn(`Step "${step.title}" target "${step.target}" disappeared — skipping.`);
+                // Try next step
+                if (index < this.visibleSteps.length - 1) {
+                    this.showStep(index + 1);
+                } else {
+                    this.complete();
+                }
+                return;
+            }
+        }
+
         this.currentStep = index;
+        this._log(`Showing step ${index}: "${step.title}" → target=${step.target || '(centered)'}`);
 
         // Update content
         this.tooltip.querySelector('.tour-tooltip-title').textContent = step.title;
         this.tooltip.querySelector('.tour-tooltip-content').textContent = step.content;
-        this.tooltip.querySelector('.tour-tooltip-progress').textContent = `${index + 1} / ${this.steps.length}`;
+
+        // Dots indicator
+        this._renderDots();
 
         // Update buttons
         const backBtn = this.tooltip.querySelector('.tour-btn-back');
@@ -141,7 +228,7 @@ class DashboardTour {
         if (index === 0) {
             backBtn.textContent = 'Lewati';
             nextBtn.textContent = 'Mulai Tour';
-        } else if (index === this.steps.length - 1) {
+        } else if (index === this.visibleSteps.length - 1) {
             backBtn.textContent = 'Sebelumnya';
             nextBtn.textContent = 'Selesai';
         } else {
@@ -165,7 +252,7 @@ class DashboardTour {
         const target = step.target ? document.querySelector(step.target) : null;
 
         if (!target) {
-            // No target — center tooltip (welcome step)
+            // No target — center tooltip (welcome step only)
             this.spotlight.style.display = 'none';
             if (this.maskCutout) {
                 this.maskCutout.setAttribute('width', '0');
@@ -189,6 +276,8 @@ class DashboardTour {
             const rect = target.getBoundingClientRect();
             const pad = 12;
 
+            this._log(`Target "${step.target}" rect:`, { top: rect.top, left: rect.left, w: rect.width, h: rect.height });
+
             // Spotlight
             this.spotlight.style.display = 'block';
             this.spotlight.style.left = (rect.left - pad) + 'px';
@@ -204,17 +293,17 @@ class DashboardTour {
                 this.maskCutout.setAttribute('height', rect.height + pad * 2);
             }
 
-            // Tooltip
+            // Tooltip — anchored to target
             this.positionTooltip(rect, step.position);
         }, 500);
     }
 
     positionTooltip(targetRect, preferred) {
         const vp = 12;
-        const gap = 14;
+        const gap = 16;
 
         this.tooltip.style.position = 'fixed';
-        this.tooltip.style.maxWidth = '420px';
+        this.tooltip.style.maxWidth = '400px';
         this.tooltip.style.width = 'auto';
         this.tooltip.style.left = '0';
         this.tooltip.style.top = '0';
@@ -242,6 +331,7 @@ class DashboardTour {
         if (!fits[pos]) {
             const ranked = Object.keys(space).sort((a, b) => space[b] - space[a]);
             pos = ranked.find(p => fits[p]) || ranked[0];
+            this._log(`Preferred "${preferred}" doesn't fit → using "${pos}"`);
         }
 
         let left, top, transform;
@@ -308,7 +398,7 @@ class DashboardTour {
     }
 
     _handleNext() {
-        if (this.currentStep === this.steps.length - 1) {
+        if (this.currentStep === this.visibleSteps.length - 1) {
             this.complete();
         } else {
             this.nextStep();
@@ -316,7 +406,7 @@ class DashboardTour {
     }
 
     nextStep() {
-        if (this.currentStep < this.steps.length - 1) {
+        if (this.currentStep < this.visibleSteps.length - 1) {
             this.tooltip.classList.remove('tour-tooltip-visible');
             setTimeout(() => this.showStep(this.currentStep + 1), 250);
         }
@@ -331,6 +421,7 @@ class DashboardTour {
 
     complete() {
         localStorage.setItem(this.STORAGE_KEY, 'true');
+        this._log('Tour completed — saved to localStorage.');
         this.end();
     }
 
@@ -357,17 +448,23 @@ class DashboardTour {
     }
 }
 
-// Initialize
+// ─── Initialize after full page load (images, Alpine, etc.) ───
+// Using window.load instead of DOMContentLoaded ensures Alpine/AOS
+// have finished rendering and all target elements exist in the DOM.
+
 let dashboardTour;
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
+function _initDashboardTour() {
+    // Extra 400ms delay to let Alpine finish x-init / x-data rendering
+    setTimeout(() => {
         dashboardTour = new DashboardTour();
         dashboardTour.init();
         window.startDashboardTour = () => dashboardTour.start();
-    });
+    }, 400);
+}
+
+if (document.readyState === 'complete') {
+    _initDashboardTour();
 } else {
-    dashboardTour = new DashboardTour();
-    dashboardTour.init();
-    window.startDashboardTour = () => dashboardTour.start();
+    window.addEventListener('load', _initDashboardTour);
 }

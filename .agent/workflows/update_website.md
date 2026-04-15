@@ -1,69 +1,36 @@
 ---
-description: Cara update website Laravel di Hostinger (Shared Hosting)
+description: Cara update website Laravel di Hosting menggunakan Workflow Git
 ---
 
 # Update & Deploy Website
 
-Karena ini adalah shared hosting dan folder `public/build` di-ignore oleh git, proses update dibagi menjadi dua bagian: **Local** dan **Server**.
+Proses update sudah menggunakan Git-based workflow untuk deployment yang lebih mudah.
 
 ## 1. Di Komputer Lokal (Windows)
 
-Lakukan ini setiap kali ada perubahan pada kode atau tampilan (CSS/JS).
+Setiap kali ada perubahan kode atau tampilan, komit dan push ke GitHub:
 
-1. **Build Frontend Assets:**
-   ```powershell
-   cd c:\laragon\www\lab-smaba
-   npm run build
-   ```
+```powershell
+cd c:\laragon\www\lab-smaba
+git add .
+git commit -m "Update deskripsi..."
+git push origin main
+```
 
-2. **Upload Assets (Jika ada perubahan tampilan):**
-   ```powershell
-   # Upload folder build ke server
-   scp -P 65002 -r public/build u203096280@45.90.229.210:~/domains/smanegeri1babatlmg.sch.id/public_html/lab/public/
-   ```
+## 2. Di Server Hostinger
 
-3. **Push Code ke GitHub:**
-   (User sudah melakukan ini)
-   ```powershell
-   git add .
-   git commit -m "Update pesan..."
-   git push origin main
-   ```
-
-## 2. Di Server (SSH)
-
-Lakukan ini untuk mengambil kode terbaru PHP dan update database.
-
-1. **Login SSH:**
-   ```powershell
-   ssh -p 65002 u203096280@45.90.229.210
-   ```
-
-2. **Jalankan Perintah Update:**
-   ```bash
-   cd ~/domains/smanegeri1babatlmg.sch.id/public_html/lab
-   
-   # Ambil kode terbaru
-   git pull origin main
-   
-   # Install dependency php baru (jika ada)
-   composer install --no-dev --optimize-autoloader
-   
-   # Update database (jika ada migration baru)
-   php artisan migrate --force
-   
-   # Bersihkan dan refresh cache
-   php artisan optimize:clear
-   php artisan config:cache
-   php artisan route:cache
-   php artisan view:cache
-   ```
-
-## Shortcut (Script Otomatis)
-
-Saya telah membuatkan script `deploy.sh` di server. Cukup jalankan:
+Login via SSH ke server Hostinger, kemudian jalankan script deploy:
 
 ```bash
-cd ~/domains/smanegeri1babatlmg.sch.id/public_html/lab
-sh deploy.sh
+# Masuk ke direktori web
+cd ~/domains/websmaba.site/public_html
+
+# Jalankan skrip deploy
+./deploy.sh
+```
+
+Jika terjadi masalah permission pada direktori, pastikan Anda memberikan hak akses yang benar:
+```bash
+chmod -R 775 storage
+chmod -R 775 bootstrap/cache
 ```
