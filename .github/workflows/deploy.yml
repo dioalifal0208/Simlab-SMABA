@@ -1,4 +1,4 @@
-name: Deploy to Hostinger
+name: Auto Deploy to Hostinger
 
 on:
   push:
@@ -10,38 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🚚 Checkout code
-        uses: actions/checkout@v3
-
-      - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Execute Remote Deployment
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          node-version: '18'
-
-      - name: 📦 Install and Build Assets
-        run: |
-          npm install
-          npm run build
-
-      - name: 🚀 SSH and Deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: ${{ secrets.SSH_PORT }}
+          host: 45.90.229.210
+          username: u203096280
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 65002
           script: |
             cd ~/domains/websmaba.site/public_html
-            git pull origin main
-            # Kita jalankan deploy.sh yang ada di server
-            sh deploy.sh
-
-      - name: 📂 Upload Built Assets
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "public/build"
-          target: "~/domains/websmaba.site/public_html"
+            ./deploy.sh
