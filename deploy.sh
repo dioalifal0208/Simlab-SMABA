@@ -4,11 +4,13 @@
 echo "🚀 Memulai proses update..."
 
 # Masuk ke direktori
-cd ~/Simlab-SMABA
+cd ~/domains/websmaba.site/public_html
 
-# 1. Ambil kode terbaru dari GitHub
-echo "📥 Menarik kode terbaru (Git Pull)..."
-git pull origin main
+# 1. Pastikan file .env ada
+if [ ! -f ".env" ]; then
+    echo "⚠️  File .env tidak ditemukan! Pastikan Anda sudah menguploadnya."
+    exit 1
+fi
 
 # 2. Install dependency PHP (jika ada perubahan di composer.json)
 echo "📦 Menginstall dependency..."
@@ -26,4 +28,4 @@ php artisan route:cache
 php artisan view:cache
 
 echo "✅ Update selesai! Website sudah menggunakan versi terbaru."
-echo "⚠️  PENTING: Jika Anda mengubah file CSS/JS (Tailwind), pastikan Anda sudah menjalankan 'npm run build' di komputer lokal dan meng-upload folder 'public/build' ke server."
+echo "⚠️  PENTING: Versi CSS/JS (Tailwind) sekarang di-build otomatis oleh GitHub Actions. Anda tidak perlu lagi menjalankan npm run build di laptop."
