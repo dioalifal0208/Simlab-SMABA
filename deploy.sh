@@ -1,31 +1,72 @@
 #!/bin/bash
+set -e
 
-cd ~/domains/websmaba.site/public_html
+echo "================================="
+echo "STARTING DEPLOYMENT"
+echo "================================="
 
+cd ~/domains/websmaba.site/public_html || exit 1
+
+echo "Current directory:"
+pwd
+
+# ========================
+# Enable maintenance mode
+# ========================
+echo "Enabling maintenance mode..."
+php artisan down || true
+
+# ========================
+# Pull latest code
+# ========================
 echo "Pulling latest code..."
 git pull origin main
 
+# ========================
+# Install PHP dependencies
+# ========================
 echo "Installing PHP dependencies..."
-composer install --no-dev --optimize-autoloader
+composer install --no-dev --optimize-autoloader --no-interaction
 
+# ========================
+# Node build (optional)
+# ========================
 echo "Checking Node availability..."
-
 if command -v npm &> /dev/null
 then
     echo "Node detected. Running build..."
     npm install
     npm run build
 else
-    echo "Node NOT available. Skipping build (assumes build already committed)"
+    echo "Node NOT available. Skipping build (using committed assets)"
 fi
 
-echo "Clearing Laravel cache..."
-php artisan config:clear
-php artisan cache:clear
-php artisan view:clear
+# ========================
+# Run database migration
+# ========================
+echo "Running migrations..."
+php artisan migrate --force
 
+# ========================
+# Optimize Laravel
+# ========================
+echo "Optimizing Laravel..."
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# ========================
+# Fix permissions
+# ========================
 echo "Fixing permissions..."
-chmod -R 775 storage
-chmod -R 775 bootstrap/cache
+chmod -R 775 storage bootstrap/cache
 
-echo "Deploy finished."
+# ========================
+# Disable maintenance mode
+# ========================
+echo "Disabling maintenance mode..."
+php artisan up
+
+echo "================================="
+echo "DEPLOYMENT SUCCESS"
+echo "================================="

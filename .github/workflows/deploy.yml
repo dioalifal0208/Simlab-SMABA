@@ -10,13 +10,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Execute Remote Deployment
+      - name: Deploy to Hostinger via SSH
         uses: appleboy/ssh-action@v1.0.3
+
         with:
           host: 45.90.229.210
           username: u203096280
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 65002
+
           script: |
-            cd ~/domains/websmaba.site/public_html
+            set -e
+
+            echo "================================="
+            echo "STARTING REMOTE DEPLOYMENT"
+            echo "================================="
+
+            echo "Checking current user..."
+            whoami
+
+            echo "Navigating to project directory..."
+            cd ~/domains/websmaba.site/public_html || {
+              echo "ERROR: Directory not found"
+              exit 1
+            }
+
+            echo "Current directory:"
+            pwd
+
+            echo "Listing files..."
+            ls -la
+
+            echo "Ensuring deploy.sh is executable..."
+            chmod +x deploy.sh
+
+            echo "Running deploy script..."
             ./deploy.sh
+
+            echo "================================="
+            echo "DEPLOYMENT COMPLETED SUCCESSFULLY"
+            echo "================================="
