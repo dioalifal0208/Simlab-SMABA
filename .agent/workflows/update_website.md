@@ -23,7 +23,7 @@ Login via SSH ke server Hostinger, kemudian jalankan script deploy:
 
 ```bash
 # Masuk ke direktori web
-cd ~/domains/websmaba.site/public_html
+cd ~/domains/smanegeri1babatlmg.sch.id/public_html/lab
 
 # Jalankan skrip deploy
 ./deploy.sh

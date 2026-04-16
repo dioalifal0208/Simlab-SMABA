@@ -4,8 +4,7 @@ set -e
 echo "================================="
 echo "STARTING DEPLOYMENT"
 echo "================================="
-
-cd ~/domains/websmaba.site/public_html || exit 1
+cd ~/domains/smanegeri1babatlmg.sch.id/public_html/lab || exit 1
 
 echo "Current directory:"
 pwd
