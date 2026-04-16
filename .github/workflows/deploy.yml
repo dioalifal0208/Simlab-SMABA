@@ -30,7 +30,7 @@ jobs:
             whoami
 
             echo "Navigating to project directory..."
-            cd ~/domains/websmaba.site/public_html || {
+            cd ~/domains/smanegeri1babatlmg.sch.id/public_html/lab || {
               echo "ERROR: Directory not found"
               exit 1
             }
