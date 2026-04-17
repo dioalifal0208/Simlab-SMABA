@@ -107,7 +107,21 @@
                                 </div>
                             </div>
                             <div class="bg-gray-50 p-3 border-t flex items-center justify-end space-x-2">
-                                <a href="#" onclick="openDocModal('{{ route('documents.preview', $document) }}', '{{ addslashes($document->title) }}'); return false;" class="px-3 py-1 bg-gray-200 text-gray-700 text-xs font-semibold rounded-full hover:bg-gray-300 transition-colors">Lihat</a>
+                                @php
+                                    $canManageDoc = false;
+                                    if(auth()->user()->can('manage-documents') && (auth()->user()->role === 'admin' || $document->user_id === auth()->id())) {
+                                        $canManageDoc = true;
+                                    }
+                                @endphp
+                                <button type="button" 
+                                        @click="$dispatch('buka-dokumen', {
+                                            url: '{{ route('documents.preview', $document) }}',
+                                            title: '{{ htmlspecialchars($document->title, ENT_QUOTES) }}',
+                                            download: '{{ route('documents.download', $document) }}',
+                                            delete: '{{ route('documents.destroy', $document) }}',
+                                            canDelete: {{ $canManageDoc ? 'true' : 'false' }}
+                                        })"
+                                        class="px-3 py-1 bg-gray-200 text-gray-700 text-xs font-semibold rounded-full hover:bg-gray-300 transition-colors">Lihat</button>
                                 <a href="{{ route('documents.download', $document) }}" class="px-3 py-1 bg-indigo-600 text-white text-xs font-semibold rounded-full hover:bg-indigo-700 transition-colors">Unduh</a>
                                 @can('manage-documents')
                                     @if (auth()->user()->role === 'admin' || $document->user_id === auth()->id())
@@ -141,56 +155,125 @@
         </div>
     </div>
 
-    {{-- Modal Pratinjau Dokumen --}}
-    <div id="docModal" class="hidden fixed inset-0 z-50 bg-black/60 items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="docModalTitle">
-        <div class="bg-white w-11/12 max-w-5xl rounded-lg shadow-lg overflow-hidden">
-            <div class="flex justify-between items-center p-4 border-b">
-                <h3 id="docModalTitle" class="text-lg font-semibold">Pratinjau Dokumen</h3>
-                <button type="button" id="closeModalButton" class="text-gray-500 hover:text-gray-800 text-xl font-bold" aria-label="Tutup">&times;</button>
-            </div>
-            <div class="p-4">
-                <iframe id="docFrame" class="w-full h-[80vh] border rounded" src="" title="Pratinjau Dokumen"></iframe>
+    </div> {{-- Penutup py-12 div --}}
+
+        {{-- MODAL PREVIEW DOKUMEN (ALPINE.JS STANDALONE COMPONENT) --}}
+        <div x-data="{ 
+                showDocModal: false, 
+                docUrl: '', 
+                docTitle: '',
+                docDownloadUrl: '',
+                docDeleteUrl: '',
+                canDelete: false 
+             }"
+             @buka-dokumen.window="
+                docUrl = $event.detail.url;
+                docTitle = $event.detail.title;
+                docDownloadUrl = $event.detail.download;
+                docDeleteUrl = $event.detail.delete;
+                canDelete = $event.detail.canDelete;
+                showDocModal = true;
+             "
+             @keydown.escape.window="showDocModal = false"
+             x-show="showDocModal" 
+             style="display: none;"
+             class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" x-cloak>
+             
+            <div x-show="showDocModal" 
+                 x-transition.opacity 
+                 class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm" @click="showDocModal = false"></div>
+            
+            <div x-show="showDocModal" 
+                 x-transition 
+                 class="bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-4xl h-[90vh] flex flex-col relative z-50 overflow-hidden">
+                
+                {{-- Header Modal --}}
+                <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                    <h3 class="font-extrabold text-lg text-slate-800 flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm bg-blue-100 text-blue-600"><i class="fas fa-file-alt"></i></div>
+                        <span x-text="docTitle">Pratinjau Dokumen</span>
+                    </h3>
+                    <div class="flex gap-2">
+                        <button @click="showDocModal = false" class="text-slate-400 hover:text-red-500 transition-colors w-8 h-8 flex justify-center items-center rounded-lg hover:bg-slate-200"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                
+                {{-- Body Modal (Dokumen) --}}
+                <div class="flex-grow w-full bg-slate-200 overflow-hidden relative"
+                     x-data="{ 
+                         localObjUrl: '', 
+                         isLoading: false,
+                         async loadPdf() {
+                             if (!this.docUrl) return;
+                             this.isLoading = true;
+                             if (this.localObjUrl) {
+                                 URL.revokeObjectURL(this.localObjUrl);
+                                 this.localObjUrl = '';
+                             }
+                             try {
+                                 // AJAX Fetch JSON Base64 Bypassing IDM
+                                 const response = await fetch(this.docUrl + '?json=1');
+                                 const contentType = response.headers.get('content-type');
+                                 
+                                 if (contentType && contentType.indexOf('application/json') !== -1) {
+                                     const resData = await response.json();
+                                     if(resData.data) {
+                                         // Menggunakan data URI langsung untuk menghindari isu blank pada blob iFrame Chrome 
+                                         this.localObjUrl = 'data:application/pdf;base64,' + resData.data;
+                                         return;
+                                     }
+                                 }
+                                 
+                                 // Fallback blob
+                                 const blob = await response.blob();
+                                 this.localObjUrl = URL.createObjectURL(new Blob([blob], {type: 'application/pdf'}));
+                             } catch (err) {
+                                 console.error('Gagal memuat pratinjau', err);
+                             } finally {
+                                 this.isLoading = false;
+                             }
+                         }
+                     }"
+                     x-init="$watch('docUrl', () => loadPdf())"
+                     @buka-dokumen.window="setTimeout(() => loadPdf(), 50)">
+                    
+                    {{-- Indikator Loading --}}
+                    <div x-show="isLoading" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-200 z-10 transition-opacity">
+                        <i class="fas fa-circle-notch fa-spin text-4xl text-blue-500 mb-3"></i>
+                        <span class="text-slate-500 font-medium text-sm animate-pulse">Merender Dokumen...</span>
+                    </div>
+
+                    {{-- Preview Objek --}}
+                    <template x-if="localObjUrl">
+                        <object :data="localObjUrl" type="application/pdf" class="w-full h-full border-0 absolute inset-0 bg-white">
+                            <embed :src="localObjUrl" type="application/pdf" class="w-full h-full"/>
+                        </object>
+                    </template>
+                </div>
+
+                {{-- Footer Action Bar --}}
+                <div class="px-6 py-4 border-t border-slate-100 bg-white flex justify-between items-center mt-auto">
+                    <div>
+                        <form :action="docDeleteUrl" method="POST" class="delete-form m-0" x-show="canDelete">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="px-4 py-2.5 bg-red-50 text-red-600 hover:bg-red-500 hover:text-white rounded-xl font-bold text-sm transition-colors border border-red-100 flex items-center gap-2 shadow-sm">
+                                <i class="fas fa-trash-alt"></i> Hapus Permanen
+                            </button>
+                        </form>
+                    </div>
+                    <div class="flex gap-3">
+                        <button @click="showDocModal = false" class="px-5 py-2.5 bg-slate-50 border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-100 transition-colors text-sm shadow-sm relative z-50">Batalkan</button>
+                        <a :href="docDownloadUrl" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm shadow-md shadow-blue-600/20 transition-all flex items-center gap-2 hover:-translate-y-0.5 relative z-50">
+                            <i class="fas fa-download"></i> Download Dokumen
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
     @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            function openDocModal(url, title) {
-                const modal = document.getElementById('docModal');
-                if (!modal) return;
-                document.getElementById('docModalTitle').textContent = title;
-                document.getElementById('docFrame').src = url;
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeDocModal() {
-                const modal = document.getElementById('docModal');
-                if (!modal) return;
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-                document.getElementById('docFrame').src = '';
-                document.body.style.overflow = '';
-            }
-
             document.addEventListener('DOMContentLoaded', function () {
-                const closeModalBtn = document.getElementById('closeModalButton');
-                if (closeModalBtn) {
-                    closeModalBtn.addEventListener('click', closeDocModal);
-                }
-                const modalOverlay = document.getElementById('docModal');
-                if(modalOverlay) {
-                    modalOverlay.addEventListener('click', function(e) {
-                        if (e.target === modalOverlay) closeDocModal();
-                    });
-                }
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') closeDocModal();
-                });
-
                 const searchForm = document.getElementById('search-form');
                 const searchInput = document.getElementById('search');
                 let debounceTimer;
@@ -202,27 +285,6 @@
                         }, 500);
                     });
                 }
-
-                const deleteForms = document.querySelectorAll('.delete-form');
-                deleteForms.forEach(form => {
-                    form.addEventListener('submit', function (event) {
-                        event.preventDefault();
-                        Swal.fire({
-                            title: 'Apakah Anda yakin?',
-                            text: "Dokumen yang dihapus tidak dapat dikembalikan!",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#d33',
-                            cancelButtonColor: '#3085d6',
-                            confirmButtonText: 'Ya, hapus!',
-                            cancelButtonText: 'Batal'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                form.submit();
-                            }
-                        });
-                    });
-                });
             });
         </script>
     @endpush

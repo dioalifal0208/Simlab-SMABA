@@ -26,6 +26,8 @@ return [
     // Form Labels
     'form' => [
         'lab' => 'Laboratory',
+        'select_lab' => 'Select Laboratory',
+        'subject' => 'Subject',
         'date' => 'Date',
         'start_time' => 'Start Time',
         'end_time' => 'End Time',

@@ -52,13 +52,14 @@
 
     <div x-data="{ 
             showModal: false, 
+            showSuratModal: false,
             modalType: '', 
             actionTitle: '', 
             actionColor: '', 
             actionIcon: '',
             btnColor: ''
         }" 
-        @keydown.escape.window="showModal = false"
+        @keydown.escape.window="showModal = false; showSuratModal = false"
         class="relative min-h-screen pb-12">
         
         {{-- Product Tour CSS & JS --}}
@@ -82,9 +83,9 @@
                     {{-- Header Badges --}}
                     @if(($booking->status == 'approved' || $booking->status == 'completed') && (auth()->user()->role === 'admin' || auth()->id() === $booking->user_id))
                     <div class="flex gap-3">
-                        <a href="{{ route('bookings.surat', $booking->id) }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-white border border-slate-300 rounded-xl font-bold text-xs text-slate-700 hover:bg-slate-50 hover:text-green-600 transition-all shadow-sm">
+                        <button @click="showSuratModal = true" type="button" class="inline-flex items-center px-4 py-2 bg-white border border-slate-300 rounded-xl font-bold text-xs text-slate-700 hover:bg-slate-50 hover:text-green-600 transition-all shadow-sm">
                             <i class="fas fa-print mr-2 text-slate-400"></i> Cetak Surat
-                        </a>
+                        </button>
                     </div>
                     @endif
                 </div>
@@ -463,6 +464,55 @@
                             </button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </template>
+        {{-- MODAL SURAT PDF --}}
+        <template x-teleport="body">
+            <div x-show="showSuratModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" x-cloak>
+                <div x-show="showSuratModal" 
+                     x-transition.opacity 
+                     class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm" @click="showSuratModal = false"></div>
+                
+                <div x-show="showSuratModal" 
+                     x-transition 
+                     class="bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-4xl h-[90vh] flex flex-col relative z-50 overflow-hidden">
+                    
+                    {{-- Header Modal --}}
+                    <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                        <h3 class="font-extrabold text-lg text-slate-800 flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm bg-blue-100 text-blue-600"><i class="fas fa-file-invoice"></i></div>
+                            Surat Peminjaman Lab
+                        </h3>
+                        <div class="flex gap-2">
+                            <button @click="showSuratModal = false" class="text-slate-400 hover:text-red-500 transition-colors w-8 h-8 flex justify-center items-center rounded-lg hover:bg-slate-200"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                    
+                    {{-- Body Modal (iFrame Surat) --}}
+                    <div class="flex-grow w-full bg-slate-200 overflow-hidden relative">
+                        <iframe id="suratFrame" src="{{ route('bookings.surat', $booking->id) }}" class="w-full h-full border-0 absolute inset-0 bg-white"></iframe>
+                    </div>
+
+                    {{-- Footer Action Bar --}}
+                    <div class="px-6 py-4 border-t border-slate-100 bg-white flex justify-between items-center mt-auto">
+                        <div>
+                            @can('is-admin')
+                            <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Anda yakin ingin menghapus data jadwal ini sepenuhnya secara permanen?');" class="inline">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="px-4 py-2.5 bg-red-50 text-red-600 hover:bg-red-500 hover:text-white rounded-xl font-bold text-sm transition-colors border border-red-100 flex items-center gap-2 shadow-sm">
+                                    <i class="fas fa-trash-alt"></i> Hapus Permanen
+                                </button>
+                            </form>
+                            @endcan
+                        </div>
+                        <div class="flex gap-3">
+                            <button @click="showSuratModal = false" class="px-5 py-2.5 bg-slate-50 border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-100 transition-colors text-sm shadow-sm relative z-50">Batalkan</button>
+                            <button onclick="document.getElementById('suratFrame').contentWindow.print()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm shadow-md shadow-blue-600/20 transition-all flex items-center gap-2 hover:-translate-y-0.5 relative z-50">
+                                <i class="fas fa-download"></i> Download / Print
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </template>

@@ -104,6 +104,14 @@ class DocumentController extends Controller
         
         // Cek ekstensi file
         $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        // PENAMBAHAN: Jika klien (AJAX) meminta format JSON untuk menghindari pencegatan IDM
+        if (request()->has('json') && strtolower($extension) === 'pdf') {
+            return response()->json([
+                'mime' => 'application/pdf',
+                'data' => base64_encode(file_get_contents($path)),
+            ]);
+        }
         
         // Jika bukan PDF, langsung panggil fungsi download
         if (strtolower($extension) !== 'pdf') {

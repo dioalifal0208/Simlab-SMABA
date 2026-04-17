@@ -17,6 +17,34 @@ class StoreBookingRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation()
+    {
+        $mergeData = [];
+
+        // Gabungkan tanggal dengan waktu
+        if ($this->has('tanggal')) {
+            if ($this->has('waktu_mulai') && !str_contains($this->waktu_mulai, '-')) {
+                // Pastikan waktu (jam:menit) digabungkan dengan tanggal
+                $mergeData['waktu_mulai'] = $this->tanggal . ' ' . $this->waktu_mulai . (strlen($this->waktu_mulai) <= 5 ? ':00' : '');
+            }
+            if ($this->has('waktu_selesai') && !str_contains($this->waktu_selesai, '-')) {
+                $mergeData['waktu_selesai'] = $this->tanggal . ' ' . $this->waktu_selesai . (strlen($this->waktu_selesai) <= 5 ? ':00' : '');
+            }
+        }
+
+        // Jika guru_pengampu tidak ada (karena tidak ada di form), set otomatis ke nama user login
+        if (!$this->has('guru_pengampu')) {
+            $mergeData['guru_pengampu'] = auth()->check() ? auth()->user()->name : 'Unknown';
+        }
+
+        if (!empty($mergeData)) {
+            $this->merge($mergeData);
+        }
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>

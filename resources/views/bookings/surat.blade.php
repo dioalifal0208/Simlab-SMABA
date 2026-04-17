@@ -322,7 +322,12 @@
                 <p style="margin-bottom: 5px;">Laboran</p>
                 <br>
                 {{-- QR Code TTE --}}
-                <img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(90)->merge(public_path('images/logo-smaba.webp'), 0.3, true)->generate(route('bookings.verify', $booking->id))) }}" alt="QR Validation">
+                <div style="position: relative; display: inline-block; width: 90px; height: 90px;">
+                    {!! QrCode::size(90)->errorCorrection('H')->generate(route('bookings.verify', $booking->id)) !!}
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2px; border-radius: 2px; display: flex; justify-content: center; align-items: center;">
+                        <img src="{{ asset('images/logo-smaba.webp') }}" style="width: 22px; height: auto;" alt="Logo TTE">
+                    </div>
+                </div>
                 <br>
                 <div class="signature-name" style="font-size: 8pt; margin-top: 5px;">(Ditandatangani Secara Elektronik)</div>
             </div>

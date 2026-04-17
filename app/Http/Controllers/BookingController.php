@@ -128,7 +128,7 @@ class BookingController extends Controller
             'laboratorium' => $selectedLab,
             'waktu_mulai' => $validated['waktu_mulai'],
             'waktu_selesai' => $validated['waktu_selesai'],
-            'jumlah_peserta' => $validated['jumlah_peserta'],
+            'jumlah_peserta' => $validated['jumlah_peserta'] ?? null,
         ]);
 
         // Kirim notifikasi ke semua admin bahwa ada booking lab baru

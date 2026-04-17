@@ -26,6 +26,8 @@ return [
     // Label Form
     'form' => [
         'lab' => 'Laboratorium',
+        'select_lab' => 'Pilih Laboratorium',
+        'subject' => 'Mata Pelajaran',
         'date' => 'Tanggal',
         'start_time' => 'Waktu Mulai',
         'end_time' => 'Waktu Selesai',

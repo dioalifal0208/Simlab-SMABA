@@ -127,14 +127,20 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault(); // Mencegah form dikirim secara langsung
 
             Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Tindakan ini tidak dapat dibatalkan!",
+                title: 'Hapus Data?',
+                text: "Tindakan ini bersifat permanen dan tidak dapat dipulihkan.",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Batal'
+                confirmButtonText: '<i class="fas fa-trash-alt mr-2"></i>Ya, Hapus Permanen',
+                cancelButtonText: 'Batalkan',
+                customClass: {
+                    confirmButton: 'px-5 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 font-bold ml-3 shadow-md hover:-translate-y-0.5 transition-all outline-none',
+                    cancelButton: 'px-5 py-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 border border-slate-200 font-bold shadow-sm transition-all outline-none',
+                    popup: 'rounded-2xl border border-slate-100 shadow-2xl pb-4',
+                    title: 'font-extrabold text-slate-800 text-xl pt-2',
+                    htmlContainer: 'text-sm text-slate-500 font-medium'
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.submit(); // Jika dikonfirmasi, kirim form

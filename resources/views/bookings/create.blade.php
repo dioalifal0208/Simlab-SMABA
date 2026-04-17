@@ -210,9 +210,7 @@
                         
                         <div class="flex items-center justify-end gap-3 px-6 py-4 bg-slate-50 border-t border-slate-100">
                             <button type="button" @click="showConfirm = false" class="px-5 py-2.5 bg-white border border-slate-300 shadow-sm text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-sm">Batal</button>
-                            <button type="button" @click="$refs.submitBtnHidden.click(); showConfirm = false" class="px-6 py-2.5 bg-emerald-600 text-white rounded-xl font-bold text-sm shadow-sm hover:bg-emerald-700 transition-all hover:-translate-y-0.5">Ya, Kirim Sekarang</button>
-                            {{-- Native Form Submit Button Hidden --}}
-                            <button type="submit" x-ref="submitBtnHidden" class="hidden"></button>
+                            <button type="button" @click="document.getElementById('bookingCreateForm').submit(); showConfirm = false" class="px-6 py-2.5 bg-emerald-600 text-white rounded-xl font-bold text-sm shadow-sm hover:bg-emerald-700 transition-all hover:-translate-y-0.5">Ya, Kirim Sekarang</button>
                         </div>
                     </div>
                 </div>
