@@ -2,85 +2,97 @@
     <img src="public/images/logo-smaba.webp" width="120" alt="Logo SMABA">
 </p>
 
-<h1 align="center">SIMLAB SMABA</h1>
+<h1 align="center">SIMLAB SMABA v2.0</h1>
 
 <p align="center">
-    <strong>Sistem Informasi Manajemen Laboratorium SMA Negeri 1 Babat</strong>
+    <strong>Sistem Informasi Manajemen Laboratorium Modern & Terintegrasi</strong><br>
+    SMA Negeri 1 Babat
 </p>
 
 <p align="center">
-    <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-10.x-FF2D20?style=flat&logo=laravel" alt="Laravel 10"></a>
-    <a href="https://tailwindcss.com"><img src="https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=flat&logo=tailwind-css" alt="Tailwind CSS"></a>
-    <a href="https://alpinejs.dev"><img src="https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?style=flat&logo=alpine.js" alt="Alpine.js"></a>
+    <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel" alt="Laravel 11"></a>
+    <a href="https://tailwindcss.com"><img src="https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS"></a>
+    <a href="https://alpinejs.dev"><img src="https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?style=for-the-badge&logo=alpine.js" alt="Alpine.js"></a>
 </p>
 
 ---
 
 ## 📖 Tentang Aplikasi
 
-**SIMLAB SMABA** adalah platform digital yang dirancang untuk memodernisasi pengelolaan laboratorium di SMA Negeri 1 Babat. Sistem ini mendigitalkan proses peminjaman ruang, inventaris alat, hingga pelaporan, meninggalkan cara manual berbasis kertas demi efisiensi dan akurasi data.
+**SIMLAB SMABA** adalah platform digital mutakhir yang dirancang untuk merevolusi tata kelola laboratorium di lingkungan pendidikan. Berfokus pada efisiensi, transparansi, dan keamanan, sistem ini mengintegrasikan seluruh aspek manajemen lab—dari inventarisasi aset hingga penjadwalan praktikum—dalam satu ekosistem digital yang modern.
 
 ## ✨ Fitur Unggulan
 
-### 1. 📅 Manajemen Peminjaman (Booking Lab)
-- **Kalender Interaktif**: Cek ketersediaan lab secara real-time.
-- **Booking Online**: Guru dapat mengajukan peminjaman lab dari mana saja.
-- **Konflik Jadwal Otomatis**: Sistem menolak booking jika jadwal bentrok.
+### 1. 🛡️ Keamanan Tingkat Lanjut (Security First)
+- **Two-Factor Authentication (2FA)**: Proteksi akun tambahan menggunakan Google Authenticator (Wajib diaktifkan).
+- **Dynamic Lock Screen**: Penguncian layar otomatis saat sesi tidak aktif dengan efek blur untuk privasi data.
+- **Audit Trails**: Pencatatan setiap aktivitas penting dalam sistem (Create, Update, Delete) untuk transparansi penuh.
 
-### 2. 📱 Tanda Tangan Digital (TTE)
-- **QR Code Verification**: Surat peminjaman dilengkapi QR Code unik.
-- **Halaman Verifikasi Publik**: Scan QR untuk memvalidasi keaslian dokumen secara online tanpa login.
+### 2. 🔍 Pencarian Global Cerdas
+- **Instant Search**: Navigasi cepat ke instrumen, guru, atau dokumen hanya dengan mengetik di bilah pencarian global.
+- **Contextual Results**: Hasil pencarian yang relevan berdasarkan kategori data.
 
-### 3. 📦 Manajemen Inventaris
-- Pencatatan alat dan bahan laboratorium.
-- Status kondisi barang (Baik, Rusak, Hilang).
+### 3. 🗓️ Penjadwalan & Peminjaman Cerdas
+- **Kalender Interaktif**: Visualisasi jadwal laboratorium yang transparan untuk mencegah konflik penggunaan.
+- **Workflow Persetujuan Digital**: Alur kerja dari pengajuan oleh guru hingga persetujuan Kepala Lab yang sepenuhnya paperless.
+- **Validasi QR Code**: Setiap surat peminjaman dilengkapi dengan QR Code unik yang dapat divalidasi secara publik.
 
-### 4. 📊 Laporan & Analitik
-- **Grafik Tren**: Visualisasi data peminjaman bulanan dan alat terpopuler.
-- **Export Excel**: Unduh rekapitulasi laporan bulanan dalam format `.xlsx` untuk administrasi sekolah.
+### 4. 📦 Manajemen Aset Terintegrasi
+- **Inventaris Digital**: Database terpusat untuk alat dan bahan dengan pelacakan stok real-time.
+- **Laporan Kerusakan**: Sistem pelaporan masalah alat yang terintegrasi untuk mempercepat proses pemeliharaan.
+- **Maintenance Log**: Riwayat pemeliharaan alat untuk menjaga kualitas aset sekolah.
 
-### 5. 🔒 Keamanan Tingkat Lanjut
-- **Session Timeout**: Otomatis mengunci layar (Lock Screen) jika tidak ada aktivitas selama 5 menit.
-- **Blur Effect**: Menjaga privasi tampilan saat sesi terkunci.
+### 5. 📚 Pustaka & Pusat Pengetahuan
+- **Modul Praktikum Digital**: Penyimpanan terpusat untuk modul, panduan praktikum, dan SOP laboratorium.
+- **Multi-Format Support**: Mendukung dokumen PDF, Word, dan Excel dengan akses yang mudah bagi guru dan siswa.
 
-## 🛠️ Teknologi yang Digunakan
+### 6. 📊 Analitik & Reporting Otomatis
+- **Real-time Landing Stats**: Statistik jumlah alat, guru, dan aktivitas yang diambil langsung dari database.
+- **One-Click Export**: Menghasilkan laporan penggunaan lab dan peminjaman alat dalam format Excel (.xlsx) secara instan.
 
-- **Backend**: Laravel 10 (PHP)
-- **Frontend**: Blade, Tailwind CSS, Alpine.js
-- **Database**: MySQL
-- **Library Pendukung**: 
-  - `simplesoftwareio/simple-qrcode` (Tanda Tangan Digital)
-  - `maatwebsite/excel` (Export Laporan)
-  - `fullcalendar` (Jadwal Lab)
+### 7. 🌐 Pengalaman Pengguna Premium
+- **Interactive Product Tour**: Panduan visual 6 langkah untuk membantu pengguna baru memahami alur aplikasi.
+- **Bilingual Support**: Dukungan penuh bahasa Indonesia dan Inggris (Full I18n).
+- **Modern Responsive UI**: Desain yang bersih, profesional, dan dioptimalkan untuk berbagai perangkat.
 
-## 🚀 Instalasi Lokal
+## 🛠️ Stack Teknologi
 
-1. **Clone Repository**
+- **Core**: Laravel 11, PHP 8.2+
+- **Frontend**: Blade Components, Tailwind CSS (Modern Theme), Alpine.js
+- **Database**: MySQL / MariaDB
+- **Key Libraries**:
+    - `pragmarx/google2fa` (Security)
+    - `simplesoftwareio/simple-qrcode` (Verification)
+    - `maatwebsite/excel` (Reporting)
+    - `fullcalendar` (Scheduling)
+    - `AOS.js` (Animations)
+
+## 🚀 Instalasi & Pengembangan
+
+1. **Persyaratan Sistem**
+    - PHP >= 8.2
+    - Composer
+    - Node.js & NPM
+
+2. **Langkah Instalasi**
    ```bash
+   # Clone repository
    git clone https://github.com/dioalifal0208/Simlab-SMABA.git
    cd Simlab-SMABA
-   ```
 
-2. **Install Dependencies**
-   ```bash
+   # Install dependencies
    composer install
    npm install && npm run build
-   ```
 
-3. **Setup Environment**
-   - Copy `.env.example` ke `.env`
-   - Konfigurasi database di `.env`
-   ```bash
+   # Environment Setup
    cp .env.example .env
    php artisan key:generate
-   ```
 
-4. **Migrasi Database**
-   ```bash
+   # Database Migration & Seeding
    php artisan migrate --seed
    ```
 
-5. **Jalankan Aplikasi**
+3. **Menjalankan Server**
    ```bash
    php artisan serve
    ```
@@ -88,5 +100,5 @@
 ---
 
 <p align="center">
-    Dikembangkan oleh <strong> Dio Indrawan - SMA Negeri 1 Babat</strong> © 2026
+    Dikembangkan dengan ❤️ untuk <strong>SMA Negeri 1 Babat</strong> © 2026
 </p>
