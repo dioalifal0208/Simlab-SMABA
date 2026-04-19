@@ -2,7 +2,7 @@
     <img src="public/images/logo-smaba.webp" width="120" alt="Logo SMABA">
 </p>
 
-<h1 align="center">SIMLAB SMABA v2.0</h1>
+<h1 align="center">SIMLAB SMABA</h1>
 
 <p align="center">
     <strong>Sistem Informasi Manajemen Laboratorium Modern & Terintegrasi</strong><br>
@@ -100,5 +100,5 @@
 ---
 
 <p align="center">
-    Dikembangkan dengan ❤️ untuk <strong>SMA Negeri 1 Babat</strong> © 2026
+    Dikembangkan oleh Dio Indrawan untuk <strong>SMA Negeri 1 Babat</strong> © 2026
 </p>
