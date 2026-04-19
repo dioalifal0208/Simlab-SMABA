@@ -62,9 +62,11 @@
 - **Data Visual**: Chart.js, FullCalendar 6
 - **Storage**: App Storage with Intervention Image 3
 
-## 🚀 Instalasi Cepat
+## 🚀 Deployment & Pengembangan
 
-1. **Clone & Install**
+Sistem ini mendukung otomatisasi deployment "One-Click" untuk sinkronisasi GitHub dan Hostinger secara bersamaan.
+
+1. **Instalasi Awal**
    ```bash
    git clone https://github.com/dioalifal0208/Simlab-SMABA.git
    cd Simlab-SMABA
@@ -72,15 +74,13 @@
    npm install && npm run build
    ```
 
-2. **Configuration**
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   php artisan migrate --seed
-   php artisan storage:link
+2. **Otomatisasi Deployment (Hostinger)**
+   Setelah melakukan commit pada perubahan Anda, jalankan skrip berikut di PowerShell untuk melakukan push ke GitHub dan deploy ke server:
+   ```powershell
+   .\remote_deploy.ps1
    ```
 
-3. **Running Environment**
+3. **Running Environment Lokal**
    ```bash
    # Gunakan shortcut composer yang sudah dikonfigurasi
    composer dev
