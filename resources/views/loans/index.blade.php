@@ -131,23 +131,33 @@
                 </div>
 
                 {{-- Lab Filter Form --}}
-                <form action="{{ route('loans.index') }}" method="GET" id="filter-form" class="w-full md:w-auto flex items-center gap-2">
+                <form action="{{ route('loans.index') }}" method="GET" id="filter-form" class="w-full md:w-auto flex flex-col items-end gap-1">
                     <input type="hidden" name="status" value="{{ request('status') }}">
-                    <div class="relative bg-white rounded-xl shadow-sm border border-slate-200 flex items-center">
+                    <div class="relative bg-white rounded-xl shadow-sm border border-slate-200 flex items-center {{ auth()->user()->role === 'guru' ? 'bg-slate-50' : '' }}">
                         <div class="pl-3 py-2 pointer-events-none">
                             <i class="fas fa-flask text-slate-400"></i>
                         </div>
-                        <select name="laboratorium" id="laboratorium" onchange="this.form.submit()" class="pl-2 pr-10 py-2.5 w-full md:w-48 bg-transparent border-none focus:ring-0 text-sm font-semibold text-slate-700 cursor-pointer appearance-none">
-                            <option value="">Semua Laboratorium</option>
-                            <option value="Biologi" @selected(request('laboratorium') === 'Biologi')>Biologi</option>
-                            <option value="Fisika" @selected(request('laboratorium') === 'Fisika')>Fisika</option>
-                            <option value="Bahasa" @selected(request('laboratorium') === 'Bahasa')>Bahasa</option>
-                            <option value="Komputer 1" @selected(request('laboratorium') === 'Komputer 1')>Komputer 1</option>
-                            <option value="Komputer 2" @selected(request('laboratorium') === 'Komputer 2')>Komputer 2</option>
-                            <option value="Komputer 3" @selected(request('laboratorium') === 'Komputer 3')>Komputer 3</option>
-                            <option value="Komputer 4" @selected(request('laboratorium') === 'Komputer 4')>Komputer 4</option>
+                        <select name="laboratorium" id="laboratorium" onchange="this.form.submit()" class="pl-2 pr-10 py-2.5 w-full md:w-48 bg-transparent border-none focus:ring-0 text-sm font-semibold text-slate-700 cursor-pointer appearance-none" {{ auth()->user()->role === 'guru' ? 'disabled' : '' }}>
+                            @if(auth()->user()->role === 'admin')
+                                <option value="">Semua Laboratorium</option>
+                            @endif
+                            <option value="Biologi" @selected(request('laboratorium', auth()->user()->laboratorium) === 'Biologi')>Biologi</option>
+                            <option value="Fisika" @selected(request('laboratorium', auth()->user()->laboratorium) === 'Fisika')>Fisika</option>
+                            <option value="Bahasa" @selected(request('laboratorium', auth()->user()->laboratorium) === 'Bahasa')>Bahasa</option>
+                            <option value="Komputer 1" @selected(request('laboratorium', auth()->user()->laboratorium) === 'Komputer 1')>Komputer 1</option>
+                            <option value="Komputer 2" @selected(request('laboratorium', auth()->user()->laboratorium) === 'Komputer 2')>Komputer 2</option>
+                            <option value="Komputer 3" @selected(request('laboratorium', auth()->user()->laboratorium) === 'Komputer 3')>Komputer 3</option>
+                            <option value="Komputer 4" @selected(request('laboratorium', auth()->user()->laboratorium) === 'Komputer 4')>Komputer 4</option>
                         </select>
+                        <div class="absolute right-3 pointer-events-none">
+                            <i class="fas fa-chevron-down text-[10px] text-slate-400"></i>
+                        </div>
                     </div>
+                    @if(auth()->user()->role === 'guru')
+                        <p class="text-[10px] font-bold text-slate-400 flex items-center gap-1 mt-1 mr-1">
+                            <i class="fas fa-lock text-[9px]"></i> {{ __('items.filters.locked_lab') }}
+                        </p>
+                    @endif
                 </form>
             </div>
 

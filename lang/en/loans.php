@@ -54,6 +54,7 @@ return [
         'edit' => 'Edit',
         'delete' => 'Delete',
         'delete_request' => 'Delete Request',
+        'create_new' => 'Apply for Loan',
     ],
 
     // Messages

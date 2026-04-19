@@ -82,6 +82,7 @@ return [
         'edit' => 'Edit',
         'delete' => 'Hapus',
         'delete_request' => 'Hapus Pengajuan',
+        'create_new' => 'Ajukan Peminjaman',
     ],
 
     // Pesan

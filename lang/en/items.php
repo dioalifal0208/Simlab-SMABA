@@ -108,6 +108,7 @@ return [
         'request_stock' => 'Request Stock',
         'import' => 'Import Item',
         'request_add' => 'Request Add Item',
+        'send_request' => 'Send Request',
     ],
 
     // Messages
@@ -169,5 +170,23 @@ return [
         'doc_download' => 'Download',
         'doc_empty' => 'No supporting documents uploaded for this item.',
         'doc_upload_cta' => 'Upload Document',
+    ],
+
+    // Item Requests
+    'requests' => [
+        'title' => 'Item Request',
+        'subtitle' => 'Request new equipment or materials for the laboratory.',
+        'note_title' => 'Important',
+        'note_text' => 'Use this form to request completely new items that are not currently listed in the inventory.',
+        'labels' => [
+            'name' => 'Equipment / Material Name',
+            'type' => 'Item Type',
+            'quantity' => 'Quantity',
+            'unit' => 'Unit',
+            'lab' => 'Laboratory',
+            'urgency' => 'Urgency',
+            'description' => 'Description / Full Specifications',
+            'urgency_reason' => 'Urgency Reason (If Urgent)',
+        ],
     ],
 ];

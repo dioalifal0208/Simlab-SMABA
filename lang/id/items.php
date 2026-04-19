@@ -213,4 +213,22 @@ return [
         'success_reload' => 'Halaman akan dimuat ulang.',
         'server_error' => 'Terjadi kesalahan pada server. Silakan coba lagi.',
     ],
+
+    // Permintaan Item Baru
+    'requests' => [
+        'title' => 'Permintaan Item',
+        'subtitle' => 'Ajukan permintaan penambahan alat atau bahan baru untuk laboratorium.',
+        'note_title' => 'Penting',
+        'note_text' => 'Gunakan formulir ini untuk mengajukan barang yang benar-benar baru dan tidak terdaftar di inventaris saat ini.',
+        'labels' => [
+            'name' => 'Nama Alat / Bahan',
+            'type' => 'Tipe Item',
+            'quantity' => 'Jumlah',
+            'unit' => 'Satuan',
+            'lab' => 'Laboratorium',
+            'urgency' => 'Urgensi',
+            'description' => 'Deskripsi / Spesifikasi Lengkap',
+            'urgency_reason' => 'Alasan Urgensi (Jika Mendesak)',
+        ],
+    ],
 ];
