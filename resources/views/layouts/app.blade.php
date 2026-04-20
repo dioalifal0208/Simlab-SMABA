@@ -398,6 +398,320 @@
         @auth
             @include('components.chat-widget')
         @endauth
+
+        {{-- ============================================ --}}
+        {{-- Notification Email Setup Modal (Popup) --}}
+        {{-- ============================================ --}}
+        @auth
+        @if(!auth()->user()->notification_email && !session('notification_email_skipped'))
+        <div x-data="notificationEmailSetup" 
+             x-show="isOpen" 
+             x-cloak
+             class="fixed inset-0 z-[9998] overflow-y-auto" 
+             aria-labelledby="notif-email-title" 
+             role="dialog" 
+             aria-modal="true">
+            
+            {{-- Blur Backdrop --}}
+            <div x-show="isOpen" 
+                 x-transition:enter="ease-out duration-300" 
+                 x-transition:enter-start="opacity-0" 
+                 x-transition:enter-end="opacity-100" 
+                 x-transition:leave="ease-in duration-200" 
+                 x-transition:leave-start="opacity-100" 
+                 x-transition:leave-end="opacity-0" 
+                 class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm transition-opacity"></div>
+
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div x-show="isOpen" 
+                     x-transition:enter="ease-out duration-300" 
+                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
+                     x-transition:leave="ease-in duration-200" 
+                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                     class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md border border-gray-100">
+
+                    {{-- Top Accent Bar (sama dengan login page) --}}
+                    <div class="h-1.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+
+                    {{-- Step 1: Input Email --}}
+                    <div x-show="step === 'input'" class="px-6 pb-6 pt-6 sm:px-8 sm:pt-8 sm:pb-8">
+                        
+                        {{-- Header --}}
+                        <div class="text-center mb-6">
+                            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 border border-blue-100 shadow-sm mb-4">
+                                <i class="fas fa-envelope text-2xl text-blue-600"></i>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 tracking-tight" id="notif-email-title">Email Notifikasi</h3>
+                            <p class="text-sm text-slate-500 mt-2 leading-relaxed">
+                                Masukkan alamat email untuk menerima notifikasi peminjaman, booking, dan pengingat.
+                            </p>
+                        </div>
+
+                        {{-- Error --}}
+                        <div x-show="error" x-cloak class="mb-4 bg-red-50 border border-red-200 rounded-xl p-3 flex items-start gap-2.5">
+                            <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center text-red-500 flex-shrink-0 border border-red-200 shadow-sm mt-0.5">
+                                <i class="fas fa-exclamation-triangle text-[10px]"></i>
+                            </div>
+                            <p class="text-sm text-red-600 font-medium" x-text="error"></p>
+                        </div>
+
+                        {{-- Success --}}
+                        <div x-show="success" x-cloak class="mb-4 bg-green-50 border border-green-200 rounded-xl p-3 flex items-start gap-2.5">
+                            <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center text-green-600 flex-shrink-0 border border-green-200 shadow-sm mt-0.5">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <p class="text-sm text-green-700 font-medium" x-text="success"></p>
+                        </div>
+
+                        {{-- Info panel --}}
+                        <div class="mb-5 bg-slate-50 border border-slate-200 rounded-xl p-4">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">
+                                <i class="fas fa-bell text-slate-400 mr-1"></i> Anda akan menerima:
+                            </p>
+                            <ul class="space-y-1 text-[13px] text-slate-600">
+                                <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-500 text-[10px]"></i> Peminjaman disetujui / ditolak</li>
+                                <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-500 text-[10px]"></i> Pengingat pengembalian H-1</li>
+                                <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-500 text-[10px]"></i> Notifikasi booking lab</li>
+                            </ul>
+                        </div>
+
+                        {{-- Email Input --}}
+                        <div class="mb-5">
+                            <label for="notif_email_input" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
+                                <i class="fas fa-at text-slate-400 mr-1"></i> Alamat Email Notifikasi
+                            </label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fas fa-envelope text-slate-300 group-focus-within:text-blue-500 transition-colors"></i>
+                                </div>
+                                <input id="notif_email_input"
+                                       type="email"
+                                       x-model="email"
+                                       @keydown.enter="submit"
+                                       required
+                                       autofocus
+                                       placeholder="email.anda@gmail.com"
+                                       class="block w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 text-sm font-medium text-slate-800 placeholder-slate-400 shadow-sm hover:border-slate-300 hover:bg-white focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-200" />
+                            </div>
+                            <p class="text-xs text-slate-400 mt-2">
+                                <i class="fas fa-info-circle mr-1"></i> Berbeda dari email login ({{ auth()->user()->email }})
+                            </p>
+                        </div>
+
+                        {{-- Submit --}}
+                        <button @click="submit" 
+                                :disabled="isLoading"
+                                class="w-full relative flex justify-center items-center py-3.5 px-4 rounded-xl font-bold text-sm bg-blue-600 text-white shadow-lg shadow-blue-600/25 hover:bg-blue-700 hover:shadow-blue-700/30 hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-500/30 active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 group">
+                            <span x-show="isLoading" class="mr-2"><i class="fas fa-spinner animate-spin"></i></span>
+                            <i x-show="!isLoading" class="fas fa-paper-plane mr-2 text-white/80 group-hover:text-white transition-colors"></i>
+                            <span x-text="isLoading ? 'Mengirim...' : 'Simpan & Kirim Verifikasi'"></span>
+                        </button>
+
+                        {{-- Skip --}}
+                        <div class="mt-5 text-center">
+                            <button @click="skip" 
+                                    class="text-sm text-slate-400 hover:text-slate-600 font-semibold transition-colors inline-flex items-center gap-1.5">
+                                <i class="fas fa-forward text-xs"></i> Lewati untuk saat ini
+                            </button>
+                        </div>
+
+                        {{-- Footer --}}
+                        <div class="mt-5 text-center">
+                            <p class="text-[11px] text-slate-300">
+                                <i class="fas fa-shield-halved mr-1"></i> Email Anda dilindungi dan tidak akan dibagikan
+                            </p>
+                        </div>
+                    </div>
+
+                    {{-- Step 2: Verify Pending --}}
+                    <div x-show="step === 'pending'" x-cloak class="px-6 pb-6 pt-6 sm:px-8 sm:pt-8 sm:pb-8">
+                        
+                        {{-- Header --}}
+                        <div class="text-center mb-6">
+                            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-50 border border-amber-100 shadow-sm mb-4">
+                                <i class="fas fa-envelope-open-text text-2xl text-amber-600"></i>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">Cek Email Anda</h3>
+                            <p class="text-sm text-slate-500 mt-2 leading-relaxed">
+                                Email verifikasi telah dikirim ke alamat di bawah.
+                            </p>
+                        </div>
+
+                        {{-- Success --}}
+                        <div x-show="success" x-cloak class="mb-4 bg-green-50 border border-green-200 rounded-xl p-3 flex items-start gap-2.5">
+                            <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center text-green-600 flex-shrink-0 border border-green-200 shadow-sm mt-0.5">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <p class="text-sm text-green-700 font-medium" x-text="success"></p>
+                        </div>
+
+                        {{-- Error --}}
+                        <div x-show="error" x-cloak class="mb-4 bg-red-50 border border-red-200 rounded-xl p-3 flex items-start gap-2.5">
+                            <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center text-red-500 flex-shrink-0 border border-red-200 shadow-sm mt-0.5">
+                                <i class="fas fa-exclamation-triangle text-[10px]"></i>
+                            </div>
+                            <p class="text-sm text-red-600 font-medium" x-text="error"></p>
+                        </div>
+
+                        {{-- Email Display --}}
+                        <div class="mb-5 bg-blue-50 border border-blue-200 rounded-xl p-5 text-center">
+                            <p class="text-[10px] font-bold text-blue-400 uppercase tracking-wider mb-1">Email Notifikasi</p>
+                            <p class="text-base font-bold text-blue-800" x-text="email"></p>
+                        </div>
+
+                        {{-- Steps --}}
+                        <div class="mb-5 space-y-2.5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                                    <span class="text-[10px] font-bold">1</span>
+                                </div>
+                                <p class="text-[13px] text-slate-600">Buka inbox email Anda</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                                    <span class="text-[10px] font-bold">2</span>
+                                </div>
+                                <p class="text-[13px] text-slate-600">Cari email dari <strong>Lab SMABA Security</strong></p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                                    <span class="text-[10px] font-bold">3</span>
+                                </div>
+                                <p class="text-[13px] text-slate-600">Klik <strong>"Verifikasi Email Saya"</strong></p>
+                            </div>
+                        </div>
+
+                        {{-- Resend --}}
+                        <button @click="resend" 
+                                :disabled="isLoading || resendCooldown > 0"
+                                class="w-full relative flex justify-center items-center py-3.5 px-4 rounded-xl font-bold text-sm bg-amber-500 text-white shadow-lg shadow-amber-500/25 hover:bg-amber-600 hover:shadow-amber-600/30 hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-amber-500/30 active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 group">
+                            <span x-show="isLoading" class="mr-2"><i class="fas fa-spinner animate-spin"></i></span>
+                            <i x-show="!isLoading" class="fas fa-redo mr-2 text-white/80 group-hover:text-white transition-colors"></i>
+                            <span x-text="resendCooldown > 0 ? 'Tunggu ' + resendCooldown + ' detik...' : (isLoading ? 'Mengirim...' : 'Kirim Ulang Email Verifikasi')"></span>
+                        </button>
+
+                        {{-- Continue to Dashboard --}}
+                        <button @click="skip"
+                                class="w-full mt-3 relative flex justify-center items-center py-3 px-4 rounded-xl font-semibold text-sm border-2 border-slate-200 text-slate-500 hover:bg-slate-50 hover:border-slate-300 hover:text-slate-700 focus:outline-none focus:ring-4 focus:ring-slate-200/50 transition-all duration-200">
+                            <i class="fas fa-arrow-right mr-2"></i>
+                            Lanjut ke Dashboard
+                        </button>
+
+                        {{-- Change Email --}}
+                        <div class="mt-4 text-center">
+                            <button @click="step = 'input'; error = ''; success = ''" 
+                                    class="text-sm text-slate-400 hover:text-blue-600 font-semibold transition-colors inline-flex items-center gap-1.5">
+                                <i class="fas fa-pencil-alt text-xs"></i> Ganti email
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('notificationEmailSetup', () => ({
+                isOpen: true,
+                step: 'input',
+                email: '',
+                error: '',
+                success: '',
+                isLoading: false,
+                resendCooldown: 0,
+                resendTimer: null,
+
+                async submit() {
+                    this.error = '';
+                    this.success = '';
+
+                    if (!this.email || !this.email.includes('@')) {
+                        this.error = 'Masukkan email yang valid.';
+                        return;
+                    }
+
+                    this.isLoading = true;
+                    try {
+                        const response = await fetch('{{ route("notification-email.store") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                            },
+                            body: JSON.stringify({ notification_email: this.email }),
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            this.success = data.message || 'Email verifikasi telah dikirim!';
+                            this.step = 'pending';
+                            this.startResendCooldown();
+                        } else {
+                            this.error = data.errors?.notification_email?.[0] || data.message || 'Terjadi kesalahan.';
+                        }
+                    } catch (e) {
+                        this.error = 'Gagal mengirim. Periksa koneksi internet Anda.';
+                    }
+                    this.isLoading = false;
+                },
+
+                async resend() {
+                    this.error = '';
+                    this.success = '';
+                    this.isLoading = true;
+
+                    try {
+                        const response = await fetch('{{ route("notification-email.resend") }}', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                            },
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            this.success = data.message || 'Email verifikasi dikirim ulang!';
+                            this.startResendCooldown();
+                        } else {
+                            this.error = data.errors?.notification_email?.[0] || data.message || 'Terlalu banyak percobaan.';
+                        }
+                    } catch (e) {
+                        this.error = 'Gagal mengirim ulang.';
+                    }
+                    this.isLoading = false;
+                },
+
+                async skip() {
+                    try {
+                        await fetch('{{ route("notification-email.skip") }}', {
+                            headers: { 'Accept': 'application/json' },
+                        });
+                    } catch (e) {}
+                    this.isOpen = false;
+                },
+
+                startResendCooldown() {
+                    this.resendCooldown = 60;
+                    if (this.resendTimer) clearInterval(this.resendTimer);
+                    this.resendTimer = setInterval(() => {
+                        this.resendCooldown--;
+                        if (this.resendCooldown <= 0) {
+                            clearInterval(this.resendTimer);
+                        }
+                    }, 1000);
+                },
+            }));
+        });
+        </script>
+        @endif
+        @endauth
         
         {{-- Lock Screen Modal --}}
         @auth

@@ -333,6 +333,51 @@ class ItemController extends Controller
     // ==============================================
 
     /**
+     * Menghapus SEMUA item dari database (admin only).
+     */
+    public function deleteAll(Request $request)
+    {
+        $this->authorize('is-admin');
+
+        try {
+            $items = Item::with('images')->get();
+            $totalCount = $items->count();
+
+            if ($totalCount === 0) {
+                return redirect()->route('items.index')
+                    ->with('error', 'Tidak ada item untuk dihapus.');
+            }
+
+            // Hapus semua file foto dan dokumen dari storage
+            foreach ($items as $item) {
+                foreach ($item->images as $image) {
+                    Storage::disk('public')->delete($image->path);
+                    // Also delete thumbnails
+                    $filename = basename($image->path);
+                    Storage::disk('public')->delete('item-photos/thumbnails/small/' . $filename);
+                    Storage::disk('public')->delete('item-photos/thumbnails/medium/' . $filename);
+                }
+                if ($item->dokumen_path) {
+                    Storage::disk('public')->delete($item->dokumen_path);
+                }
+            }
+
+            // Hapus semua record (cascade akan menghapus item_images)
+            Item::query()->delete();
+
+            Log::info('Delete all items executed by admin ID: ' . auth()->id() . '. Total deleted: ' . $totalCount);
+
+            return redirect()->route('items.index')
+                ->with('success', 'Semua item (' . $totalCount . ') berhasil dihapus.');
+
+        } catch (\Exception $e) {
+            Log::error('Error during delete all items: ' . $e->getMessage());
+            return redirect()->route('items.index')
+                ->with('error', 'Terjadi kesalahan saat menghapus semua item.');
+        }
+    }
+
+    /**
      * Menangani unggahan file dan proses impor dalam satu langkah.
      * Mirip dengan alur kerja impor pengguna.
      */

@@ -38,6 +38,8 @@ class User extends Authenticatable
         'nomor_induk',
         'phone_number',
         'kelas',
+        'notification_email',
+        'notification_email_verified_at',
     ];
 
     /**
@@ -63,11 +65,31 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'notification_email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_enabled' => 'boolean',
             'two_factor_expires_at' => 'datetime',
             'two_factor_recovery_codes' => 'array',
         ];
+    }
+
+    /**
+     * Cek apakah notification email sudah diverifikasi.
+     */
+    public function hasVerifiedNotificationEmail(): bool
+    {
+        return $this->notification_email && $this->notification_email_verified_at !== null;
+    }
+
+    /**
+     * Route notifikasi email ke notification_email jika terverifikasi.
+     * Digunakan oleh Laravel Notification system.
+     */
+    public function routeNotificationForMail($notification = null): ?string
+    {
+        return $this->hasVerifiedNotificationEmail()
+            ? $this->notification_email
+            : null;
     }
     // TAMBAHKAN FUNGSI INI DI SINI
     /**

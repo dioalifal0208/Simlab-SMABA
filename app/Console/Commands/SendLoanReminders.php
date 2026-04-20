@@ -49,11 +49,18 @@ class SendLoanReminders extends Command
         
         foreach ($loans as $loan) {
             try {
-                Mail::to($loan->user->email)->send(new LoanReminder($loan));
-                $this->line("✓ Sent reminder to {$loan->user->name} ({$loan->user->email})");
-                $sentCount++;
+                // Hanya kirim email jika user punya notification_email terverifikasi
+                if ($loan->user->hasVerifiedNotificationEmail()) {
+                    Mail::mailer('smtp-notif')
+                        ->to($loan->user->notification_email)
+                        ->send(new LoanReminder($loan));
+                    $this->line("✓ Sent reminder to {$loan->user->name} ({$loan->user->notification_email})");
+                    $sentCount++;
+                } else {
+                    $this->line("⊘ Skipped {$loan->user->name} (no verified notification email)");
+                }
             } catch (\Exception $e) {
-                $this->error("✗ Failed to send to {$loan->user->email}: " . $e->getMessage());
+                $this->error("✗ Failed to send to {$loan->user->notification_email}: " . $e->getMessage());
                 $failedCount++;
             }
         }

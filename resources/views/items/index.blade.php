@@ -16,7 +16,7 @@
             Alpine.js scope: manages import modal + bulk-delete selection.
             Moved to outer wrapper so modal (which uses x-teleport) can access showImportModal.
         --}}
-        <div class="items-page-container" x-data="{ showImportModal: false, selectedItems: [] }">
+        <div class="items-page-container" x-data="{ showImportModal: false, selectedItems: [], showDeleteAllModal: false, showBulkDeleteModal: false }">
 
             {{-- Pesan Sukses/Error --}}
             @if (session('success'))
@@ -119,16 +119,29 @@
                     </span>
                 </div>
                 
-                <form id="bulk-delete-form" action="{{ route('items.delete-multiple') }}" method="POST" class="relative z-10">
+                <form id="bulk-delete-form" action="{{ route('items.delete-multiple') }}" method="POST" class="relative z-10 flex items-center gap-2">
                     @csrf
                     {{-- Input tersembunyi untuk menampung ID item --}}
                     <template x-for="id in selectedItems" :key="id">
                         <input type="hidden" name="item_ids[]" :value="id">
                     </template>
-                    <button type="button" @click="confirmBulkDelete(selectedItems)" class="px-5 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 font-bold text-sm shadow-[0_4px_14px_0_rgb(239,68,68,0.39)] hover:shadow-[0_6px_20px_rgba(239,68,68,0.23)] hover:-translate-y-0.5 transition-all outline-none">
+                    <button type="button" @click="showBulkDeleteModal = true" class="px-5 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 font-bold text-sm shadow-[0_4px_14px_0_rgb(239,68,68,0.39)] hover:shadow-[0_6px_20px_rgba(239,68,68,0.23)] hover:-translate-y-0.5 transition-all outline-none">
                         <i class="fas fa-trash-alt mr-2"></i> {{ __('items.actions.bulk_delete') }}
                     </button>
                 </form>
+                {{-- Hapus Semua: muncul hanya jika 3+ item terpilih --}}
+                <button x-show="selectedItems.length >= 3"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 scale-90"
+                    x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100 scale-100"
+                    x-transition:leave-end="opacity-0 scale-90"
+                    @click="showDeleteAllModal = true"
+                    class="relative z-10 px-5 py-2.5 bg-white border-2 border-red-300 text-red-600 rounded-xl hover:bg-red-50 hover:border-red-400 font-bold text-sm shadow-sm transition-all outline-none hover:-translate-y-0.5"
+                    style="display: none;">
+                    <i class="fas fa-trash-can mr-2"></i> Hapus Semua Item
+                </button>
             </div>
 
             {{-- ==================== --}}
@@ -137,6 +150,128 @@
             <div id="table-container" class="bg-white border border-slate-200 overflow-hidden shadow-sm rounded-2xl" data-aos="fade-up" data-aos-delay="100">
                 @include('items.partials.item-table')
             </div>
+
+            {{-- ======================================================= --}}
+            {{-- BULK DELETE CONFIRMATION MODAL                           --}}
+            {{-- ======================================================= --}}
+            @can('is-admin')
+                <template x-teleport="body">
+                    <div x-show="showBulkDeleteModal"
+                        x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        x-transition:leave="ease-in duration-200"
+                        x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                        class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+                        style="display: none;"
+                        x-cloak>
+
+                        <div @click.outside="showBulkDeleteModal = false"
+                            x-transition:enter="ease-out duration-300 delay-100"
+                            x-transition:enter-start="opacity-0 scale-90 translate-y-4"
+                            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                            x-transition:leave="ease-in duration-200"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-90"
+                            class="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
+
+                            {{-- Icon --}}
+                            <div class="pt-8 pb-2 flex justify-center">
+                                <div class="w-20 h-20 rounded-full border-[3px] border-amber-400 flex items-center justify-center animate-pulse">
+                                    <i class="fas fa-exclamation text-amber-400 text-3xl"></i>
+                                </div>
+                            </div>
+
+                            {{-- Content --}}
+                            <div class="px-8 pb-6 text-center">
+                                <h3 class="text-2xl font-extrabold text-slate-800 mb-2 tracking-tight">
+                                    Hapus <span x-text="selectedItems.length" class="text-red-600"></span> Item Terpilih?
+                                </h3>
+                                <p class="text-sm text-slate-500 leading-relaxed">
+                                    Tindakan ini tidak dapat dibatalkan. Semua data item yang dipilih akan dihapus permanen.
+                                </p>
+                            </div>
+
+                            {{-- Actions --}}
+                            <div class="px-8 pb-8 flex items-center justify-center gap-3">
+                                <button type="button"
+                                    @click="document.getElementById('bulk-delete-form').submit()"
+                                    class="px-6 py-3 bg-red-600 text-white rounded-xl font-bold text-sm hover:bg-red-700 shadow-lg shadow-red-500/25 hover:shadow-red-500/40 transition-all hover:-translate-y-0.5">
+                                    Ya, Hapus Semua
+                                </button>
+                                <button type="button"
+                                    @click="showBulkDeleteModal = false"
+                                    class="px-6 py-3 bg-slate-700 text-white rounded-xl font-bold text-sm hover:bg-slate-800 shadow-lg transition-all hover:-translate-y-0.5">
+                                    Batal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            @endcan
+
+            {{-- ======================================================= --}}
+            {{-- DELETE ALL CONFIRMATION MODAL                            --}}
+            {{-- ======================================================= --}}
+            @can('is-admin')
+                <template x-teleport="body">
+                    <div x-show="showDeleteAllModal"
+                        x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        x-transition:leave="ease-in duration-200"
+                        x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                        class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+                        style="display: none;"
+                        x-cloak>
+
+                        <div @click.outside="showDeleteAllModal = false"
+                            x-transition:enter="ease-out duration-300 delay-100"
+                            x-transition:enter-start="opacity-0 scale-90 translate-y-4"
+                            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                            x-transition:leave="ease-in duration-200"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-90"
+                            class="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
+
+                            {{-- Icon --}}
+                            <div class="pt-8 pb-2 flex justify-center">
+                                <div class="w-20 h-20 rounded-full border-[3px] border-red-400 flex items-center justify-center">
+                                    <i class="fas fa-exclamation-triangle text-red-400 text-3xl animate-pulse"></i>
+                                </div>
+                            </div>
+
+                            {{-- Content --}}
+                            <div class="px-8 pb-6 text-center">
+                                <h3 class="text-2xl font-extrabold text-slate-800 mb-2 tracking-tight">
+                                    Hapus Seluruh Inventaris?
+                                </h3>
+                                <p class="text-sm text-slate-500 leading-relaxed">
+                                    Tindakan ini akan menghapus <strong class="text-red-600">semua item</strong> dari database secara permanen beserta foto dan dokumen terkait. Tindakan ini <strong>tidak dapat dibatalkan</strong>.
+                                </p>
+                            </div>
+
+                            {{-- Actions --}}
+                            <div class="px-8 pb-8 flex items-center justify-center gap-3">
+                                <form action="{{ route('items.delete-all') }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="px-6 py-3 bg-red-600 text-white rounded-xl font-bold text-sm hover:bg-red-700 shadow-lg shadow-red-500/25 hover:shadow-red-500/40 transition-all hover:-translate-y-0.5">
+                                        Ya, Hapus Semua
+                                    </button>
+                                </form>
+                                <button type="button"
+                                    @click="showDeleteAllModal = false"
+                                    class="px-6 py-3 bg-slate-700 text-white rounded-xl font-bold text-sm hover:bg-slate-800 shadow-lg transition-all hover:-translate-y-0.5">
+                                    Batal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            @endcan
 
             {{-- ======================================================= --}}
             {{-- IMPORT MODAL — now INSIDE the x-data scope (FIX)        --}}
@@ -268,29 +403,8 @@
 
             // --- Logika untuk Konfirmasi Hapus Massal dengan Alpine & SweetAlert ---
 
-            function confirmBulkDelete(selectedItems) {
-                // Validasi: pastikan ada item yang dipilih
-                if (!selectedItems || selectedItems.length === 0) {
-                    Swal.fire("{{ __('items.messages.no_items_selected_title') }}", "{{ __('items.messages.no_items_selected_text') }}", 'info');
-                    return;
-                }
-
-                Swal.fire({
-                    title: `{{ __('items.messages.delete_bulk_title', ['count' => '${selectedItems.length}']) }}`,
-                    text: "{{ __('items.messages.delete_bulk_text') }}",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#6b7280',
-                    confirmButtonText: "{{ __('items.messages.delete_bulk_confirm') }}",
-                    cancelButtonText: "{{ __('items.messages.delete_bulk_cancel') }}"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Submit form hapus massal
-                        document.getElementById('bulk-delete-form').submit();
-                    }
-                });
-            }
+            // Bulk delete is now handled by a custom Alpine.js modal
+            // No SweetAlert needed for bulk delete confirmation
         </script>
     @endpush
 </x-app-layout>

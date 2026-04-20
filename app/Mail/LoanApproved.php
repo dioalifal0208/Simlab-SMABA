@@ -43,6 +43,14 @@ class LoanApproved extends Mailable
     }
 
     /**
+     * Gunakan mailer notifikasi.
+     */
+    public function build()
+    {
+        return $this->mailer('smtp-notif');
+    }
+
+    /**
      * Get the attachments for the message.
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>

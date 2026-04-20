@@ -40,7 +40,8 @@ class LoginOtpMail extends Mailable
      */
     public function build(): self
     {
-        return $this->subject('Kode OTP Login Lab SMABA')
+        return $this->mailer('smtp-auth')
+            ->subject('Kode OTP Login Lab SMABA')
             ->view('emails.login-otp');
     }
 }

@@ -14,6 +14,14 @@ class LoanReminder extends Mailable
     use Queueable, SerializesModels;
 
     /**
+     * Gunakan mailer notifikasi.
+     */
+    public function build()
+    {
+        return $this->mailer('smtp-notif');
+    }
+
+    /**
      * Create a new message instance.
      */
     public function __construct(

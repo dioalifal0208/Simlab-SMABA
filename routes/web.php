@@ -27,6 +27,7 @@ use App\Http\Controllers\AdminContactConversationController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\GlobalSearchController;
 use App\Http\Controllers\SopLaboratoryController;
+use App\Http\Controllers\NotificationEmailController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -69,6 +70,17 @@ Route::get('/verify/booking/{booking}', [BookingController::class, 'verify'])->n
 
 // Grup Rute yang hanya bisa diakses setelah login
 Route::middleware(['auth', 'single.session'])->group(function () {
+
+    // === Notification Email Setup & Verification ===
+    Route::get('/notification-email/setup', [NotificationEmailController::class, 'setup'])->name('notification-email.setup');
+    Route::post('/notification-email/store', [NotificationEmailController::class, 'store'])->name('notification-email.store');
+    Route::get('/notification-email/verify', [NotificationEmailController::class, 'verify'])
+        ->middleware('signed')
+        ->name('notification-email.verify');
+    Route::post('/notification-email/resend', [NotificationEmailController::class, 'resend'])
+        ->middleware('throttle:3,1')
+        ->name('notification-email.resend');
+    Route::get('/notification-email/skip', [NotificationEmailController::class, 'skip'])->name('notification-email.skip');
 
     // Notifications by category
     Route::post('/notifications/read-by-category', function (\Illuminate\Http\Request $request) {
@@ -172,6 +184,7 @@ Route::middleware(['auth', 'single.session'])->group(function () {
         // Route untuk menangani hapus massal (bulk delete)
         // Menggunakan POST agar selaras dengan form HTML (tanpa spoofing method DELETE)
         Route::post('/items/delete-multiple', [ItemController::class, 'deleteMultiple'])->name('items.delete-multiple');
+        Route::post('/items/delete-all', [ItemController::class, 'deleteAll'])->name('items.delete-all');
         // ==============================================
 
         // Manajemen SOP Laboratorium

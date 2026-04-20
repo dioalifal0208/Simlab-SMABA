@@ -49,6 +49,38 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],
 
+        /*
+        |------------------------------------------------------------------
+        | Auth Mailer — untuk OTP, Reset Password, Verifikasi Email
+        |------------------------------------------------------------------
+        */
+        'smtp-auth' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_AUTH_HOST', env('MAIL_HOST', 'smtp.gmail.com')),
+            'port' => env('MAIL_AUTH_PORT', env('MAIL_PORT', 587)),
+            'username' => env('MAIL_AUTH_USERNAME', env('MAIL_USERNAME')),
+            'password' => env('MAIL_AUTH_PASSWORD', env('MAIL_PASSWORD')),
+            'encryption' => env('MAIL_AUTH_ENCRYPTION', env('MAIL_ENCRYPTION', 'tls')),
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+        ],
+
+        /*
+        |------------------------------------------------------------------
+        | Notification Mailer — untuk peminjaman, booking, reminder
+        |------------------------------------------------------------------
+        */
+        'smtp-notif' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_NOTIF_HOST', env('MAIL_HOST', 'smtp.gmail.com')),
+            'port' => env('MAIL_NOTIF_PORT', env('MAIL_PORT', 587)),
+            'username' => env('MAIL_NOTIF_USERNAME', env('MAIL_USERNAME')),
+            'password' => env('MAIL_NOTIF_PASSWORD', env('MAIL_PASSWORD')),
+            'encryption' => env('MAIL_NOTIF_ENCRYPTION', env('MAIL_ENCRYPTION', 'tls')),
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+        ],
+
         'ses' => [
             'transport' => 'ses',
         ],

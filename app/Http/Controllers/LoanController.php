@@ -285,20 +285,26 @@ public function show(Loan $loan)
     }
     // ------------------------
 
-    // --- PENAMBAHAN: KIRIM NOTIFIKASI & EMAIL KE PENGGUNA ---
+    // --- KIRIM NOTIFIKASI & EMAIL KE PENGGUNA ---
     if ($request->status == 'approved' || $request->status == 'rejected') {
         try {
             // Load relasi user untuk notifikasi
             $loan->load('user'); 
             
-            // Send email notification
-            if ($request->status == 'approved') {
-                Mail::to($loan->user->email)->send(new LoanApproved($loan));
-            } elseif ($request->status == 'rejected') {
-                Mail::to($loan->user->email)->send(new LoanRejected($loan));
+            // Send email ke notification_email (jika terverifikasi)
+            if ($loan->user->hasVerifiedNotificationEmail()) {
+                if ($request->status == 'approved') {
+                    Mail::mailer('smtp-notif')
+                        ->to($loan->user->notification_email)
+                        ->send(new LoanApproved($loan));
+                } elseif ($request->status == 'rejected') {
+                    Mail::mailer('smtp-notif')
+                        ->to($loan->user->notification_email)
+                        ->send(new LoanRejected($loan));
+                }
             }
             
-            // Send in-app notification (existing)
+            // Send in-app notification (tetap berjalan)
             Notification::send($loan->user, new LoanStatusUpdated($loan));
         } catch (\Exception $e) {
             // Log error tapi tetap lanjut - email notification opsional
