@@ -253,9 +253,9 @@
         @if($isAdmin)
         <div class="sidebar-section">
             <p class="sidebar-section-label">Manajemen</p>
-            <a href="{{ route('admin.sop-laboratories.index') }}" title="Pengaturan SOP" class="sidebar-item {{ $active('admin.sop-laboratories.*') }}">
+            <a href="{{ route('admin.sop-laboratories.index') }}" title="SOP Laboratorium" class="sidebar-item {{ $active('admin.sop-laboratories.*') }}">
                 <i class="fas fa-file-signature sidebar-icon"></i>
-                <span class="sidebar-label">Pengaturan SOP</span>
+                <span class="sidebar-label">SOP Laboratorium</span>
             </a>
             <a href="{{ route('users.index') }}" title="Manajemen User" class="sidebar-item {{ $active('users.*') }}">
                 <i class="fas fa-users-gear sidebar-icon"></i>

@@ -127,4 +127,18 @@ return [
         'filter' => 'Filter',
         'reset' => 'Reset',
     ],
+
+    // Labs
+    'labs' => [
+        'biologi' => 'Biology',
+        'fisika' => 'Physics',
+        'bahasa' => 'Language',
+        'komputer_1' => 'Computer Lab 1',
+        'komputer_2' => 'Computer Lab 2',
+        'komputer_3' => 'Computer Lab 3',
+        'komputer_4' => 'Computer Lab 4',
+        'lab_biologi' => 'Biology Lab',
+        'lab_fisika' => 'Physics Lab',
+        'lab_bahasa' => 'Language Lab',
+    ],
 ];

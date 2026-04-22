@@ -45,7 +45,7 @@ use App\Models\VisitorCounter;
 Route::get('/', function () {
     $testimonials = Testimonial::where('status', 'approved')
         ->latest()
-        ->take(4)
+        ->take(10)
         ->get();
 
     $today = Carbon::today();

@@ -3,7 +3,7 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
                 <h2 class="font-bold text-2xl text-gray-900 leading-tight">
-                    {{ __('Pengaturan SOP Laboratorium') }}
+                    {{ __('SOP Laboratorium') }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-1">Kelola dokumen Standar Operasional Prosedur (SOP) untuk masing-masing laboratorium.</p>
             </div>

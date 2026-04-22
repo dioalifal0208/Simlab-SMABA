@@ -14,8 +14,8 @@
     <div class="py-8" x-data="{ view: 'table' }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            {{-- STICKY FILTER BAR --}}
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 sticky top-16 z-30" data-aos="fade-up">
+            {{-- FILTER BAR --}}
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5" data-aos="fade-up">
                 <form action="{{ route('audit-logs.index') }}" method="GET">
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                         <div>

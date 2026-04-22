@@ -60,6 +60,7 @@
               isModalOpen: false, 
               showDemoModal: false, 
               showFeatureModal: false, 
+              isTestimonialModalOpen: false,
               activeSlide: 0, 
               activeFeature: 'inventory', 
               otpStep: false,
@@ -80,8 +81,57 @@
                   });
               }
           }"
-          @keydown.escape.window="isModalOpen = false; showDemoModal = false; showFeatureModal = false; otpStep = false">
+          @keydown.escape.window="isModalOpen = false; showDemoModal = false; showFeatureModal = false; isTestimonialModalOpen = false; otpStep = false">
 
+        {{-- Toast / Banner Sukses Submit Testimoni --}}
+        @if (session('testimonial_submitted'))
+        <div x-data="{ show: true }" 
+             x-show="show" 
+             style="display: none;"
+             x-init="setTimeout(() => show = false, 5000)"
+             x-transition:enter="transition ease-out duration-300 transform"
+             x-transition:enter-start="opacity-0 -translate-y-4 sm:translate-y-0 sm:translate-x-10"
+             x-transition:enter-end="opacity-100 translate-y-0 sm:translate-x-0"
+             x-transition:leave="transition ease-in duration-200 transform"
+             x-transition:leave-start="opacity-100 translate-y-0 sm:translate-x-0"
+             x-transition:leave-end="opacity-0 -translate-y-4 sm:translate-y-0 sm:translate-x-10"
+             class="fixed top-20 right-5 z-[100] max-w-sm w-full bg-white shadow-lg rounded-xl border-l-4 border-l-green-500 overflow-hidden">
+             <div class="p-4 flex items-start gap-3">
+                 <div class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
+                     <i class="fas fa-check-circle"></i>
+                 </div>
+                 <div class="flex-1 min-w-0">
+                     <p class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-1 mb-1">Berhasil!</p>
+                     <p class="text-xs text-slate-500">{{ session('testimonial_submitted') }}</p>
+                 </div>
+                 <button @click="show = false" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times"></i></button>
+             </div>
+        </div>
+        @endif
+        @if ($errors->testimonial->any())
+        <div x-data="{ show: true }" 
+             x-show="show" 
+             style="display: none;"
+             x-init="setTimeout(() => show = false, 5000); isTestimonialModalOpen = true"
+             x-transition:enter="transition ease-out duration-300 transform"
+             x-transition:enter-start="opacity-0 -translate-y-4 sm:translate-y-0 sm:translate-x-10"
+             x-transition:enter-end="opacity-100 translate-y-0 sm:translate-x-0"
+             x-transition:leave="transition ease-in duration-200 transform"
+             x-transition:leave-start="opacity-100 translate-y-0 sm:translate-x-0"
+             x-transition:leave-end="opacity-0 -translate-y-4 sm:translate-y-0 sm:translate-x-10"
+             class="fixed top-20 right-5 z-[100] max-w-sm w-full bg-white shadow-lg rounded-xl border-l-4 border-l-red-500 overflow-hidden">
+             <div class="p-4 flex items-start gap-3">
+                 <div class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                     <i class="fas fa-xmark-circle"></i>
+                 </div>
+                 <div class="flex-1 min-w-0">
+                     <p class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-1 mb-1">Gagal Mengirim Kesan</p>
+                     <p class="text-xs text-slate-500">Terdapat error pada form isian Anda. Silakan periksa kembali.</p>
+                 </div>
+                 <button @click="show = false" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times"></i></button>
+             </div>
+        </div>
+        @endif
 
         {{-- NAVBAR --}}
         <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 transition-all duration-300">
@@ -495,6 +545,104 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        {{-- SECTION 6.5: TESTIMONIALS --}}
+        <section class="py-28 bg-slate-50/50 relative overflow-hidden" id="testimonials">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16" data-aos="fade-up">
+                    <div class="max-w-2xl">
+                        <h2 class="text-sm font-bold text-slate-500 tracking-widest uppercase mb-3">Apa Kata Mereka</h2>
+                        <h3 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">Kesan dari Pengguna Kami</h3>
+                    </div>
+                    <div>
+                        <button @click="isTestimonialModalOpen = true" class="px-6 py-2.5 bg-white border border-slate-200 text-slate-900 font-bold rounded-xl shadow-sm hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5 transition-all text-sm flex items-center gap-2 group">
+                            <i class="fas fa-comment-dots text-green-600 group-hover:scale-110 transition-transform"></i> Tulis Kesan Anda
+                        </button>
+                    </div>
+                </div>
+
+                @if($testimonials->count() > 0)
+                <div class="overflow-hidden w-full flex group-marquee relative -mx-6 px-6 lg:-mx-8 lg:px-8 mt-4" data-aos="fade-up" data-aos-delay="100">
+                    <!-- Blur gradients on the side for nice effect -->
+                    <div class="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-slate-50/50 to-transparent z-10 pointer-events-none hidden md:block"></div>
+                    <div class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-slate-50/50 to-transparent z-10 pointer-events-none hidden md:block"></div>
+                    
+                    <div class="flex gap-6 pr-6 animate-marquee-scroll w-max" style="min-width: max-content;">
+                        @foreach($testimonials as $testi)
+                            <div class="w-[320px] shrink-0 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col h-full relative cursor-default hover:shadow-md hover:border-slate-200 transition-all duration-300">
+                                <div class="flex items-center gap-1 mb-4 text-amber-400 text-[10px]">
+                                    @for($i=1; $i<=5; $i++)
+                                        <i class="fas fa-star {{ $i <= $testi->rating ? 'text-amber-400' : 'text-slate-200' }}"></i>
+                                    @endfor
+                                </div>
+                                <p class="text-slate-600 text-sm leading-relaxed mb-6 italic flex-1 whitespace-normal">"{{ $testi->pesan }}"</p>
+                                <div class="flex items-center gap-4 mt-auto pt-4 border-t border-slate-50">
+                                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-400 shrink-0">
+                                        {{ strtoupper(substr($testi->nama, 0, 1)) }}
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <p class="text-sm font-bold text-slate-900 truncate">{{ $testi->nama }}</p>
+                                        @if($testi->peran || $testi->laboratorium)
+                                        <p class="text-[10px] text-slate-500 font-medium truncate">
+                                            {{ $testi->peran }}{{ $testi->peran && $testi->laboratorium ? ' • ' : '' }}{{ $testi->laboratorium }}
+                                        </p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    
+                    <!-- Duplicated list for seamless scrolling -->
+                    <div class="flex gap-6 pr-6 animate-marquee-scroll w-max" aria-hidden="true" style="min-width: max-content;">
+                        @foreach($testimonials as $testi)
+                            <div class="w-[320px] shrink-0 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col h-full relative cursor-default hover:shadow-md hover:border-slate-200 transition-all duration-300">
+                                <div class="flex items-center gap-1 mb-4 text-amber-400 text-[10px]">
+                                    @for($i=1; $i<=5; $i++)
+                                        <i class="fas fa-star {{ $i <= $testi->rating ? 'text-amber-400' : 'text-slate-200' }}"></i>
+                                    @endfor
+                                </div>
+                                <p class="text-slate-600 text-sm leading-relaxed mb-6 italic flex-1 whitespace-normal">"{{ $testi->pesan }}"</p>
+                                <div class="flex items-center gap-4 mt-auto pt-4 border-t border-slate-50">
+                                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-400 shrink-0">
+                                        {{ strtoupper(substr($testi->nama, 0, 1)) }}
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <p class="text-sm font-bold text-slate-900 truncate">{{ $testi->nama }}</p>
+                                        @if($testi->peran || $testi->laboratorium)
+                                        <p class="text-[10px] text-slate-500 font-medium truncate">
+                                            {{ $testi->peran }}{{ $testi->peran && $testi->laboratorium ? ' • ' : '' }}{{ $testi->laboratorium }}
+                                        </p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <style>
+                    @keyframes marquee-scroll {
+                        from { transform: translateX(0); }
+                        to { transform: translateX(-100%); }
+                    }
+                    .animate-marquee-scroll {
+                        animation: marquee-scroll 45s linear infinite;
+                    }
+                    .group-marquee:hover .animate-marquee-scroll {
+                        animation-play-state: paused;
+                    }
+                </style>
+                @else
+                <div class="text-center py-12 bg-white rounded-2xl border border-slate-100 dashed" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-2xl text-slate-300 mx-auto mb-4">
+                        <i class="fas fa-comment-slash"></i>
+                    </div>
+                    <p class="text-slate-500 font-medium">Belum ada testimoni yang ditampilkan.</p>
+                    <button @click="isTestimonialModalOpen = true" class="mt-4 text-sm font-bold text-green-600 hover:text-green-700 hover:underline">Jadilah yang pertama!</button>
+                </div>
+                @endif
             </div>
         </section>
 
@@ -1405,8 +1553,111 @@
                     });
                 }
 
+                // TESTIMONIAL MODAL
+                const testiForm = document.getElementById('testimonial-form');
+                if (testiForm) {
+                    testiForm.addEventListener('submit', function() {
+                        const submitButton = this.querySelector('button[type="submit"]');
+                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Mengirim...';
+                        submitButton.disabled = true;
+                        submitButton.classList.add('opacity-70', 'cursor-not-allowed');
+                    });
+                }
+
             });
         </script>
+
+        {{-- MODAL TESTIMONIAL --}}
+        <div x-show="isTestimonialModalOpen" 
+             x-transition:enter="ease-out duration-300" 
+             x-transition:enter-start="opacity-0" 
+             x-transition:enter-end="opacity-100" 
+             x-transition:leave="ease-in duration-200" 
+             x-transition:leave-start="opacity-100" 
+             x-transition:leave-end="opacity-0" 
+             class="fixed inset-0 z-[80] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4" 
+             style="display: none;"
+             x-cloak>
+            
+            <div @click.outside="isTestimonialModalOpen = false" 
+                 x-show="isTestimonialModalOpen" 
+                 x-transition:enter="ease-out duration-300" 
+                 x-transition:enter-start="opacity-0 translate-y-8 sm:scale-95" 
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
+                 x-transition:leave="ease-in duration-200" 
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+                 x-transition:leave-end="opacity-0 translate-y-8 sm:scale-95" 
+                 class="w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-100 relative overflow-hidden">
+
+                {{-- Header --}}
+                <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">Tambahkan Kesan Anda</h3>
+                        <p class="text-slate-500 text-xs mt-1">Saran Anda membantu kami menjadi lebih baik.</p>
+                    </div>
+                    <button @click="isTestimonialModalOpen = false" class="w-8 h-8 flex items-center justify-center rounded-full bg-white hover:bg-slate-200 border border-slate-200 shadow-sm text-slate-400 transition-colors">
+                        <i class="fas fa-times text-xs"></i>
+                    </button>
+                </div>
+
+                {{-- Form Body --}}
+                <div class="px-8 py-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                    <form id="testimonial-form" action="{{ route('testimonials.store') }}" method="POST" class="space-y-5">
+                        @csrf
+                        
+                        <div x-data="{ rating: {{ old('rating', 5) }} }" class="text-center mb-2">
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Penilaian Anda <span class="text-red-500">*</span></label>
+                            <input type="hidden" name="rating" x-model="rating">
+                            <div class="flex items-center justify-center gap-2">
+                                <template x-for="i in 5">
+                                    <button type="button" @click="rating = i" class="text-2xl transform hover:scale-110 transition-all outline-none focus:outline-none" :class="rating >= i ? 'text-amber-400 drop-shadow-md' : 'text-slate-200 hover:text-amber-200'">
+                                        <i class="fas fa-star block"></i>
+                                    </button>
+                                </template>
+                            </div>
+                            @error('rating', 'testimonial') <p class="mt-1 flex items-center justify-center text-xs text-red-500 font-medium"><i class="fas fa-circle-exclamation mr-1.5"></i> {{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Nama <span class="text-red-500">*</span></label>
+                            <input type="text" name="nama" value="{{ old('nama') }}" class="block w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all font-medium text-slate-800" placeholder="Nama Anda" required>
+                            @error('nama', 'testimonial') <p class="mt-1 flex items-center text-xs text-red-500 font-medium"><i class="fas fa-circle-exclamation mr-1.5"></i> {{ $message }}</p> @enderror
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Peran</label>
+                                <input type="text" name="peran" value="{{ old('peran') }}" class="block w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all font-medium text-slate-800" placeholder="Guru / Siswa / Umum">
+                                @error('peran', 'testimonial') <p class="mt-1 flex items-center text-xs text-red-500 font-medium"><i class="fas fa-circle-exclamation mr-1.5"></i> {{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Pilih Lab</label>
+                                <select name="laboratorium" class="block w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all font-medium text-slate-800">
+                                    <option value="">Semua / Umum</option>
+                                    @php $labs = ['Biologi', 'Fisika', 'Bahasa', 'Komputer 1', 'Komputer 2', 'Komputer 3', 'Komputer 4'] @endphp
+                                    @foreach($labs as $lab)
+                                    <option value="{{ $lab }}" @selected(old('laboratorium') == $lab)>{{ $lab }}</option>
+                                    @endforeach
+                                </select>
+                                @error('laboratorium', 'testimonial') <p class="mt-1 flex items-center text-xs text-red-500 font-medium"><i class="fas fa-circle-exclamation mr-1.5"></i> {{ $message }}</p> @enderror
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Pesan & Kesan <span class="text-red-500">*</span></label>
+                            <textarea name="pesan" rows="4" class="block w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all font-medium text-slate-800 resize-none" placeholder="Tulis pengalaman atau sarannya disini..." required>{{ old('pesan') }}</textarea>
+                            @error('pesan', 'testimonial') <p class="mt-1 flex items-center text-xs text-red-500 font-medium"><i class="fas fa-circle-exclamation mr-1.5"></i> {{ $message }}</p> @enderror
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100 flex justify-end gap-3 mt-4">
+                            <button type="button" @click="isTestimonialModalOpen = false" class="px-5 py-2.5 text-sm font-bold text-slate-500 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">Batal</button>
+                            <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-green-600 rounded-xl shadow-lg shadow-green-600/30 hover:bg-green-700 hover:-translate-y-0.5 transition-all">Kirim Kesan <i class="fas fa-paper-plane ml-1"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </body>
 </html>
 

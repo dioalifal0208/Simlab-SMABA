@@ -324,7 +324,7 @@
                     </div>
                 @endif
 
-                <main class="flex-grow">
+                <main class="flex-grow shrink-0">
                     {{ $slot }}
                 </main>
 

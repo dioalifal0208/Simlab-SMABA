@@ -33,6 +33,7 @@ class TestimonialController extends Controller
             'nama'         => 'required|string|max:100',
             'peran'        => 'nullable|string|max:50',
             'laboratorium' => 'nullable|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4',
+            'rating'       => 'required|integer|min:1|max:5',
             'pesan'        => 'required|string|max:500',
         ]);
 
@@ -40,6 +41,7 @@ class TestimonialController extends Controller
             'nama'         => $validated['nama'],
             'peran'        => $validated['peran'] ?? null,
             'laboratorium' => $validated['laboratorium'] ?? null,
+            'rating'       => $validated['rating'],
             'pesan'        => $validated['pesan'],
             'status'       => 'pending',
         ]);

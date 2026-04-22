@@ -22,6 +22,8 @@ return [
         'code' => 'Kode',
         'type' => 'Tipe',
         'unit' => 'Satuan',
+        'lab' => 'Laboratorium',
+        'quantity' => 'Kuantitas/Stok',
     ],
 
     // Label Form

@@ -90,7 +90,10 @@
                                 <option value="Biologi" @selected(request('laboratorium', $lockedLab) == 'Biologi')>{{ __('common.labs.biologi') }}</option>
                                 <option value="Fisika" @selected(request('laboratorium', $lockedLab) == 'Fisika')>{{ __('common.labs.fisika') }}</option>
                                 <option value="Bahasa" @selected(request('laboratorium', $lockedLab) == 'Bahasa')>{{ __('common.labs.bahasa') }}</option>
-                                <option value="Komputer" @selected(request('laboratorium', $lockedLab) == 'Komputer')>{{ __('common.labs.komputer') }}</option>
+                                <option value="Komputer 1" @selected(request('laboratorium', $lockedLab) == 'Komputer 1')>{{ __('common.labs.komputer_1') }}</option>
+                                <option value="Komputer 2" @selected(request('laboratorium', $lockedLab) == 'Komputer 2')>{{ __('common.labs.komputer_2') }}</option>
+                                <option value="Komputer 3" @selected(request('laboratorium', $lockedLab) == 'Komputer 3')>{{ __('common.labs.komputer_3') }}</option>
+                                <option value="Komputer 4" @selected(request('laboratorium', $lockedLab) == 'Komputer 4')>{{ __('common.labs.komputer_4') }}</option>
                             </select>
                             @unless($isAdmin)
                                 <input type="hidden" name="laboratorium" value="{{ request('laboratorium', $lockedLab) }}">

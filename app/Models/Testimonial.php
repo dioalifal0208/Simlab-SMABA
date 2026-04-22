@@ -14,6 +14,7 @@ class Testimonial extends Model
         'peran',
         'laboratorium',
         'pesan',
+        'rating',
         'status',
     ];
 }
