@@ -9,7 +9,7 @@
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12" x-data="{ imageToDelete: null, showDeleteModal: false }">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             {{-- Desain Kartu Disesuaikan --}}
             <div class="bg-white overflow-hidden border border-slate-200 shadow-sm sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
@@ -100,8 +100,23 @@
                                 {{-- Menampilkan gambar yang sudah ada --}}
                                 @if ($item->images->isNotEmpty())
                                     <div class="mt-4">
-                                        <p class="text-sm text-gray-600 mb-2">{{ __('items.form.current_gallery') }}</p>
-                                        <div class="flex flex-wrap gap-2">@foreach($item->images as $image)<img src="{{ Storage::url($image->path) }}" alt="{{ $item->nama_alat }}" class="h-20 w-20 object-cover rounded-md shadow-md">@endforeach</div>
+                                        <p class="text-sm text-gray-600 mb-3">{{ __('items.form.current_gallery') }}</p>
+                                        <div class="flex flex-wrap gap-4">
+                                            @foreach($item->images as $image)
+                                            <div class="relative group">
+                                                <img src="{{ Storage::url($image->path) }}" alt="{{ $item->nama_alat }}" class="h-24 w-24 object-cover rounded-lg shadow-sm border border-gray-200 group-hover:opacity-75 transition-opacity">
+                                                
+                                                <button type="button" 
+                                                    @click="imageToDelete = '{{ $image->id }}'; showDeleteModal = true" 
+                                                    class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 shadow-md hover:bg-red-600 transition-colors focus:outline-none opacity-0 group-hover:opacity-100"
+                                                    title="Hapus Gambar">
+                                                    <i class="fas fa-trash-alt text-xs"></i>
+                                                </button>
+                                            </div>
+                                            @endforeach
+                                        </div>
+
+
                                     </div>
                                 @endif
                             </div>
@@ -127,9 +142,16 @@
                                             </p>
                                             <p class="text-xs text-gray-500">{{ __('items.form.doc_current') }}</p>
                                         </div>
-                                        <a href="{{ Storage::url($item->dokumen_path) }}" target="_blank" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">
-                                            <i class="fas fa-external-link-alt mr-1"></i> {{ __('items.form.doc_view') }}
-                                        </a>
+                                        <button type="button" 
+                                                @click="$dispatch('buka-dokumen', {
+                                                    url: '{{ route('items.preview-document', $item) }}',
+                                                    title: '{{ htmlspecialchars($item->nama_alat . ' - ' . __('items.form.doc_section_title'), ENT_QUOTES) }}',
+                                                    download: '{{ route('items.download-document', $item) }}',
+                                                    canDelete: false
+                                                })"
+                                                class="text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">
+                                            <i class="fas fa-eye mr-1"></i> {{ __('items.form.doc_view') }}
+                                        </button>
                                     </div>
                                 @endif
 
@@ -162,6 +184,51 @@
                             <button type="submit" class="ms-4 px-6 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 font-bold text-sm shadow-sm transition-colors hover:-translate-y-0.5 transform">{{ __('common.buttons.update') }}</button>
                         </div>
                     </form>
+
+                    {{-- Form penghapusan gambar (tersembunyi - harus di luar form utama) --}}
+                    @if ($item->images->isNotEmpty())
+                        @foreach($item->images as $image)
+                            <form id="delete-image-{{ $image->id }}" action="{{ route('items.images.destroy', [$item->id, $image->id]) }}" method="POST" class="hidden" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        {{-- Modal Konfirmasi Hapus Gambar (Dipindahkan keluar dari container data-aos untuk menghindari bug stacking context/z-index) --}}
+        <div x-show="showDeleteModal" style="display: none;" class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                {{-- Background overlay --}}
+                <div x-show="showDeleteModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-900/40 transition-opacity" @click="showDeleteModal = false" aria-hidden="true"></div>
+
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                {{-- Modal panel --}}
+                <div x-show="showDeleteModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-100">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-50 border border-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                <i class="fas fa-trash-alt text-red-600"></i>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 class="text-lg leading-6 font-bold text-gray-900" id="modal-title">Hapus Gambar</h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-500">Apakah Anda yakin ingin menghapus gambar ini? Gambar yang dihapus dari server tidak dapat dikembalikan lagi.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 px-4 py-3 sm:px-6 flex justify-end space-x-3">
+                        <button type="button" @click="showDeleteModal = false" class="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-sm shadow-sm">
+                            Batal
+                        </button>
+                        <button type="button" @click="document.getElementById('delete-image-' + imageToDelete).submit()" class="px-6 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 font-bold text-sm shadow-sm transition-colors hover:-translate-y-0.5 transform">
+                            Ya, Hapus
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

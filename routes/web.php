@@ -158,6 +158,8 @@ Route::middleware(['auth', 'single.session'])->group(function () {
     Route::get('/items/{item}/report-damage', [DamageReportController::class, 'create'])->name('damage-reports.create');
     Route::post('/items/{item}/report-damage', [DamageReportController::class, 'store'])->name('damage-reports.store');
     Route::post('/items/{item}/request-stock', [StockRequestController::class, 'store'])->name('stock-requests.store');
+    Route::get('/items/{item}/preview-document', [ItemController::class, 'previewDocument'])->name('items.preview-document');
+    Route::get('/items/{item}/download-document', [ItemController::class, 'downloadDocument'])->name('items.download-document');
 
     // Permintaan tambah alat/bahan (guru)
     Route::get('/item-requests/create', [ItemRequestController::class, 'create'])->name('item-requests.create');
@@ -185,6 +187,9 @@ Route::middleware(['auth', 'single.session'])->group(function () {
         // Menggunakan POST agar selaras dengan form HTML (tanpa spoofing method DELETE)
         Route::post('/items/delete-multiple', [ItemController::class, 'deleteMultiple'])->name('items.delete-multiple');
         Route::post('/items/delete-all', [ItemController::class, 'deleteAll'])->name('items.delete-all');
+        
+        // Menghapus spesifik gambar item pada halaman edit
+        Route::delete('/items/{item}/images/{image}', [ItemController::class, 'destroyImage'])->name('items.images.destroy');
         // ==============================================
 
         // Manajemen SOP Laboratorium

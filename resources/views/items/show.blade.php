@@ -198,10 +198,17 @@
                                         <p class="text-xs text-gray-500 mt-0.5">{{ __('items.details.doc_format') }}</p>
                                     </div>
                                     <div class="flex items-center gap-2 shrink-0">
-                                        <a href="{{ Storage::url($item->dokumen_path) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-semibold hover:bg-indigo-100 transition-colors">
+                                        <button type="button" 
+                                                @click="$dispatch('buka-dokumen', {
+                                                    url: '{{ route('items.preview-document', $item) }}',
+                                                    title: '{{ htmlspecialchars($item->nama_alat . ' - ' . __('items.details.doc_title'), ENT_QUOTES) }}',
+                                                    download: '{{ route('items.download-document', $item) }}',
+                                                    canDelete: false
+                                                })"
+                                                class="inline-flex items-center gap-1.5 px-3 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-semibold hover:bg-indigo-100 transition-colors">
                                             <i class="fas fa-eye"></i> {{ __('items.details.doc_view') }}
-                                        </a>
-                                        <a href="{{ Storage::url($item->dokumen_path) }}" download class="inline-flex items-center gap-1.5 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors">
+                                        </button>
+                                        <a href="{{ route('items.download-document', $item) }}" class="inline-flex items-center gap-1.5 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors">
                                             <i class="fas fa-download"></i> {{ __('items.details.doc_download') }}
                                         </a>
                                     </div>

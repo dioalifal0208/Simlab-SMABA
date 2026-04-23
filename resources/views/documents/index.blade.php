@@ -157,27 +157,7 @@
 
     </div> {{-- Penutup py-12 div --}}
 
-        {{-- MODAL PREVIEW DOKUMEN (ALPINE.JS STANDALONE COMPONENT) --}}
-        <div x-data="{ 
-                showDocModal: false, 
-                docUrl: '', 
-                docTitle: '',
-                docDownloadUrl: '',
-                docDeleteUrl: '',
-                canDelete: false 
-             }"
-             @buka-dokumen.window="
-                docUrl = $event.detail.url;
-                docTitle = $event.detail.title;
-                docDownloadUrl = $event.detail.download;
-                docDeleteUrl = $event.detail.delete;
-                canDelete = $event.detail.canDelete;
-                showDocModal = true;
-             "
-             @keydown.escape.window="showDocModal = false"
-             x-show="showDocModal" 
-             style="display: none;"
-             class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" x-cloak>
+
              
             <div x-show="showDocModal" 
                  x-transition.opacity 

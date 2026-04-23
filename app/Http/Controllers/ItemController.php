@@ -286,6 +286,31 @@ class ItemController extends Controller
         return redirect()->route('items.index')->with('success', 'Item berhasil dihapus.');
     }
 
+    /**
+     * Menghapus satu gambar spesifik dari item.
+     */
+    public function destroyImage(Item $item, ItemImage $image)
+    {
+        $this->authorize('is-admin');
+
+        // Pastikan gambar yang dihapus benar-benar milik item ini
+        if ($image->item_id !== $item->id) {
+            return abort(404);
+        }
+
+        // Hapus file dari storage (Original & Thumbnails)
+        Storage::disk('public')->delete($image->path);
+        
+        $filename = basename($image->path);
+        Storage::disk('public')->delete('item-photos/thumbnails/small/' . $filename);
+        Storage::disk('public')->delete('item-photos/thumbnails/medium/' . $filename);
+
+        // Hapus record dari database
+        $image->delete();
+
+        return redirect()->route('items.edit', $item->id)->with('success', 'Gambar berhasil dihapus.');
+    }
+
     // ==============================================
     // ## METHOD BARU UNTUK HAPUS MASSAL ##
     // ==============================================
@@ -463,5 +488,55 @@ class ItemController extends Controller
     {
         $this->authorize('is-admin');
         return Excel::download(new ItemsTemplateExport, 'template_import_item.xlsx');
+    }
+
+    /**
+     * Menampilkan pratinjau dokumen pendukung item (PDF).
+     */
+    public function previewDocument(Item $item)
+    {
+        if (!$item->dokumen_path) {
+            abort(404, 'Dokumen tidak ditemukan.');
+        }
+
+        // Pastikan file ada di disk 'public'
+        if (!Storage::disk('public')->exists($item->dokumen_path)) {
+            abort(404, 'File dokumen tidak ditemukan di server.');
+        }
+
+        $path = Storage::disk('public')->path($item->dokumen_path);
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        // Jika klien (AJAX) meminta format JSON untuk menghindari pencegatan IDM (sama seperti Pustaka Digital)
+        if (request()->has('json') && strtolower($extension) === 'pdf') {
+            return response()->json([
+                'mime' => 'application/pdf',
+                'data' => base64_encode(file_get_contents($path)),
+            ]);
+        }
+
+        // Jika PDF, tampilkan inline
+        if (strtolower($extension) === 'pdf') {
+            return response()->file($path, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . basename($path) . '"'
+            ]);
+        }
+
+        // Fallback jika bukan PDF, langsung unduh
+        return response()->download($path);
+    }
+
+    /**
+     * Mengunduh dokumen pendukung item.
+     */
+    public function downloadDocument(Item $item)
+    {
+        if (!$item->dokumen_path || !Storage::disk('public')->exists($item->dokumen_path)) {
+            abort(404, 'Dokumen tidak ditemukan.');
+        }
+
+        $path = Storage::disk('public')->path($item->dokumen_path);
+        return response()->download($path);
     }
 }

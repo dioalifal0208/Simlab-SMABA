@@ -713,6 +713,121 @@
         @endif
         @endauth
         
+        {{-- MODAL PREVIEW DOKUMEN (ALPINE.JS STANDALONE COMPONENT) --}}
+        <div x-data="{ 
+                showDocModal: false, 
+                docUrl: '', 
+                docTitle: '',
+                docDownloadUrl: '',
+                docDeleteUrl: '',
+                canDelete: false,
+                localObjUrl: '',
+                isLoading: false,
+
+                async loadPdf() {
+                    if (!this.docUrl) return;
+                    this.isLoading = true;
+                    
+                    // Cleanup previous URL
+                    if (this.localObjUrl && this.localObjUrl.startsWith('blob:')) {
+                        URL.revokeObjectURL(this.localObjUrl);
+                    }
+                    this.localObjUrl = '';
+
+                    try {
+                        // AJAX Fetch JSON Base64 Bypassing IDM
+                        const targetUrl = this.docUrl + (this.docUrl.includes('?') ? '&' : '?') + 'json=1';
+                        const response = await fetch(targetUrl);
+                        const contentType = response.headers.get('content-type');
+                        
+                        if (contentType && contentType.indexOf('application/json') !== -1) {
+                            const resData = await response.json();
+                            if(resData.data) {
+                                this.localObjUrl = 'data:application/pdf;base64,' + resData.data;
+                                return;
+                            }
+                        }
+                        
+                        // Fallback blob
+                        const blob = await response.blob();
+                        this.localObjUrl = URL.createObjectURL(new Blob([blob], {type: 'application/pdf'}));
+                    } catch (err) {
+                        console.error('Gagal memuat pratinjau:', err);
+                        // Fallback terakhir: gunakan URL langsung jika AJAX gagal
+                        this.localObjUrl = this.docUrl;
+                    } finally {
+                        this.isLoading = false;
+                    }
+                }
+             }"
+             @buka-dokumen.window="
+                docUrl = $event.detail.url;
+                docTitle = $event.detail.title;
+                docDownloadUrl = $event.detail.download;
+                docDeleteUrl = $event.detail.delete;
+                canDelete = $event.detail.canDelete;
+                showDocModal = true;
+                setTimeout(() => loadPdf(), 50);
+             "
+             @keydown.escape.window="showDocModal = false"
+             x-show="showDocModal" 
+             style="display: none;"
+             class="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6" x-cloak>
+             
+            <div x-show="showDocModal" 
+                 x-transition.opacity 
+                 class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm" @click="showDocModal = false"></div>
+            
+            <div x-show="showDocModal" 
+                 x-transition 
+                 class="bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-4xl h-[90vh] flex flex-col relative z-50 overflow-hidden">
+                
+                {{-- Header Modal --}}
+                <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                    <h3 class="font-extrabold text-lg text-slate-800 flex items-center gap-3 truncate pr-4">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm bg-blue-100 text-blue-600 shrink-0"><i class="fas fa-file-alt"></i></div>
+                        <span x-text="docTitle" class="truncate">Pratinjau Dokumen</span>
+                    </h3>
+                    <div class="flex gap-2">
+                        <button @click="showDocModal = false" class="text-slate-400 hover:text-red-500 transition-colors w-8 h-8 flex justify-center items-center rounded-lg hover:bg-slate-200"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                
+                {{-- Body Modal (Dokumen) --}}
+                <div class="flex-grow w-full bg-slate-200 overflow-hidden relative">
+                    
+                    {{-- Indikator Loading --}}
+                    <div x-show="isLoading" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-200 z-10 transition-opacity">
+                        <i class="fas fa-circle-notch fa-spin text-4xl text-blue-500 mb-3"></i>
+                        <span class="text-slate-500 font-medium text-sm animate-pulse">Merender Dokumen...</span>
+                    </div>
+
+                    {{-- Preview iframe (Lebih konsisten daripada object/embed untuk data URIs) --}}
+                    <template x-if="localObjUrl">
+                        <iframe :src="localObjUrl" class="w-full h-full border-0 absolute inset-0 bg-white"></iframe>
+                    </template>
+                </div>
+
+                {{-- Footer Action Bar --}}
+                <div class="px-6 py-4 border-t border-slate-100 bg-white flex justify-between items-center mt-auto">
+                    <div>
+                        <form :action="docDeleteUrl" method="POST" class="delete-form m-0" x-show="canDelete">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="px-4 py-2.5 bg-red-50 text-red-600 hover:bg-red-500 hover:text-white rounded-xl font-bold text-sm transition-colors border border-red-100 flex items-center gap-2 shadow-sm">
+                                <i class="fas fa-trash-alt"></i> Hapus Permanen
+                            </button>
+                        </form>
+                    </div>
+                    <div class="flex gap-3">
+                        <button @click="showDocModal = false" class="px-5 py-2.5 bg-slate-50 border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-100 transition-colors text-sm shadow-sm relative z-50">Batalkan</button>
+                        <a :href="docDownloadUrl" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm shadow-md shadow-blue-600/20 transition-all flex items-center gap-2 hover:-translate-y-0.5 relative z-50">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {{-- Lock Screen Modal --}}
         @auth
         <div x-data="lockScreen" @keydown.window="resetTimer" @mousemove.window="resetTimer" @click.window="resetTimer" @scroll.window="resetTimer" style="display: none;" x-show="isOpen" class="fixed inset-0 z-[9999] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
