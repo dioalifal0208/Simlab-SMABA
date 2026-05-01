@@ -22,7 +22,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('practicum-modules.store') }}" method="POST">
+                    <form action="{{ route('practicum-modules.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="space-y-6">
                             {{-- Judul Modul --}}
@@ -35,6 +35,19 @@
                             <div>
                                 <label for="description" class="block font-medium text-sm text-gray-700">Deskripsi / Langkah-langkah (Opsional)</label>
                                 <textarea name="description" id="description" rows="5" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" placeholder="Tuliskan langkah-langkah praktikum atau SOP di sini...">{{ old('description') }}</textarea>
+                            </div>
+
+                            {{-- Upload File Modul --}}
+                            <div>
+                                <label for="document" class="block font-medium text-sm text-gray-700">Atau unggah dokumen langkah-langkah (Opsional, PDF/Word)</label>
+                                <input type="file" name="document" id="document" accept=".pdf,.doc,.docx" class="mt-1 block w-full text-sm text-gray-500
+                                  file:mr-4 file:py-2 file:px-4
+                                  file:rounded-lg file:border-0
+                                  file:text-sm file:font-semibold
+                                  file:bg-indigo-50 file:text-indigo-700
+                                  hover:file:bg-indigo-100
+                                "/>
+                                <p class="mt-1 text-xs text-gray-500">Format yang didukung: PDF, DOC, DOCX. Maks: 10MB.</p>
                             </div>
 
                             {{-- Pemilihan Item --}}

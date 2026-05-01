@@ -29,6 +29,26 @@
                             @else
                                 <p class="text-gray-500 italic">Tidak ada deskripsi untuk modul ini.</p>
                             @endif
+
+                            @if($module->document_path)
+                                <div class="mt-8 pt-6 border-t border-gray-100">
+                                    <h4 class="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">Dokumen Panduan Tersertakan</h4>
+                                    <div class="flex items-center gap-4 p-4 bg-blue-50 border border-blue-100 rounded-xl">
+                                        <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-white text-blue-600 shadow-sm">
+                                            <i class="fas fa-file-alt text-xl"></i>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-bold text-gray-800 truncate">{{ $module->original_filename ?? 'Dokumen SOP' }}</p>
+                                            <p class="text-xs text-blue-600 mt-0.5">Berisi langkah-langkah praktikum lengkap</p>
+                                        </div>
+                                        <div class="flex items-center gap-2 shrink-0">
+                                            <a href="{{ route('practicum-modules.download', $module->id) }}" class="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 shadow-sm transition-colors">
+                                                <i class="fas fa-download"></i> Unduh File
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

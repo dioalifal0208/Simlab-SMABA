@@ -7,6 +7,7 @@ use App\Models\PracticumModule; // <-- Import PracticumModule
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PracticumModuleController extends Controller
 {
@@ -43,14 +44,28 @@ class PracticumModuleController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'document' => 'nullable|file|mimes:pdf,doc,docx|max:10240', // 10MB max
             'items' => 'nullable|array', // Pastikan 'items' adalah array
             'items.*' => 'exists:items,id', // Pastikan setiap item ID ada di tabel items
         ]);
+
+        $documentPath = null;
+        $originalFilename = null;
+
+        // Proses upload dokumen jika ada
+        if ($request->hasFile('document')) {
+            $file = $request->file('document');
+            $originalFilename = $file->getClientOriginalName();
+            // Simpan ke storage/app/public/practicum_modules
+            $documentPath = $file->store('practicum_modules', 'public');
+        }
 
         // 2. Buat modul baru
         $module = PracticumModule::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
+            'document_path' => $documentPath,
+            'original_filename' => $originalFilename,
             'user_id' => Auth::id(),
         ]);
 
@@ -111,15 +126,37 @@ class PracticumModuleController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'document' => 'nullable|file|mimes:pdf,doc,docx|max:10240', // 10MB max
             'items' => 'nullable|array', // Pastikan 'items' adalah array
             'items.*' => 'exists:items,id', // Pastikan setiap item ID ada di tabel items
         ]);
 
-        // 2. Update data modul
-        $practicumModule->update([
+        $updateData = [
             'title' => $validated['title'],
             'description' => $validated['description'],
-        ]);
+        ];
+
+        // Proses upload dokumen jika ada
+        if ($request->hasFile('document')) {
+            // Hapus dokumen lama jika ada
+            if ($practicumModule->document_path && Storage::disk('public')->exists($practicumModule->document_path)) {
+                Storage::disk('public')->delete($practicumModule->document_path);
+            }
+
+            $file = $request->file('document');
+            $updateData['original_filename'] = $file->getClientOriginalName();
+            $updateData['document_path'] = $file->store('practicum_modules', 'public');
+        } elseif ($request->has('remove_document') && $request->remove_document == '1') {
+            // Jika user memilih untuk menghapus dokumen
+            if ($practicumModule->document_path && Storage::disk('public')->exists($practicumModule->document_path)) {
+                Storage::disk('public')->delete($practicumModule->document_path);
+            }
+            $updateData['document_path'] = null;
+            $updateData['original_filename'] = null;
+        }
+
+        // 2. Update data modul
+        $practicumModule->update($updateData);
 
         // 3. Sinkronkan (sync) item-item yang dipilih
         if (isset($validated['items'])) {
@@ -137,18 +174,38 @@ class PracticumModuleController extends Controller
     /**
      * Menghapus modul dari database. (Akan kita isi nanti)
      */
+    /**
+     * Menghapus modul dari database.
+     */
     public function destroy(PracticumModule $practicumModule)
-{
-    // Otorisasi: Pastikan hanya user yang berwenang (misal admin/guru)
-    $this->authorize('manage-documents'); // Sesuaikan gate jika perlu
+    {
+        // Otorisasi: Pastikan hanya user yang berwenang (misal admin/guru)
+        $this->authorize('manage-documents'); // Sesuaikan gate jika perlu
 
-    // Hapus relasi di pivot table (opsional, cascade delete seharusnya menangani ini)
-    // $practicumModule->items()->detach(); 
+        // Hapus file dokumen jika ada
+        if ($practicumModule->document_path && Storage::disk('public')->exists($practicumModule->document_path)) {
+            Storage::disk('public')->delete($practicumModule->document_path);
+        }
 
-    // Hapus modul
-    $practicumModule->delete();
+        // Hapus modul
+        $practicumModule->delete();
 
-    return redirect()->route('practicum-modules.index')
-           ->with('success', 'Modul praktikum berhasil dihapus.');
-}
+        return redirect()->route('practicum-modules.index')
+               ->with('success', 'Modul praktikum berhasil dihapus.');
+    }
+
+    /**
+     * Mengunduh dokumen pendukung modul.
+     */
+    public function downloadDocument(PracticumModule $practicumModule)
+    {
+        if (!$practicumModule->document_path || !Storage::disk('public')->exists($practicumModule->document_path)) {
+            abort(404, 'Dokumen tidak ditemukan.');
+        }
+
+        $path = Storage::disk('public')->path($practicumModule->document_path);
+        $filename = $practicumModule->original_filename ?? basename($path);
+        
+        return response()->download($path, $filename);
+    }
 }

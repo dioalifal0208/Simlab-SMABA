@@ -145,6 +145,7 @@ Route::middleware(['auth', 'single.session'])->group(function () {
     Route::resource('bookings', BookingController::class);
 
     Route::resource('practicum-modules', PracticumModuleController::class);
+    Route::get('/practicum-modules/{practicumModule}/download', [PracticumModuleController::class, 'downloadDocument'])->name('practicum-modules.download');
 
     // Kalender
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');

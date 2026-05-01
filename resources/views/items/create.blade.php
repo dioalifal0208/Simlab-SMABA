@@ -78,6 +78,18 @@
                                 <input id="lokasi_penyimpanan" class="block mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" type="text" name="lokasi_penyimpanan" value="{{ old('lokasi_penyimpanan') }}" required />
                             </div>
 
+                            {{-- Kode Inventaris & Tahun Pengadaan --}}
+                            <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="kode_inventaris" class="block text-sm font-medium text-gray-700">{{ __('items.form.kode_inventaris') }}</label>
+                                    <input id="kode_inventaris" class="block mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" type="text" name="kode_inventaris" value="{{ old('kode_inventaris') }}" required />
+                                </div>
+                                <div>
+                                    <label for="tahun_pengadaan" class="block text-sm font-medium text-gray-700">{{ __('items.form.tahun_pengadaan') }}</label>
+                                    <input id="tahun_pengadaan" class="block mt-1 w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" type="number" min="1900" max="{{ date('Y') + 1 }}" name="tahun_pengadaan" value="{{ old('tahun_pengadaan', date('Y')) }}" required />
+                                </div>
+                            </div>
+
                             {{-- Laboratorium --}}
                             <div>
                                 <label for="laboratorium" class="block text-sm font-medium text-gray-700">{{ __('items.form.lab') }}</label>

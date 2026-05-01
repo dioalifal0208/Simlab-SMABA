@@ -22,7 +22,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('practicum-modules.update', $module->id) }}" method="POST">
+                    <form action="{{ route('practicum-modules.update', $module->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PATCH') {{-- Method untuk update --}}
                         <div class="space-y-6">
@@ -36,6 +36,39 @@
                             <div>
                                 <label for="description" class="block font-medium text-sm text-gray-700">Deskripsi / Langkah-langkah (Opsional)</label>
                                 <textarea name="description" id="description" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600" placeholder="Tuliskan langkah-langkah praktikum atau SOP di sini...">{{ old('description', $module->description) }}</textarea>
+                            </div>
+
+                            {{-- Upload File Modul --}}
+                            <div class="p-4 border rounded-xl bg-gray-50">
+                                <label for="document" class="block font-medium text-sm text-gray-700">Atau unggah dokumen langkah-langkah (Opsional, PDF/Word)</label>
+                                
+                                @if($module->document_path)
+                                    <div class="mt-3 mb-4 p-3 bg-white border border-gray-200 rounded-lg flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                                                <i class="fas fa-file-alt text-lg"></i>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-semibold text-gray-800">{{ $module->original_filename ?? 'Dokumen Tersimpan' }}</p>
+                                                <a href="{{ route('practicum-modules.download', $module->id) }}" target="_blank" class="text-xs text-indigo-600 hover:text-indigo-800"><i class="fas fa-download mr-1"></i>Unduh</a>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <input type="checkbox" name="remove_document" id="remove_document" value="1" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                                            <label for="remove_document" class="text-sm text-red-600 font-medium">Hapus file</label>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-2 font-medium">Timpa dengan file baru:</p>
+                                @endif
+
+                                <input type="file" name="document" id="document" accept=".pdf,.doc,.docx" class="mt-1 block w-full text-sm text-gray-500
+                                  file:mr-4 file:py-2 file:px-4
+                                  file:rounded-lg file:border-0
+                                  file:text-sm file:font-semibold
+                                  file:bg-indigo-50 file:text-indigo-700
+                                  hover:file:bg-indigo-100
+                                "/>
+                                <p class="mt-1 text-xs text-gray-500">Format yang didukung: PDF, DOC, DOCX. Maks: 10MB.</p>
                             </div>
 
                             {{-- Pemilihan Item --}}

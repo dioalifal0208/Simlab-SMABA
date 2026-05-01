@@ -30,6 +30,8 @@ class StoreItemRequest extends FormRequest
             'satuan' => 'required|string|max:50',
             'kondisi' => 'required|in:baik,kurang baik,Rusak',
             'lokasi_penyimpanan' => 'required|string|max:255',
+            'kode_inventaris' => 'required|string|max:255|unique:items,kode_inventaris',
+            'tahun_pengadaan' => 'required|integer|digits:4|min:1900|max:' . (date('Y') + 1),
             'deskripsi' => 'nullable|string',
             'laboratorium' => 'required|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4',
             'photos' => 'nullable|array',
@@ -69,6 +71,16 @@ class StoreItemRequest extends FormRequest
             'lokasi_penyimpanan.required' => 'Lokasi penyimpanan wajib diisi.',
             'lokasi_penyimpanan.max' => 'Lokasi penyimpanan tidak boleh lebih dari :max karakter.',
             
+            'kode_inventaris.required' => 'Kode inventaris wajib diisi.',
+            'kode_inventaris.max' => 'Kode inventaris tidak boleh lebih dari :max karakter.',
+            'kode_inventaris.unique' => 'Kode inventaris sudah digunakan oleh item lain.',
+            
+            'tahun_pengadaan.required' => 'Tahun pengadaan wajib diisi.',
+            'tahun_pengadaan.integer' => 'Tahun pengadaan harus berupa angka.',
+            'tahun_pengadaan.digits' => 'Tahun pengadaan harus terdiri dari 4 angka.',
+            'tahun_pengadaan.min' => 'Tahun pengadaan tidak valid.',
+            'tahun_pengadaan.max' => 'Tahun pengadaan tidak valid.',
+            
             'laboratorium.required' => 'Laboratorium wajib dipilih.',
             'laboratorium.in' => 'Laboratorium harus berupa "Biologi", "Fisika", "Bahasa", atau "Komputer 1-4".',
             
@@ -99,6 +111,8 @@ class StoreItemRequest extends FormRequest
             'satuan' => 'satuan',
             'kondisi' => 'kondisi',
             'lokasi_penyimpanan' => 'lokasi penyimpanan',
+            'kode_inventaris' => 'kode inventaris',
+            'tahun_pengadaan' => 'tahun pengadaan',
             'deskripsi' => 'deskripsi',
             'laboratorium' => 'laboratorium',
             'photos' => 'foto',

@@ -98,6 +98,8 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
             'satuan' => $row['satuan'] ?? 'unit',
             'kondisi' => $row['kondisi'] ?? 'Baik',
             'lokasi_penyimpanan' => $row['lokasi_penyimpanan'] ?? 'Gudang',
+            'kode_inventaris' => $row['kode_inventaris'] ?? null,
+            'tahun_pengadaan' => $row['tahun_pengadaan'] ?? date('Y'),
             'laboratorium' => $row['laboratorium'] ?? 'Biologi', // Default 'Biologi' sesuai DB
             'stok_minimum' => $row['stok_minimum'] ?? 0,
             'deskripsi' => $row['deskripsi'] ?? null,
@@ -137,6 +139,8 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
             'satuan' => 'required|string|max:50', // Sinkron dengan manual
             'kondisi' => 'required|in:baik,kurang baik,Rusak',
             'lokasi_penyimpanan' => 'required|string|max:255', // Sinkron dengan manual
+            'kode_inventaris' => 'required|string|max:255',
+            'tahun_pengadaan' => 'required|integer|digits:4|min:1900|max:' . (date('Y') + 1),
             'laboratorium' => 'required|in:Biologi,Fisika,Bahasa,Komputer 1,Komputer 2,Komputer 3,Komputer 4', // Sinkron dengan manual
             'stok_minimum' => 'nullable|integer|min:0',
             'deskripsi' => 'nullable|string',

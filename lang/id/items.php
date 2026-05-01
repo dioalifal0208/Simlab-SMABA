@@ -30,6 +30,8 @@ return [
     'form' => [
         'name' => 'Nama Item',
         'name_label' => 'Nama Alat / Bahan',
+        'kode_inventaris' => 'Kode Inventaris',
+        'tahun_pengadaan' => 'Tahun Pengadaan',
         'category' => 'Kategori',
         'type' => 'Tipe Item',
         'stock' => 'Stok',

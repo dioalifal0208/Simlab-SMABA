@@ -725,10 +725,12 @@
                 canDelete: false,
                 localObjUrl: '',
                 isLoading: false,
+                isNotPdf: false,
 
                 async loadPdf() {
                     if (!this.docUrl) return;
                     this.isLoading = true;
+                    this.isNotPdf = false;
                     
                     // Cleanup previous URL
                     if (this.localObjUrl && this.localObjUrl.startsWith('blob:')) {
@@ -757,6 +759,12 @@
                             }
                         }
                         
+                        // Periksa apakah ini file selain PDF (seperti word/excel yang tidak didukung browser native preview)
+                        if (contentType && !contentType.includes('pdf') && !contentType.includes('json')) {
+                            this.isNotPdf = true;
+                            return;
+                        }
+
                         // Fallback blob
                         const blob = await response.blob();
                         this.localObjUrl = URL.createObjectURL(new Blob([blob], {type: 'application/pdf'}));
@@ -811,8 +819,20 @@
                         <span class="text-slate-500 font-medium text-sm animate-pulse">Merender Dokumen...</span>
                     </div>
 
+                    {{-- Pesan File Tidak Dapat Ditampilkan --}}
+                    <div x-show="isNotPdf && !isLoading" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10 p-8 text-center" style="display: none;">
+                        <div class="w-20 h-20 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center text-3xl mb-4">
+                            <i class="fas fa-file-word"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-slate-800 mb-2">Pratinjau Tidak Tersedia</h4>
+                        <p class="text-slate-500 max-w-md">File ini berformat non-PDF (misalnya Word/Excel) yang tidak didukung untuk pratinjau langsung di dalam browser. Silakan unduh dokumen untuk melihat isinya.</p>
+                        <a :href="docDownloadUrl" class="mt-6 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm shadow-md transition-all flex items-center gap-2">
+                            <i class="fas fa-download"></i> Unduh Sekarang
+                        </a>
+                    </div>
+
                     {{-- Preview iframe (Lebih konsisten daripada object/embed untuk data URIs) --}}
-                    <template x-if="localObjUrl">
+                    <template x-if="localObjUrl && !isNotPdf">
                         <iframe :src="localObjUrl" class="w-full h-full border-0 absolute inset-0 bg-white"></iframe>
                     </template>
                 </div>

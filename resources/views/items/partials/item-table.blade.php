@@ -37,7 +37,10 @@
                             </div>
                             <div class="min-w-0">
                                 <div class="text-sm font-bold text-slate-900 truncate group-hover:text-green-700 transition-colors">{{ $item->nama_alat }}</div>
-                                <div class="text-[11px] font-semibold tracking-wide text-slate-400 mt-0.5 md:hidden uppercase">{{ $item->tipe }}</div>
+                                <div class="text-[11px] font-semibold tracking-wide text-slate-400 mt-0.5 uppercase">
+                                    <span class="text-green-600 border border-green-200 bg-green-50 px-1.5 py-0.5 rounded mr-1">{{ $item->kode_inventaris }}</span> 
+                                    <span class="md:hidden">{{ $item->tipe }}</span>
+                                </div>
                             </div>
                         </div>
                     </td>

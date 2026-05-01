@@ -28,6 +28,8 @@ return [
     'form' => [
         'name' => 'Item Name',
         'name_label' => 'Equipment / Material Name',
+        'kode_inventaris' => 'Inventory Code',
+        'tahun_pengadaan' => 'Procurement Year',
         'category' => 'Category',
         'type' => 'Type',
         'stock' => 'Stock',

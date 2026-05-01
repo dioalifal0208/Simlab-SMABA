@@ -14,6 +14,8 @@ class PracticumModule extends Model
     protected $fillable = [
         'title',
         'description',
+        'document_path',
+        'original_filename',
         'user_id',
     ];
 
