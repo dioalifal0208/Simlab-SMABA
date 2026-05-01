@@ -47,6 +47,12 @@ echo "Running migrations..."
 php artisan migrate --force
 
 # ========================
+# Storage symlink
+# ========================
+echo "Creating storage symlink..."
+php artisan storage:link --force
+
+# ========================
 # Optimize Laravel
 # ========================
 echo "Optimizing Laravel..."
