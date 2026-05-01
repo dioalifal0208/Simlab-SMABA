@@ -395,9 +395,11 @@
         @endif
 
         {{-- Floating chat widget --}}
+        @unless($hideChrome)
         @auth
             @include('components.chat-widget')
         @endauth
+        @endunless
 
         {{-- ============================================ --}}
         {{-- Notification Email Setup Modal (Popup) --}}
