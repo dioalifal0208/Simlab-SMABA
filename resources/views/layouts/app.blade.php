@@ -745,7 +745,14 @@
                         if (contentType && contentType.indexOf('application/json') !== -1) {
                             const resData = await response.json();
                             if(resData.data) {
-                                this.localObjUrl = 'data:application/pdf;base64,' + resData.data;
+                                // Convert base64 to blob to prevent iframe data URI limits/blocks
+                                const binaryText = atob(resData.data);
+                                const bytes = new Uint8Array(binaryText.length);
+                                for (let i = 0; i < binaryText.length; i++) {
+                                    bytes[i] = binaryText.charCodeAt(i);
+                                }
+                                const blob = new Blob([bytes], {type: 'application/pdf'});
+                                this.localObjUrl = URL.createObjectURL(blob);
                                 return;
                             }
                         }
