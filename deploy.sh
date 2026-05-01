@@ -48,9 +48,10 @@ php artisan migrate --force
 
 # ========================
 # Storage symlink
+# (Menggunakan ln manual karena exec() disabled di shared hosting Hostinger)
 # ========================
 echo "Creating storage symlink..."
-php artisan storage:link --force
+ln -sfn $(pwd)/storage/app/public $(pwd)/public/storage
 
 # ========================
 # Optimize Laravel
