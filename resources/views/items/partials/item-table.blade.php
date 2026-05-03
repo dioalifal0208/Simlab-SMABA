@@ -27,8 +27,8 @@
                     <td class="py-4 px-6">
                         <div class="flex items-center gap-3.5">
                             <div class="flex-shrink-0 h-11 w-11 rounded-xl border border-slate-200 shadow-sm overflow-hidden bg-white">
-                                @if($item->photo)
-                                    <img class="h-full w-full object-cover transform group-hover:scale-110 transition-transform duration-500" src="{{ asset('storage/' . $item->photo) }}" alt="{{ $item->nama_alat }}">
+                                @if($item->mainImage)
+                                    <img class="h-full w-full object-cover transform group-hover:scale-110 transition-transform duration-500" src="{{ asset('storage/item-photos/thumbnails/small/' . basename($item->mainImage->path)) }}" alt="{{ $item->nama_alat }}">
                                 @else
                                     <div class="h-full w-full bg-slate-50 flex items-center justify-center text-slate-400">
                                         <i class="fas fa-box-open text-base group-hover:text-green-500 transition-colors"></i>
@@ -38,7 +38,9 @@
                             <div class="min-w-0">
                                 <div class="text-sm font-bold text-slate-900 truncate group-hover:text-green-700 transition-colors">{{ $item->nama_alat }}</div>
                                 <div class="text-[11px] font-semibold tracking-wide text-slate-400 mt-0.5 uppercase">
-                                    <span class="text-green-600 border border-green-200 bg-green-50 px-1.5 py-0.5 rounded mr-1">{{ $item->kode_inventaris }}</span> 
+                                    @if($item->kode_inventaris)
+                                        <span class="text-green-600 border border-green-200 bg-green-50 px-1.5 py-0.5 rounded mr-1">{{ $item->kode_inventaris }}</span> 
+                                    @endif
                                     <span class="md:hidden">{{ $item->tipe }}</span>
                                 </div>
                             </div>

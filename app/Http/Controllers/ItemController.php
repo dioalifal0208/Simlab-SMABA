@@ -33,7 +33,7 @@ class ItemController extends Controller
         $direction = $request->get('direction', 'desc');
 
         // Memulai query
-        $query = Item::with(['user', 'activeLoans']);
+        $query = Item::with(['user', 'activeLoans', 'mainImage']);
 
         // Filter otomatis untuk guru berdasarkan lab-nya
         if (auth()->user()->role === 'guru' && auth()->user()->laboratorium) {

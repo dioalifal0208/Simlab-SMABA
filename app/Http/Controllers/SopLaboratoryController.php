@@ -76,7 +76,16 @@ class SopLaboratoryController extends Controller
         $lab = $request->query('lab');
         $sop = SopLaboratory::where('laboratorium', $lab)->first();
 
-        if ($sop && $sop->file_path) {
+        if ($sop && $sop->file_path && Storage::disk('public')->exists($sop->file_path)) {
+            if ($request->has('json')) {
+                $path = Storage::disk('public')->path($sop->file_path);
+                return response()->json([
+                    'exists' => true,
+                    'data' => base64_encode(file_get_contents($path)),
+                    'url' => asset('storage/' . $sop->file_path)
+                ]);
+            }
+
             return response()->json([
                 'exists' => true,
                 'url' => asset('storage/' . $sop->file_path)

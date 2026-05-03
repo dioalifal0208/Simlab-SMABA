@@ -11,7 +11,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8" x-data="loanForm">
             <div class="bg-white overflow-hidden shadow-lg sm:rounded-xl" data-aos="fade-up" data-aos-once="true">
                 <div class="p-6 md:p-8 text-gray-900">
                     
@@ -25,7 +25,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form action="{{ route('loans.store') }}" method="POST" id="loanForm" x-data="{ showSopModal: false, agreedToSop: false, isLoadingPdf: false, pdfUrl: '' }">
+                    <form action="{{ route('loans.store') }}" method="POST" id="loanForm">
                         @csrf
                         <div class="space-y-6">
                             {{-- Pilih Laboratorium --}}
@@ -150,125 +150,225 @@
 
                         <div class="mt-8 flex justify-end space-x-3">
                             <button type="button" onclick="window.history.back();" class="px-4 py-2 bg-white border border-slate-300 text-slate-700 shadow-sm rounded-lg hover:bg-slate-50 font-semibold text-sm transition-colors">Batal</button>
-                            <button type="button" @click="
-                                // Validasi HTML5 dasar form sebelum nampilin modal
-                                if(document.getElementById('loanForm').checkValidity()) {
-                                    showSopModal = true;
-                                    agreedToSop = false;
-                                    
-                                    // Fetch PDF URL via AJAX
-                                    const selectedLab = document.getElementById('laboratorium').value;
-                                    isLoadingPdf = true;
-                                    pdfUrl = '';
-                                    
-                                    fetch(`/api/sop-url?lab=${encodeURIComponent(selectedLab)}`)
-                                        .then(res => res.json())
-                                        .then(data => {
-                                            if(data.exists) {
-                                                pdfUrl = data.url;
-                                            }
-                                            isLoadingPdf = false;
-                                        })
-                                        .catch(err => {
-                                            console.error('Error fetching SOP:', err);
-                                            isLoadingPdf = false;
-                                        });
-
-                                } else {
-                                    document.getElementById('loanForm').reportValidity();
-                                }
-                            " class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold text-sm shadow-sm transition-colors">Ajukan Peminjaman</button>
+                            <button type="button" @click="openModalAndFetchSop()" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold text-sm shadow-sm transition-colors">Ajukan Peminjaman</button>
                         </div>
-                        
-                        {{-- SOP Modal --}}
-                        <div x-cloak x-show="showSopModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                            <div x-show="showSopModal" 
-                                x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
-                                x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" 
-                                class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
-                            <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-                                <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                                    <div x-show="showSopModal" @click.away="showSopModal = false"
-                                        x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
-                                        x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
-                                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full max-w-4xl">
-                                        
-                                        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 flex flex-col h-[80vh]">
-                                            <div class="sm:flex sm:items-start flex-shrink-0">
-                                                <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-emerald-50 sm:mx-0 sm:h-10 sm:w-10">
-                                                    <i class="fas fa-file-pdf text-emerald-500"></i>
-                                                </div>
-                                                <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
-                                                    <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Standar Operasional Prosedur (SOP) Laboratorium</h3>
-                                                    <div class="mt-2 text-sm text-gray-500 mb-2">
-                                                        <p>Silakan baca dokumen syarat dan ketentuan di bawah ini secara saksama.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            {{-- PDF Viewer Container --}}
-                                            <div class="mt-4 border border-gray-200 rounded-md bg-gray-50 flex-grow relative overflow-hidden">
-                                                
-                                                {{-- Loading State --}}
-                                                <div x-show="isLoadingPdf" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10">
-                                                    <i class="fas fa-spinner fa-spin text-3xl text-emerald-500 mb-2"></i>
-                                                    <p class="text-sm text-gray-500">Memuat dokumen SOP...</p>
-                                                </div>
 
-                                                {{-- Error/Empty State --}}
-                                                <div x-show="!isLoadingPdf && !pdfUrl" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10 text-center p-6">
-                                                    <i class="fas fa-file-circle-xmark text-4xl text-gray-400 mb-3"></i>
-                                                    <h3 class="text-lg font-medium text-gray-900">SOP Belum Tersedia</h3>
-                                                    <p class="text-sm text-gray-500 mt-1">Admin belum mengunggah dokumen SOP untuk laboratorium ini.</p>
-                                                    <p class="text-sm text-gray-500 mt-2">Anda tetap dapat melanjutkan proses peminjaman.</p>
-                                                </div>
+                    </form>
+                </div>
+            </div>
 
-                                                {{-- iframe for PDF --}}
-                                                <template x-if="pdfUrl">
-                                                    <iframe :src="pdfUrl + '#toolbar=0'" class="w-full h-full border-0 absolute inset-0">
-                                                        Sayang sekali, peramban Anda tidak mendukung penayangan PDF bawaan.
-                                                    </iframe>
-                                                </template>
-                                            </div>
+            {{-- SOP Modal dipindahkan keluar dari data-aos container agar tidak terpotong --}}
+            <div x-cloak x-show="showSopModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <div x-show="showSopModal" 
+                    x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
+                    x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" 
+                    class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
-                                            {{-- Checkbox Persetujuan --}}
-                                            <div class="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-md flex-shrink-0">
-                                                <label class="flex items-start space-x-3 cursor-pointer">
-                                                    <div class="flex items-center h-5">
-                                                        <input type="checkbox" x-model="agreedToSop" class="w-5 h-5 text-emerald-600 bg-white border-gray-300 rounded focus:ring-emerald-500 focus:ring-2">
-                                                    </div>
-                                                    <div class="flex-1 text-sm text-gray-700">
-                                                        <span class="font-medium text-gray-900">Saya Setuju</span>
-                                                        <p class="text-gray-500 inline">Dengan mencentang kotak ini, saya menyatakan telah membaca, memahami, dan menyetujui seluruh Standar Operasional Prosedur yang berlaku.</p>
-                                                    </div>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 flex-shrink-0">
-                                            <button type="submit" 
-                                                form="loanForm"
-                                                :class="(agreedToSop || (!isLoadingPdf && !pdfUrl)) ? 'bg-green-600 hover:bg-green-500' : 'bg-gray-300 cursor-not-allowed'"
-                                                :disabled="!(agreedToSop || (!isLoadingPdf && !pdfUrl))"
-                                                class="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto transition-colors">
-                                                Lanjutkan Peminjaman
-                                            </button>
-                                            <button type="button" @click="showSopModal = false" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition-colors">Batal</button>
+                <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+                    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <div x-show="showSopModal" @click.away="showSopModal = false"
+                            x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
+                            x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                            class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all sm:my-8 w-full max-w-3xl">
+                            
+                            <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 flex flex-col" :class="pdfUrl ? 'h-[80vh]' : 'h-auto'">
+                                <div class="sm:flex sm:items-start flex-shrink-0">
+                                    <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-emerald-50 sm:mx-0 sm:h-10 sm:w-10">
+                                        <i class="fas fa-file-pdf text-emerald-500"></i>
+                                    </div>
+                                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+                                        <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Standar Operasional Prosedur (SOP) Laboratorium</h3>
+                                        <div class="mt-2 text-sm text-gray-500 mb-2">
+                                            <p>Silakan baca dokumen syarat dan ketentuan di bawah ini secara saksama.</p>
                                         </div>
                                     </div>
                                 </div>
+                                
+                                {{-- PDF Viewer Container --}}
+                                <div class="mt-4 border border-gray-200 rounded-lg bg-gray-50 relative overflow-hidden transition-all duration-300" :class="pdfUrl ? 'flex-grow min-h-[50vh]' : 'min-h-[200px]'">
+                                    
+                                    {{-- Loading State --}}
+                                    <div x-show="isLoadingPdf" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10">
+                                        <i class="fas fa-spinner fa-spin text-3xl text-emerald-500 mb-2"></i>
+                                        <p class="text-sm text-gray-500">Memuat dokumen SOP...</p>
+                                    </div>
+
+                                    {{-- Error/Empty State --}}
+                                    <div x-show="!isLoadingPdf && !pdfUrl" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10 text-center p-6">
+                                        <i class="fas fa-file-circle-xmark text-4xl text-gray-400 mb-3"></i>
+                                        <h3 class="text-lg font-medium text-gray-900">SOP Belum Tersedia</h3>
+                                        <p class="text-sm text-gray-500 mt-1">Admin belum mengunggah dokumen SOP untuk laboratorium ini.</p>
+                                        <p class="text-sm text-gray-500 mt-2">Anda tetap dapat melanjutkan proses peminjaman.</p>
+                                    </div>
+
+                                    {{-- PDF.js Canvas Container (for scroll tracking) --}}
+                                    <div id="pdf-canvas-container" class="w-full h-full absolute inset-0 overflow-y-auto p-4 bg-gray-200" x-show="pdfUrl && !isLoadingPdf" @scroll.passive="checkScroll">
+                                        {{-- Canvas elements will be injected here by PDF.js --}}
+                                    </div>
+                                </div>
+
+                                {{-- Checkbox Persetujuan --}}
+                                <div class="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-md flex-shrink-0">
+                                    <label class="flex items-start space-x-3" :class="(pdfUrl && !hasScrolledToBottom) ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'">
+                                        <div class="flex items-center h-5 mt-1">
+                                            <input type="checkbox" x-model="agreedToSop" :disabled="pdfUrl && !hasScrolledToBottom" class="w-5 h-5 text-emerald-600 bg-white border-gray-300 rounded focus:ring-emerald-500 focus:ring-2 disabled:bg-gray-200 disabled:cursor-not-allowed transition-colors">
+                                        </div>
+                                        <div class="flex-1 text-sm text-gray-700">
+                                            <span class="font-medium text-gray-900">Saya Setuju</span>
+                                            <p class="text-gray-500 inline">Dengan mencentang kotak ini, saya menyatakan telah membaca, memahami, dan menyetujui seluruh Standar Operasional Prosedur yang berlaku.</p>
+                                            <p x-show="pdfUrl && !hasScrolledToBottom" class="text-xs text-red-500 font-semibold mt-2 block"><i class="fas fa-arrow-down mr-1 animate-bounce"></i>Wajib scroll dokumen SOP hingga bagian terbawah untuk mengaktifkan centang persetujuan.</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 flex-shrink-0">
+                                <button type="submit" 
+                                    form="loanForm"
+                                    :class="(agreedToSop || (!isLoadingPdf && !pdfUrl)) ? 'bg-green-600 hover:bg-green-500' : 'bg-gray-300 cursor-not-allowed'"
+                                    :disabled="!(agreedToSop || (!isLoadingPdf && !pdfUrl))"
+                                    class="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto transition-colors">
+                                    Lanjutkan Peminjaman
+                                </button>
+                                <button type="button" @click="showSopModal = false" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition-colors">Batal</button>
                             </div>
                         </div>
-
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     @push('scripts')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
         <script>
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('loanForm', () => ({
+                    showSopModal: false,
+                    agreedToSop: false,
+                    isLoadingPdf: false,
+                    pdfUrl: '',
+                    hasScrolledToBottom: false,
+                    
+                    init() {
+                        this.$watch('showSopModal', (val) => {
+                            if(!val) {
+                                // reset saat ditutup
+                                this.agreedToSop = false;
+                                this.hasScrolledToBottom = false;
+                            }
+                        });
+                    },
+                    
+                    async openModalAndFetchSop() {
+                        const form = document.getElementById('loanForm');
+                        if(form.checkValidity()) {
+                            this.showSopModal = true;
+                            this.agreedToSop = false;
+                            this.hasScrolledToBottom = false; // reset
+                            
+                            const selectedLab = document.getElementById('laboratorium').value;
+                            this.isLoadingPdf = true;
+                            this.pdfUrl = '';
+                            
+                            try {
+                                const res = await fetch(`/api/sop-url?lab=${encodeURIComponent(selectedLab)}&json=1`);
+                                const data = await res.json();
+                                if(data.exists && data.data) {
+                                    this.pdfUrl = data.url; // Hanya untuk flag UI
+                                    this.renderPdf(data.data); // Render langsung dari base64
+                                } else if (data.exists && !data.data) {
+                                    this.pdfUrl = data.url;
+                                    this.renderPdfUrl(data.url); // Fallback
+                                } else {
+                                    this.isLoadingPdf = false;
+                                    this.hasScrolledToBottom = true; // Langsung boleh jika tidak ada PDF
+                                }
+                            } catch(err) {
+                                console.error('Error fetching SOP:', err);
+                                this.isLoadingPdf = false;
+                                this.hasScrolledToBottom = true; // Fallback jika error API
+                            }
+                        } else {
+                            form.reportValidity();
+                        }
+                    },
+                    
+                    renderPdfUrl(url) {
+                         const loadingTask = pdfjsLib.getDocument(url);
+                         this.processPdfTask(loadingTask);
+                    },
+
+                    renderPdf(base64Data) {
+                        this.isLoadingPdf = true;
+                        this.hasScrolledToBottom = false;
+                        this.agreedToSop = false;
+                        
+                        // Decode base64 to binary string
+                        const binaryString = window.atob(base64Data);
+                        const loadingTask = pdfjsLib.getDocument({data: binaryString});
+                        this.processPdfTask(loadingTask);
+                    },
+
+                    processPdfTask(loadingTask) {
+                        // Beri waktu Alpine untuk me-render container x-show
+                        setTimeout(() => {
+                            const container = document.getElementById('pdf-canvas-container');
+                            if(!container) return;
+                            container.innerHTML = '';
+                            
+                            loadingTask.promise.then(pdf => {
+                                let renderPromises = [];
+                                for(let num = 1; num <= pdf.numPages; num++) {
+                                    renderPromises.push(pdf.getPage(num).then(page => {
+                                        const viewportBase = page.getViewport({scale: 1});
+                                        const width = container.clientWidth || 600; 
+                                        const scale = (width - 40) / viewportBase.width;
+                                        const finalScale = scale > 1.5 ? 1.5 : scale; // Batasi max scale
+                                        const viewport = page.getViewport({scale: finalScale});
+                                        
+                                        const canvas = document.createElement('canvas');
+                                        canvas.className = 'mx-auto mb-4 border border-gray-300 shadow-sm bg-white';
+                                        canvas.height = viewport.height;
+                                        canvas.width = viewport.width;
+                                        container.appendChild(canvas);
+                                        
+                                        return page.render({
+                                            canvasContext: canvas.getContext('2d'),
+                                            viewport: viewport
+                                        }).promise;
+                                    }));
+                                }
+                                Promise.all(renderPromises).then(() => {
+                                    this.isLoadingPdf = false;
+                                    // Cek scroll setelah render (jika PDF pendek dan tidak butuh scroll)
+                                    setTimeout(() => {
+                                        this.checkScroll({target: container});
+                                    }, 300);
+                                });
+                            }).catch(err => {
+                                console.error('Error loading PDF:', err);
+                                this.isLoadingPdf = false;
+                                this.hasScrolledToBottom = true; // Izinkan bypass jika error render
+                                container.innerHTML = '<div class="p-6 text-center text-red-500">Gagal memuat dokumen PDF. Silakan hubungi Admin.</div>';
+                            });
+                        }, 50);
+                    },
+                    
+                    checkScroll(e) {
+                        const el = e.target || e;
+                        if (!el || !el.scrollHeight) return;
+                        // Toleransi 50px dari bawah
+                        if (el.scrollHeight - el.scrollTop <= el.clientHeight + 50) {
+                            this.hasScrolledToBottom = true;
+                        }
+                    }
+                }));
+            });
+
             document.addEventListener('DOMContentLoaded', function() {
                 // --- Script Live Search (dari sebelumnya) ---
                 const searchInput = document.getElementById('item-search');
