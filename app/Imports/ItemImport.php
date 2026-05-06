@@ -87,9 +87,14 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
     {
         // PERBAIKAN: Logika yang lebih aman untuk membuat atau memperbarui.
         // 1. Cari item berdasarkan nama_alat dan laboratorium.
-        $item = Item::where('nama_alat', $row['nama_alat'])
-                    ->where('laboratorium', $row['laboratorium'] ?? Auth::user()->laboratorium ?? 'Biologi')
-                    ->first();
+        $item = Item::where('kode_inventaris', $row['kode_inventaris'])->first();
+
+        // Jika tidak ditemukan berdasarkan kode_inventaris, coba cari berdasarkan nama_alat dan laboratorium
+        if (!$item) {
+            $item = Item::where('nama_alat', $row['nama_alat'])
+                        ->where('laboratorium', $row['laboratorium'] ?? Auth::user()->laboratorium ?? 'Biologi')
+                        ->first();
+        }
 
         // 2. Siapkan data dari file Excel.
         $data = [

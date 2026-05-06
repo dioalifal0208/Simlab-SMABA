@@ -174,7 +174,7 @@
                 {{-- HERO COPY --}}
                 <div class="lg:col-span-7 flex flex-col gap-8 lg:pr-8" data-aos="fade-up" data-aos-duration="700">
                     <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 border border-green-100 text-sm font-medium text-green-700 w-max">
-                        Sistem Manajemen Lab Generasi Baru
+                        Sistem Informasi & Manajemen Laboratorium
                     </div>
                     
                     <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 tracking-[-0.02em] leading-[1.15]">Kelola Praktikum <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">Lebih Profesional</span></h1>
